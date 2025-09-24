@@ -33,14 +33,14 @@ export type ValidateInventoryLevelsDeleteStepInput = {
  * inventory levels have reserved or incoming items, or the force
  * flag is not set and the inventory levels have stocked items, the
  * step will throw an error.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve an inventory level's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = validateInventoryLevelsDelete({
  *   inventoryLevels: [
@@ -108,10 +108,10 @@ export const deleteInventoryLevelsWorkflowId =
 /**
  * This workflow deletes one or more inventory levels. It's used by the
  * [Delete Inventory Levels Admin API Route](https://docs.medusajs.com/api/admin#inventory-items_deleteinventoryitemsidlocationlevelslocation_id).
- * 
+ *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to delete inventory levels in your custom flows.
- * 
+ *
  * @example
  * const { result } = await deleteInventoryLevelsWorkflow(container)
  * .run({
@@ -119,9 +119,9 @@ export const deleteInventoryLevelsWorkflowId =
  *     id: ["iilev_123", "iilev_321"],
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Delete one or more inventory levels.
  */
 export const deleteInventoryLevelsWorkflow = createWorkflow(

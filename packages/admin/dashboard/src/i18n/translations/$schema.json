@@ -3111,6 +3111,9 @@
         "quantityAcrossLocations": {
           "type": "string"
         },
+        "levelDeleted": {
+          "type": "string"
+        },
         "create": {
           "type": "object",
           "properties": {
@@ -3327,6 +3330,7 @@
         "deleteWarning",
         "editItemDetails",
         "quantityAcrossLocations",
+        "levelDeleted",
         "create",
         "reservation",
         "adjustInventory",
