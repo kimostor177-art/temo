@@ -2234,7 +2234,7 @@
       "total_used": "Budget used",
       "budget_limit": "Budget limit",
       "campaign_id": {
-        "hint": "Only campaigns with the same currency code as the promotion are shown in this list."
+        "hint": "Disabled campaigns have budget in a different currency than the promotion."
       }
     },
     "budget": {
