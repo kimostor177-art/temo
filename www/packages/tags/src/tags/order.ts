@@ -76,6 +76,10 @@ export const order = [
     "path": "https://docs.medusajs.com/resources/how-to-tutorials/tutorials/re-order"
   },
   {
+    "title": "Return Request - Order #",
+    "path": "https://docs.medusajs.com/resources/nextjs-starter/guides/storefront-returns"
+  },
+  {
     "title": "Checkout Step 5: Complete Cart",
     "path": "https://docs.medusajs.com/resources/storefront-development/checkout/complete-cart"
   },

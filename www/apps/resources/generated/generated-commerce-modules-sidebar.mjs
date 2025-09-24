@@ -6310,6 +6310,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "title": "Order Confirmation in Storefront",
               "path": "https://docs.medusajs.com/resources/storefront-development/checkout/order-confirmation",
               "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
+              "title": "Return Request - Order #",
+              "path": "https://docs.medusajs.com/resources/nextjs-starter/guides/storefront-returns",
+              "children": []
             }
           ]
         },

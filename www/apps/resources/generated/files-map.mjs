@@ -1020,6 +1020,10 @@ export const filesMap = [
     "pathname": "/nextjs-starter/guides/revalidate-cache"
   },
   {
+    "filePath": "/www/apps/resources/app/nextjs-starter/guides/storefront-returns/page.mdx",
+    "pathname": "/nextjs-starter/guides/storefront-returns"
+  },
+  {
     "filePath": "/www/apps/resources/app/nextjs-starter/page.mdx",
     "pathname": "/nextjs-starter"
   },

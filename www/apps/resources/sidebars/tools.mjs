@@ -110,11 +110,6 @@ export const toolsSidebar = [
             children: [
               {
                 type: "link",
-                path: "/nextjs-starter/guides/customize-stripe",
-                title: "Use Stripe's Payment Element",
-              },
-              {
-                type: "link",
                 path: "/nextjs-starter/guides/revalidate-cache",
                 title: "Revalidate Cache",
               },
@@ -126,6 +121,18 @@ export const toolsSidebar = [
             autogenerate_tags: "nextjs+tutorial",
             autogenerate_as_ref: true,
             sort_sidebar: "alphabetize",
+            children: [
+              {
+                type: "link",
+                path: "/nextjs-starter/guides/customize-stripe",
+                title: "Use Stripe's Payment Element",
+              },
+              {
+                type: "link",
+                path: "/nextjs-starter/guides/storefront-returns",
+                title: "Create Order Returns",
+              },
+            ],
           },
         ],
       },

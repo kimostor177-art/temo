@@ -35,6 +35,11 @@ export const storefrontDevelopmentSidebar = [
         path: "/storefront-development/guides/express-checkout",
         title: "Express Checkout Storefront",
       },
+      {
+        type: "ref",
+        path: "/nextjs-starter/guides/storefront-returns",
+        title: "Create Returns from Storefront",
+      },
     ],
   },
   {
