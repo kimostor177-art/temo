@@ -62,7 +62,7 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
       },
       {
         onSuccess: () => {
-          toast.success(t("stockLocations.edit.successToast"))
+          toast.success(t("stockLocations.edit.successToast", { name: name }))
           handleSuccess()
         },
         onError: (e) => {

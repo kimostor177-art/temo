@@ -9,6 +9,7 @@ const StockLocation = model.define("StockLocation", {
     .belongsTo(() => StockLocationAddress, {
       mappedBy: "stock_locations",
     })
+    .searchable()
     .nullable(),
 })
 
