@@ -146,13 +146,13 @@ async function start(args: {
 }) {
   const { port = 9000, host, directory, types } = args
 
-  const container = await initializeContainer(directory, {
-    skipDbConnection: true,
-  })
-  const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
-
   async function internalStart(generateTypes: boolean) {
     track("CLI_START")
+
+    const container = await initializeContainer(directory, {
+      skipDbConnection: true,
+    })
+    const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
     await registerInstrumentation(directory)
 
     const app = express()
@@ -270,13 +270,13 @@ async function start(args: {
       const killMainProccess = () => process.exit(0)
       const gracefulShutDown = () => {
         isShuttingDown = true
-        for (const id of Object.keys(cluster.workers ?? {})) {
-          cluster.workers?.[id]?.kill("SIGTERM")
-        }
       }
 
       for (let index = 0; index < numCPUs; index++) {
-        cluster.fork().send({ index })
+        const worker = cluster.fork()
+        worker.on("online", () => {
+          worker.send({ index })
+        })
       }
 
       cluster.on("exit", () => {
