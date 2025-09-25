@@ -58,6 +58,7 @@ interface ComboboxProps<T extends Value = Value>
   onCreateOption?: (value: string) => void
   noResultsPlaceholder?: ReactNode
   allowClear?: boolean
+  forceHideInput?: boolean // always hide input -> used for singe value select that don't have query/filter
 }
 
 const ComboboxImpl = <T extends Value = string>(
@@ -74,6 +75,7 @@ const ComboboxImpl = <T extends Value = string>(
     onCreateOption,
     noResultsPlaceholder,
     allowClear,
+    forceHideInput,
     ...inputProps
   }: ComboboxProps<T>,
   ref: ForwardedRef<HTMLInputElement>
@@ -152,10 +154,15 @@ const ComboboxImpl = <T extends Value = string>(
       return []
     }
 
+    // do not use `matcher` if the input is hidden
+    if (forceHideInput) {
+      return options
+    }
+
     return matchSorter(options, defferedSearchValue, {
       keys: ["label"],
     })
-  }, [options, defferedSearchValue, isSearchControlled])
+  }, [options, defferedSearchValue, isSearchControlled, forceHideInput])
 
   const observer = useRef(
     new IntersectionObserver(
@@ -197,7 +204,7 @@ const ComboboxImpl = <T extends Value = string>(
   const showTag = hasValue && isArrayValue
   const showSelected = showTag && !searchValue && !open
 
-  const hideInput = !isArrayValue && hasValue && !open
+  const hideInput = forceHideInput || (!isArrayValue && hasValue && !open)
   const selectedLabel = options.find((o) => o.value === selectedValues)?.label
 
   const hidePlaceholder = showSelected || open
@@ -251,7 +258,7 @@ const ComboboxImpl = <T extends Value = string>(
               e.preventDefault()
               handleValueChange(isArrayValue ? ([] as unknown as T) : undefined)
             }}
-            className="bg-ui-bg-base hover:bg-ui-bg-base-hover txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive transition-fg absolute start-0.5 top-0.5 z-[1] flex h-[28px] items-center rounded-[4px] border py-[3px] ps-1.5 pe-1 outline-none"
+            className="bg-ui-bg-base hover:bg-ui-bg-base-hover txt-compact-small-plus text-ui-fg-subtle focus-within:border-ui-fg-interactive transition-fg absolute start-0.5 top-0.5 z-[1] flex h-[28px] items-center rounded-[4px] border py-[3px] pe-1 ps-1.5 outline-none"
           >
             <span className="tabular-nums">{selectedValues.length}</span>
             <XMarkMini className="text-ui-fg-muted" />
@@ -293,7 +300,7 @@ const ComboboxImpl = <T extends Value = string>(
             ref={comboboxRef}
             onFocus={() => setOpen(true)}
             className={clx(
-              "txt-compact-small text-ui-fg-base !placeholder:text-ui-fg-muted transition-fg size-full cursor-pointer bg-transparent ps-2 pe-8 outline-none focus:cursor-text",
+              "txt-compact-small text-ui-fg-base !placeholder:text-ui-fg-muted transition-fg size-full cursor-pointer bg-transparent pe-8 ps-2 outline-none focus:cursor-text",
               "hover:bg-ui-bg-field-hover",
               {
                 "opacity-0": hideInput,

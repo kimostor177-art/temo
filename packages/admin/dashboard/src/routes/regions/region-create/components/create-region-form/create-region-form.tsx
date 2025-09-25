@@ -17,7 +17,7 @@ import { useForm, useWatch } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
-import { PaymentProviderDTO, RegionCountryDTO } from "@medusajs/types"
+import { RegionCountryDTO } from "@medusajs/types"
 
 import { Form } from "../../../../../components/common/form"
 import { Combobox } from "../../../../../components/inputs/combobox"
@@ -38,10 +38,11 @@ import { useCountries } from "../../../common/hooks/use-countries"
 import { useCountryTableColumns } from "../../../common/hooks/use-country-table-columns"
 import { useCountryTableQuery } from "../../../common/hooks/use-country-table-query"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
+import { useComboboxData } from "../../../../../hooks/use-combobox-data"
+import { sdk } from "../../../../../lib/client"
 
 type CreateRegionFormProps = {
   currencies: CurrencyInfo[]
-  paymentProviders: PaymentProviderDTO[]
 }
 
 const CreateRegionSchema = zod.object({
@@ -58,10 +59,7 @@ const PAGE_SIZE = 50
 
 const STACKED_MODAL_ID = "countries-modal"
 
-export const CreateRegionForm = ({
-  currencies,
-  paymentProviders,
-}: CreateRegionFormProps) => {
+export const CreateRegionForm = ({ currencies }: CreateRegionFormProps) => {
   const { setIsOpen } = useStackedModal()
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const { handleSuccess } = useRouteModal()
@@ -180,6 +178,17 @@ export const CreateRegionForm = ({
     form.setValue("countries", [], { shouldDirty: true, shouldTouch: true })
     setRowSelection({})
   }
+
+  const comboboxProviders = useComboboxData({
+    queryFn: (params) =>
+      sdk.admin.payment.listPaymentProviders({ ...params, is_enabled: true }),
+    queryKey: ["payment_providers"],
+    getOptions: (data) =>
+      data.payment_providers.map((pp) => ({
+        label: formatProvider(pp.id),
+        value: pp.id,
+      })),
+  })
 
   return (
     <RouteFocusModal.Form form={form}>
@@ -415,10 +424,9 @@ export const CreateRegionForm = ({
                           </Form.Label>
                           <Form.Control>
                             <Combobox
-                              options={paymentProviders.map((pp) => ({
-                                label: formatProvider(pp.id),
-                                value: pp.id,
-                              }))}
+                              forceHideInput
+                              options={comboboxProviders.options}
+                              fetchNextPage={comboboxProviders.fetchNextPage}
                               {...field}
                             />
                           </Form.Control>
