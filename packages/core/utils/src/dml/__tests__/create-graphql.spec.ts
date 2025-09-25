@@ -23,6 +23,7 @@ describe("GraphQL builder", () => {
       username: model.text(),
       email: model.hasOne(() => email, { mappedBy: "owner" }),
       spend_limit: model.bigNumber(),
+      rate: model.float(),
       phones: model.array(),
       group: model.belongsTo(() => group, { mappedBy: "users" }),
       role: model
@@ -84,6 +85,7 @@ describe("GraphQL builder", () => {
         username: String!
         email: Email!
         spend_limit: Float!
+        rate: Float!
         phones: [String]!
         group_id:String!
         group: Group!

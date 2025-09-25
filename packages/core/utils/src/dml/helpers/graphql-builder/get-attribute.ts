@@ -10,6 +10,7 @@ const GRAPHQL_TYPES = {
   dateTime: "DateTime",
   number: "Int",
   bigNumber: "Float",
+  float: "Float",
   text: "String",
   json: "JSON",
   array: "[String]",
