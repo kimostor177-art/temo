@@ -98,7 +98,6 @@ export const updateCartPromotionsWorkflow = createWorkflow(
       key: cart.id,
       timeout: 2,
       ttl: 10,
-      skipOnSubWorkflow: true,
     })
 
     const validate = createHook("validate", {
@@ -151,7 +150,6 @@ export const updateCartPromotionsWorkflow = createWorkflow(
 
     releaseLockStep({
       key: cart.id,
-      skipOnSubWorkflow: true,
     })
 
     return new WorkflowResponse(void 0, {

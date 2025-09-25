@@ -89,9 +89,8 @@ export const addShippingMethodToCartWorkflow = createWorkflow(
       key: input.cart_id,
       timeout: 2,
       ttl: 10,
-      skipOnSubWorkflow: true,
     })
-    
+
     const cart = useRemoteQueryStep({
       entry_point: "cart",
       fields: cartFieldsForRefreshSteps,
@@ -221,7 +220,6 @@ export const addShippingMethodToCartWorkflow = createWorkflow(
       }),
       releaseLockStep({
         key: cart.id,
-        skipOnSubWorkflow: true,
       })
     )
 

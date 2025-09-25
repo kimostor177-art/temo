@@ -144,7 +144,6 @@ export const updateTaxLinesWorkflow = createWorkflow(
       key: cart.id,
       timeout: 2,
       ttl: 10,
-      skipOnSubWorkflow: true,
     })
 
     const taxLineItems = getItemTaxLinesStep(
@@ -164,7 +163,6 @@ export const updateTaxLinesWorkflow = createWorkflow(
 
     releaseLockStep({
       key: cart.id,
-      skipOnSubWorkflow: true,
     })
   }
 )

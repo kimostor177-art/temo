@@ -8,11 +8,11 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
+import { AdditionalData } from "@medusajs/types"
 import { emitEventStep, useQueryGraphStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { updateCartsStep } from "../steps"
 import { refreshCartItemsWorkflow } from "./refresh-cart-items"
-import { AdditionalData } from "@medusajs/types"
 
 /**
  * The cart ownership transfer details.
@@ -108,7 +108,6 @@ export const transferCartCustomerWorkflow = createWorkflow(
         key: cart.id,
         timeout: 2,
         ttl: 10,
-        skipOnSubWorkflow: true,
       })
 
       const cartInput = transform({ cart, customer }, ({ cart, customer }) => [
@@ -122,7 +121,11 @@ export const transferCartCustomerWorkflow = createWorkflow(
       updateCartsStep(cartInput)
 
       refreshCartItemsWorkflow.runAsStep({
-        input: { cart_id: input.id, force_refresh: true, additional_data: input.additional_data },
+        input: {
+          cart_id: input.id,
+          force_refresh: true,
+          additional_data: input.additional_data,
+        },
       })
 
       parallelize(
@@ -135,7 +138,6 @@ export const transferCartCustomerWorkflow = createWorkflow(
         }),
         releaseLockStep({
           key: cart.id,
-          skipOnSubWorkflow: true,
         })
       )
     })

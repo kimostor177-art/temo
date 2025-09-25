@@ -12,18 +12,18 @@ export interface AcquireLockStepInput {
   key: string | string[]
   /**
    * The maximum time to wait for acquiring the lock. If the lock cannot be acquired within this time, an error is thrown.
-   * 
+   *
    * @defaultValue 0
    */
   timeout?: number
   /**
    * The time (in seconds) to wait between each retry to acquire the lock.
-   * 
+   *
    * @defaultValue 0.3
    */
   retryInterval?: number
   /**
-   * The expiration time (in seconds) for the lock. If the lock is already acquired and the owner is the same, 
+   * The expiration time (in seconds) for the lock. If the lock is already acquired and the owner is the same,
    * the expiration time is extended by the value passed. If not specified, the lock does not expire.
    */
   ttl?: number
@@ -32,11 +32,11 @@ export interface AcquireLockStepInput {
    */
   ownerId?: string
   /**
-   * The provider name to use for locking. If no provider is passed, the default provider 
+   * The provider name to use for locking. If no provider is passed, the default provider
    * (in-memory or the provider configured in medusa-config.ts) will be used.
    */
   provider?: string
-  skipOnSubWorkflow?: boolean
+  executeOnSubWorkflow?: boolean
 }
 
 export const acquireLockStepId = "acquire-lock-step"
@@ -67,7 +67,7 @@ export const acquireLockStep = createStep(
     }
 
     const isSubWorkflow = !!parentStepIdempotencyKey
-    if (isSubWorkflow && data.skipOnSubWorkflow) {
+    if (isSubWorkflow && !data.executeOnSubWorkflow) {
       return StepResponse.skip() as any
     }
 

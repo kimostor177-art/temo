@@ -10,16 +10,16 @@ export interface ReleaseLockStepInput {
    */
   key: string | string[]
   /**
-   * The ID of the lock's owner. The lock can be released either if it doesn't have an owner, 
+   * The ID of the lock's owner. The lock can be released either if it doesn't have an owner,
    * or if its owner ID matches the one passed in this property.
    */
   ownerId?: string
   /**
-   * The provider name to use for locking. If no provider is passed, 
+   * The provider name to use for locking. If no provider is passed,
    * the default provider (in-memory or the provider configured in medusa-config.ts) will be used.
    */
   provider?: string
-  skipOnSubWorkflow?: boolean
+  executeOnSubWorkflow?: boolean
 }
 
 export const releaseLockStepId = "release-lock-step"
@@ -49,7 +49,7 @@ export const releaseLockStep = createStep(
     }
 
     const isSubWorkflow = !!parentStepIdempotencyKey
-    if (isSubWorkflow && data.skipOnSubWorkflow) {
+    if (isSubWorkflow && !data.executeOnSubWorkflow) {
       return StepResponse.skip() as any
     }
 

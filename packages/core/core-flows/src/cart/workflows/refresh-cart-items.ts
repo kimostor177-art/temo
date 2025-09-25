@@ -1,4 +1,8 @@
-import { filterObjectByKeys, isDefined, PromotionActions, } from "@medusajs/framework/utils"
+import {
+  filterObjectByKeys,
+  isDefined,
+  PromotionActions,
+} from "@medusajs/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -13,8 +17,15 @@ import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { getVariantPriceSetsStep, updateLineItemsStep } from "../steps"
 import { validateVariantPricesStep } from "../steps/validate-variant-prices"
-import { cartFieldsForPricingContext, cartFieldsForRefreshSteps, productVariantsFields, } from "../utils/fields"
-import { prepareLineItemData, PrepareLineItemDataInput, } from "../utils/prepare-line-item-data"
+import {
+  cartFieldsForPricingContext,
+  cartFieldsForRefreshSteps,
+  productVariantsFields,
+} from "../utils/fields"
+import {
+  prepareLineItemData,
+  PrepareLineItemDataInput,
+} from "../utils/prepare-line-item-data"
 import { pricingContextResult } from "../utils/schemas"
 import { refreshCartShippingMethodsWorkflow } from "./refresh-cart-shipping-methods"
 import { refreshPaymentCollectionForCartWorkflow } from "./refresh-payment-collection"
@@ -127,7 +138,6 @@ export const refreshCartItemsWorkflow = createWorkflow(
       key: input.cart_id,
       timeout: 2,
       ttl: 10,
-      skipOnSubWorkflow: true,
     })
 
     const setPricingContext = createHook(
@@ -323,7 +333,6 @@ export const refreshCartItemsWorkflow = createWorkflow(
 
     releaseLockStep({
       key: input.cart_id,
-      skipOnSubWorkflow: true,
     })
 
     return new WorkflowResponse(refetchedCart, {

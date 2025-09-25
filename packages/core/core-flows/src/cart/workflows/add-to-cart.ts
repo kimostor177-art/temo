@@ -124,7 +124,6 @@ export const addToCartWorkflow = createWorkflow(
       key: input.cart_id,
       timeout: 2,
       ttl: 10,
-      skipOnSubWorkflow: true,
     })
 
     const cartQuery = useQueryGraphStep({
@@ -313,7 +312,11 @@ export const addToCartWorkflow = createWorkflow(
     )
 
     refreshCartItemsWorkflow.runAsStep({
-      input: { cart_id: cart.id, items: allItems, additional_data: input.additional_data },
+      input: {
+        cart_id: cart.id,
+        items: allItems,
+        additional_data: input.additional_data,
+      },
     })
 
     parallelize(
@@ -323,7 +326,6 @@ export const addToCartWorkflow = createWorkflow(
       }),
       releaseLockStep({
         key: cart.id,
-        skipOnSubWorkflow: true,
       })
     )
 
