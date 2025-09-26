@@ -38,9 +38,9 @@
 
 Visit the [Documentation](https://docs.medusajs.com/learn) to set up a Medusa application.
 
-## What is Medusa
+## About Medusa
 
-Medusa is an ecommerce platform with a built-in framework for customization that allows you to build custom commerce applications without reinventing core commerce logic. The framework and modules can be used to build advanced B2B or DTC ecommerce stores, marketplaces, PoS systems, service businesses, or any product that needs foundational commerce primitives. All commerce modules are open-source and freely available on npm.
+Medusa is a commerce platform with a built-in framework for customization that allows you to build custom commerce applications without reinventing core commerce logic. The framework and modules can be used to support advanced B2B or DTC commerce stores, marketplaces, distributor platforms, PoS systems, service businesses, or similar solutions that need foundational commerce primitives. All commerce modules are open-source and freely available on npm.
 
 Learn more about [Medusa’s architecture](https://docs.medusajs.com/learn/advanced-development/architecture/overview) and [commerce modules](https://docs.medusajs.com/resources/commerce-modules) in the Docs.
 
@@ -52,11 +52,11 @@ Check out all [available Medusa integrations](https://medusajs.com/integrations/
 
 ## Community & Contributions
 
-The community and core team are available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can ask for support, discuss roadmap, and share ideas.
+The core team is available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can create issues, share ideas, and discuss roadmap.
 
 Our [Contribution Guide](https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md) describes how to contribute to the codebase and Docs.
 
-Join our [Discord server](https://discord.com/invite/medusajs) to meet other community members.
+Join our [Discord server](https://discord.gg/medusajs) to meet and discuss with more than 14,000 other community members.
 
 ## Other channels
 
