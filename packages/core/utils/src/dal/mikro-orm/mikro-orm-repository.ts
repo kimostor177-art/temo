@@ -490,9 +490,14 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       const findOptions_ = { ...findOptions }
       findOptions_.options ??= {}
 
-      Object.assign(findOptions_.options, {
-        strategy: LoadStrategy.SELECT_IN,
-      })
+      if (!("strategy" in findOptions_.options)) {
+        if (findOptions_.options.limit != null || findOptions_.options.offset) {
+          // TODO: from 7+ it will be the default strategy
+          Object.assign(findOptions_.options, {
+            strategy: LoadStrategy.BALANCED,
+          })
+        }
+      }
 
       MikroOrmBaseRepository.compensateRelationFieldsSelectionFromLoadStrategy({
         findOptions: findOptions_,
@@ -535,7 +540,7 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       let allEntities: InferRepositoryReturnType<T>[][] = []
 
       if (primaryKeysCriteria.length) {
-        allEntities = await Promise.all(
+        allEntities = await promiseAll(
           primaryKeysCriteria.map(
             async (criteria) =>
               await this.find(
@@ -683,46 +688,65 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
 
       this.mergePerformedActions(performedActions, performedActions_)
 
-      await promiseAll(
-        upsertedTopLevelEntities
+      const relationProcessingPromises: Promise<void>[] = []
+
+      // Group relations by type
+      const relationsByType = new Map<
+        string,
+        { relation: EntityProperty; entities: any[] }
+      >()
+
+      config.relations?.forEach((relationName) => {
+        const relation = allRelations?.find((r) => r.name === relationName)
+        if (!relation) return
+
+        if (
+          relation.kind === ReferenceKind.ONE_TO_ONE ||
+          relation.kind === ReferenceKind.MANY_TO_ONE
+        ) {
+          return
+        }
+
+        const entitiesForRelation = upsertedTopLevelEntities
           .map((entityEntry, i) => {
             const originalEntry = originalDataMap.get((entityEntry as any).id)!
-            const reconstructedEntry = reconstructedResponse[i]
-
-            return allRelations?.map(async (relation) => {
-              const relationName = relation.name as keyof T
-              if (!config.relations?.includes(relationName)) {
-                return
-              }
-
-              // TODO: Handle ONE_TO_ONE
-              // One to one and Many to one are handled outside of the assignment as they need to happen before the main entity is created
-              if (
-                relation.kind === ReferenceKind.ONE_TO_ONE ||
-                relation.kind === ReferenceKind.MANY_TO_ONE
-              ) {
-                return
-              }
-
-              const { entities, performedActions: performedActions_ } =
-                await this.assignCollectionRelation_(
-                  manager,
-                  { ...originalEntry, id: (entityEntry as any).id },
-                  relation
-                )
-
-              this.mergePerformedActions(performedActions, performedActions_)
-              reconstructedEntry[relationName] = entities
-              return
-            })
+            return {
+              entity: { ...originalEntry, id: (entityEntry as any).id },
+              reconstructedEntry: reconstructedResponse[i],
+              index: i,
+            }
           })
-          .flat()
-      )
+          .filter((item) => item.entity[relationName as string] !== undefined)
 
-      // // We want to populate the identity map with the data that was written to the DB, and return an entity object
-      // return reconstructedResponse.map((r) =>
-      //   manager.create(entity, r, { persist: false })
-      // )
+        if (entitiesForRelation.length > 0) {
+          relationsByType.set(relationName as string, {
+            relation,
+            entities: entitiesForRelation,
+          })
+        }
+      })
+
+      for (const [relationName, { relation, entities }] of relationsByType) {
+        relationProcessingPromises.push(
+          this.assignCollectionRelationBatch_(manager, entities, relation).then(
+            ({ performedActions: batchPerformedActions, entitiesResults }) => {
+              this.mergePerformedActions(
+                performedActions,
+                batchPerformedActions
+              )
+
+              // Update reconstructed response with results
+              entitiesResults.forEach(
+                ({ entities: relationEntities, index }) => {
+                  reconstructedResponse[index][relationName] = relationEntities
+                }
+              )
+            }
+          )
+        )
+      }
+
+      await promiseAll(relationProcessingPromises)
 
       return { entities: reconstructedResponse, performedActions }
     }
@@ -741,7 +765,226 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       })
     }
 
-    // FUTURE: We can make this performant by only aggregating the operations, but only executing them at the end.
+    /**
+     * Batch processing for multiple entities with same relation
+     */
+    protected async assignCollectionRelationBatch_(
+      manager: SqlEntityManager,
+      entitiesData: Array<{ entity: T; index: number }>,
+      relation: EntityProperty
+    ): Promise<{
+      performedActions: PerformedActions
+      entitiesResults: Array<{ entities: any[]; index: number }>
+    }> {
+      const performedActions: PerformedActions = {
+        created: {},
+        updated: {},
+        deleted: {},
+      }
+
+      const entitiesResults: Array<{ entities: any[]; index: number }> = []
+
+      if (relation.kind === ReferenceKind.MANY_TO_MANY) {
+        await this.assignManyToManyRelationBatch_(
+          manager,
+          entitiesData,
+          relation,
+          performedActions,
+          entitiesResults
+        )
+      } else if (relation.kind === ReferenceKind.ONE_TO_MANY) {
+        await this.assignOneToManyRelationBatch_(
+          manager,
+          entitiesData,
+          relation,
+          performedActions,
+          entitiesResults
+        )
+      } else {
+        // For other relation types, fall back to individual processing
+        await promiseAll(
+          entitiesData.map(async ({ entity, index }) => {
+            const { entities, performedActions: individualActions } =
+              await this.assignCollectionRelation_(manager, entity, relation)
+            this.mergePerformedActions(performedActions, individualActions)
+            entitiesResults.push({ entities, index })
+          })
+        )
+      }
+
+      return { performedActions, entitiesResults }
+    }
+
+    /**
+     * Batch processing for many-to-many relations
+     */
+    private async assignManyToManyRelationBatch_(
+      manager: SqlEntityManager,
+      entitiesData: Array<{ entity: T; index: number }>,
+      relation: EntityProperty,
+      performedActions: PerformedActions,
+      entitiesResults: Array<{ entities: any[]; index: number }>
+    ): Promise<void> {
+      const currentPivotColumn = relation.inverseJoinColumns[0]
+      const parentPivotColumn = relation.joinColumns[0]
+
+      // Collect all relation data and normalize it
+      const allNormalizedData: any[] = []
+      const entityRelationMap = new Map<string, any[]>()
+      const entitiesToDeletePivots: string[] = []
+
+      for (const { entity, index } of entitiesData) {
+        const dataForRelation = entity[relation.name]
+
+        if (dataForRelation === undefined) {
+          entitiesResults.push({ entities: [], index })
+          continue
+        }
+
+        if (!dataForRelation.length) {
+          entitiesToDeletePivots.push((entity as any).id)
+          entitiesResults.push({ entities: [], index })
+          continue
+        }
+
+        const normalizedData = dataForRelation.map((item: any) =>
+          this.getEntityWithId(manager, relation.type, item)
+        )
+
+        allNormalizedData.push(...normalizedData)
+        entityRelationMap.set((entity as any).id, normalizedData)
+        entitiesResults.push({ entities: normalizedData, index })
+      }
+
+      // Batch delete empty pivot relations
+      if (entitiesToDeletePivots.length) {
+        await manager.nativeDelete(relation.pivotEntity, {
+          [parentPivotColumn]: { $in: entitiesToDeletePivots },
+        })
+      }
+
+      if (allNormalizedData.length) {
+        const { performedActions: upsertActions } = await this.upsertMany_(
+          manager,
+          relation.type,
+          allNormalizedData,
+          true
+        )
+        this.mergePerformedActions(performedActions, upsertActions)
+
+        // Collect all pivot data for batch operations
+        const allPivotData: any[] = []
+        const allParentIds: string[] = []
+
+        for (const [parentId, normalizedData] of entityRelationMap) {
+          allParentIds.push(parentId)
+          const pivotData = normalizedData.map((currModel) => ({
+            [parentPivotColumn]: parentId,
+            [currentPivotColumn]: currModel.id,
+          }))
+          allPivotData.push(...pivotData)
+        }
+
+        // Batch insert and delete pivot table entries
+        await promiseAll([
+          manager
+            .qb(relation.pivotEntity)
+            .insert(allPivotData)
+            .onConflict()
+            .ignore()
+            .execute(),
+          manager.nativeDelete(relation.pivotEntity, {
+            [parentPivotColumn]: { $in: allParentIds },
+            [currentPivotColumn]: {
+              $nin: allPivotData.map((d) => d[currentPivotColumn]),
+            },
+          }),
+        ])
+      }
+    }
+
+    /**
+     * Batch processing for one-to-many relations
+     */
+    private async assignOneToManyRelationBatch_(
+      manager: SqlEntityManager,
+      entitiesData: Array<{ entity: T; index: number }>,
+      relation: EntityProperty,
+      performedActions: PerformedActions,
+      entitiesResults: Array<{ entities: any[]; index: number }>
+    ): Promise<void> {
+      const joinColumns =
+        relation.targetMeta?.properties[relation.mappedBy]?.joinColumns
+
+      // Collect all relation data and constraints
+      const allNormalizedData: any[] = []
+      const allJoinConstraints: any[] = []
+      const allEntityIds: string[] = []
+
+      for (const { entity, index } of entitiesData) {
+        const dataForRelation = entity[relation.name]
+
+        if (dataForRelation === undefined) {
+          entitiesResults.push({ entities: [], index })
+          continue
+        }
+
+        const joinColumnsConstraints = {}
+        joinColumns?.forEach((joinColumn, index) => {
+          const referencedColumnName = relation.referencedColumnNames[index]
+          joinColumnsConstraints[joinColumn] = entity[referencedColumnName]
+        })
+
+        const normalizedData = dataForRelation.map((item: any) => {
+          const normalized = this.getEntityWithId(manager, relation.type, item)
+          return { ...normalized, ...joinColumnsConstraints }
+        })
+
+        allNormalizedData.push(...normalizedData)
+        allJoinConstraints.push(joinColumnsConstraints)
+        allEntityIds.push(...normalizedData.map((d: any) => d.id))
+        entitiesResults.push({ entities: normalizedData, index })
+      }
+
+      // Batch delete orphaned relations
+      if (allJoinConstraints.length) {
+        const deletedRelations = await (
+          manager.getTransactionContext() ?? manager.getKnex()
+        )
+          .queryBuilder()
+          .from(relation.targetMeta!.collection)
+          .delete()
+          .where((builder) => {
+            allJoinConstraints.forEach((constraints, index) => {
+              if (index === 0) {
+                builder.where(constraints)
+              } else {
+                builder.orWhere(constraints)
+              }
+            })
+          })
+          .whereNotIn("id", allEntityIds)
+          .returning("id")
+
+        if (deletedRelations.length) {
+          performedActions.deleted[relation.type] ??= []
+          performedActions.deleted[relation.type].push(
+            ...deletedRelations.map((row) => ({ id: row.id }))
+          )
+        }
+      }
+
+      // Batch upsert all relation entities
+      if (allNormalizedData.length) {
+        const { performedActions: upsertActions } = await this.upsertMany_(
+          manager,
+          relation.type,
+          allNormalizedData
+        )
+        this.mergePerformedActions(performedActions, upsertActions)
+      }
+    }
+
     protected async assignCollectionRelation_(
       manager: SqlEntityManager,
       data: T,
@@ -943,40 +1186,67 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
       entries: any[],
       skipUpdate: boolean = false
     ): Promise<{ orderedEntities: any[]; performedActions: PerformedActions }> {
-      const selectQb = manager.qb(entityName)
-      const existingEntities: any[] = await selectQb.select("*").where({
-        id: { $in: entries.map((d) => d.id) },
+      if (!entries.length) {
+        return {
+          orderedEntities: [],
+          performedActions: { created: {}, updated: {}, deleted: {} },
+        }
+      }
+
+      const uniqueEntriesMap = new Map<string, any>()
+      const orderedUniqueEntries: any[] = []
+
+      entries.forEach((entry) => {
+        if (!uniqueEntriesMap.has(entry.id)) {
+          uniqueEntriesMap.set(entry.id, entry)
+          orderedUniqueEntries.push(entry)
+        }
       })
 
-      const existingEntitiesMap = new Map(
-        existingEntities.map((e) => [e.id, e])
-      )
+      const existingEntitiesMap = new Map()
+
+      if (orderedUniqueEntries.some((e) => e.id)) {
+        const existingEntities: any[] = await manager
+          .qb(entityName)
+          .select("id")
+          .where({
+            id: { $in: orderedUniqueEntries.map((d) => d.id).filter(Boolean) },
+          })
+
+        existingEntities.forEach((e) => {
+          existingEntitiesMap.set(e.id, e)
+        })
+      }
 
       const orderedEntities: T[] = []
-
       const performedActions = {
         created: {},
         updated: {},
         deleted: {},
       }
 
-      const promises: Promise<any>[] = []
       const toInsert: any[] = []
       const toUpdate: any[] = []
+      const insertOrderMap = new Map<string, number>()
+      const updateOrderMap = new Map<string, number>()
 
-      entries.forEach((data) => {
+      // Single pass to categorize operations while preserving order
+      orderedUniqueEntries.forEach((data, index) => {
         const existingEntity = existingEntitiesMap.get(data.id)
         orderedEntities.push(data)
-        if (existingEntity) {
-          if (skipUpdate) {
-            return
-          }
 
-          toUpdate.push(data)
+        if (existingEntity) {
+          if (!skipUpdate) {
+            toUpdate.push(data)
+            updateOrderMap.set(data.id, index)
+          }
         } else {
           toInsert.push(data)
+          insertOrderMap.set(data.id, index)
         }
       })
+
+      const promises: Promise<any>[] = []
 
       if (toInsert.length > 0) {
         let insertQb = manager.qb(entityName).insert(toInsert).returning("id")
@@ -988,32 +1258,63 @@ export function mikroOrmBaseRepositoryFactory<const T extends object>(
         promises.push(
           insertQb.execute("all", true).then((res: { id: string }[]) => {
             performedActions.created[entityName] ??= []
-            performedActions.created[entityName].push(
-              ...res.map((data) => ({ id: data.id }))
-            )
+
+            // Sort created entities by their original insertion order
+            const sortedCreated = res
+              .map((data) => ({
+                ...data,
+                order: insertOrderMap.get(data.id) ?? Number.MAX_SAFE_INTEGER,
+              }))
+              .sort((a, b) => a.order - b.order)
+              .map(({ order, ...data }) => data)
+
+            performedActions.created[entityName].push(...sortedCreated)
           })
         )
       }
 
       if (toUpdate.length > 0) {
-        promises.push(
-          manager
-            .getDriver()
-            .nativeUpdateMany(
-              entityName,
-              toUpdate.map((d) => ({ id: d.id })),
-              toUpdate,
-              { ctx: manager.getTransactionContext() }
-            )
-            .then((res) => {
-              const updatedRows = res.rows ?? []
-              const updatedRowsMap = new Map(updatedRows.map((d) => [d.id, d]))
+        // Use batch update but maintain order
+        const batchSize = 100 // Process in chunks to avoid query size limits
+        const updatePromises: Promise<any>[] = []
+        const allUpdatedEntities: Array<{ id: string; order: number }> = []
 
-              performedActions.updated[entityName] = toUpdate
-                .map((d) => updatedRowsMap.get(d.id))
-                .filter((row) => row !== undefined)
-                .map((d) => ({ id: d.id }))
-            })
+        for (let i = 0; i < toUpdate.length; i += batchSize) {
+          const chunk = toUpdate.slice(i, i + batchSize)
+
+          updatePromises.push(
+            manager
+              .getDriver()
+              .nativeUpdateMany(
+                entityName,
+                chunk.map((d) => ({ id: d.id })),
+                chunk,
+                { ctx: manager.getTransactionContext() }
+              )
+              .then((res) => {
+                const updatedRows = res.rows ?? []
+
+                // Add order information for sorting later
+                const orderedUpdated = updatedRows.map((d: any) => ({
+                  id: d.id,
+                  order: updateOrderMap.get(d.id) ?? Number.MAX_SAFE_INTEGER,
+                }))
+
+                allUpdatedEntities.push(...orderedUpdated)
+              })
+          )
+        }
+
+        promises.push(
+          promiseAll(updatePromises).then(() => {
+            // Sort all updated entities by their original order and add to performedActions
+            performedActions.updated[entityName] ??= []
+            const sortedUpdated = allUpdatedEntities
+              .sort((a, b) => a.order - b.order)
+              .map(({ order, ...data }) => data)
+
+            performedActions.updated[entityName].push(...sortedUpdated)
+          })
         )
       }
 

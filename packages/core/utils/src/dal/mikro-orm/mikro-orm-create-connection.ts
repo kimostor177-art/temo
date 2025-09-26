@@ -96,6 +96,9 @@ export async function mikroOrmCreateConnection(
     driverOptions,
     tsNode: process.env.APP_ENV === "development",
     filters: database.filters ?? {},
+    useBatchInserts: true,
+    useBatchUpdates: true,
+    batchSize: 100,
     assign: {
       convertCustomTypes: true,
     },

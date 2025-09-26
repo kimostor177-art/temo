@@ -85,7 +85,7 @@ describe("EntityBuilder", () => {
       id: user1.id,
     })
 
-    expect(await mikroOrmSerializer(user)).toEqual({
+    expect(mikroOrmSerializer(user)).toEqual({
       id: user1.id,
       username: "User 1",
       points: 0,
@@ -96,7 +96,8 @@ describe("EntityBuilder", () => {
     })
   })
 
-  it("set the points to null when explicitly set to null", async () => {
+  // TODO: Remove skip after upgrade the latest MikroORM version once https://github.com/mikro-orm/mikro-orm/pull/6880 is merged
+  it.skip("set the points to null when explicitly set to null", async () => {
     let manager = orm.em.fork()
 
     const user1 = manager.create(User, {
@@ -112,7 +113,7 @@ describe("EntityBuilder", () => {
       id: user1.id,
     })
 
-    expect(await mikroOrmSerializer(user)).toEqual({
+    expect(mikroOrmSerializer(user)).toEqual({
       id: user1.id,
       username: "User 1",
       points: null,
@@ -140,7 +141,7 @@ describe("EntityBuilder", () => {
     const user = await manager.findOne(User, {
       id: user1.id,
     })
-    expect(await mikroOrmSerializer(user)).toEqual({
+    expect(mikroOrmSerializer(user)).toEqual({
       id: user1.id,
       username: "User 1",
       points: null,
@@ -167,7 +168,7 @@ describe("EntityBuilder", () => {
       id: user1.id,
     })
 
-    expect(await mikroOrmSerializer(user)).toEqual({
+    expect(mikroOrmSerializer(user)).toEqual({
       id: user1.id,
       username: "User 1",
       points: 0,

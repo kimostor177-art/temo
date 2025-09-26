@@ -112,6 +112,15 @@ class Entity3 {
   @ManyToMany(() => Entity1, (entity1) => entity1.entity3)
   entity1 = new Collection<Entity1>(this)
 
+  @OneToMany(() => Entity4, (entity4) => entity4.entity3)
+  entity4 = new Collection<Entity4>(this)
+
+  @ManyToMany(() => Entity5, "entity3", {
+    owner: true,
+    pivotTable: "entity_3_5",
+  })
+  entity5 = new Collection<Entity5>(this)
+
   @OnInit()
   @BeforeCreate()
   onInit() {
@@ -121,9 +130,115 @@ class Entity3 {
   }
 }
 
+@Entity()
+class Entity4 {
+  @PrimaryKey()
+  id: string
+
+  @Property()
+  title: string
+
+  @Property()
+  description: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+
+  @ManyToOne(() => Entity3, {
+    columnType: "text",
+    nullable: true,
+    mapToPk: true,
+    fieldName: "entity3_id",
+    deleteRule: "set null",
+  })
+  entity3_id: string
+
+  @ManyToOne(() => Entity3, { persist: false, nullable: true })
+  entity3: Entity3 | null
+
+  @OnInit()
+  @BeforeCreate()
+  onInit() {
+    if (!this.id) {
+      this.id = Math.random().toString(36).substring(7)
+    }
+
+    this.entity3_id ??= this.entity3?.id!
+  }
+}
+
+@Entity()
+class Entity5 {
+  @PrimaryKey()
+  id: string
+
+  @Property()
+  title: string
+
+  @Property()
+  value: number
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+
+  @ManyToMany(() => Entity3, (entity3) => entity3.entity5)
+  entity3 = new Collection<Entity3>(this)
+
+  @OneToMany(() => Entity6, (entity6) => entity6.entity5)
+  entity6 = new Collection<Entity6>(this)
+
+  @OnInit()
+  @BeforeCreate()
+  onInit() {
+    if (!this.id) {
+      this.id = Math.random().toString(36).substring(7)
+    }
+  }
+}
+
+@Entity()
+class Entity6 {
+  @PrimaryKey()
+  id: string
+
+  @Property()
+  title: string
+
+  @Property()
+  metadata: string
+
+  @Property({ nullable: true })
+  deleted_at: Date | null
+
+  @ManyToOne(() => Entity5, {
+    columnType: "text",
+    nullable: true,
+    mapToPk: true,
+    fieldName: "entity5_id",
+    deleteRule: "set null",
+  })
+  entity5_id: string
+
+  @ManyToOne(() => Entity5, { persist: false, nullable: true })
+  entity5: Entity5 | null
+
+  @OnInit()
+  @BeforeCreate()
+  onInit() {
+    if (!this.id) {
+      this.id = Math.random().toString(36).substring(7)
+    }
+
+    this.entity5_id ??= this.entity5?.id!
+  }
+}
+
 const Entity1Repository = mikroOrmBaseRepositoryFactory(Entity1)
 const Entity2Repository = mikroOrmBaseRepositoryFactory(Entity2)
 const Entity3Repository = mikroOrmBaseRepositoryFactory(Entity3)
+const Entity4Repository = mikroOrmBaseRepositoryFactory(Entity4)
+const Entity5Repository = mikroOrmBaseRepositoryFactory(Entity5)
+const Entity6Repository = mikroOrmBaseRepositoryFactory(Entity6)
 
 describe("mikroOrmRepository", () => {
   let orm!: MikroORM
@@ -137,6 +252,17 @@ describe("mikroOrmRepository", () => {
   const manager3 = () => {
     return new Entity3Repository({ manager: manager.fork() })
   }
+  // @ts-expect-error
+  const manager4 = () => {
+    return new Entity4Repository({ manager: manager.fork() })
+  }
+  const manager5 = () => {
+    return new Entity5Repository({ manager: manager.fork() })
+  }
+  // @ts-expect-error
+  const manager6 = () => {
+    return new Entity6Repository({ manager: manager.fork() })
+  }
 
   beforeEach(async () => {
     await dropDatabase(
@@ -146,7 +272,7 @@ describe("mikroOrmRepository", () => {
 
     orm = await MikroORM.init(
       defineConfig({
-        entities: [Entity1, Entity2],
+        entities: [Entity1, Entity2, Entity3, Entity4, Entity5, Entity6],
         clientUrl: getDatabaseURL(dbName),
       })
     )
@@ -1254,6 +1380,7 @@ describe("mikroOrmRepository", () => {
         'column "othertitle" of relation "entity3" does not exist'
       )
     })
+
     it("should map ForeignKeyConstraintViolationException MedusaError on upsertWithReplace", async () => {
       const entity2 = {
         title: "en2",
@@ -1267,6 +1394,338 @@ describe("mikroOrmRepository", () => {
       expect(err).toEqual(
         "You tried to set relationship entity1_id: 1, but such entity does not exist"
       )
+    })
+
+    it("should efficiently handle large batches with deeply nested relations", async () => {
+      const numParentEntities = 25
+      const numEntity2PerParent = 10
+      const numEntity3PerParent = 8
+      const numEntity4PerEntity3 = 5
+      const numEntity5PerEntity3 = 4
+      const numEntity6PerEntity5 = 3
+
+      const entity5Manager = manager5()
+      const entity3Manager = manager3()
+      const entity1Manager = manager1()
+
+      const qbInsertSpy = jest.fn()
+      const qbSelectSpy = jest.fn()
+      const qbDeleteSpy = jest.fn()
+
+      const wrapManagerQb = (activeManager: any) => {
+        const originalQb = activeManager.qb
+        jest.spyOn(activeManager, "qb").mockImplementation((...args) => {
+          const qb = originalQb.apply(activeManager, args)
+
+          const originalInsert = qb.insert
+          const originalSelect = qb.select
+          const originalDelete = qb.delete
+
+          qb.insert = jest.fn((...insertArgs) => {
+            qbInsertSpy(...insertArgs)
+            return originalInsert.apply(qb, insertArgs)
+          })
+
+          qb.select = jest.fn((...selectArgs) => {
+            qbSelectSpy(...selectArgs)
+            return originalSelect.apply(qb, selectArgs)
+          })
+
+          qb.delete = jest.fn(() => {
+            qbDeleteSpy()
+            return originalDelete.apply(qb)
+          })
+
+          return qb
+        })
+      }
+
+      let entity5ActiveManager: any = entity5Manager.getActiveManager()
+      let entity3ActiveManager: any = entity3Manager.getActiveManager()
+      let entity1ActiveManager: any = entity1Manager.getActiveManager()
+
+      entity5Manager.getActiveManager = jest
+        .fn(() => entity5ActiveManager)
+        .mockReturnValue(entity5ActiveManager)
+      entity3Manager.getActiveManager = jest
+        .fn(() => entity3ActiveManager)
+        .mockReturnValue(entity3ActiveManager)
+      entity1Manager.getActiveManager = jest
+        .fn(() => entity1ActiveManager)
+        .mockReturnValue(entity1ActiveManager)
+
+      wrapManagerQb(entity5ActiveManager)
+      wrapManagerQb(entity3ActiveManager)
+      wrapManagerQb(entity1ActiveManager)
+
+      const findSpy = jest.spyOn(entity5ActiveManager, "find")
+      const nativeUpdateManySpy = jest.spyOn(
+        manager.getDriver(),
+        "nativeUpdateMany"
+      )
+      const nativeDeleteSpy = jest.spyOn(entity5ActiveManager, "nativeDelete")
+
+      qbInsertSpy.mockClear()
+      qbSelectSpy.mockClear()
+      qbDeleteSpy.mockClear()
+      findSpy.mockClear()
+      nativeUpdateManySpy.mockClear()
+      nativeDeleteSpy.mockClear()
+
+      // Create deeply nested dataset
+      const complexEntities = Array.from(
+        { length: numParentEntities },
+        (_, i) => ({
+          id: `parent-${i.toString().padStart(3, "0")}`,
+          title: `Parent Entity ${i}`,
+          entity2: Array.from({ length: numEntity2PerParent }, (_, j) => ({
+            id: `e2-${i}-${j}`,
+            title: `Entity2 ${j} of Parent ${i}`,
+            handle: `handle-${i}-${j}`,
+          })),
+          entity3: Array.from({ length: numEntity3PerParent }, (_, k) => ({
+            id: `e3-${i}-${k}`,
+            title: `Entity3 ${k} of Parent ${i}`,
+            entity4: Array.from({ length: numEntity4PerEntity3 }, (_, l) => ({
+              id: `e4-${i}-${k}-${l}`,
+              title: `Entity4 ${l} of Entity3 ${k}`,
+              description: `Description for nested entity ${l}`,
+            })),
+            entity5: Array.from({ length: numEntity5PerEntity3 }, (_, m) => ({
+              id: `e5-${i}-${k}-${m}`,
+              title: `Entity5 ${m} of Entity3 ${k}`,
+              value: i * 100 + k * 10 + m,
+              entity6: Array.from({ length: numEntity6PerEntity5 }, (_, n) => ({
+                id: `e6-${i}-${k}-${m}-${n}`,
+                title: `Entity6 ${n} deeply nested`,
+                metadata: `{"parent": ${i}, "e3": ${k}, "e5": ${m}, "e6": ${n}}`,
+              })),
+            })),
+          })),
+        })
+      )
+
+      // First: Create Entity5 with Entity6 relations
+      const allEntity5Data = complexEntities.flatMap((parent) =>
+        parent.entity3.flatMap((e3) => e3.entity5)
+      )
+
+      const { performedActions: e5CreateActions } =
+        await entity5Manager.upsertWithReplace(allEntity5Data, {
+          relations: ["entity6"],
+        })
+
+      const e5SelectCalls = qbSelectSpy.mock.calls.length
+      const e5InsertCalls = qbInsertSpy.mock.calls.length
+
+      expect(e5SelectCalls).toBe(2) // One for Entity5, one for Entity6
+      expect(e5InsertCalls).toBe(2) // One batch insert for Entity5s, one for Entity6s
+
+      expect(qbInsertSpy.mock.calls[0][0]).toHaveLength(800) // entity5 25 * 8 * 4
+      expect(qbInsertSpy.mock.calls[1][0]).toHaveLength(2400) // entity6 25 * 8 * 4 * 3
+
+      findSpy.mockClear()
+      qbSelectSpy.mockClear()
+      qbInsertSpy.mockClear()
+      qbDeleteSpy.mockClear()
+      nativeUpdateManySpy.mockClear()
+      nativeDeleteSpy.mockClear()
+
+      // Second: Create Entity3 with Entity4 and Entity5 relations
+      const allEntity3Data = complexEntities.flatMap((parent) =>
+        parent.entity3.map((e3) => ({
+          ...e3,
+          // Reference existing Entity5 by ID only
+          entity5: e3.entity5.map((e5) => ({ id: e5.id })),
+        }))
+      )
+
+      const { performedActions: e3CreateActions } =
+        await entity3Manager.upsertWithReplace(allEntity3Data, {
+          relations: ["entity4", "entity5"],
+        })
+
+      const e3SelectCalls = qbSelectSpy.mock.calls.length
+      const e3InsertCalls = qbInsertSpy.mock.calls.length
+
+      expect(e3SelectCalls).toBe(3) // One for Entity3, one for Entity5, One pivot entity3 -> entity5
+      expect(e3InsertCalls).toBe(3) // One batch insert for Entity3s, one for Entity4s and one pivot entity3 -> entity5
+
+      expect(qbInsertSpy.mock.calls[0][0]).toHaveLength(200) // entity3: 25 * 8
+      expect(qbInsertSpy.mock.calls[1][0]).toHaveLength(800) // pivot entity3 -> entity5: 25 * 8 * 4
+      expect(qbInsertSpy.mock.calls[2][0]).toHaveLength(1000) // entity4: 25 * 8 * 5
+
+      findSpy.mockClear()
+      qbSelectSpy.mockClear()
+      qbInsertSpy.mockClear()
+      qbDeleteSpy.mockClear()
+      nativeUpdateManySpy.mockClear()
+      nativeDeleteSpy.mockClear()
+
+      // Third: Create Entity1 with all relations
+      const mainEntitiesData = complexEntities.map((parent) => ({
+        ...parent,
+        // Reference existing Entity3 by ID only
+        entity3: parent.entity3.map((e3) => ({ id: e3.id })),
+      }))
+
+      const { performedActions: mainCreateActions } =
+        await entity1Manager.upsertWithReplace(mainEntitiesData, {
+          relations: ["entity2", "entity3"],
+        })
+
+      const mainSelectCalls = qbSelectSpy.mock.calls.length
+      const mainInsertCalls = qbInsertSpy.mock.calls.length
+
+      expect(mainSelectCalls).toBe(3) // One for Entity1, one for Entity3, one for Entity2
+      expect(mainInsertCalls).toBe(3) // One batch insert for Entity1s, one for Entity2s, one for Entity3s
+
+      expect(qbInsertSpy.mock.calls[0][0]).toHaveLength(25) // entity1: 25
+      expect(qbInsertSpy.mock.calls[1][0]).toHaveLength(200) // entity3: 25 * 8
+      expect(qbInsertSpy.mock.calls[2][0]).toHaveLength(250) // entity2: 25 * 10
+
+      findSpy.mockClear()
+      qbSelectSpy.mockClear()
+      qbInsertSpy.mockClear()
+      qbDeleteSpy.mockClear()
+      nativeUpdateManySpy.mockClear()
+      nativeDeleteSpy.mockClear()
+
+      // Verify creation counts
+      expect(e5CreateActions.created[Entity5.name]).toHaveLength(
+        numParentEntities * numEntity3PerParent * numEntity5PerEntity3
+      )
+      expect(e5CreateActions.created[Entity6.name]).toHaveLength(
+        numParentEntities *
+          numEntity3PerParent *
+          numEntity5PerEntity3 *
+          numEntity6PerEntity5
+      )
+      expect(e3CreateActions.created[Entity3.name]).toHaveLength(
+        numParentEntities * numEntity3PerParent
+      )
+      expect(e3CreateActions.created[Entity4.name]).toHaveLength(
+        numParentEntities * numEntity3PerParent * numEntity4PerEntity3
+      )
+      expect(mainCreateActions.created[Entity1.name]).toHaveLength(
+        numParentEntities
+      )
+      expect(mainCreateActions.created[Entity2.name]).toHaveLength(
+        numParentEntities * numEntity2PerParent
+      )
+
+      // Now test complex updates
+
+      // Modify nested structures
+      const updatedComplexEntities = complexEntities.map((parent, i) => ({
+        ...parent,
+        title: `Updated ${parent.title}`,
+        entity2: [
+          // Keep first 5 out of 10, update them
+          ...parent.entity2.slice(0, 5).map((e2) => ({
+            ...e2,
+            title: `Updated ${e2.title}`,
+          })),
+          // Add new ones
+          {
+            id: `new-e2-${i}-0`,
+            title: `New Entity2 0`,
+            handle: `new-handle-${i}-0`,
+          },
+          {
+            id: `new-e2-${i}-1`,
+            title: `New Entity2 1`,
+            handle: `new-handle-${i}-1`,
+          },
+        ],
+        entity3: parent.entity3.slice(0, 4).map((e3) => ({ id: e3.id })), // Keep only first 4
+      }))
+
+      const { performedActions: updateActions } =
+        await entity1Manager.upsertWithReplace(updatedComplexEntities, {
+          relations: ["entity2", "entity3"],
+        })
+
+      // Validate batching for update operations
+      const updateSelectCalls = qbSelectSpy.mock.calls.length
+      const updateInsertCalls = qbInsertSpy.mock.calls.length
+      const updateManyCalls = nativeUpdateManySpy.mock.calls.length
+
+      expect(updateSelectCalls).toBe(3) // Entity1, Entity2, Entity3 existence checks
+
+      // Should use batch updates for existing entities
+      expect(updateManyCalls).toBe(3) // 1 for Entity1 (25), 2 for Entity2 (100+25, chunked due to 100 batch limit)
+
+      // Should use batch inserts for new entities and pivot relationships
+      expect(updateInsertCalls).toBe(2) // pivot Entity1 - Entity3 (with conflict resolution) + new Entity2s
+      expect(qbInsertSpy.mock.calls[0][0]).toHaveLength(100) // pivot Entity1 - Entity3: 25 parents × 4 entity3s each (uses onConflict().ignore())
+      expect(qbInsertSpy.mock.calls[1][0]).toHaveLength(50) // New Entity2s: 25 parents × 2 new each
+
+      // We wont check the deletion which happen through knex directly. It will be accounted for in
+      // the final state verification
+
+      // Validate that updates are batched correctly with chunking
+      expect(nativeUpdateManySpy.mock.calls[0][2]).toHaveLength(25) // Entity1: 25 entities
+      expect(nativeUpdateManySpy.mock.calls[1][2]).toHaveLength(100) // Entity2 chunk 1: 100 entities
+      expect(nativeUpdateManySpy.mock.calls[2][2]).toHaveLength(25) // Entity2 chunk 2: 25 entities
+
+      // Verify updates
+      expect(updateActions.updated[Entity1.name]).toHaveLength(
+        numParentEntities
+      )
+      expect(updateActions.updated[Entity2.name]).toHaveLength(
+        numParentEntities * 5
+      ) // 5 updated per parent
+      expect(updateActions.created[Entity2.name]).toHaveLength(
+        numParentEntities * 2
+      ) // 2 new per parent
+      expect(updateActions.deleted[Entity2.name]).toHaveLength(
+        numParentEntities * 5
+      ) // 5 deleted per parent (kept first 5 out of 10, so 5 deleted)
+
+      // Verify order preservation
+      updateActions.updated[Entity1.name].forEach((entity, index) => {
+        expect(entity.id).toBe(`parent-${index.toString().padStart(3, "0")}`)
+      })
+
+      // Verify final  state
+      const finalEntities = await manager1().find({
+        where: {},
+        options: {
+          populate: ["entity2", "entity3"],
+          orderBy: { id: "ASC" } as any,
+        },
+      })
+
+      expect(finalEntities).toHaveLength(numParentEntities)
+      finalEntities.forEach((entity, i) => {
+        expect(entity.title).toBe(`Updated Parent Entity ${i}`)
+        expect(entity.entity2).toHaveLength(7) // 5 updated + 2 new
+        expect(entity.entity3).toHaveLength(4) // Only first 4 kept
+      })
+
+      // Verify nested relationships still exist
+      const sampleEntity3 = await manager3().find({
+        where: { id: "e3-0-0" },
+        options: {
+          populate: ["entity4", "entity5"],
+        },
+      })
+
+      expect(sampleEntity3).toHaveLength(1)
+      expect(sampleEntity3[0].entity4).toHaveLength(numEntity4PerEntity3)
+      expect(sampleEntity3[0].entity5).toHaveLength(numEntity5PerEntity3)
+
+      // Verify deeply nested Entity6 relationships
+      const sampleEntity5 = await manager5().find({
+        where: { id: "e5-0-0-0" },
+        options: {
+          populate: ["entity6"],
+        },
+      })
+
+      expect(sampleEntity5).toHaveLength(1)
+      expect(sampleEntity5[0].entity6).toHaveLength(numEntity6PerEntity5)
     })
   })
 })

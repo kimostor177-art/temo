@@ -61,7 +61,7 @@
     "jest": "jest",
     "test": "turbo run test --concurrency=50% --no-daemon --no-cache --force",
     "test:chunk": "./scripts/run-workspace-unit-tests-in-chunks.sh",
-    "test:integration:packages:fast": "turbo run test:integration --concurrency=2 --no-daemon --no-cache --force --filter='./packages/medusa' --filter='./packages/modules/*' --filter='./packages/modules/providers/*' --filter='!./packages/modules/{workflow-engine-redis,index,product,order,cart}'",
+    "test:integration:packages:fast": "turbo run test:integration --concurrency=2 --no-daemon --no-cache --force --filter='./packages/core/*' --filter='./packages/medusa' --filter='./packages/modules/*' --filter='./packages/modules/providers/*' --filter='!./packages/modules/{workflow-engine-redis,index,product,order,cart}'",
     "test:integration:packages:slow": "turbo run test:integration --concurrency=2 --no-daemon --no-cache --force --filter='./packages/modules/{workflow-engine-redis,index,product,order,cart}'",
     "test:integration:api": "turbo run test:integration:chunk --concurrency=50% --no-daemon --no-cache --force --filter=integration-tests-api",
     "test:integration:http": "turbo run test:integration:chunk --concurrency=50% --no-daemon --no-cache --force --filter=integration-tests-http",
