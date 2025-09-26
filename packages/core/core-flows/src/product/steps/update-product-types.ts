@@ -1,4 +1,7 @@
-import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
+import type {
+  IProductModuleService,
+  ProductTypes,
+} from "@medusajs/framework/types"
 import {
   Modules,
   getSelectsAndRelationsFromObjectArray,
@@ -22,7 +25,7 @@ export type UpdateProductTypesStepInput = {
 export const updateProductTypesStepId = "update-product-types"
 /**
  * This step updates product types matching the specified filters.
- * 
+ *
  * @example
  * const data = updateProductTypesStep({
  *   selector: {

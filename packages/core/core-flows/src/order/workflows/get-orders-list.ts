@@ -1,4 +1,4 @@
-import { OrderDTO, OrderDetailDTO } from "@medusajs/framework/types"
+import type { OrderDTO, OrderDetailDTO } from "@medusajs/framework/types"
 import { deduplicate } from "@medusajs/framework/utils"
 import {
   WorkflowData,
@@ -13,16 +13,16 @@ import {
 } from "../utils/aggregate-status"
 
 /**
- * The retrieved list of orders. If you passed pagination configurations in the 
+ * The retrieved list of orders. If you passed pagination configurations in the
  * input, the response will return an object that includes the list of
  * orders and their pagination details. Otherwise, only the list of orders are returned.
  */
 export type GetOrdersListWorkflowOutput =
   | OrderDTO[]
   | {
-    /**
-     * The list of orders.
-     */
+      /**
+       * The list of orders.
+       */
       rows: OrderDTO[]
       /**
        * Pagination details.
@@ -72,17 +72,17 @@ export type GetOrdersListWorkflowInput = {
 
 export const getOrdersListWorkflowId = "get-orders-list"
 /**
- * This workflow retrieves a list of orders. It's used by the 
+ * This workflow retrieves a list of orders. It's used by the
  * [List Orders Admin API Route](https://docs.medusajs.com/api/admin#orders_getorders), and the
  * [List Orders Store API Route](https://docs.medusajs.com/api/store#orders_getorders).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to retrieve a list of
  * orders in your custom flows. For example, you can retrieve the list of orders to export them
  * to a third-party system.
- * 
+ *
  * @example
  * To retrieve the list of orders:
- * 
+ *
  * ```ts
  * const { result } = await getOrdersListWorkflow(container)
  * .run({
@@ -91,9 +91,9 @@ export const getOrdersListWorkflowId = "get-orders-list"
  *   }
  * })
  * ```
- * 
+ *
  * To retrieve the list of orders with pagination:
- * 
+ *
  * ```ts
  * const { result } = await getOrdersListWorkflow(container)
  * .run({
@@ -106,9 +106,9 @@ export const getOrdersListWorkflowId = "get-orders-list"
  *   }
  * })
  * ```
- * 
+ *
  * @summary
- * 
+ *
  * Retrieve a list of orders.
  */
 export const getOrdersListWorkflow = createWorkflow(

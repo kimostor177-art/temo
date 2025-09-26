@@ -1,4 +1,4 @@
-import { IFileModuleService } from "@medusajs/framework/types"
+import type { IFileModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -12,7 +12,7 @@ export const deleteFilesStepId = "delete-files"
  * This step deletes one or more files using the installed
  * [File Module Provider](https://docs.medusajs.com/resources/infrastructure-modules/file). The files
  * will be removed from the database and the storage.
- * 
+ *
  * @example
  * const data = deleteFilesStep([
  *   "id_123"

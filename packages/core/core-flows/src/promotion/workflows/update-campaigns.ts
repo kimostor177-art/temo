@@ -1,4 +1,7 @@
-import { AdditionalData, UpdateCampaignDTO } from "@medusajs/framework/types"
+import type {
+  AdditionalData,
+  UpdateCampaignDTO,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -20,12 +23,12 @@ export type UpdateCampaignsWorkflowInput = {
 export const updateCampaignsWorkflowId = "update-campaigns"
 /**
  * This workflow updates one or more campaigns. It's used by the [Update Campaign Admin API Route](https://docs.medusajs.com/api/admin#campaigns_postcampaignsid).
- * 
+ *
  * This workflow has a hook that allows you to perform custom actions on the updated campaigns. For example, you can pass under `additional_data` custom data that
  * allows you to update custom data models linked to the campaigns.
- * 
+ *
  * You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around updating campaigns.
- * 
+ *
  * @example
  * const { result } = await updateCampaignsWorkflow(container)
  * .run({
@@ -42,11 +45,11 @@ export const updateCampaignsWorkflowId = "update-campaigns"
  *     }
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Update one or more campaigns.
- * 
+ *
  * @property hooks.campaignsUpdated - This hook is executed after the campaigns are updated. You can consume this hook to perform custom actions on the updated campaigns.
  */
 export const updateCampaignsWorkflow = createWorkflow(

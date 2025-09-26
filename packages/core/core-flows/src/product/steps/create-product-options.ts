@@ -1,11 +1,14 @@
-import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
+import type {
+  IProductModuleService,
+  ProductTypes,
+} from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createProductOptionsStepId = "create-product-options"
 /**
  * This step creates one or more product options.
- * 
+ *
  * @example
  * const data = createProductOptionsStep([{
  *   title: "Size",

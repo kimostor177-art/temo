@@ -4,7 +4,7 @@ import {
   transform,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { OrderChangeDTO, OrderDTO } from "@medusajs/types"
+import type { OrderChangeDTO, OrderDTO } from "@medusajs/framework/types"
 import { useRemoteQueryStep } from "../../common"
 import {
   createOrUpdateOrderPaymentCollectionWorkflow,
@@ -51,10 +51,10 @@ export type RequestDraftOrderEditWorkflowInput = {
 /**
  * This workflow requests a draft order edit. It's used by the
  * [Request Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersideditrequest).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * requesting a draft order edit.
- * 
+ *
  * @example
  * const { result } = await requestDraftOrderEditWorkflow(container)
  * .run({
@@ -63,9 +63,9 @@ export type RequestDraftOrderEditWorkflowInput = {
  *     requested_by: "user_123",
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Request a draft order edit.
  */
 export const requestDraftOrderEditWorkflow = createWorkflow(

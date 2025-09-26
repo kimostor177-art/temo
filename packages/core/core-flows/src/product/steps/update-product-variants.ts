@@ -1,4 +1,7 @@
-import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
+import type {
+  IProductModuleService,
+  ProductTypes,
+} from "@medusajs/framework/types"
 import {
   MedusaError,
   Modules,
@@ -21,19 +24,19 @@ export type UpdateProductVariantsStepInput =
       update: ProductTypes.UpdateProductVariantDTO
     }
   | {
-    /**
-     * The data to create or update product variants.
-     */
+      /**
+       * The data to create or update product variants.
+       */
       product_variants: ProductTypes.UpsertProductVariantDTO[]
     }
 
 export const updateProductVariantsStepId = "update-product-variants"
 /**
  * This step updates one or more product variants.
- * 
+ *
  * @example
  * To update product variants by their ID:
- * 
+ *
  * ```ts
  * const data = updateProductVariantsStep({
  *   product_variants: [
@@ -44,9 +47,9 @@ export const updateProductVariantsStepId = "update-product-variants"
  *   ]
  * })
  * ```
- * 
+ *
  * To update product variants matching a filter:
- * 
+ *
  * ```ts
  * const data = updateProductVariantsStep({
  *   selector: {

@@ -1,4 +1,7 @@
-import { IInventoryService, InventoryTypes } from "@medusajs/framework/types"
+import type {
+  IInventoryService,
+  InventoryTypes,
+} from "@medusajs/framework/types"
 import {
   convertItemResponseToUpdateRequest,
   getSelectsAndRelationsFromObjectArray,
@@ -10,12 +13,13 @@ import { Modules } from "@medusajs/framework/utils"
 /**
  * The data to update reservation items.
  */
-export type UpdateReservationsStepInput = InventoryTypes.UpdateReservationItemInput[]
+export type UpdateReservationsStepInput =
+  InventoryTypes.UpdateReservationItemInput[]
 
 export const updateReservationsStepId = "update-reservations-step"
 /**
  * This step updates one or more reservations.
- * 
+ *
  * @example
  * const data = updateReservationsStep([
  *   {

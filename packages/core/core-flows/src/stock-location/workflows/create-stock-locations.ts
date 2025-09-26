@@ -5,7 +5,7 @@ import {
   createWorkflow,
 } from "@medusajs/framework/workflows-sdk"
 
-import { CreateStockLocationInput } from "@medusajs/framework/types"
+import type { CreateStockLocationInput } from "@medusajs/framework/types"
 import { createStockLocations } from "../steps"
 
 /**
@@ -22,10 +22,10 @@ export const createStockLocationsWorkflowId = "create-stock-locations-workflow"
 /**
  * This workflow creates one or more stock locations. It's used by the
  * [Create Stock Location Admin API Route](https://docs.medusajs.com/api/admin#stock-locations_poststocklocations).
- * 
+ *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create stock locations in your custom flows.
- * 
+ *
  * @example
  * const { result } = await createStockLocationsWorkflow(container)
  * .run({
@@ -37,9 +37,9 @@ export const createStockLocationsWorkflowId = "create-stock-locations-workflow"
  *     ]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Create one or more stock locations.
  */
 export const createStockLocationsWorkflow = createWorkflow(

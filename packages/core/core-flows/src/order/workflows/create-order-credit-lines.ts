@@ -1,4 +1,7 @@
-import { CreateOrderCreditLineDTO, OrderDTO } from "@medusajs/framework/types"
+import type {
+  CreateOrderCreditLineDTO,
+  OrderDTO,
+} from "@medusajs/framework/types"
 import {
   ChangeActionType,
   MathBN,

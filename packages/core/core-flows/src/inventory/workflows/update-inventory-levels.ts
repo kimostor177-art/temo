@@ -1,4 +1,7 @@
-import { InventoryLevelDTO, InventoryTypes } from "@medusajs/framework/types"
+import type {
+  InventoryLevelDTO,
+  InventoryTypes,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -27,10 +30,10 @@ export const updateInventoryLevelsWorkflowId =
 /**
  * This workflow updates one or more inventory levels. It's used by the
  * [Update Inventory Level Admin API Route](https://docs.medusajs.com/api/admin#inventory-items_postinventoryitemsidlocationlevelslocation_id).
- * 
+ *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to update inventory levels in your custom flows.
- * 
+ *
  * @example
  * const { result } = await updateInventoryLevelsWorkflow(container)
  * .run({
@@ -45,9 +48,9 @@ export const updateInventoryLevelsWorkflowId =
  *     ]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Update one or more inventory levels.
  */
 export const updateInventoryLevelsWorkflow = createWorkflow(

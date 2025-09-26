@@ -1,4 +1,4 @@
-import { CreateOrderLineItemDTO } from "@medusajs/framework/types"
+import type { CreateOrderLineItemDTO } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -15,7 +15,7 @@ export interface CreateOrderLineItemsStepInput {
 export const createOrderLineItemsStepId = "create-order-line-items-step"
 /**
  * This step creates order line items.
- * 
+ *
  * @example
  * const data = createOrderLineItemsStep({
  *   items: [

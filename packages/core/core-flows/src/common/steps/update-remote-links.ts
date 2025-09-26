@@ -1,5 +1,5 @@
 import { Link } from "@medusajs/framework/modules-sdk"
-import { LinkDefinition } from "@medusajs/framework/types"
+import type { LinkDefinition } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,

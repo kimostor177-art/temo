@@ -5,13 +5,18 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { BatchWorkflowInput, BatchWorkflowOutput, InventoryLevelDTO, InventoryTypes } from "@medusajs/types"
+import {
+  BatchWorkflowInput,
+  BatchWorkflowOutput,
+  InventoryLevelDTO,
+  InventoryTypes,
+} from "@medusajs/framework/types"
 import { createInventoryLevelsStep, updateInventoryLevelsStep } from "../steps"
 import { deleteInventoryLevelsWorkflow } from "./delete-inventory-levels"
 
 /**
  * The data to manage the inventory levels in bulk.
- * 
+ *
  * @property create - The inventory levels to create.
  * @property update - The inventory levels to update.
  * @property delete - The IDs of inventory levels to delete.
@@ -36,22 +41,23 @@ export interface BatchInventoryItemLevelsWorkflowInput
 
 /**
  * The result of managing inventory levels in bulk.
- * 
+ *
  * @property created - The inventory levels that were created.
  * @property updated - The inventory levels that were updated.
  * @property deleted - The IDs of the inventory levels that were deleted.
  */
-export interface BatchInventoryItemLevelsWorkflowOutput extends BatchWorkflowOutput<InventoryLevelDTO> {}
+export interface BatchInventoryItemLevelsWorkflowOutput
+  extends BatchWorkflowOutput<InventoryLevelDTO> {}
 
 export const batchInventoryItemLevelsWorkflowId =
   "batch-inventory-item-levels-workflow"
 
 /**
  * This workflow creates, updates and deletes inventory levels in bulk.
- * 
+ *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to manage inventory levels in your custom flows.
- * 
+ *
  * @example
  * const { result } = await batchInventoryItemLevelsWorkflow(container)
  * .run({
@@ -73,9 +79,9 @@ export const batchInventoryItemLevelsWorkflowId =
  *     delete: ["iilev_321"]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Manage inventory levels in bulk.
  */
 export const batchInventoryItemLevelsWorkflow = createWorkflow(

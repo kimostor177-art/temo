@@ -1,4 +1,7 @@
-import { IInventoryService, InventoryTypes } from "@medusajs/framework/types"
+import type {
+  IInventoryService,
+  InventoryTypes,
+} from "@medusajs/framework/types"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 import { Modules } from "@medusajs/framework/utils"
@@ -6,7 +9,8 @@ import { Modules } from "@medusajs/framework/utils"
 /**
  * The data to create the inventory levels.
  */
-export type CreateInventoryLevelsStepInput = InventoryTypes.CreateInventoryLevelInput[]
+export type CreateInventoryLevelsStepInput =
+  InventoryTypes.CreateInventoryLevelInput[]
 
 export const createInventoryLevelsStepId = "create-inventory-levels"
 /**

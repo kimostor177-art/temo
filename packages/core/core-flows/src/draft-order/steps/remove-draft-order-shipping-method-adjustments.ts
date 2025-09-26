@@ -1,6 +1,6 @@
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
-import { IOrderModuleService } from "@medusajs/types"
+import type { IOrderModuleService } from "@medusajs/framework/types"
 
 export const removeDraftOrderShippingMethodAdjustmentsStepId =
   "remove-draft-order-shipping-method-adjustments"
@@ -17,7 +17,7 @@ export interface RemoveDraftOrderShippingMethodAdjustmentsStepInput {
 
 /**
  * This step removes shipping method adjustments from a draft order.
- * 
+ *
  * @example
  * const data = removeDraftOrderShippingMethodAdjustmentsStep({
  *   shippingMethodAdjustmentIdsToRemove: ["adj_123", "adj_456"],

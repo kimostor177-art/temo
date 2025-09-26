@@ -1,4 +1,4 @@
-import { IPaymentModuleService, Logger } from "@medusajs/framework/types"
+import type { IPaymentModuleService, Logger } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   Modules,

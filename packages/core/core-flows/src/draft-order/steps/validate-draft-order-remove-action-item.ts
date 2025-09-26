@@ -1,8 +1,8 @@
-import { OrderChangeActionDTO } from "@medusajs/types"
+import type { OrderChangeActionDTO } from "@medusajs/framework/types"
 
 import { ChangeActionType, MedusaError } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import { OrderChangeDTO, OrderWorkflow } from "@medusajs/types"
+import type { OrderChangeDTO, OrderWorkflow } from "@medusajs/framework/types"
 
 /**
  * The details of the draft order and its change to validate.
@@ -21,14 +21,14 @@ export interface ValidateDraftOrderUpdateActionItemStepInput {
 /**
  * This step validates that an item change can be removed from a draft order edit. It throws an error if the
  * item change is not in the draft order edit, or if the item change is not adding or updating an item.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve a draft order change's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = validateDraftOrderRemoveActionItemStep({
  *   input: {

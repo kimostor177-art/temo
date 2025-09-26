@@ -1,4 +1,4 @@
-import { OrderChangeDTO } from "@medusajs/framework/types"
+import type { OrderChangeDTO } from "@medusajs/framework/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   WorkflowData,

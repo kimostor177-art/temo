@@ -1,4 +1,7 @@
-import { BigNumberInput, IInventoryService } from "@medusajs/framework/types"
+import type {
+  BigNumberInput,
+  IInventoryService,
+} from "@medusajs/framework/types"
 import {
   MathBN,
   MedusaError,

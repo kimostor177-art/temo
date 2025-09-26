@@ -1,4 +1,4 @@
-import { ITaxModuleService } from "@medusajs/framework/types"
+import type { ITaxModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 

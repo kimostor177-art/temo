@@ -9,7 +9,7 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
-import { ProjectConfigOptions } from "@medusajs/framework/types"
+import type { ProjectConfigOptions } from "@medusajs/framework/types"
 
 /**
  * This workflow generates a reset password token for a user. It's used by the

@@ -1,4 +1,4 @@
-import { BigNumberInput, PaymentDTO } from "@medusajs/framework/types"
+import type { BigNumberInput, PaymentDTO } from "@medusajs/framework/types"
 import { PaymentEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,

@@ -10,7 +10,7 @@ import {
   when,
   WorkflowData,
 } from "@medusajs/framework/workflows-sdk"
-import { OrderChangeDTO, OrderDTO } from "@medusajs/types"
+import type { OrderChangeDTO, OrderDTO } from "@medusajs/framework/types"
 import { useRemoteQueryStep } from "../../common"
 import { deleteOrderChangesStep, deleteOrderShippingMethods } from "../../order"
 import { restoreDraftOrderShippingMethodsStep } from "../steps/restore-draft-order-shipping-methods"

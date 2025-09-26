@@ -1,11 +1,14 @@
-import { CreateStoreDTO, IStoreModuleService } from "@medusajs/framework/types"
+import type {
+  CreateStoreDTO,
+  IStoreModuleService,
+} from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createStoresStepId = "create-stores"
 /**
  * This step creates one or more stores.
- * 
+ *
  * @example
  * const data = createStoresStep([{
  *   name: "Acme"

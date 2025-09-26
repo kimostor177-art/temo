@@ -1,5 +1,5 @@
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import { OrderChangeDTO, OrderDTO } from "@medusajs/types"
+import type { OrderChangeDTO, OrderDTO } from "@medusajs/framework/types"
 import { throwIfOrderChangeIsNotActive } from "../../order/utils/order-validation"
 import { throwIfNotDraftOrder } from "../utils/validation"
 
@@ -22,14 +22,14 @@ export const validateDraftOrderChangeStepId = "validate-draft-order-change"
 /**
  * This step validates that a draft order and its change are valid. It throws an error if the
  * order is not a draft order or the order change is not active.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve a draft order and its change's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = validateDraftOrderChangeStep({
  *   order: {

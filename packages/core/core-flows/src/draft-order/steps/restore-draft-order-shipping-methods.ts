@@ -1,6 +1,9 @@
 import { Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { BigNumberInput, IOrderModuleService } from "@medusajs/types"
+import type {
+  BigNumberInput,
+  IOrderModuleService,
+} from "@medusajs/framework/types"
 
 export const restoreDraftOrderShippingMethodsStepId =
   "restore-draft-order-shipping-methods"
@@ -49,20 +52,20 @@ export interface RestoreDraftOrderShippingMethodsStepInput {
 /**
  * This step restores the shipping methods of a draft order.
  * It's useful when you need to revert changes made by a canceled draft order edit.
- * 
+ *
  * @example
  * const data = restoreDraftOrderShippingMethodsStep({
  *   shippingMethods: [
- *     { 
- *       id: "shipping_method_123", 
- *       before: { 
- *         shipping_option_id: "shipping_option_123", 
- *         amount: 10 
- *       }, 
- *       after: { 
- *         shipping_option_id: "shipping_option_123", 
- *         amount: 10 
- *       } 
+ *     {
+ *       id: "shipping_method_123",
+ *       before: {
+ *         shipping_option_id: "shipping_option_123",
+ *         amount: 10
+ *       },
+ *       after: {
+ *         shipping_option_id: "shipping_option_123",
+ *         amount: 10
+ *       }
  *     },
  *   ],
  * })

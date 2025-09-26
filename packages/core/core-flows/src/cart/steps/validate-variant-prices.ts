@@ -1,4 +1,4 @@
-import { BigNumberInput } from "@medusajs/framework/types"
+import type { BigNumberInput } from "@medusajs/framework/types"
 import { MedusaError, isPresent } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -30,7 +30,7 @@ export const validateVariantPricesStepId = "validate-variant-prices"
 /**
  * This step validates the specified variant objects to ensure they have prices.
  * If not valid, the step throws an error.
- * 
+ *
  * @example
  * const data = validateVariantPricesStep({
  *   variants: [

@@ -1,4 +1,7 @@
-import { AdditionalData, FulfillmentTypes } from "@medusajs/framework/types"
+import type {
+  AdditionalData,
+  FulfillmentTypes,
+} from "@medusajs/framework/types"
 import { ShippingOptionTypeWorkflowEvents } from "@medusajs/framework/utils"
 import {
   createHook,
@@ -24,18 +27,19 @@ export type UpdateShippingOptionTypesWorkflowInput = {
   update: FulfillmentTypes.UpdateShippingOptionTypeDTO
 } & AdditionalData
 
-export const updateShippingOptionTypesWorkflowId = "update-shipping-option-types"
+export const updateShippingOptionTypesWorkflowId =
+  "update-shipping-option-types"
 /**
  * This workflow updates one or more shipping option types. It's used by the
  * [Update Shipping Option Type Admin API Route](https://docs.medusajs.com/api/admin#shipping-option-types_postshippingoptiontypesid).
- * 
+ *
  * This workflow has a hook that allows you to perform custom actions on the updated shipping option types. For example, you can pass under `additional_data` custom data that
  * allows you to update custom data models linked to the shipping option types.
- * 
+ *
  * You can also use this workflow within your own custom workflows, allowing you to wrap custom logic around shipping option type updates.
- * 
+ *
  * @since 2.10.0
- * 
+ *
  * @example
  * const { result } = await updateShippingOptionTypesWorkflow(container)
  * .run({
@@ -51,21 +55,24 @@ export const updateShippingOptionTypesWorkflowId = "update-shipping-option-types
  *     }
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Update one or more shipping option types.
- * 
+ *
  * @property hooks.shippingOptionTypesUpdated - This hook is executed after the shipping option types are updated. You can consume this hook to perform custom actions on the updated shipping option types.
  */
 export const updateShippingOptionTypesWorkflow = createWorkflow(
   updateShippingOptionTypesWorkflowId,
   (input: WorkflowData<UpdateShippingOptionTypesWorkflowInput>) => {
     const updatedShippingOptionTypes = updateShippingOptionTypesStep(input)
-    const shippingOptionTypesUpdated = createHook("shippingOptionTypesUpdated", {
-      shipping_option_types: updatedShippingOptionTypes,
-      additional_data: input.additional_data,
-    })
+    const shippingOptionTypesUpdated = createHook(
+      "shippingOptionTypesUpdated",
+      {
+        shipping_option_types: updatedShippingOptionTypes,
+        additional_data: input.additional_data,
+      }
+    )
 
     const typeIdEvents = transform(
       { updatedShippingOptionTypes },

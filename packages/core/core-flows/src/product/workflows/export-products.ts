@@ -3,26 +3,26 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { WorkflowTypes } from "@medusajs/framework/types"
+import type { WorkflowTypes } from "@medusajs/framework/types"
 import { generateProductCsvStep, getAllProductsStep } from "../steps"
 import { useRemoteQueryStep } from "../../common"
 import { notifyOnFailureStep, sendNotificationsStep } from "../../notification"
 
 export const exportProductsWorkflowId = "export-products"
 /**
- * This workflow exports products matching the specified filters. It's used by the 
+ * This workflow exports products matching the specified filters. It's used by the
  * [Export Products Admin API Route](https://docs.medusajs.com/api/admin#products_postproductsexport).
- * 
+ *
  * :::note
- * 
+ *
  * This workflow doesn't return the exported products. Instead, it sends a notification to the admin
  * users that they can download the exported products. Learn more in the [API Reference](https://docs.medusajs.com/api/admin#products_postproductsexport).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * To export all products:
- * 
+ *
  * ```ts
  * const { result } = await exportProductsWorkflow(container)
  * .run({
@@ -31,9 +31,9 @@ export const exportProductsWorkflowId = "export-products"
  *   }
  * })
  * ```
- * 
+ *
  * To export products matching a criteria:
- * 
+ *
  * ```ts
  * const { result } = await exportProductsWorkflow(container)
  * .run({
@@ -45,9 +45,9 @@ export const exportProductsWorkflowId = "export-products"
  *   }
  * })
  * ```
- * 
+ *
  * @summary
- * 
+ *
  * Export products with filtering capabilities.
  */
 export const exportProductsWorkflow = createWorkflow(

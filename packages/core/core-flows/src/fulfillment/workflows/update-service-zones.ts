@@ -1,4 +1,7 @@
-import { FulfillmentWorkflow, ServiceZoneDTO } from "@medusajs/framework/types"
+import type {
+  FulfillmentWorkflow,
+  ServiceZoneDTO,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -15,10 +18,10 @@ export const updateServiceZonesWorkflowId = "update-service-zones-workflow"
 /**
  * This workflow updates one or more service zones. It's used by the
  * [Update Service Zones Admin API Route](https://docs.medusajs.com/api/admin#fulfillment-sets_postfulfillmentsetsidservicezoneszone_id).
- * 
+ *
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * update service zones within your custom flows.
- * 
+ *
  * @example
  * const { result } = await updateServiceZonesWorkflow(container)
  * .run({
@@ -31,9 +34,9 @@ export const updateServiceZonesWorkflowId = "update-service-zones-workflow"
  *     }
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Update one or more service zones.
  */
 export const updateServiceZonesWorkflow = createWorkflow(

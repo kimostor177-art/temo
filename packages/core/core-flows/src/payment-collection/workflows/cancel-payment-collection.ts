@@ -1,4 +1,4 @@
-import { PaymentCollectionDTO } from "@medusajs/framework/types"
+import type { PaymentCollectionDTO } from "@medusajs/framework/types"
 import { MedusaError, PaymentCollectionStatus } from "@medusajs/framework/utils"
 import {
   WorkflowData,

@@ -1,4 +1,4 @@
-import { IPromotionModuleService } from "@medusajs/framework/types"
+import type { IPromotionModuleService } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   Modules,

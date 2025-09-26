@@ -1,6 +1,6 @@
 import { Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { IOrderModuleService, OrderDTO } from "@medusajs/types"
+import type { IOrderModuleService, OrderDTO } from "@medusajs/framework/types"
 
 /**
  * The details of the draft order to get the promotion context for.
@@ -14,14 +14,14 @@ export interface GetDraftOrderPromotionContextStepInput {
 
 /**
  * This step gets the promotion context for a draft order.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve a draft order's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = getDraftOrderPromotionContextStep({
  *   order: {

@@ -4,7 +4,7 @@ import {
   OrderChangeActionDTO,
   OrderChangeDTO,
   OrderWorkflow,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 /**
  * The details of the draft order and its change to validate.
@@ -23,14 +23,14 @@ export interface ValidateDraftOrderShippingMethodActionStepInput {
 /**
  * This step validates that a shipping method change can be removed from a draft order edit. It throws an error if the
  * shipping method change is not in the draft order edit, or if the shipping method change is not adding a shipping method.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve a draft order change's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = validateDraftOrderShippingMethodActionStep({
  *   input: {

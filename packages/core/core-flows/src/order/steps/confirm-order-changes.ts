@@ -1,4 +1,4 @@
-import { OrderChangeDTO } from "@medusajs/framework/types"
+import type { OrderChangeDTO } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 

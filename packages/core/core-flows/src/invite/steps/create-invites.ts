@@ -1,11 +1,14 @@
-import { CreateInviteDTO, IUserModuleService } from "@medusajs/framework/types"
+import type {
+  CreateInviteDTO,
+  IUserModuleService,
+} from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createInviteStepId = "create-invite-step"
 /**
  * This step creates one or more invites.
- * 
+ *
  * @example
  * const data = createInviteStep([
  *   {

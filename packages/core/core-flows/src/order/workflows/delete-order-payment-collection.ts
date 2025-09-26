@@ -1,4 +1,4 @@
-import { PaymentCollectionDTO } from "@medusajs/framework/types"
+import type { PaymentCollectionDTO } from "@medusajs/framework/types"
 import {
   MedusaError,
   Modules,
@@ -39,12 +39,12 @@ export type DeleteOrderPaymentCollectionsInput = {
 export const deleteOrderPaymentCollectionsId =
   "delete-order-payment-collectionworkflow"
 /**
- * This workflow deletes one or more payment collections of an order. It's used by the 
+ * This workflow deletes one or more payment collections of an order. It's used by the
  * [Delete Payment Collection API Route](https://docs.medusajs.com/api/admin#payment-collections_deletepaymentcollectionsid).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * deleting a payment collection of an order.
- * 
+ *
  * @example
  * const { result } = await deleteOrderPaymentCollections(container)
  * .run({
@@ -52,14 +52,16 @@ export const deleteOrderPaymentCollectionsId =
  *     id: "order_123"
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Delete a payment collection of an order.
  */
 export const deleteOrderPaymentCollections = createWorkflow(
   deleteOrderPaymentCollectionsId,
-  (input: WorkflowData<DeleteOrderPaymentCollectionsInput>): WorkflowData<void> => {
+  (
+    input: WorkflowData<DeleteOrderPaymentCollectionsInput>
+  ): WorkflowData<void> => {
     const paymentCollection = useRemoteQueryStep({
       entry_point: "payment_collection",
       fields: ["id", "status"],

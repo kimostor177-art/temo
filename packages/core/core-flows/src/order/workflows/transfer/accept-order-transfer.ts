@@ -10,7 +10,7 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { OrderPreviewDTO } from "@medusajs/types"
+import type { OrderPreviewDTO } from "@medusajs/framework/types"
 import {
   ChangeActionType,
   MedusaError,

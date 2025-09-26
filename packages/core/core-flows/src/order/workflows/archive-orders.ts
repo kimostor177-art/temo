@@ -1,4 +1,4 @@
-import { OrderDTO } from "@medusajs/framework/types"
+import type { OrderDTO } from "@medusajs/framework/types"
 import { OrderWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
@@ -26,11 +26,11 @@ export type ArchiveOrdersWorkflowOutput = OrderDTO[]
 
 export const archiveOrderWorkflowId = "archive-order-workflow"
 /**
- * This workflow archives one or more orders. It's used by the 
+ * This workflow archives one or more orders. It's used by the
  * [Archive Order Admin API Route](https://docs.medusajs.com/api/admin#orders_postordersidarchive).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around archiving orders.
- * 
+ *
  * @example
  * const { result } = await archiveOrderWorkflow(container)
  * .run({
@@ -38,9 +38,9 @@ export const archiveOrderWorkflowId = "archive-order-workflow"
  *     orderIds: ["order_123"]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Archive one or more orders.
  */
 export const archiveOrderWorkflow = createWorkflow(

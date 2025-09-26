@@ -1,5 +1,5 @@
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import { PromotionDTO } from "@medusajs/types"
+import type { PromotionDTO } from "@medusajs/framework/types"
 import {
   throwIfCodesAreInactive,
   throwIfCodesAreMissing,
@@ -24,23 +24,23 @@ export interface ValidatePromoCodesToAddStepInput {
 /**
  * This step validates that the promo codes to add to a draft order are valid. It throws an error if the
  * promo codes don't exist or are inactive.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve a promotion's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = validatePromoCodesToAddStep({
  *   promo_codes: ["PROMO_123", "PROMO_456"],
- *   promotions: [{ 
- *     id: "promo_123", 
- *     code: "PROMO_123" 
- *   }, { 
- *     id: "promo_456", 
- *     code: "PROMO_456" 
+ *   promotions: [{
+ *     id: "promo_123",
+ *     code: "PROMO_123"
+ *   }, {
+ *     id: "promo_456",
+ *     code: "PROMO_456"
  *   }],
  * })
  */

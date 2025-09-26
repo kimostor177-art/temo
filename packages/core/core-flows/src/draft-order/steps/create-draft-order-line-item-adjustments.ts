@@ -3,7 +3,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import {
   CreateLineItemAdjustmentDTO,
   IOrderModuleService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 export const createDraftOrderLineItemAdjustmentsStepId =
   "create-draft-order-line-item-adjustments"
@@ -24,7 +24,7 @@ export interface CreateDraftOrderLineItemAdjustmentsStepInput {
 
 /**
  * This step creates line item adjustments for a draft order.
- * 
+ *
  * @example
  * const data = createDraftOrderLineItemAdjustmentsStep({
  *   order_id: "order_123",

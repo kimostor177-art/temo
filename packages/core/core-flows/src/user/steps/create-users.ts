@@ -1,12 +1,15 @@
-import { CreateUserDTO, IUserModuleService } from "@medusajs/framework/types"
+import type {
+  CreateUserDTO,
+  IUserModuleService,
+} from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createUsersStepId = "create-users-step"
 /**
- * This step creates one or more users. To allow these users to log in, 
+ * This step creates one or more users. To allow these users to log in,
  * you must attach an auth identity to each user using the {@link setAuthAppMetadataStep}.
- * 
+ *
  * @example
  * const data = createUsersStep([
  *   {

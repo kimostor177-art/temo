@@ -11,7 +11,7 @@ import {
   AdditionalData,
   CalculateShippingOptionPriceDTO,
   ListShippingOptionsForCartWithPricingWorkflowInput,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 import { useQueryGraphStep, validatePresenceOfStep } from "../../common"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"

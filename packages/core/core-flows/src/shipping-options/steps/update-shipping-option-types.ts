@@ -1,5 +1,11 @@
-import { FulfillmentTypes, IFulfillmentModuleService, } from "@medusajs/framework/types"
-import { getSelectsAndRelationsFromObjectArray, Modules, } from "@medusajs/framework/utils"
+import type {
+  FulfillmentTypes,
+  IFulfillmentModuleService,
+} from "@medusajs/framework/types"
+import {
+  getSelectsAndRelationsFromObjectArray,
+  Modules,
+} from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -19,9 +25,9 @@ export type UpdateShippingOptionTypesStepInput = {
 export const updateShippingOptionTypesStepId = "update-shipping-option-types"
 /**
  * This step updates shipping option types matching the specified filters.
- * 
+ *
  * @since 2.10.0
- * 
+ *
  * @example
  * const shippingOptionTypes = updateShippingOptionTypesStep({
  *   selector: {
@@ -35,7 +41,9 @@ export const updateShippingOptionTypesStepId = "update-shipping-option-types"
 export const updateShippingOptionTypesStep = createStep(
   updateShippingOptionTypesStepId,
   async (data: UpdateShippingOptionTypesStepInput, { container }) => {
-    const service = container.resolve<IFulfillmentModuleService>(Modules.FULFILLMENT)
+    const service = container.resolve<IFulfillmentModuleService>(
+      Modules.FULFILLMENT
+    )
 
     const { selects, relations } = getSelectsAndRelationsFromObjectArray([
       data.update,
@@ -57,7 +65,9 @@ export const updateShippingOptionTypesStep = createStep(
       return
     }
 
-    const service = container.resolve<IFulfillmentModuleService>(Modules.FULFILLMENT)
+    const service = container.resolve<IFulfillmentModuleService>(
+      Modules.FULFILLMENT
+    )
 
     await service.upsertShippingOptionTypes(prevData)
   }

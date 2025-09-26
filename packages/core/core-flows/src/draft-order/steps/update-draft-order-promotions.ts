@@ -4,7 +4,7 @@ import {
   PromotionActions,
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { IPromotionModuleService } from "@medusajs/types"
+import type { IPromotionModuleService } from "@medusajs/framework/types"
 
 export const updateDraftOrderPromotionsStepId = "update-draft-order-promotions"
 
@@ -22,7 +22,7 @@ export interface UpdateDraftOrderPromotionsStepInput {
   promo_codes: string[]
   /**
    * The action to perform on the promotions. You can either:
-   * 
+   *
    * - Add the promotions to the draft order.
    * - Replace the existing promotions with the new ones.
    * - Remove the promotions from the draft order.
@@ -32,7 +32,7 @@ export interface UpdateDraftOrderPromotionsStepInput {
 
 /**
  * This step updates the promotions of a draft order.
- * 
+ *
  * @example
  * const data = updateDraftOrderPromotionsStep({
  *   id: "order_123",

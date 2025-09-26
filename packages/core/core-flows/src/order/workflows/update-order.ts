@@ -1,4 +1,4 @@
-import { OrderDTO, OrderWorkflow } from "@medusajs/framework/types"
+import type { OrderDTO, OrderWorkflow } from "@medusajs/framework/types"
 import {
   MedusaError,
   OrderWorkflowEvents,
@@ -15,7 +15,7 @@ import {
   OrderPreviewDTO,
   RegisterOrderChangeDTO,
   UpdateOrderDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 import { emitEventStep, useQueryGraphStep } from "../../common"
 import {

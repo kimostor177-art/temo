@@ -1,4 +1,4 @@
-import { CartWorkflowDTO } from "@medusajs/framework/types"
+import type { CartWorkflowDTO } from "@medusajs/framework/types"
 import {
   isPresent,
   MathBN,

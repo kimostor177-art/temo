@@ -1,4 +1,4 @@
-import { OrderDTO, OrderWorkflow } from "@medusajs/framework/types"
+import type { OrderDTO, OrderWorkflow } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -6,7 +6,7 @@ import {
   createWorkflow,
   transform,
 } from "@medusajs/framework/workflows-sdk"
-import { CustomerDTO, OrderPreviewDTO } from "@medusajs/types"
+import type { CustomerDTO, OrderPreviewDTO } from "@medusajs/framework/types"
 import { v4 as uid } from "uuid"
 
 import { emitEventStep, useRemoteQueryStep } from "../../../common"
@@ -39,14 +39,14 @@ export type RequestOrderTransferValidationStepInput = {
  * This step validates that an order transfer can be requested. If the customer
  * is a guest customer, or the order already belongs to a registered customer,
  * the step throws an error.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve an order and customer details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = requestOrderTransferValidationStep({
  *   order: {
@@ -87,12 +87,12 @@ export const requestOrderTransferWorkflowId = "request-order-transfer-workflow"
 /**
  * This workflow requests an order transfer from a guest customer to a registered customer. It can be requested by an admin user or a customer.
  * If a customer requested the transfer, the `logged_in_user` input property should be the same as the customer's ID.
- * 
+ *
  * This workflow is used by the [Request Order Transfer Store API Route](https://docs.medusajs.com/api/store#orders_postordersidtransferrequest),
  * and the [Request Order Transfer Admin API Route](https://docs.medusajs.com/api/admin#orders_postordersidtransfer).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to build a custom flow around requesting an order transfer.
- * 
+ *
  * @example
  * const { result } = await requestOrderTransferWorkflow(container)
  * .run({
@@ -102,9 +102,9 @@ export const requestOrderTransferWorkflowId = "request-order-transfer-workflow"
  *     logged_in_user: "user_123",
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Request a transfer of an order to a customer.
  */
 export const requestOrderTransferWorkflow = createWorkflow(

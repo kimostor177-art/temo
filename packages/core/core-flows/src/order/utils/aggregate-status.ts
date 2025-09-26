@@ -1,4 +1,4 @@
-import { OrderDetailDTO } from "@medusajs/framework/types"
+import type { OrderDetailDTO } from "@medusajs/framework/types"
 import { isDefined, MathBN, MEDUSA_EPSILON } from "@medusajs/framework/utils"
 
 export const getLastPaymentStatus = (order: OrderDetailDTO) => {

@@ -3,7 +3,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import {
   CreateShippingMethodAdjustmentDTO,
   IOrderModuleService,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 
 export const createDraftOrderShippingMethodAdjustmentsStepId =
   "create-draft-order-shipping-method-adjustments"
@@ -20,7 +20,7 @@ export interface CreateDraftOrderShippingMethodAdjustmentsStepInput {
 
 /**
  * This step creates shipping method adjustments for a draft order.
- * 
+ *
  * @example
  * const data = createDraftOrderShippingMethodAdjustmentsStep({
  *   shippingMethodAdjustmentsToCreate: [

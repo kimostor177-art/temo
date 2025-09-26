@@ -1,5 +1,12 @@
-import { CartDTO, IFulfillmentModuleService } from "@medusajs/framework/types"
-import { arrayDifference, MedusaError, Modules, } from "@medusajs/framework/utils"
+import type {
+  CartDTO,
+  IFulfillmentModuleService,
+} from "@medusajs/framework/types"
+import {
+  arrayDifference,
+  MedusaError,
+  Modules,
+} from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -39,7 +46,7 @@ export const validateCartShippingOptionsStepId =
 /**
  * This step validates shipping options to ensure they can be applied on a cart.
  * If not valid, the step throws an error.
- * 
+ *
  * @example
  * const data = validateCartShippingOptionsStep({
  *   // retrieve the details of the cart from another workflow
@@ -52,7 +59,12 @@ export const validateCartShippingOptionsStepId =
 export const validateCartShippingOptionsStep = createStep(
   validateCartShippingOptionsStepId,
   async (data: ValidateCartShippingOptionsStepInput, { container }) => {
-    const { option_ids: optionIds = [], cart, shippingOptionsContext, prefetched_shipping_options: prefetchedShippingOptions } = data
+    const {
+      option_ids: optionIds = [],
+      cart,
+      shippingOptionsContext,
+      prefetched_shipping_options: prefetchedShippingOptions,
+    } = data
 
     if (!optionIds.length) {
       return new StepResponse(void 0)

@@ -1,4 +1,7 @@
-import { IInventoryService, InventoryTypes } from "@medusajs/framework/types"
+import type {
+  IInventoryService,
+  InventoryTypes,
+} from "@medusajs/framework/types"
 import {
   convertItemResponseToUpdateRequest,
   getSelectsAndRelationsFromObjectArray,
@@ -10,7 +13,8 @@ import { Modules } from "@medusajs/framework/utils"
 /**
  * The data to update the inventory items.
  */
-export type UpdateInventoryItemsStepInput = InventoryTypes.UpdateInventoryItemInput[]
+export type UpdateInventoryItemsStepInput =
+  InventoryTypes.UpdateInventoryItemInput[]
 
 export const updateInventoryItemsStepId = "update-inventory-items-step"
 /**

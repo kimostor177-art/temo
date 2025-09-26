@@ -1,4 +1,7 @@
-import { CreateTaxRateRuleDTO, TaxRateRuleDTO } from "@medusajs/framework/types"
+import type {
+  CreateTaxRateRuleDTO,
+  TaxRateRuleDTO,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -28,10 +31,10 @@ export type SetTaxRatesRulesWorkflowInput = {
 export const setTaxRateRulesWorkflowId = "set-tax-rate-rules"
 /**
  * This workflow sets the rules of tax rates.
- * 
+ *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to set the rules of tax rates in your custom flows.
- * 
+ *
  * @example
  * const { result } = await setTaxRateRulesWorkflow(container)
  * .run({
@@ -45,9 +48,9 @@ export const setTaxRateRulesWorkflowId = "set-tax-rate-rules"
  *     ]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Set the rules of tax rates.
  */
 export const setTaxRateRulesWorkflow = createWorkflow(

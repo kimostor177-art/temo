@@ -1,4 +1,4 @@
-import { IApiKeyModuleService } from "@medusajs/framework/types"
+import type { IApiKeyModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 

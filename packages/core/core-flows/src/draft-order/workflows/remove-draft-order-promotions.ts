@@ -9,7 +9,11 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { OrderChangeDTO, OrderDTO, PromotionDTO } from "@medusajs/types"
+import {
+  OrderChangeDTO,
+  OrderDTO,
+  PromotionDTO,
+} from "@medusajs/framework/types"
 import { useRemoteQueryStep } from "../../common"
 import {
   createOrderChangeActionsWorkflow,
@@ -40,10 +44,10 @@ export interface RemoveDraftOrderPromotionsWorkflowInput {
 /**
  * This workflow removes promotions from a draft order edit. It's used by the
  * [Remove Promotions from Draft Order Edit Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersideditpromotions).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * removing promotions from a draft order edit.
- * 
+ *
  * @example
  * const { result } = await removeDraftOrderPromotionsWorkflow(container)
  * .run({
@@ -52,9 +56,9 @@ export interface RemoveDraftOrderPromotionsWorkflowInput {
  *     promo_codes: ["PROMO_CODE_1", "PROMO_CODE_2"],
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Remove promotions from a draft order edit.
  */
 export const removeDraftOrderPromotionsWorkflow = createWorkflow(

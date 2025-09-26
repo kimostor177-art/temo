@@ -8,7 +8,11 @@ import {
   transform,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { BigNumberInput, OrderChangeDTO, OrderDTO } from "@medusajs/types"
+import {
+  BigNumberInput,
+  OrderChangeDTO,
+  OrderDTO,
+} from "@medusajs/framework/types"
 import { reserveInventoryStep } from "../../cart"
 import {
   prepareConfirmInventoryInput,

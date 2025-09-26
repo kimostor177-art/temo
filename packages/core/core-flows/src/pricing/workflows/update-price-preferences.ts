@@ -1,4 +1,4 @@
-import { PricingWorkflow } from "@medusajs/framework/types"
+import type { PricingWorkflow } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -10,10 +10,10 @@ export const updatePricePreferencesWorkflowId = "update-price-preferences"
 /**
  * This workflow updates one or more price preferences. It's used by the
  * [Update Price Preference Admin API Route](https://docs.medusajs.com/api/admin#price-preferences_postpricepreferencesid).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * update price preferences in your custom flows.
- * 
+ *
  * @example
  * const { result } = await updatePricePreferencesWorkflow(container)
  * .run({
@@ -26,9 +26,9 @@ export const updatePricePreferencesWorkflowId = "update-price-preferences"
  *     }
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Update one or more price preferences.
  */
 export const updatePricePreferencesWorkflow = createWorkflow(

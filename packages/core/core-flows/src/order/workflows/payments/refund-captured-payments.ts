@@ -1,4 +1,4 @@
-import { PaymentDTO } from "@medusajs/framework/types"
+import type { PaymentDTO } from "@medusajs/framework/types"
 import { deepFlatMap, MathBN } from "@medusajs/framework/utils"
 import {
   createWorkflow,

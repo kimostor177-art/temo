@@ -1,4 +1,7 @@
-import { IPricingModuleService, PricingTypes } from "@medusajs/framework/types"
+import type {
+  IPricingModuleService,
+  PricingTypes,
+} from "@medusajs/framework/types"
 import {
   MedusaError,
   Modules,
@@ -12,9 +15,9 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
  */
 export type UpdatePriceSetsStepInput =
   | {
-    /**
-     * The filters to select which price sets to update.
-     */
+      /**
+       * The filters to select which price sets to update.
+       */
       selector?: PricingTypes.FilterablePriceSetProps
       /**
        * The data to update the price sets with.
@@ -22,16 +25,16 @@ export type UpdatePriceSetsStepInput =
       update?: PricingTypes.UpdatePriceSetDTO
     }
   | {
-    /**
-     * The price sets to update.
-     */
+      /**
+       * The price sets to update.
+       */
       price_sets: PricingTypes.UpsertPriceSetDTO[]
     }
 
 export const updatePriceSetsStepId = "update-price-sets"
 /**
  * This step updates price sets.
- * 
+ *
  * @example
  * const data = updatePriceSetsStep({
  *   selector: {

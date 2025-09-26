@@ -1,4 +1,4 @@
-import { WorkflowTypes } from "@medusajs/framework/types"
+import type { WorkflowTypes } from "@medusajs/framework/types"
 import { RegionWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
@@ -16,10 +16,10 @@ export const createRegionsWorkflowId = "create-regions"
 /**
  * This workflow creates one or more regions. It's used by the
  * [Create Region Admin API Route](https://docs.medusajs.com/api/admin#regions_postregions).
- * 
+ *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create regions in your custom flows.
- * 
+ *
  * @example
  * const { result } = await createRegionsWorkflow(container)
  * .run({
@@ -33,9 +33,9 @@ export const createRegionsWorkflowId = "create-regions"
  *     ]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Create one or more regions.
  */
 export const createRegionsWorkflow = createWorkflow(

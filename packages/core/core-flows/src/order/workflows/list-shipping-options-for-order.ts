@@ -4,7 +4,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { ListShippingOptionsForOrderWorkflowInput } from "@medusajs/types"
+import type { ListShippingOptionsForOrderWorkflowInput } from "@medusajs/framework/types"
 
 import { useQueryGraphStep, validatePresenceOfStep } from "../../common"
 import { useRemoteQueryStep } from "../../common/steps/use-remote-query"

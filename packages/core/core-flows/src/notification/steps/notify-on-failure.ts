@@ -1,4 +1,4 @@
-import { INotificationModuleService } from "@medusajs/framework/types"
+import type { INotificationModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -60,7 +60,7 @@ export const notifyOnFailureStepId = "notify-on-failure"
  * This step sends one or more notification when a workflow fails. This
  * step can be used in the beginning of a workflow so that, when the workflow fails,
  * the step's compensation function is triggered to send the notification.
- * 
+ *
  * @example
  * const data = notifyOnFailureStep([{
  *   to: "example@gmail.com",

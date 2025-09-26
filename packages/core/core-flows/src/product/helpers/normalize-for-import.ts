@@ -1,5 +1,5 @@
-import { ProductTypes } from "@medusajs/framework/types"
-import { HttpTypes, RegionTypes } from "@medusajs/framework/types"
+import type { ProductTypes } from "@medusajs/framework/types"
+import type { HttpTypes, RegionTypes } from "@medusajs/framework/types"
 import { MedusaError, lowerCaseFirst } from "@medusajs/framework/utils"
 
 // We want to convert the csv data format to a standard DTO format.

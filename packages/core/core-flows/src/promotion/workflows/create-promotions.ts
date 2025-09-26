@@ -1,4 +1,7 @@
-import { AdditionalData, CreatePromotionDTO } from "@medusajs/framework/types"
+import type {
+  AdditionalData,
+  CreatePromotionDTO,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -20,12 +23,12 @@ export type CreatePromotionsWorkflowInput = {
 export const createPromotionsWorkflowId = "create-promotions"
 /**
  * This workflow creates one or more promotions. It's used by the [Create Promotion Admin API Route](https://docs.medusajs.com/api/admin#promotions_postpromotions).
- * 
+ *
  * This workflow has a hook that allows you to perform custom actions on the created promotion. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the promotions.
- * 
+ *
  * You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around creating promotions.
- * 
+ *
  * @example
  * const { result } = await createPromotionsWorkflow(container)
  * .run({
@@ -49,11 +52,11 @@ export const createPromotionsWorkflowId = "create-promotions"
  *     }
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Create one or more promotions.
- * 
+ *
  * @property hooks.promotionsCreated - This hook is executed after the promotions are created. You can consume this hook to perform custom actions on the created promotions.
  */
 export const createPromotionsWorkflow = createWorkflow(

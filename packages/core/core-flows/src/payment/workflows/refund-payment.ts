@@ -1,4 +1,8 @@
-import { BigNumberInput, OrderDTO, PaymentDTO } from "@medusajs/framework/types"
+import type {
+  BigNumberInput,
+  OrderDTO,
+  PaymentDTO,
+} from "@medusajs/framework/types"
 import { MathBN, MedusaError, PaymentEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,

@@ -1,6 +1,6 @@
 import { MedusaError, OrderStatus } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
-import { OrderDTO } from "@medusajs/types"
+import type { OrderDTO } from "@medusajs/framework/types"
 
 /**
  * The details of the draft order to validate.
@@ -14,14 +14,14 @@ export interface ValidateDraftOrderStepInput {
 
 /**
  * This step validates that an order is a draft order. It throws an error otherwise.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve a draft order's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = validateDraftOrderStep({
  *   order: {

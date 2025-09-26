@@ -1881,7 +1881,7 @@ medusaIntegrationTestRunner({
 
           expect(errors).toEqual([
             {
-              action: "get-variant-price-sets",
+              action: "get-variant-items-with-prices-workflow-as-step",
               handlerType: "invoke",
               error: expect.objectContaining({
                 message: expect.stringContaining(
@@ -4307,18 +4307,20 @@ medusaIntegrationTestRunner({
               })
             }
 
-            const { result: result1 } = await listShippingOptionsForCartWorkflow(
-              appContainer
-            ).run({ input: { cart_id: cart.id } })
+            const { result: result1 } =
+              await listShippingOptionsForCartWorkflow(appContainer).run({
+                input: { cart_id: cart.id },
+              })
 
             expect(result1).toHaveLength(1)
             expect(result1[0].name).toEqual(shippingOption.name)
 
             setShippingOptionsContextHook = undefined
 
-            const { result: result2 } = await listShippingOptionsForCartWorkflow(
-              appContainer
-            ).run({ input: { cart_id: cart.id } })
+            const { result: result2 } =
+              await listShippingOptionsForCartWorkflow(appContainer).run({
+                input: { cart_id: cart.id },
+              })
 
             expect(result2).toHaveLength(0)
           })

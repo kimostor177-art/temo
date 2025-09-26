@@ -1,4 +1,7 @@
-import { CreateOrderChangeDTO, OrderChangeDTO } from "@medusajs/framework/types"
+import type {
+  CreateOrderChangeDTO,
+  OrderChangeDTO,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -9,12 +12,12 @@ import { createOrderChangeStep } from "../steps"
 export const createOrderChangeWorkflowId = "create-order-change"
 /**
  * This workflow creates an order change.
- * 
- * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around 
+ *
+ * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * creating an order change.
- * 
+ *
  * @summary
- * 
+ *
  * Create an order change.
  */
 export const createOrderChangeWorkflow = createWorkflow(

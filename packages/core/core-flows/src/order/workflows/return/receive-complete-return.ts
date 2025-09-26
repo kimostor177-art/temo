@@ -1,4 +1,4 @@
-import { OrderWorkflow } from "@medusajs/framework/types"
+import type { OrderWorkflow } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -7,7 +7,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../../common"
 
-import { ReturnDTO } from "@medusajs/framework/types"
+import type { ReturnDTO } from "@medusajs/framework/types"
 import { receiveReturnStep } from "../../steps/return/receive-return"
 import {
   throwIfIsCancelled,
@@ -31,14 +31,14 @@ export type ReceiveCompleteReturnValidationStepInput = {
 /**
  * This step validates that a return can be received and completed.
  * If the return is canceled or the items do not exist in the return, the step will throw an error.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve a return details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = receiveCompleteReturnValidationStep({
  *   orderReturn: {
@@ -59,10 +59,7 @@ export type ReceiveCompleteReturnValidationStepInput = {
 export const receiveCompleteReturnValidationStep = createStep(
   "receive-return-order-validation",
   async function (
-    {
-      orderReturn,
-      input,
-    }: ReceiveCompleteReturnValidationStepInput,
+    { orderReturn, input }: ReceiveCompleteReturnValidationStepInput,
     context
   ) {
     throwIfIsCancelled(orderReturn, "Return")
@@ -73,10 +70,10 @@ export const receiveCompleteReturnValidationStep = createStep(
 export const receiveAndCompleteReturnOrderWorkflowId = "receive-return-order"
 /**
  * This workflow marks a return as received and completes it.
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to receive and complete a return.
- * 
+ *
  * @example
  * const { result } = await receiveAndCompleteReturnOrderWorkflow(container)
  * .run({
@@ -90,9 +87,9 @@ export const receiveAndCompleteReturnOrderWorkflowId = "receive-return-order"
  *     ]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Receive and complete a return.
  */
 export const receiveAndCompleteReturnOrderWorkflow = createWorkflow(

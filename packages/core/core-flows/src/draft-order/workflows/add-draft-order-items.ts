@@ -10,7 +10,11 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { OrderChangeDTO, OrderDTO, OrderWorkflow } from "@medusajs/types"
+import {
+  OrderChangeDTO,
+  OrderDTO,
+  OrderWorkflow,
+} from "@medusajs/framework/types"
 import { useRemoteQueryStep } from "../../common"
 import {
   addOrderLineItemsWorkflow,

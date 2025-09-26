@@ -1,6 +1,6 @@
 import { MathBN, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { BigNumberInput } from "@medusajs/types"
+import type { BigNumberInput } from "@medusajs/framework/types"
 
 /**
  * The details of the items and their quantity to reserve.

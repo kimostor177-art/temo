@@ -4,7 +4,7 @@ import {
   CartWorkflowDTO,
   ProductVariantDTO,
   ShippingOptionDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 /**

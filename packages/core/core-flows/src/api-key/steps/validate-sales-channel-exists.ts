@@ -1,4 +1,4 @@
-import { ISalesChannelModuleService } from "@medusajs/framework/types"
+import type { ISalesChannelModuleService } from "@medusajs/framework/types"
 import {
   MedusaError,
   Modules,

@@ -1,4 +1,4 @@
-import { CartDTO, CartWorkflowDTO } from "@medusajs/framework/types"
+import type { CartDTO, CartWorkflowDTO } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import { createStep } from "@medusajs/framework/workflows-sdk"
 
@@ -16,13 +16,13 @@ export const validateCartStepId = "validate-cart"
 /**
  * This step validates a cart to ensure it exists and is not completed.
  * If not valid, the step throws an error.
- * 
+ *
  * :::tip
- * 
+ *
  * You can use the {@link retrieveCartStep} to retrieve a cart's details.
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = validateCartStep({
  *   // retrieve the details of the cart from another workflow

@@ -1,4 +1,4 @@
-import { BigNumberInput, OrderDTO } from "@medusajs/framework/types"
+import type { BigNumberInput, OrderDTO } from "@medusajs/framework/types"
 import {
   ChangeActionType,
   OrderChangeStatus,

@@ -2,7 +2,7 @@ import { Modules, promiseAll } from "@medusajs/framework/utils"
 import {
   IFulfillmentModuleService,
   ValidateFulfillmentDataContext,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { createStep, StepResponse } from "@medusajs/workflows-sdk"
 
 /**
@@ -19,7 +19,7 @@ export type ValidateShippingMethodsDataInput = {
    */
   provider_id: string
   /**
-   * The `data` property of the shipping option that the shipping method was 
+   * The `data` property of the shipping option that the shipping method was
    * created from.
    */
   option_data: Record<string, unknown>
@@ -36,16 +36,18 @@ export type ValidateShippingMethodsDataInput = {
 /**
  * The validated data of the shipping methods.
  */
-export type ValidateShippingMethodsDataOutput = void | {
-  [x: string]: Record<string, unknown>;
-}[]
+export type ValidateShippingMethodsDataOutput =
+  | void
+  | {
+      [x: string]: Record<string, unknown>
+    }[]
 
 export const validateAndReturnShippingMethodsDataStepId =
   "validate-and-return-shipping-methods-data"
 /**
  * This step validates shipping options to ensure they can be applied on a cart.
  * The step either returns the validated data or void.
- * 
+ *
  * @example
  * const data = validateAndReturnShippingMethodsDataStep({
  *   id: "sm_123",

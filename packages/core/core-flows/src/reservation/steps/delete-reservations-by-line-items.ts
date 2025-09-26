@@ -1,6 +1,6 @@
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
-import { IInventoryService } from "@medusajs/framework/types"
+import type { IInventoryService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 
 /**

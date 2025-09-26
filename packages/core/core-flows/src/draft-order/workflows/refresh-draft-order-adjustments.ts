@@ -5,7 +5,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { OrderDTO } from "@medusajs/types"
+import type { OrderDTO } from "@medusajs/framework/types"
 import {
   getActionsToComputeFromPromotionsStep,
   getPromotionCodesToApply,

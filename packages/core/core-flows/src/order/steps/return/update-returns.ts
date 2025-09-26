@@ -1,4 +1,4 @@
-import { UpdateReturnDTO } from "@medusajs/framework/types"
+import type { UpdateReturnDTO } from "@medusajs/framework/types"
 import {
   Modules,
   getSelectsAndRelationsFromObjectArray,

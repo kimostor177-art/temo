@@ -1,4 +1,7 @@
-import { CreateTaxRegionDTO, TaxRegionDTO } from "@medusajs/framework/types"
+import type {
+  CreateTaxRegionDTO,
+  TaxRegionDTO,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -20,10 +23,10 @@ export const createTaxRegionsWorkflowId = "create-tax-regions"
 /**
  * This workflow creates one or more tax regions. It's used by the
  * [Create Tax Region Admin API Route](https://docs.medusajs.com/api/admin#tax-regions_posttaxregions).
- * 
+ *
  * You can use this workflow within your own customizations or custom workflows, allowing you
  * to create tax regions in your custom flows.
- * 
+ *
  * @example
  * const { result } = await createTaxRegionsWorkflow(container)
  * .run({
@@ -33,9 +36,9 @@ export const createTaxRegionsWorkflowId = "create-tax-regions"
  *     }
  *   ]
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Create one or more tax regions.
  */
 export const createTaxRegionsWorkflow = createWorkflow(

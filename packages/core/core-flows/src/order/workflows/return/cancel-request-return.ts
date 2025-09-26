@@ -1,4 +1,8 @@
-import { OrderChangeDTO, OrderDTO, ReturnDTO } from "@medusajs/framework/types"
+import type {
+  OrderChangeDTO,
+  OrderDTO,
+  ReturnDTO,
+} from "@medusajs/framework/types"
 import { ChangeActionType, OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   WorkflowData,
@@ -38,16 +42,16 @@ export type CancelRequestReturnValidationStepInput = {
 
 /**
  * This step validates that a requested return can be canceled.
- * If the order or return is canceled, or the order change is not active, 
+ * If the order or return is canceled, or the order change is not active,
  * the step will throw an error.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve an order, return, and order change details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = cancelRequestReturnValidationStep({
  *   order: {
@@ -91,10 +95,10 @@ export const cancelReturnRequestWorkflowId = "cancel-return-request"
 /**
  * This workflow cancels a requested return. It's used by the
  * [Cancel Return Request API Route](https://docs.medusajs.com/api/admin#returns_deletereturnsidrequest).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to cancel a return request in your custom flow.
- * 
+ *
  * @example
  * const { result } = await cancelReturnRequestWorkflow(container)
  * .run({
@@ -102,9 +106,9 @@ export const cancelReturnRequestWorkflowId = "cancel-return-request"
  *     return_id: "return_123",
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Cancel a requested return.
  */
 export const cancelReturnRequestWorkflow = createWorkflow(

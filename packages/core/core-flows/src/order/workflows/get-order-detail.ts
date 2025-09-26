@@ -1,4 +1,4 @@
-import { OrderDTO, OrderDetailDTO } from "@medusajs/framework/types"
+import type { OrderDTO, OrderDetailDTO } from "@medusajs/framework/types"
 import { deduplicate } from "@medusajs/framework/utils"
 import {
   WorkflowData,
@@ -19,7 +19,7 @@ export type GetOrderDetailWorkflowInput = {
   /**
    * Additional filters to apply on the retrieved order.
    */
-  filters?: { 
+  filters?: {
     /**
      * Whether to retrieve a draft order.
      */
@@ -51,10 +51,10 @@ export const getOrderDetailWorkflowId = "get-order-detail"
  * This workflow retrieves an order's details. It's used by many API routes, including
  * [Get an Order Admin API Route](https://docs.medusajs.com/api/admin#orders_getordersid), and
  * [Get an Order Store API Route](https://docs.medusajs.com/api/store#orders_getordersid).
- * 
- * You can use this workflow within your customizations or your own custom workflows, allowing you to retrieve an 
+ *
+ * You can use this workflow within your customizations or your own custom workflows, allowing you to retrieve an
  * order's details in your custom flows.
- * 
+ *
  * @example
  * const { result } = await getOrderDetailWorkflow(container)
  * .run({
@@ -63,9 +63,9 @@ export const getOrderDetailWorkflowId = "get-order-detail"
  *     fields: ["id", "status", "items"]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Retrieve an order's details.
  */
 export const getOrderDetailWorkflow = createWorkflow(

@@ -1,4 +1,7 @@
-import { BatchWorkflowInput, LinkDefinition } from "@medusajs/framework/types"
+import type {
+  BatchWorkflowInput,
+  LinkDefinition,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -12,12 +15,12 @@ import { updateRemoteLinksStep } from "../steps/update-remote-links"
 export const batchLinksWorkflowId = "batch-links"
 /**
  * This workflow manages one or more links to create, update, or dismiss them.
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to
  * manage links within your custom flows.
- * 
+ *
  * Learn more about links in [this documentation](https://docs.medusajs.com/learn/fundamentals/module-links/link).
- * 
+ *
  * @example
  * const { result } = await batchLinksWorkflow(container)
  * .run({
@@ -59,9 +62,9 @@ export const batchLinksWorkflowId = "batch-links"
  *     ]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Manage links between two records of linked data models.
  */
 export const batchLinksWorkflow = createWorkflow(

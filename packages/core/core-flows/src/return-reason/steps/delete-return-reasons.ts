@@ -1,4 +1,4 @@
-import { IOrderModuleService } from "@medusajs/framework/types"
+import type { IOrderModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
@@ -10,7 +10,7 @@ export type DeleteReturnReasonStepInput = string[]
 export const deleteReturnReasonStepId = "delete-return-reasons"
 /**
  * This step deletes one or more return reasons.
- * 
+ *
  * @example
  * const data = deleteReturnReasonStep(["rr_123"])
  */

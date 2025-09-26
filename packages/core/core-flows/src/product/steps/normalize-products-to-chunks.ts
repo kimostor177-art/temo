@@ -1,5 +1,5 @@
 import { parse, Parser } from "csv-parse"
-import { HttpTypes, IFileModuleService } from "@medusajs/framework/types"
+import type { HttpTypes, IFileModuleService } from "@medusajs/framework/types"
 import {
   Modules,
   CSVNormalizer,

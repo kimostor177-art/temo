@@ -1,4 +1,4 @@
-import { UserWorkflow } from "@medusajs/framework/types"
+import type { UserWorkflow } from "@medusajs/framework/types"
 import { Modules, UserWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,

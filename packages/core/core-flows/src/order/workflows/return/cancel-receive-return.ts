@@ -1,4 +1,8 @@
-import { OrderChangeDTO, OrderDTO, ReturnDTO } from "@medusajs/framework/types"
+import type {
+  OrderChangeDTO,
+  OrderDTO,
+  ReturnDTO,
+} from "@medusajs/framework/types"
 import { OrderChangeStatus } from "@medusajs/framework/utils"
 import {
   WorkflowData,
@@ -33,14 +37,14 @@ export type CancelReceiveReturnValidationStepInput = {
 /**
  * This step validates that a return receival can be canceled.
  * If the order or return is canceled, or the order change is not active, the step will throw an error.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve an order, return, and order change details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = cancelReceiveReturnValidationStep({
  *   order: {
@@ -84,10 +88,10 @@ export const cancelReturnReceiveWorkflowId = "cancel-receive-return"
 /**
  * This workflow cancels a return receival. It's used by the
  * [Cancel Return Receival Admin API Route](https://docs.medusajs.com/api/admin#returns_deletereturnsidreceive).
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you
  * to cancel a return receival in your custom flow.
- * 
+ *
  * @example
  * const { result } = await cancelReturnReceiveWorkflow(container)
  * .run({
@@ -95,9 +99,9 @@ export const cancelReturnReceiveWorkflowId = "cancel-receive-return"
  *     return_id: "return_123",
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Cancel a return receival.
  */
 export const cancelReturnReceiveWorkflow = createWorkflow(

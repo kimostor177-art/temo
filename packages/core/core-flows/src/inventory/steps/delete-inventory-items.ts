@@ -1,7 +1,7 @@
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 import { MathBN, MedusaError, Modules } from "@medusajs/framework/utils"
-import { BigNumberInput } from "@medusajs/types"
+import type { BigNumberInput } from "@medusajs/framework/types"
 
 export interface ValidateInventoryDeleteStepInput {
   inventory_items: { id: string; reserved_quantity: BigNumberInput }[]

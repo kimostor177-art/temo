@@ -1,4 +1,7 @@
-import { ServiceZoneDTO, ShippingOptionDTO } from "@medusajs/framework/types"
+import type {
+  ServiceZoneDTO,
+  ShippingOptionDTO,
+} from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,

@@ -1,4 +1,4 @@
-import { OrderWorkflowDTO } from "@medusajs/framework/types"
+import type { OrderWorkflowDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   createWorkflow,

@@ -1,4 +1,4 @@
-import { WebhookActionResult } from "@medusajs/types"
+import type { WebhookActionResult } from "@medusajs/framework/types"
 import { PaymentActions } from "@medusajs/utils"
 import { createWorkflow, when } from "@medusajs/workflows-sdk"
 import { useQueryGraphStep } from "../../common"

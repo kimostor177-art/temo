@@ -1,4 +1,4 @@
-import { ApiKeyDTO, CreateApiKeyDTO } from "@medusajs/framework/types"
+import type { ApiKeyDTO, CreateApiKeyDTO } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,

@@ -1,11 +1,14 @@
-import { CreateTaxRateDTO, ITaxModuleService } from "@medusajs/framework/types"
+import type {
+  CreateTaxRateDTO,
+  ITaxModuleService,
+} from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createTaxRatesStepId = "create-tax-rates"
 /**
  * This step creates one or more tax rates.
- * 
+ *
  * @example
  * const data = createTaxRatesStep([
  *   {

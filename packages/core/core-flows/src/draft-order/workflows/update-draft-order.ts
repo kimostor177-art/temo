@@ -13,7 +13,7 @@ import {
   RegisterOrderChangeDTO,
   UpdateOrderDTO,
   UpsertOrderAddressDTO,
-} from "@medusajs/types"
+} from "@medusajs/framework/types"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { previewOrderChangeStep, registerOrderChangesStep } from "../../order"
 import { validateDraftOrderStep } from "../steps/validate-draft-order"
@@ -74,14 +74,14 @@ export interface UpdateDraftOrderStepInput {
 
 /**
  * This step updates a draft order's details.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve a draft order's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = updateDraftOrderStep({
  *   order: {
@@ -123,15 +123,15 @@ export const updateDraftOrderStep = createStep(
 /**
  * This workflow updates a draft order's details. It's used by the
  * [Update Draft Order Admin API Route](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersid).
- * 
- * This workflow doesn't update the draft order's items, shipping methods, or promotions. Instead, you have to 
+ *
+ * This workflow doesn't update the draft order's items, shipping methods, or promotions. Instead, you have to
  * create a draft order edit using {@link beginDraftOrderEditWorkflow} and make updates in the draft order edit.
  * Then, you can confirm the draft order edit using {@link confirmDraftOrderEditWorkflow} or request a draft order edit
  * using {@link requestDraftOrderEditWorkflow}.
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * updating a draft order.
- * 
+ *
  * @example
  * const { result } = await updateDraftOrderWorkflow(container)
  * .run({
@@ -141,9 +141,9 @@ export const updateDraftOrderStep = createStep(
  *     customer_id: "cus_123",
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Update a draft order's details.
  */
 export const updateDraftOrderWorkflow = createWorkflow(

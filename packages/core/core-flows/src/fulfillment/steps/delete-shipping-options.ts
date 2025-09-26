@@ -1,5 +1,5 @@
 import { DeleteEntityInput } from "@medusajs/framework/modules-sdk"
-import { IFulfillmentModuleService } from "@medusajs/framework/types"
+import type { IFulfillmentModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 

@@ -1,5 +1,5 @@
 import { Link } from "@medusajs/framework/modules-sdk"
-import { RemoteQueryFunction } from "@medusajs/framework/types"
+import type { RemoteQueryFunction } from "@medusajs/framework/types"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import {
   ContainerRegistrationKeys,

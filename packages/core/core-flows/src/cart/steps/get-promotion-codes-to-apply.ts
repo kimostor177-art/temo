@@ -1,4 +1,4 @@
-import { IPromotionModuleService } from "@medusajs/framework/types"
+import type { IPromotionModuleService } from "@medusajs/framework/types"
 import {
   MedusaError,
   Modules,
@@ -79,7 +79,7 @@ export const getPromotionCodesToApply = createStep(
     const adjustmentCodes: string[] = []
     items.concat(shipping_methods).forEach((object) => {
       object.adjustments?.forEach((adjustment) => {
-        if (adjustment.code && !adjustmentCodes.includes(adjustment.code)) {
+        if (adjustment.code) {
           adjustmentCodes.push(adjustment.code)
         }
       })

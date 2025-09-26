@@ -1,4 +1,4 @@
-import { BigNumberInput, PaymentDTO } from "@medusajs/framework/types"
+import type { BigNumberInput, PaymentDTO } from "@medusajs/framework/types"
 import { isDefined, MathBN, MedusaError } from "@medusajs/framework/utils"
 import {
   createStep,

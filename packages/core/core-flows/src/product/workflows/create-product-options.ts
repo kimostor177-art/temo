@@ -1,4 +1,4 @@
-import { AdditionalData, ProductTypes } from "@medusajs/framework/types"
+import type { AdditionalData, ProductTypes } from "@medusajs/framework/types"
 import { ProductOptionWorkflowEvents } from "@medusajs/framework/utils"
 import {
   WorkflowData,
@@ -23,12 +23,12 @@ export type CreateProductOptionsWorkflowInput = {
 export const createProductOptionsWorkflowId = "create-product-options"
 /**
  * This workflow creates one or more product options. It's used by the [Create Product Option Admin API Route](https://docs.medusajs.com/api/admin#products_postproductsidoptions).
- * 
- * This workflow has a hook that allows you to perform custom actions on the created product options. For example, you can pass under `additional_data` custom data that 
+ *
+ * This workflow has a hook that allows you to perform custom actions on the created product options. For example, you can pass under `additional_data` custom data that
  * allows you to create custom data models linked to the product options.
- * 
+ *
  * You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around product-option creation.
- * 
+ *
  * @example
  * const { result } = await createProductOptionsWorkflow(container)
  * .run({
@@ -48,11 +48,11 @@ export const createProductOptionsWorkflowId = "create-product-options"
  *     }
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Create one or more product options.
- * 
+ *
  * @property hooks.productOptionsCreated - This hook is executed after the product options are created. You can consume this hook to perform custom actions on the created product options.
  */
 export const createProductOptionsWorkflow = createWorkflow(

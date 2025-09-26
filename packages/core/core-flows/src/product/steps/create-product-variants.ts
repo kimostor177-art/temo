@@ -1,11 +1,14 @@
-import { IProductModuleService, ProductTypes } from "@medusajs/framework/types"
+import type {
+  IProductModuleService,
+  ProductTypes,
+} from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 export const createProductVariantsStepId = "create-product-variants"
 /**
  * This step creates one or more product variants.
- * 
+ *
  * @example
  * const data = createProductVariantsStep([{
  *   title: "Small Shirt",

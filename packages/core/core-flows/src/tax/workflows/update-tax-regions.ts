@@ -1,4 +1,7 @@
-import { TaxRegionDTO, UpdateTaxRegionDTO } from "@medusajs/framework/types"
+import type {
+  TaxRegionDTO,
+  UpdateTaxRegionDTO,
+} from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,

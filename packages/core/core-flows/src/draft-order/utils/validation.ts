@@ -3,7 +3,7 @@ import {
   OrderStatus,
   PromotionStatus,
 } from "@medusajs/framework/utils"
-import { OrderDTO, PromotionDTO } from "@medusajs/types"
+import type { OrderDTO, PromotionDTO } from "@medusajs/framework/types"
 
 interface ThrowIfNotDraftOrderInput {
   order: OrderDTO

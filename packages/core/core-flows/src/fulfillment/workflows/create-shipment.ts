@@ -1,4 +1,4 @@
-import { FulfillmentWorkflow } from "@medusajs/framework/types"
+import type { FulfillmentWorkflow } from "@medusajs/framework/types"
 import {
   WorkflowData,
   WorkflowResponse,
@@ -12,10 +12,10 @@ export const createShipmentWorkflowId = "create-shipment-workflow"
 /**
  * This workflow creates shipments for a fulfillment. It's used by the
  * [Create Shipment Admin API Route](https://docs.medusajs.com/api/admin#fulfillments_postfulfillmentsidshipment).
- * 
+ *
  * You can use this workflow within your own customizations or custom workflows, allowing you to
  * create shipments within your custom flows.
- * 
+ *
  * @example
  * const { result } = await createShipmentWorkflow(container)
  * .run({
@@ -30,9 +30,9 @@ export const createShipmentWorkflowId = "create-shipment-workflow"
  *     ]
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Create a shipment for a fulfillment.
  */
 export const createShipmentWorkflow = createWorkflow(

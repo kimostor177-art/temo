@@ -1,6 +1,9 @@
 import { MedusaError, Modules } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
-import { BigNumberInput, IOrderModuleService } from "@medusajs/types"
+import type {
+  BigNumberInput,
+  IOrderModuleService,
+} from "@medusajs/framework/types"
 
 export const updateDraftOrderShippingMethodStepId =
   "update-draft-order-shipping-method"
@@ -33,7 +36,7 @@ export interface UpdateDraftOrderShippingMethodStepInput {
 
 /**
  * This step updates the shipping method of a draft order.
- * 
+ *
  * @example
  * const data = updateDraftOrderShippingMethodStep({
  *   order_id: "order_123",

@@ -1,4 +1,4 @@
-import { HttpTypes } from "@medusajs/framework/types"
+import type { HttpTypes } from "@medusajs/framework/types"
 import { CSVNormalizer, productValidators } from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 import { convertCsvToJson } from "../utils"

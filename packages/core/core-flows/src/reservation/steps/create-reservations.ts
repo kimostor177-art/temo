@@ -1,4 +1,4 @@
-import { InventoryTypes } from "@medusajs/framework/types"
+import type { InventoryTypes } from "@medusajs/framework/types"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 import { Modules } from "@medusajs/framework/utils"
