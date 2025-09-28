@@ -450,6 +450,7 @@
             "id"
           ],
           "referencedTableName": "public.payment_collection",
+          "createForeignKeyConstraint": true,
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
@@ -463,6 +464,7 @@
             "id"
           ],
           "referencedTableName": "public.payment_provider",
+          "createForeignKeyConstraint": true,
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -658,6 +660,7 @@
             "id"
           ],
           "referencedTableName": "public.payment_collection",
+          "createForeignKeyConstraint": true,
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -871,6 +874,7 @@
             "id"
           ],
           "referencedTableName": "public.payment_collection",
+          "createForeignKeyConstraint": true,
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
@@ -884,6 +888,7 @@
             "id"
           ],
           "referencedTableName": "public.payment_session",
+          "createForeignKeyConstraint": true,
           "updateRule": "cascade"
         }
       },
@@ -1022,6 +1027,7 @@
             "id"
           ],
           "referencedTableName": "public.payment",
+          "createForeignKeyConstraint": true,
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -1286,6 +1292,7 @@
             "id"
           ],
           "referencedTableName": "public.payment",
+          "createForeignKeyConstraint": true,
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
@@ -1299,6 +1306,7 @@
             "id"
           ],
           "referencedTableName": "public.refund_reason",
+          "createForeignKeyConstraint": true,
           "deleteRule": "set null",
           "updateRule": "cascade"
         }

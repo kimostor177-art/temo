@@ -30,10 +30,10 @@
     "build": "rimraf dist && tsc --build && npm run resolve:aliases",
     "test": "jest --passWithNoTests --bail --forceExit -- src",
     "test:integration": "jest --forceExit -- integration-tests/**/__tests__/**/*.ts",
-    "migration:initial": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts medusa-mikro-orm migration:create --initial",
-    "migration:create": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts medusa-mikro-orm migration:create",
-    "migration:up": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts medusa-mikro-orm migration:up",
-    "orm:cache:clear": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts medusa-mikro-orm cache:clear"
+    "migration:initial": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm migration:create --initial",
+    "migration:create": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm migration:create",
+    "migration:up": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm migration:up",
+    "orm:cache:clear": "MIKRO_ORM_CLI_CONFIG=./mikro-orm.config.dev.ts MIKRO_ORM_ALLOW_GLOBAL_CLI=true medusa-mikro-orm cache:clear"
   },
   "devDependencies": {
     "@medusajs/framework": "2.10.3",
