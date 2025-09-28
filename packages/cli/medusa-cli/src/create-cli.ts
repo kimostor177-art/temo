@@ -416,9 +416,19 @@ function buildLocalCommands(cli, isLocalProject) {
               : `Set port. Defaults to ${defaultPort}`,
           })
           .option(`cluster`, {
-            type: `number`,
+            type: `string`,
             describe:
-              "Start the Node.js server in cluster mode. You can specify the number of cpus to use, which defaults to (env.CPUS)",
+              "Start the Node.js server in cluster mode. Specify the number of CPUs to use or a percentage (e.g., 50%). Defaults to the number of available CPUs.",
+          })
+          .option("workers", {
+            type: "string",
+            default: "0",
+            describe: "Number of worker processes in cluster mode or a percentage of cluster size (e.g., 25%).",
+          })
+          .option("servers", {
+            type: "string",
+            default: "0",
+            describe: "Number of server processes in cluster mode or a percentage of cluster size (e.g., 25%).",
           }),
       handler: handlerP(
         getCommandHandler(`start`, (args, cmd) => {
