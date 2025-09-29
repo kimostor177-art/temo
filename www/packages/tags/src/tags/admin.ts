@@ -176,6 +176,10 @@ export const admin = [
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/user"
   },
   {
+    "title": "views",
+    "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/views"
+  },
+  {
     "title": "workflowExecution",
     "path": "https://docs.medusajs.com/resources/references/js-sdk/admin/workflowExecution"
   }

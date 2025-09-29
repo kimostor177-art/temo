@@ -1032,6 +1032,14 @@ export const workflow = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateSalesChannelsWorkflow"
   },
   {
+    "title": "createViewConfigurationWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createViewConfigurationWorkflow"
+  },
+  {
+    "title": "updateViewConfigurationWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/updateViewConfigurationWorkflow"
+  },
+  {
     "title": "createShippingOptionTypesWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/createShippingOptionTypesWorkflow"
   },

@@ -104,6 +104,10 @@ export const payment = [
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/confirmOrderEditRequestWorkflow"
   },
   {
+    "title": "confirmReturnReceiveWorkflow",
+    "path": "https://docs.medusajs.com/resources/references/medusa-workflows/confirmReturnReceiveWorkflow"
+  },
+  {
     "title": "confirmReturnRequestWorkflow",
     "path": "https://docs.medusajs.com/resources/references/medusa-workflows/confirmReturnRequestWorkflow"
   },
