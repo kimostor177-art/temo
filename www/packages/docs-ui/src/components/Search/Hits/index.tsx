@@ -123,6 +123,25 @@ export const SearchHits = ({
     return checkInternalPattern.test(url)
   }
 
+  const getHierarchySnippetAttribute = (
+    hit: (typeof hits)[0]
+  ): keyof HitType => {
+    let prefix = "hierarchy."
+    if (!hit._snippetResult?.hierarchy) {
+      return (prefix + "lvl1") as keyof HitType
+    }
+    const entries = Object.entries(hit._snippetResult.hierarchy)
+    const matchedLevel =
+      entries.find(([, value]) => value.matchLevel === "full") ||
+      entries.find(([, value]) => value.matchLevel === "partial")
+    if (matchedLevel) {
+      prefix += matchedLevel[0]
+    } else {
+      prefix += "lvl1"
+    }
+    return prefix as keyof HitType
+  }
+
   return (
     <div
       className={clsx(
@@ -162,7 +181,10 @@ export const SearchHits = ({
               )}
             >
               {/* @ts-expect-error React v19 doesn't see this type as a React element */}
-              <Snippet attribute={"hierarchy.lvl1"} hit={item} />
+              <Snippet
+                attribute={getHierarchySnippetAttribute(item)}
+                hit={item}
+              />
             </span>
             <span className="text-compact-small text-medusa-fg-subtle text-ellipsis overflow-hidden">
               {item.type === "content" && (
