@@ -9,10 +9,12 @@ import { SelectedMenu } from ".."
 
 type MainNavMobileMainMenu = {
   setSelectedMenus: React.Dispatch<React.SetStateAction<SelectedMenu>>
+  onOpenLink?: () => void
 }
 
 export const MainNavMobileMainMenu = ({
   setSelectedMenus: setSelectedMenu,
+  onOpenLink,
 }: MainNavMobileMainMenu) => {
   const { navItems } = useMainNav()
 
@@ -44,7 +46,11 @@ export const MainNavMobileMainMenu = ({
             }}
           >
             {item.type === "link" && (
-              <Link href={item.link} className="block w-full">
+              <Link
+                href={item.link}
+                className="block w-full"
+                onClick={() => onOpenLink?.()}
+              >
                 {item.title}
               </Link>
             )}

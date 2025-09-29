@@ -20,6 +20,10 @@ export const MainNavMobileMenu = () => {
   const [selectedMenus, setSelectedMenus] = useState<SelectedMenu>([])
   const ref = useRef(null)
 
+  const handleOpenLink = () => {
+    setIsOpen(false)
+  }
+
   return (
     <div className="flex lg:hidden justify-center items-center">
       <Button
@@ -57,7 +61,10 @@ export const MainNavMobileMenu = () => {
               className="w-full px-docs_1.5 h-3/4 flex flex-col justify-center"
             >
               {selectedMenus.length === 0 && (
-                <MainNavMobileMainMenu setSelectedMenus={setSelectedMenus} />
+                <MainNavMobileMainMenu
+                  setSelectedMenus={setSelectedMenus}
+                  onOpenLink={handleOpenLink}
+                />
               )}
               {selectedMenus.length > 0 && (
                 <>
@@ -82,6 +89,7 @@ export const MainNavMobileMenu = () => {
                   <MainNavMobileSubMenu
                     {...selectedMenus[selectedMenus.length - 1]}
                     setSelectedMenus={setSelectedMenus}
+                    onOpenLink={handleOpenLink}
                   />
                 </>
               )}

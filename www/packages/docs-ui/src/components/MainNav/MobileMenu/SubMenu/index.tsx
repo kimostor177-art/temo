@@ -11,12 +11,14 @@ type MainNavMobileSubMenuProps = {
   menu: MenuItem[]
   title: string
   setSelectedMenus: React.Dispatch<React.SetStateAction<SelectedMenu>>
+  onOpenLink?: () => void
 }
 
 export const MainNavMobileSubMenu = ({
   menu,
   title,
   setSelectedMenus,
+  onOpenLink,
 }: MainNavMobileSubMenuProps) => {
   const filteredItems: (MenuItemLink | MenuItemSubMenu)[] = useMemo(() => {
     return menu.filter(
@@ -38,7 +40,11 @@ export const MainNavMobileSubMenu = ({
             )}
           >
             {item.type === "link" && (
-              <Link href={item.link} className="block w-full">
+              <Link
+                href={item.link}
+                className="block w-full"
+                onClick={() => onOpenLink?.()}
+              >
                 {item.title}
               </Link>
             )}
