@@ -20,12 +20,18 @@ const HeroPricing: React.FC<HeroPricingProps> = ({ data }) => {
       {/* Header Row */}
       <div className="flex items-start justify-start">
         {/* Main content area */}
-        <div className="w-full flex items-center justify-start">
+        <div
+          className="w-full grid gap-0"
+          style={{
+            gridTemplateColumns: `repeat(${data.options.length}, minmax(0, 1fr))`,
+            gridTemplateRows: "auto 1fr auto",
+          }}
+        >
           {data.options.map((option, index) => (
             <React.Fragment key={option._key}>
               <div
                 className={clsx(
-                  `flex-1 min-w-0 p-1`,
+                  `p-1`,
                   index !== data.options.length - 1 &&
                     "border-solid border-r border-medusa-border-base",
                   index === data.options.length - 1 &&
@@ -59,9 +65,9 @@ const HeroPricing: React.FC<HeroPricingProps> = ({ data }) => {
 
       {/* Features and Buttons Row */}
       <div
-        className="w-full grid gap-0"
+        className="w-full grid gap-0 overflow-hidden"
         style={{
-          gridTemplateColumns: `repeat(${data.options.length}, 1fr)`,
+          gridTemplateColumns: `repeat(${data.options.length}, minmax(0, 1fr))`,
           gridTemplateRows: "auto 1fr auto",
         }}
       >

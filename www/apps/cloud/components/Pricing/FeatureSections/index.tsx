@@ -13,6 +13,7 @@ import {
   CurrencyDollar,
   ServerStack,
   Shopping,
+  Users,
   WIP,
 } from "@medusajs/icons"
 
@@ -56,6 +57,7 @@ const featureIcons: Record<string, React.FC> = {
   "Hosting & Deployment": ServerStack,
   "Compute & Resources": WIP,
   "Organization & Billing": CurrencyDollar,
+  "Medusa Support": Users,
 }
 
 // Helper function to render Block content (Sanity rich text)
@@ -97,11 +99,11 @@ const FeatureSections: React.FC<FeatureSectionsProps> = ({
   // Calculate consistent column widths
   // Use fractional units to ensure all grids have matching column sizes
   const featureNameFraction = 2 // Feature name gets 2 units
-  const featureColumnFraction = 1 // Each feature column gets 1 unit
-  const gridTemplate = `${featureNameFraction}fr repeat(${columnCount}, ${featureColumnFraction}fr)`
+  const featureColumnFraction = `minmax(0, 1fr)` // Each feature column gets 1 unit
+  const gridTemplate = `${featureNameFraction}fr repeat(${columnCount}, ${featureColumnFraction})`
 
   return (
-    <div className="w-full flex flex-col rounded shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark">
+    <div className="w-full flex flex-col rounded shadow-elevation-card-rest dark:shadow-elevation-card-rest-dark overflow-hidden">
       {/* Header */}
       <div
         className="w-full grid gap-0 rounded-t"
@@ -110,8 +112,10 @@ const FeatureSections: React.FC<FeatureSectionsProps> = ({
         }}
       >
         {/* Features label column */}
-        <div className="flex items-center justify-start px-1.5 py-1 border-solid border-r border-medusa-border-base">
-          <p className="txt-large text-medusa-fg-subtle">Features</p>
+        <div className="flex items-center justify-start p-0.5 sm:px-1.5 sm:py-1 border-solid border-r border-medusa-border-base">
+          <p className="txt-medium sm:txt-large text-medusa-fg-subtle">
+            Features
+          </p>
         </div>
 
         {/* Column headers */}
@@ -119,12 +123,12 @@ const FeatureSections: React.FC<FeatureSectionsProps> = ({
           <div
             key={index}
             className={clsx(
-              "flex items-center justify-center px-1 py-1 bg-medusa-bg-base",
+              "flex items-center justify-center p-0.25 sm:p-1 bg-medusa-bg-base",
               index !== columns.length - 1 &&
                 "border-solid border-r border-medusa-border-base"
             )}
           >
-            <p className="txt-large text-medusa-fg-base text-left w-full">
+            <p className="txt-medium sm:txt-large text-medusa-fg-base text-left w-full">
               {column}
             </p>
           </div>
@@ -167,7 +171,7 @@ const FeatureSections: React.FC<FeatureSectionsProps> = ({
                   }}
                 >
                   {/* Feature name column */}
-                  <div className="px-1 py-1 flex items-center justify-start border-solid border-r border-medusa-border-base">
+                  <div className="p-0.25 sm:p-1 flex items-center justify-start border-solid border-r border-medusa-border-base">
                     <p className="txt-medium-plus text-medusa-fg-base">
                       <MarkdownContent
                         allowedElements={["br", "a"]}
@@ -189,7 +193,7 @@ const FeatureSections: React.FC<FeatureSectionsProps> = ({
                       <div
                         key={colIndex}
                         className={clsx(
-                          "px-1 py-1 flex items-center justify-center",
+                          "p-0.25 sm:p-1 flex items-center justify-center",
                           colIndex !== columnCount - 1 &&
                             "border-solid border-r border-medusa-border-base"
                         )}
