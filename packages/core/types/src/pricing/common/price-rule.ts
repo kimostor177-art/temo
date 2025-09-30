@@ -1,4 +1,4 @@
-import { BaseFilterable } from "../../dal"
+import { BaseFilterable, OperatorMap } from "../../dal"
 import { PriceSetDTO } from "./price-set"
 
 /**
@@ -123,15 +123,20 @@ export interface FilterablePriceRuleProps
   /**
    * The IDs to filter price rules by.
    */
-  id?: string[]
+  id?: string | string[] | OperatorMap<string | string[]>
   /**
    * The names to filter price rules by.
    */
-  name?: string[]
+  name?: string | string[] | OperatorMap<string | string[]>
   /**
    * The IDs to filter the price rule's associated price set.
    */
-  price_set_id?: string[]
+  price_set_id?: string | string[] | OperatorMap<string | string[]>
+
+  /**
+   * The IDs to filter the price rule's associated price.
+   */
+  price_id?: string | string[] | OperatorMap<string | string[]>
 }
 
 /**
@@ -145,21 +150,21 @@ export type PricingRuleOperatorValues = "gt" | "lt" | "eq" | "lte" | "gte"
 export interface PriceRule {
   /**
    * The attribute to compare.
-   * 
+   *
    * @example
    * amount
    */
   attribute: string
   /**
    * The operator to use in the comparison.
-   * 
+   *
    * @example
    * gt
    */
   operator: PricingRuleOperatorValues
   /**
    * The value to compare against.
-   * 
+   *
    * @example
    * 100
    */

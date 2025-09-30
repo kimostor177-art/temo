@@ -9,6 +9,7 @@ import {
   FindConfig,
   InferEntityType,
   InternalModuleDeclaration,
+  MedusaContainer,
   ModuleJoinerConfig,
   ModulesSdkTypes,
   PricePreferenceDTO,
@@ -95,6 +96,7 @@ export default class PricingModuleService
   extends BaseClass
   implements PricingTypes.IPricingModuleService
 {
+  protected readonly container_: MedusaContainer
   protected baseRepository_: DAL.RepositoryService
   protected readonly pricingRepository_: PricingRepositoryService & {
     clearAvailableAttributes?: () => Promise<void>
@@ -134,6 +136,7 @@ export default class PricingModuleService
     // @ts-ignore
     super(...arguments)
 
+    this.container_ = arguments[0]
     this.baseRepository_ = baseRepository
     this.pricingRepository_ = pricingRepository
     this.priceSetService_ = priceSetService
@@ -328,6 +331,62 @@ export default class PricingModuleService
   }
 
   @InjectManager()
+  // @ts-expect-error
+  async listPriceRules(
+    filters: PricingTypes.FilterablePriceRuleProps,
+    config: FindConfig<PricingTypes.PriceRuleDTO> = {},
+    sharedContext?: Context
+  ): Promise<PricingTypes.PriceRuleDTO[]> {
+    const priceRules = await this.listPriceRules_(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<PricingTypes.PriceRuleDTO[]>(
+      priceRules
+    )
+  }
+
+  protected async listPriceRules_(
+    filters: PricingTypes.FilterablePriceRuleProps,
+    config: FindConfig<PricingTypes.PriceRuleDTO> = {},
+    sharedContext?: Context
+  ): Promise<InferEntityType<typeof PriceRule>[]> {
+    return await this.priceRuleService_.list(filters, config, sharedContext)
+  }
+
+  @InjectManager()
+  // @ts-expect-error
+  async listPricePreferences(
+    filters: PricingTypes.FilterablePricePreferenceProps,
+    config: FindConfig<PricingTypes.PricePreferenceDTO> = {},
+    sharedContext?: Context
+  ): Promise<PricingTypes.PricePreferenceDTO[]> {
+    const pricePreferences = await this.listPricePreferences_(
+      filters,
+      { ...config, select: [...(config.select || []), "id"] },
+      sharedContext
+    )
+
+    return await this.baseRepository_.serialize<
+      PricingTypes.PricePreferenceDTO[]
+    >(pricePreferences)
+  }
+
+  protected async listPricePreferences_(
+    filters: PricingTypes.FilterablePricePreferenceProps,
+    config: FindConfig<PricingTypes.PricePreferenceDTO> = {},
+    sharedContext?: Context
+  ): Promise<InferEntityType<typeof PricePreference>[]> {
+    return await this.pricePreferenceService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+  }
+
+  @InjectManager()
   async calculatePrices(
     pricingFilters: PricingFilters,
     pricingContext: PricingContext = { context: {} },
@@ -395,29 +454,37 @@ export default class PricingModuleService
     )
 
     // We use the price rules to get the right preferences for the price
-    const priceRulesForPrices = await this.priceRuleService_.list(
+    const priceRulesForPrices = await this.listPriceRules(
       { price_id: priceIds },
-      {}
+      {},
+      sharedContext
     )
 
     const priceRulesPriceMap = groupBy(priceRulesForPrices, "price_id")
 
     // Note: For now the preferences are intentionally kept very simple and explicit - they use either the region or currency,
     // so we hard-code those as the possible filters here. This can be made more flexible if needed later on.
-    const pricingPreferences = await this.pricePreferenceService_.list(
-      {
-        $or: Object.entries(pricingContext)
-          .filter(([key, val]) => {
-            return key === "region_id" || key === "currency_code"
-          })
-          .map(([key, val]) => ({
-            attribute: key,
-            value: val,
-          })),
-      },
-      {},
-      sharedContext
-    )
+    const preferenceContext = Object.entries(
+      pricingContext.context ?? {}
+    ).filter(([key, val]) => {
+      return key === "region_id" || key === "currency_code"
+    })
+    let pricingPreferences: InferEntityType<typeof PricePreference>[] = []
+    if (preferenceContext.length) {
+      const preferenceFilters = preferenceContext.length
+        ? {
+            $or: preferenceContext.map(([key, val]) => ({
+              attribute: key,
+              value: val,
+            })),
+          }
+        : {}
+      pricingPreferences = await this.listPricePreferences_(
+        preferenceFilters as PricingTypes.FilterablePricePreferenceProps,
+        {},
+        sharedContext
+      )
+    }
 
     const calculatedPrices: PricingTypes.CalculatedPriceSet[] = []
 

@@ -6417,7 +6417,7 @@ __metadata:
     "@medusajs/js-sdk": 2.10.3
     "@medusajs/test-utils": 2.10.3
     "@medusajs/types": 2.10.3
-    "@medusajs/ui": 4.0.21
+    "@medusajs/ui": 4.0.23
     "@medusajs/ui-preset": 2.10.3
     "@swc/core": 1.5.7
     "@tanstack/react-query": 5.64.2
@@ -6445,7 +6445,7 @@ __metadata:
     "@medusajs/framework": 2.10.3
     "@medusajs/icons": 2.10.3
     "@medusajs/test-utils": 2.10.3
-    "@medusajs/ui": 4.0.21
+    "@medusajs/ui": 4.0.23
     lodash: ^4.17.21
     react-router-dom: 6.20.1
   languageName: unknown
@@ -6662,15 +6662,6 @@ __metadata:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
   languageName: unknown
   linkType: soft
-
-"@medusajs/icons@npm:2.10.1":
-  version: 2.10.1
-  resolution: "@medusajs/icons@npm:2.10.1"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
-  checksum: 280e7174376a1e36db5376a2efee659a6b4f1002bd9136a6966c039587373688c4f1239830873c9d592bc570592ddc014037d7af6d9d075e5093ae6c74d0f351
-  languageName: node
-  linkType: hard
 
 "@medusajs/index@2.10.3, @medusajs/index@workspace:packages/modules/index":
   version: 0.0.0-use.local
@@ -7403,30 +7394,6 @@ __metadata:
     react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
   languageName: unknown
   linkType: soft
-
-"@medusajs/ui@npm:4.0.21":
-  version: 4.0.21
-  resolution: "@medusajs/ui@npm:4.0.21"
-  dependencies:
-    "@medusajs/icons": 2.10.1
-    "@tanstack/react-table": 8.20.5
-    clsx: ^1.2.1
-    copy-to-clipboard: ^3.3.3
-    cva: 1.0.0-beta.1
-    prism-react-renderer: ^2.0.6
-    prismjs: ^1.29.0
-    radix-ui: 1.1.2
-    react-aria: ^3.33.1
-    react-currency-input-field: ^3.6.11
-    react-stately: ^3.31.1
-    sonner: ^1.5.0
-    tailwind-merge: ^2.2.1
-  peerDependencies:
-    react: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
-    react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-rc
-  checksum: 9e5af539201aa2e50090134a492a992e01233943a39c7d21e8193469c4d379c6a0fce55cc2541cb4ce4e93813bb76015e9256043769a551a8c0cad338774512d
-  languageName: node
-  linkType: hard
 
 "@medusajs/user@2.10.3, @medusajs/user@workspace:^, @medusajs/user@workspace:packages/modules/user":
   version: 0.0.0-use.local

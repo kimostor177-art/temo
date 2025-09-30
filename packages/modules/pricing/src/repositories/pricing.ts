@@ -69,7 +69,7 @@ export class PricingRepository
   ): Promise<CalculatedPriceSetDTO[]> {
     const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
     const knex = manager.getKnex()
-    const context = pricingContext.context || {}
+    const context = { ...(pricingContext.context || {}) }
 
     // Extract quantity and currency from context
     const quantity = context.quantity

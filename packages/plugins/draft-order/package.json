@@ -51,7 +51,7 @@
     "@medusajs/icons": "2.10.3",
     "@medusajs/test-utils": "2.10.3",
     "@medusajs/types": "2.10.3",
-    "@medusajs/ui": "4.0.21",
+    "@medusajs/ui": "4.0.23",
     "@medusajs/ui-preset": "2.10.3",
     "@swc/core": "1.5.7",
     "@types/lodash": "^4.17.15",
@@ -74,7 +74,7 @@
     "@medusajs/framework": "2.10.3",
     "@medusajs/icons": "2.10.3",
     "@medusajs/test-utils": "2.10.3",
-    "@medusajs/ui": "4.0.21",
+    "@medusajs/ui": "4.0.23",
     "lodash": "^4.17.21",
     "react-router-dom": "6.20.1"
   },

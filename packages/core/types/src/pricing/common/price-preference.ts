@@ -1,4 +1,4 @@
-import { BaseFilterable } from "../../dal"
+import { BaseFilterable, OperatorMap } from "../../dal"
 
 /**
  * @interface
@@ -83,13 +83,13 @@ export interface FilterablePricePreferenceProps
   /**
    * The IDs to filter the price preferences by.
    */
-  id?: string[]
+  id?: string | string[] | OperatorMap<string | string[]>
   /**
    * Attributes to filter price preferences by.
    */
-  attribute?: string | string[]
+  attribute?: string | string[] | OperatorMap<string | string[]>
   /**
    * Values to filter price preferences by.
    */
-  value?: string | string[]
+  value?: string | string[] | OperatorMap<string | string[]>
 }
