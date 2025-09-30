@@ -1,9 +1,6 @@
-import {
-  BigNumberInput,
-  IPaymentModuleService,
-} from "@medusajs/framework/types"
+import { BigNumberInput, IPaymentModuleService } from "@medusajs/framework/types"
 import { Modules } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
  * The data to refund a payment.

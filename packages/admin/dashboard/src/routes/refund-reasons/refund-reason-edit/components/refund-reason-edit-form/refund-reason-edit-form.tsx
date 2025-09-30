@@ -8,7 +8,7 @@ import { z } from "zod"
 import { Form } from "../../../../../components/common/form"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
-import { useUpdateRefundReason } from "../../../../../hooks/api/refund-reasons"
+import { useUpdateRefundReason } from "../../../../../hooks/api"
 
 type RefundReasonEditFormProps = {
   refundReason: HttpTypes.AdminRefundReason
@@ -16,6 +16,7 @@ type RefundReasonEditFormProps = {
 
 const RefundReasonEditSchema = z.object({
   label: z.string().min(1),
+  code: z.string().min(1),
   description: z.string().optional(),
 })
 
@@ -28,6 +29,7 @@ export const RefundReasonEditForm = ({
   const form = useForm<z.infer<typeof RefundReasonEditSchema>>({
     defaultValues: {
       label: refundReason.label,
+      code: refundReason.code,
       description: refundReason.description ?? undefined,
     },
     resolver: zodResolver(RefundReasonEditSchema),
@@ -71,6 +73,26 @@ export const RefundReasonEditForm = ({
                     <Input
                       {...field}
                       placeholder={t("refundReasons.fields.label.placeholder")}
+                    />
+                  </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+          <Form.Field
+            control={form.control}
+            name="code"
+            render={({ field }) => {
+              return (
+                <Form.Item>
+                  <Form.Label>
+                    {t("refundReasons.fields.code.label")}
+                  </Form.Label>
+                  <Form.Control>
+                    <Input
+                      {...field}
+                      placeholder={t("refundReasons.fields.code.placeholder")}
                     />
                   </Form.Control>
                   <Form.ErrorMessage />

@@ -22,20 +22,20 @@ import {
   RefundReasonDTO,
 } from "./common"
 import {
+  CreateAccountHolderDTO,
   CreateCaptureDTO,
   CreatePaymentCollectionDTO,
+  CreatePaymentMethodDTO,
   CreatePaymentSessionDTO,
   CreateRefundDTO,
   CreateRefundReasonDTO,
   PaymentCollectionUpdatableFields,
   ProviderWebhookPayload,
+  UpdateAccountHolderDTO,
   UpdatePaymentDTO,
   UpdatePaymentSessionDTO,
   UpdateRefundReasonDTO,
-  CreateAccountHolderDTO,
   UpsertPaymentCollectionDTO,
-  CreatePaymentMethodDTO,
-  UpdateAccountHolderDTO,
 } from "./mutations"
 import { WebhookActionResult } from "./provider"
 
@@ -1242,9 +1242,11 @@ export interface IPaymentModuleService extends IModuleService {
    *   await paymentModuleService.createRefundReasons([
    *     {
    *       label: "Too big",
+   *       code: "too_big
    *     },
    *     {
-   *       label: "Too big",
+   *       label: "Too small",
+   *       code: "too_small
    *     },
    *   ])
    */
@@ -1264,6 +1266,7 @@ export interface IPaymentModuleService extends IModuleService {
    * const refundReason =
    *   await paymentModuleService.createRefundReasons({
    *     label: "Too big",
+   *     code: "too_big"
    *   })
    */
   createRefundReasons(

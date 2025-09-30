@@ -853,10 +853,6 @@ const DiscountAndTotalBreakdown = ({
                   .split("-")
                   .join(" ")
 
-                const prettyReferenceId = creditLine.reference_id ? (
-                  <DisplayId id={creditLine.reference_id} />
-                ) : null
-
                 return (
                   <div
                     key={creditLine.id}
@@ -899,7 +895,7 @@ const DiscountAndTotalBreakdown = ({
                         leading="compact"
                         className="txt-small text-ui-fg-subtle capitalize"
                       >
-                        ({prettyReference} {prettyReferenceId})
+                        ({prettyReference})
                       </Text>
                     </div>
                     <div className="relative flex-1">

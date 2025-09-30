@@ -1,6 +1,7 @@
 export const defaultAdminRefundReasonFields = [
   "id",
   "label",
+  "code",
   "description",
   "created_at",
   "updated_at",

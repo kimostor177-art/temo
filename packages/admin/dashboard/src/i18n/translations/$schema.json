@@ -10306,6 +10306,19 @@
               "required": ["label", "placeholder"],
               "additionalProperties": false
             },
+            "code": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string"
+                },
+                "placeholder": {
+                  "type": "string"
+                }
+              },
+              "required": ["label", "placeholder"],
+              "additionalProperties": false
+            },
             "description": {
               "type": "object",
               "properties": {
@@ -10320,7 +10333,7 @@
               "additionalProperties": false
             }
           },
-          "required": ["label", "description"],
+          "required": ["label", "code", "description"],
           "additionalProperties": false
         }
       },

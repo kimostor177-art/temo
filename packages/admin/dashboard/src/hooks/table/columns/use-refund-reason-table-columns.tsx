@@ -18,6 +18,13 @@ export const useRefundReasonTableColumns = () => {
         sortAscLabel: t("filters.sorting.alphabeticallyAsc"),
         sortDescLabel: t("filters.sorting.alphabeticallyDesc"),
       }),
+      columnHelper.accessor("code", {
+        header: () => t("fields.code"),
+        enableSorting: true,
+        sortLabel: t("fields.code"),
+        sortAscLabel: t("filters.sorting.alphabeticallyAsc"),
+        sortDescLabel: t("filters.sorting.alphabeticallyDesc"),
+      }),
       columnHelper.accessor("description", {
         header: () => t("fields.description"),
         cell: ({ getValue }) => <DescriptionCell description={getValue()} />,

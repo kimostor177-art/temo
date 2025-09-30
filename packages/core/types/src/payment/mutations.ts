@@ -1,10 +1,6 @@
 import { BigNumberInput } from "../totals"
 import { PaymentCollectionStatus, PaymentSessionStatus } from "./common"
-import {
-  PaymentAccountHolderDTO,
-  PaymentCustomerDTO,
-  PaymentProviderContext,
-} from "./provider"
+import { PaymentAccountHolderDTO, PaymentCustomerDTO, PaymentProviderContext, } from "./provider"
 
 /**
  * The payment collection to be created.
@@ -356,6 +352,10 @@ export interface CreateRefundReasonDTO {
    * The label of the refund reason
    */
   label: string
+  /**
+   * The code of the refund reason
+   */
+  code: string
   /**
    * The description of the refund reason
    */

@@ -2771,6 +2771,10 @@
         "label": "Label",
         "placeholder": "Gesture of goodwill"
       },
+      "code": {
+        "label": "Code",
+        "placeholder": "gesture_of_goodwill"
+      },
       "description": {
         "label": "Description",
         "placeholder": "Customer had a bad shopping experience"

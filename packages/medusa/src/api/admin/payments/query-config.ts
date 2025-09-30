@@ -12,6 +12,7 @@ export const defaultAdminPaymentFields = [
   "refunds.note",
   "refunds.payment_id",
   "refunds.refund_reason.label",
+  "refunds.refund_reason.code",
 ]
 
 export const listTransformQueryConfig = {

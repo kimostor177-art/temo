@@ -1,5 +1,8 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { adminHeaders, createAdminUser, } from "../../../helpers/create-admin-user"
+import {
+  adminHeaders,
+  createAdminUser,
+} from "../../../helpers/create-admin-user"
 
 jest.setTimeout(30000)
 
@@ -15,7 +18,7 @@ medusaIntegrationTestRunner({
       refundReason1 = (
         await api.post(
           "/admin/refund-reasons",
-          { label: "reason 1 - too big" },
+          { label: "reason 1 - too big", code: "too_big" },
           adminHeaders
         )
       ).data.refund_reason
@@ -23,7 +26,7 @@ medusaIntegrationTestRunner({
       refundReason2 = (
         await api.post(
           "/admin/refund-reasons",
-          { label: "reason 2 - too small" },
+          { label: "reason 2 - too small", code: "too_small" },
           adminHeaders
         )
       ).data.refund_reason
@@ -41,11 +44,11 @@ medusaIntegrationTestRunner({
         expect(response.data.count).toEqual(5) // There are 3 default ones
         expect(response.data.refund_reasons).toEqual(
           expect.arrayContaining([
-            expect.objectContaining({ label: "Customer Care Adjustment" }),
-            expect.objectContaining({ label: "Shipping Issue" }),
-            expect.objectContaining({ label: "Pricing Error" }),
-            expect.objectContaining({ label: "reason 1 - too big" }),
-            expect.objectContaining({ label: "reason 2 - too small" }),
+            expect.objectContaining({ label: "Customer Care Adjustment", code: "customer_care_adjustment" }),
+            expect.objectContaining({ label: "Shipping Issue", code: "shipping_issue" }),
+            expect.objectContaining({ label: "Pricing Error", code: "pricing_error" }),
+            expect.objectContaining({ label: "reason 1 - too big", code: "too_big"  }),
+            expect.objectContaining({ label: "reason 2 - too small", code: "too_small"  }),
           ])
         )
       })
@@ -74,6 +77,7 @@ medusaIntegrationTestRunner({
           "/admin/refund-reasons",
           {
             label: "reason test",
+            code: "reason_test",
             description: "test description",
           },
           adminHeaders
@@ -83,6 +87,7 @@ medusaIntegrationTestRunner({
         expect(response.data.refund_reason).toEqual(
           expect.objectContaining({
             label: "reason test",
+            code: "reason_test",
             description: "test description",
           })
         )
@@ -95,6 +100,7 @@ medusaIntegrationTestRunner({
           `/admin/refund-reasons/${refundReason1.id}`,
           {
             label: "reason test",
+            code: "reason_test",
             description: "test description",
           },
           adminHeaders
@@ -104,6 +110,7 @@ medusaIntegrationTestRunner({
         expect(response.data.refund_reason).toEqual(
           expect.objectContaining({
             label: "reason test",
+            code: "reason_test",
             description: "test description",
           })
         )

@@ -1,14 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
-import {
-  Button,
-  CurrencyInput,
-  Label,
-  Select,
-  Textarea,
-  toast,
-} from "@medusajs/ui"
-import { useEffect, useMemo, useState } from "react"
+import { Button, CurrencyInput, Select, Textarea, toast } from "@medusajs/ui"
+import { useMemo, useState } from "react"
 import { formatValue } from "react-currency-input-field"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
@@ -20,7 +13,6 @@ import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useRefundPayment, useRefundReasons } from "../../../../../hooks/api"
 import { currencies } from "../../../../../lib/data/currencies"
 import { formatCurrency } from "../../../../../lib/format-currency"
-import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 import { getPaymentsFromOrder } from "../../../../../lib/orders"
 import { useDocumentDirection } from "../../../../../hooks/use-document-direction"
@@ -63,28 +55,9 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
         value: paymentAmount.toFixed(currency.decimal_digits),
         float: paymentAmount,
       },
-      note: "",
-      refund_reason_id: "",
     },
     resolver: zodResolver(CreateRefundSchema),
   })
-
-  useEffect(() => {
-    const pendingDifference = order.summary.pending_difference as number
-    const paymentAmount = (payment?.amount || 0) as number
-    const pendingAmount =
-      pendingDifference < 0
-        ? Math.min(Math.abs(pendingDifference), paymentAmount)
-        : paymentAmount
-
-    const normalizedAmount =
-      pendingAmount < 0 ? pendingAmount * -1 : pendingAmount
-
-    form.setValue("amount", {
-      value: normalizedAmount.toFixed(currency.decimal_digits),
-      float: normalizedAmount,
-    })
-  }, [payment?.id || ""])
 
   const { mutateAsync, isPending } = useRefundPayment(order.id, payment?.id!)
 
@@ -123,53 +96,16 @@ export const CreateRefundForm = ({ order }: CreateRefundFormProps) => {
       >
         <RouteDrawer.Body className="flex-1 overflow-auto">
           <div className="flex flex-col gap-y-4">
-            <Select
-              dir={direction}
-              value={paymentId}
-              onValueChange={(value) => {
-                setPaymentId(value)
-              }}
-            >
-              <Label className="txt-compact-small mb-[-6px] font-sans font-medium">
-                {t("orders.payment.selectPaymentToRefund")}
-              </Label>
-
-              <Select.Trigger>
-                <Select.Value
-                  placeholder={t("orders.payment.selectPaymentToRefund")}
-                />
-              </Select.Trigger>
-
-              <Select.Content>
-                {payments.map((payment) => {
-                  const totalRefunded = payment.refunds.reduce(
-                    (acc, next) => next.amount + acc,
-                    0
-                  )
-
-                  return (
-                    <Select.Item
-                      value={payment!.id}
-                      key={payment.id}
-                      disabled={
-                        !!payment.canceled_at || totalRefunded >= payment.amount
-                      }
-                      className="flex items-center justify-center"
-                    >
-                      <span>
-                        {getLocaleAmount(
-                          payment.amount as number,
-                          payment.currency_code
-                        )}
-                        {" - "}
-                      </span>
-                      <span>{formatProvider(payment.provider_id)}</span>
-                      <span> - (#{payment.id.substring(23)})</span>
-                    </Select.Item>
-                  )
-                })}
-              </Select.Content>
-            </Select>
+            <div className="flex items-center">
+              <span>
+                {getLocaleAmount(
+                  payment.amount as number,
+                  payment.currency_code
+                )}
+              </span>
+              <span> - </span>
+              <span>(#{payment.id.substring(23)})</span>
+            </div>
 
             <Form.Field
               control={form.control}

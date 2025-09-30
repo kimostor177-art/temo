@@ -7,6 +7,7 @@ export type AdminCreatePaymentRefundReasonType = z.infer<
 export const AdminCreatePaymentRefundReason = z
   .object({
     label: z.string(),
+    code: z.string(),
     description: z.string().nullish(),
   })
   .strict()
@@ -17,6 +18,7 @@ export type AdminUpdatePaymentRefundReasonType = z.infer<
 export const AdminUpdatePaymentRefundReason = z
   .object({
     label: z.string().optional(),
+    code: z.string().optional(),
     description: z.string().nullish(),
   })
   .strict()

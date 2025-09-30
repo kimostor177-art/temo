@@ -1,89 +1,10 @@
-import type {
-  BigNumberInput,
-  OrderDTO,
-  PaymentDTO,
-} from "@medusajs/framework/types"
-import { MathBN, MedusaError, PaymentEvents } from "@medusajs/framework/utils"
-import {
-  WorkflowData,
-  WorkflowResponse,
-  createStep,
-  createWorkflow,
-  transform,
-  when,
-} from "@medusajs/framework/workflows-sdk"
+import { BigNumberInput } from "@medusajs/framework/types"
+import { MathBN, PaymentEvents } from "@medusajs/framework/utils"
+import { createWorkflow, transform, when, WorkflowData, WorkflowResponse, } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
 import { refundPaymentStep } from "../steps/refund-payment"
-
-/**
- * The data to validate whether the refund is valid for the order.
- */
-export type ValidateRefundStepInput = {
-  /**
-   * The order's details.
-   */
-  order: OrderDTO
-  /**
-   * The order's payment details.
-   */
-  payment: PaymentDTO
-  /**
-   * The amound to refund.
-   */
-  amount?: BigNumberInput
-}
-
-/**
- * This step validates that the refund is valid for the order.
- * If the order does not have an outstanding balance to refund, the step throws an error.
- *
- * :::note
- *
- * You can retrieve an order or payment's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
- * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- *
- * :::
- *
- * @example
- * const data = validateRefundStep({
- *   order: {
- *     id: "order_123",
- *     // other order details...
- *   },
- *   payment: {
- *     id: "payment_123",
- *     // other payment details...
- *   },
- *   amount: 10
- * })
- */
-export const validateRefundStep = createStep(
-  "validate-refund-step",
-  async function ({ order, payment, amount }: ValidateRefundStepInput) {
-    const pendingDifference =
-      order.summary?.raw_pending_difference! ??
-      order.summary?.pending_difference! ??
-      0
-
-    if (MathBN.gte(pendingDifference, 0)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Order does not have an outstanding balance to refund`
-      )
-    }
-
-    const amountPending = MathBN.mult(pendingDifference, -1)
-    const amountToRefund = amount ?? payment.raw_amount ?? payment.amount
-
-    if (MathBN.gt(amountToRefund, amountPending)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Cannot refund more than pending difference - ${amountPending}`
-      )
-    }
-  }
-)
+import { createOrderRefundCreditLinesWorkflow } from "../../order/workflows/payments/create-order-refund-credit-lines"
 
 /**
  * The data to refund a payment.
@@ -101,6 +22,14 @@ export type RefundPaymentWorkflowInput = {
    * The amount to refund. If not provided, the full payment amount will be refunded.
    */
   amount?: BigNumberInput
+  /**
+   * The note to attach to the refund.
+   */
+  note?: string
+  /**
+   * The ID of the refund reason to attach to the refund.
+   */
+  refund_reason_id?: string
 }
 
 export const refundPaymentWorkflowId = "refund-payment-workflow"
@@ -156,7 +85,46 @@ export const refundPaymentWorkflow = createWorkflow(
       list: false,
     }).config({ name: "order" })
 
-    validateRefundStep({ order, payment, amount: input.amount })
+    const refundReason = when(
+      "fetch-refund-reason",
+      { input }, ({ input }) =>
+        !!input.refund_reason_id
+    ).then(() => {
+      return useRemoteQueryStep({
+        entry_point: "refund_reason",
+        fields: ["id", "label", "code"],
+        variables: { id: input.refund_reason_id },
+        list: false,
+        throw_if_key_not_found: true,
+      }).config({ name: "refund-reason" })
+    })
+
+    const creditLineAmount = transform({ order, payment, input }, ({ order, payment, input }) => {
+      const pendingDifference = order.summary?.raw_pending_difference! ?? order.summary?.pending_difference! ?? 0
+      const amountToRefund = input.amount ?? payment.raw_amount ?? payment.amount
+
+      if (MathBN.lt(pendingDifference, 0)) {
+        const amountOwed = MathBN.mult(pendingDifference, -1)
+
+        return MathBN.gt(amountToRefund, amountOwed) ?  MathBN.sub(amountToRefund, amountOwed) : 0
+      }
+
+      return amountToRefund
+    })
+
+    when(
+      { creditLineAmount, refundReason }, ({ creditLineAmount, refundReason }) => MathBN.gt(creditLineAmount, 0)
+    ).then(() => {
+      createOrderRefundCreditLinesWorkflow.runAsStep({
+        input: {
+          order_id: order.id,
+          amount: creditLineAmount,
+          reference: refundReason?.label,
+          referenceId: refundReason?.code
+        },
+      })
+    })
+
     const refundPayment = refundPaymentStep(input)
 
     when({ orderPaymentCollection }, ({ orderPaymentCollection }) => {

@@ -1,15 +1,6 @@
 import type { BigNumberInput, OrderDTO } from "@medusajs/framework/types"
-import {
-  ChangeActionType,
-  OrderChangeStatus,
-  OrderChangeType,
-} from "@medusajs/framework/utils"
-import {
-  WorkflowData,
-  createStep,
-  createWorkflow,
-  transform,
-} from "@medusajs/framework/workflows-sdk"
+import { ChangeActionType, OrderChangeStatus, OrderChangeType, } from "@medusajs/framework/utils"
+import { createStep, createWorkflow, transform, WorkflowData, } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import { createOrderChangeStep } from "../../steps/create-order-change"
@@ -36,8 +27,10 @@ export const createOrderRefundCreditLinesWorkflow = createWorkflow(
   function (
     input: WorkflowData<{
       order_id: string
+      amount: BigNumberInput,
+      reference?: string,
+      referenceId?: string
       created_by?: string
-      amount: BigNumberInput
     }>
   ) {
     const orderQuery = useQueryGraphStep({
@@ -69,8 +62,8 @@ export const createOrderRefundCreditLinesWorkflow = createWorkflow(
         order_id: order.id,
         version: orderChange.version,
         action: ChangeActionType.CREDIT_LINE_ADD,
-        reference: "payment_collection",
-        reference_id: order.payment_collections[0]?.id,
+        reference: input.reference ?? "payment_collection",
+        reference_id: input.referenceId ?? order.payment_collections[0]?.id,
         amount: input.amount,
       })
     )
