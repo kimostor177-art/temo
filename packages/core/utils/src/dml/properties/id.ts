@@ -14,7 +14,7 @@ export class IdProperty extends BaseProperty<string> {
     return !!value?.[IsIdProperty] || value?.dataType?.name === "id"
   }
 
-  protected dataType: {
+  dataType: {
     name: "id"
     options: {
       prefix?: string

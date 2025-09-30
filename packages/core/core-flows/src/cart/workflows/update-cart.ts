@@ -148,6 +148,9 @@ export const updateCartWorkflow = createWorkflow(
         options: {
           throwIfKeyNotFound: true,
           isList: false,
+          cache: {
+            enable: true,
+          },
         },
       }).config({ name: "get-region" })
 

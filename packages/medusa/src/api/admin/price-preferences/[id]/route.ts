@@ -14,12 +14,12 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<HttpTypes.AdminPricePreferenceResponse>
 ) => {
-  const price_preference = await refetchEntity(
-    "price_preference",
-    req.params.id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const price_preference = await refetchEntity({
+    entity: "price_preference",
+    idOrFilter: req.params.id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   res.status(200).json({ price_preference })
 }
@@ -35,12 +35,12 @@ export const POST = async (
     input: { selector: { id: [id] }, update: req.body },
   })
 
-  const price_preference = await refetchEntity(
-    "price_preference",
-    id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const price_preference = await refetchEntity({
+    entity: "price_preference",
+    idOrFilter: id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   res.status(200).json({ price_preference })
 }

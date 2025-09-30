@@ -16,12 +16,12 @@ export const POST = async (
     input: { orderId, fulfillmentId },
   })
 
-  const order = await refetchEntity(
-    "order",
-    orderId,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const order = await refetchEntity({
+    entity: "order",
+    idOrFilter: orderId,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   res.status(200).json({ order })
 }

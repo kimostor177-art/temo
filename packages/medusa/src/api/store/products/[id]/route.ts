@@ -1,5 +1,6 @@
-import { isPresent, MedusaError } from "@medusajs/framework/utils"
 import { MedusaResponse } from "@medusajs/framework/http"
+import { HttpTypes } from "@medusajs/framework/types"
+import { isPresent, MedusaError, QueryContext } from "@medusajs/framework/utils"
 import { wrapVariantsWithInventoryQuantityForSalesChannel } from "../../../utils/middlewares"
 import {
   filterOutInternalProductCategories,
@@ -7,7 +8,6 @@ import {
   RequestWithContext,
   wrapProductsWithTaxPrices,
 } from "../helpers"
-import { HttpTypes } from "@medusajs/framework/types"
 
 export const GET = async (
   req: RequestWithContext<HttpTypes.StoreProductParams>,
@@ -29,9 +29,11 @@ export const GET = async (
   }
 
   if (isPresent(req.pricingContext)) {
-    filters["context"] = {
-      "variants.calculated_price": { context: req.pricingContext },
-    }
+    filters["context"] ??= {}
+    filters["context"]["variants"] ??= {}
+    filters["context"]["variants"]["calculated_price"] ??= QueryContext(
+      req.pricingContext!
+    )
   }
 
   const includesCategoriesField = req.queryConfig.fields.some((field) =>

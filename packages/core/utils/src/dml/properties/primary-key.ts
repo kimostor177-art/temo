@@ -24,6 +24,10 @@ export class PrimaryKeyModifier<T, Schema extends PropertyType<T>>
    */
   #schema: Schema
 
+  get schema() {
+    return this.#schema
+  }
+
   constructor(schema: Schema) {
     this.#schema = schema
   }

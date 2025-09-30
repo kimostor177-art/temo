@@ -1,4 +1,4 @@
-import { Query } from "@medusajs/framework"
+import { MedusaContainer, Query } from "@medusajs/framework"
 import {
   CalculatedPriceSet,
   IPricingModuleService,
@@ -75,11 +75,18 @@ async function fetchVariantPriceSets(
   variantIds: string[]
 ): Promise<VariantPriceSetData[]> {
   return (
-    await query.graph({
-      entity: "variant",
-      fields: ["id", "price_set.id"],
-      filters: { id: variantIds },
-    })
+    await query.graph(
+      {
+        entity: "variant",
+        fields: ["id", "price_set.id"],
+        filters: { id: variantIds },
+      },
+      {
+        cache: {
+          enable: true,
+        },
+      }
+    )
   ).data
 }
 
@@ -108,7 +115,8 @@ function validateVariantPriceSets(
  */
 async function processVariantPriceSets(
   pricingService: IPricingModuleService,
-  items: PriceCalculationItem[]
+  items: PriceCalculationItem[],
+  container: MedusaContainer
 ): Promise<GetVariantPriceSetsStepOutput> {
   const result: GetVariantPriceSetsStepOutput = {}
 
@@ -298,7 +306,8 @@ export const getVariantPriceSetsStep = createStep(
     // Use unified processing logic for both input types
     const result = await processVariantPriceSets(
       pricingModuleService,
-      calculationItems
+      calculationItems,
+      container
     )
 
     return new StepResponse(result)

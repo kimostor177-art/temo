@@ -16,12 +16,12 @@ export const GET = async (
   res: MedusaResponse<HttpTypes.AdminProductResponse>
 ) => {
   const selectFields = remapKeysForProduct(req.queryConfig.fields ?? [])
-  const product = await refetchEntity(
-    "product",
-    req.params.id,
-    req.scope,
-    selectFields
-  )
+  const product = await refetchEntity({
+    entity: "product",
+    idOrFilter: req.params.id,
+    scope: req.scope,
+    fields: selectFields,
+  })
 
   if (!product) {
     throw new MedusaError(MedusaError.Types.NOT_FOUND, "Product not found")
@@ -38,12 +38,12 @@ export const POST = async (
 ) => {
   const { additional_data, ...update } = req.validatedBody
 
-  const existingProduct = await refetchEntity(
-    "product",
-    req.params.id,
-    req.scope,
-    ["id"]
-  )
+  const existingProduct = await refetchEntity({
+    entity: "product",
+    idOrFilter: req.params.id,
+    scope: req.scope,
+    fields: ["id"],
+  })
   /**
    * Check if the product exists with the id or not before calling the workflow.
    */
@@ -62,12 +62,12 @@ export const POST = async (
     },
   })
 
-  const product = await refetchEntity(
-    "product",
-    result[0].id,
-    req.scope,
-    remapKeysForProduct(req.queryConfig.fields ?? [])
-  )
+  const product = await refetchEntity({
+    entity: "product",
+    idOrFilter: result[0].id,
+    scope: req.scope,
+    fields: remapKeysForProduct(req.queryConfig.fields ?? []),
+  })
 
   res.status(200).json({ product: remapProductResponse(product) })
 }

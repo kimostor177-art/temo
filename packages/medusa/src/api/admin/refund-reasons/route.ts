@@ -17,13 +17,13 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.RefundReasonFilters>,
   res: MedusaResponse<PaginatedResponse<RefundReasonsResponse>>
 ) => {
-  const { rows: refund_reasons, metadata } = await refetchEntities(
-    "refund_reasons",
-    req.filterableFields,
-    req.scope,
-    req.queryConfig.fields,
-    req.queryConfig.pagination
-  )
+  const { data: refund_reasons, metadata } = await refetchEntities({
+    entity: "refund_reasons",
+    idOrFilter: req.filterableFields,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+    pagination: req.queryConfig.pagination,
+  })
 
   res.json({
     refund_reasons,
@@ -43,12 +43,12 @@ export const POST = async (
     input: { data: [req.validatedBody] },
   })
 
-  const refund_reason = await refetchEntity(
-    "refund_reason",
-    refundReason.id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const refund_reason = await refetchEntity({
+    entity: "refund_reason",
+    idOrFilter: refundReason.id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   res.status(200).json({ refund_reason })
 }

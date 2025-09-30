@@ -39,12 +39,12 @@ export function normalizeDataForContext() {
 
     // If the cart is passed, get the information from it
     if (req.filterableFields.cart_id) {
-      const cart = await refetchEntity(
-        "cart",
-        req.filterableFields.cart_id,
-        req.scope,
-        ["region_id", "shipping_address.*"]
-      )
+      const cart = await refetchEntity({
+        entity: "cart",
+        idOrFilter: req.filterableFields.cart_id,
+        scope: req.scope,
+        fields: ["region_id", "shipping_address.*"],
+      })
 
       if (cart?.region_id) {
         regionId = cart.region_id
@@ -58,9 +58,16 @@ export function normalizeDataForContext() {
 
     // Finally, try to get it from the store defaults if not available
     if (!regionId) {
-      const stores = await refetchEntities("store", {}, req.scope, [
-        "default_region_id",
-      ])
+      const stores = await refetchEntities({
+        entity: "store",
+        scope: req.scope,
+        fields: ["id", "default_region_id"],
+        options: {
+          cache: {
+            enable: true,
+          },
+        },
+      })
       regionId = stores[0]?.default_region_id
     }
 

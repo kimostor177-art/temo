@@ -75,26 +75,26 @@ export const listShippingOptionsForCartWithPricingWorkflowId =
  * @summary
  *
  * List a cart's shipping options with prices.
- * 
+ *
  * @property hooks.setShippingOptionsContext - This hook is executed after the cart is retrieved and before the shipping options are queried. You can consume this hook to return any custom context useful for the shipping options retrieval.
  *
  * For example, you can consume the hook to add the customer Id to the context:
- * 
+ *
  * ```ts
  * import { listShippingOptionsForCartWithPricingWorkflow } from "@medusajs/medusa/core-flows"
  * import { StepResponse } from "@medusajs/workflows-sdk"
- * 
+ *
  * listShippingOptionsForCartWithPricingWorkflow.hooks.setShippingOptionsContext(
  *   async ({ cart }, { container }) => {
- * 
+ *
  *     if (cart.customer_id) {
  *       return new StepResponse({
  *         customer_id: cart.customer_id,
  *       })
  *     }
- * 
+ *
  *     const query = container.resolve("query")
- * 
+ *
  *     const { data: carts } = await query.graph({
  *       entity: "cart",
  *       filters: {
@@ -102,16 +102,16 @@ export const listShippingOptionsForCartWithPricingWorkflowId =
  *       },
  *       fields: ["customer_id"],
  *     })
- * 
+ *
  *     return new StepResponse({
  *       customer_id: carts[0].customer_id,
  *     })
  *   }
  * )
  * ```
- * 
+ *
  * The `customer_id` property will be added to the context along with other properties such as `is_return` and `enabled_in_store`.
- * 
+ *
  * :::note
  *
  * You should also consume the `setShippingOptionsContext` hook in the {@link listShippingOptionsForCartWorkflow} workflow to ensure that the context is consistent when listing shipping options across workflows.
@@ -120,7 +120,11 @@ export const listShippingOptionsForCartWithPricingWorkflowId =
  */
 export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
   listShippingOptionsForCartWithPricingWorkflowId,
-  (input: WorkflowData<ListShippingOptionsForCartWithPricingWorkflowInput & AdditionalData>) => {
+  (
+    input: WorkflowData<
+      ListShippingOptionsForCartWithPricingWorkflowInput & AdditionalData
+    >
+  ) => {
     const optionIds = transform({ input }, ({ input }) =>
       (input.options ?? []).map(({ id }) => id)
     )
@@ -155,6 +159,11 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
         "stock_locations.address.*",
         "stock_locations.fulfillment_sets.id",
       ],
+      options: {
+        cache: {
+          enable: true,
+        },
+      },
     }).config({ name: "sales_channels-fulfillment-query" })
 
     const scFulfillmentSets = transform(
@@ -193,13 +202,21 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
         resultValidator: shippingOptionsContextResult,
       }
     )
-    const setShippingOptionsContextResult = setShippingOptionsContext.getResult()
+    const setShippingOptionsContextResult =
+      setShippingOptionsContext.getResult()
 
     const commonOptions = transform(
       { input, cart, fulfillmentSetIds, setShippingOptionsContextResult },
-      ({ input, cart, fulfillmentSetIds, setShippingOptionsContextResult }) => ({
+      ({
+        input,
+        cart,
+        fulfillmentSetIds,
+        setShippingOptionsContextResult,
+      }) => ({
         context: {
-          ...(setShippingOptionsContextResult ? setShippingOptionsContextResult : {}),
+          ...(setShippingOptionsContextResult
+            ? setShippingOptionsContextResult
+            : {}),
           is_return: input.is_return ? "true" : "false",
           enabled_in_store: !isDefined(input.enabled_in_store)
             ? "true"

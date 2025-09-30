@@ -1,9 +1,15 @@
 import {
   ISalesChannelModuleService,
   IStoreModuleService,
+  MedusaContainer,
   SalesChannelDTO,
 } from "@medusajs/framework/types"
-import { MedusaError, Modules, isDefined } from "@medusajs/framework/utils"
+import {
+  MedusaError,
+  Modules,
+  isDefined,
+  useCache,
+} from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -16,6 +22,34 @@ export interface FindSalesChannelStepInput {
   salesChannelId?: string | null
 }
 
+async function fetchSalesChannel(
+  salesChannelId: string,
+  container: MedusaContainer
+) {
+  const salesChannelService = container.resolve<ISalesChannelModuleService>(
+    Modules.SALES_CHANNEL
+  )
+
+  return await useCache<
+    Awaited<ReturnType<typeof salesChannelService.retrieveSalesChannel>>
+  >(async () => salesChannelService.retrieveSalesChannel(salesChannelId), {
+    container,
+    key: ["find-sales-channel", salesChannelId],
+  })
+}
+
+async function fetchStore(container: MedusaContainer) {
+  const storeModule = container.resolve<IStoreModuleService>(Modules.STORE)
+  return await useCache<Awaited<ReturnType<typeof storeModule.listStores>>>(
+    async () =>
+      storeModule.listStores(
+        {},
+        { select: ["id", "default_sales_channel_id"] }
+      ),
+    { key: "find-sales-channel-default-store", container }
+  )
+}
+
 export const findSalesChannelStepId = "find-sales-channel"
 /**
  * This step either retrieves a sales channel either using the ID provided as an input, or, if no ID
@@ -24,26 +58,17 @@ export const findSalesChannelStepId = "find-sales-channel"
 export const findSalesChannelStep = createStep(
   findSalesChannelStepId,
   async (data: FindSalesChannelStepInput, { container }) => {
-    const salesChannelService = container.resolve<ISalesChannelModuleService>(
-      Modules.SALES_CHANNEL
-    )
-    const storeModule = container.resolve<IStoreModuleService>(Modules.STORE)
-
     let salesChannel: SalesChannelDTO | undefined
 
     if (data.salesChannelId) {
-      salesChannel = await salesChannelService.retrieveSalesChannel(
-        data.salesChannelId
-      )
+      salesChannel = await fetchSalesChannel(data.salesChannelId, container)
     } else if (!isDefined(data.salesChannelId)) {
-      const [store] = await storeModule.listStores(
-        {},
-        { select: ["default_sales_channel_id"] }
-      )
+      const [store] = await fetchStore(container)
 
       if (store?.default_sales_channel_id) {
-        salesChannel = await salesChannelService.retrieveSalesChannel(
-          store.default_sales_channel_id
+        salesChannel = await fetchSalesChannel(
+          store.default_sales_channel_id,
+          container
         )
       }
     }

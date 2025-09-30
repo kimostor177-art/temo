@@ -109,6 +109,7 @@ module.exports = {
           "./packages/modules/event-bus-redis/tsconfig.spec.json",
           "./packages/modules/cache-redis/tsconfig.spec.json",
           "./packages/modules/cache-inmemory/tsconfig.spec.json",
+          "./packages/modules/caching/tsconfig.spec.json",
           "./packages/modules/workflow-engine-redis/tsconfig.spec.json",
           "./packages/modules/workflow-engine-inmemory/tsconfig.spec.json",
           "./packages/modules/fulfillment/tsconfig.spec.json",
@@ -141,6 +142,7 @@ module.exports = {
           "./packages/modules/providers/payment-stripe/tsconfig.spec.json",
           "./packages/modules/providers/locking-postgres/tsconfig.spec.json",
           "./packages/modules/providers/locking-redis/tsconfig.spec.json",
+          "./packages/modules/providers/caching-redis/tsconfig.spec.json",
 
           "./packages/framework/tsconfig.json",
         ],

@@ -155,18 +155,25 @@ const getDataForComputation = async (
   query: Omit<RemoteQueryFunction, symbol>,
   data: { variant_ids: string[]; sales_channel_id?: string }
 ) => {
-  const { data: variantInventoryItems } = await query.graph({
-    entity: "product_variant_inventory_items",
-    fields: [
-      "variant_id",
-      "required_quantity",
-      "variant.manage_inventory",
-      "variant.allow_backorder",
-      "inventory.*",
-      "inventory.location_levels.*",
-    ],
-    filters: { variant_id: data.variant_ids },
-  })
+  const { data: variantInventoryItems } = await query.graph(
+    {
+      entity: "product_variant_inventory_items",
+      fields: [
+        "variant_id",
+        "required_quantity",
+        "variant.manage_inventory",
+        "variant.allow_backorder",
+        "inventory.*",
+        "inventory.location_levels.*",
+      ],
+      filters: { variant_id: data.variant_ids },
+    },
+    {
+      cache: {
+        enable: true,
+      },
+    }
+  )
 
   const variantInventoriesMap = new Map()
   variantInventoryItems.forEach((link) => {
@@ -177,11 +184,21 @@ const getDataForComputation = async (
 
   const locationIds = new Set<string>()
   if (data.sales_channel_id) {
-    const { data: channelLocations } = await query.graph({
-      entity: "sales_channel_locations",
-      fields: ["stock_location_id"],
-      filters: { sales_channel_id: data.sales_channel_id },
-    })
+    const { data: channelLocations } = await query.graph(
+      {
+        entity: "sales_channel_locations",
+        fields: ["stock_location_id"],
+        filters: { sales_channel_id: data.sales_channel_id },
+      },
+      {
+        cache: {
+          tags: [
+            `SalesChannel:${data.sales_channel_id}`,
+            "StockLocation:list:*",
+          ],
+        },
+      }
+    )
 
     channelLocations.forEach((loc) => locationIds.add(loc.stock_location_id))
   }

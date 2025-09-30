@@ -1,7 +1,6 @@
-import type { IPromotionModuleService } from "@medusajs/framework/types"
 import {
+  ContainerRegistrationKeys,
   MedusaError,
-  Modules,
   PromotionActions,
 } from "@medusajs/framework/utils"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
@@ -72,9 +71,6 @@ export const getPromotionCodesToApply = createStep(
   async (data: GetPromotionCodesToApplyStepInput, { container }) => {
     const { promo_codes = [], cart, action = PromotionActions.ADD } = data
     const { items = [], shipping_methods = [] } = cart
-    const promotionService = container.resolve<IPromotionModuleService>(
-      Modules.PROMOTION
-    )
 
     const adjustmentCodes: string[] = []
     items.concat(shipping_methods).forEach((object) => {
@@ -99,14 +95,23 @@ export const getPromotionCodesToApply = createStep(
       action === PromotionActions.ADD ||
       action === PromotionActions.REPLACE
     ) {
+      const query = container.resolve(ContainerRegistrationKeys.QUERY)
       const validPromoCodes: Set<string> = new Set(
         promo_codes.length
           ? (
-              await promotionService.listPromotions(
-                { code: promo_codes },
-                { select: ["code"] }
+              await query.graph(
+                {
+                  entity: "promotion",
+                  fields: ["id", "code"],
+                  filters: { code: promo_codes },
+                },
+                {
+                  cache: {
+                    enable: true,
+                  },
+                }
               )
-            ).map((p) => p.code!)
+            ).data.map((p) => p.code!)
           : []
       )
 

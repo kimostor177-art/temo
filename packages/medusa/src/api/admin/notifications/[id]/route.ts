@@ -10,11 +10,12 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<AdminGetNotificationParamsType>,
   res: MedusaResponse<HttpTypes.AdminNotificationResponse>
 ) => {
-  const notification = await refetchEntity(
-    "notification",
-    req.params.id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const notification = await refetchEntity({
+    entity: "notification",
+    idOrFilter: req.params.id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
+
   res.status(200).json({ notification })
 }

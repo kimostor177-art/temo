@@ -21,13 +21,13 @@ export const GET = async (
     )
   }
 
-  const { rows: variants, metadata } = await refetchEntities(
-    "variant",
-    { ...req.filterableFields },
-    req.scope,
-    remapKeysForVariant(req.queryConfig.fields ?? []),
-    req.queryConfig.pagination
-  )
+  const { data: variants, metadata } = await refetchEntities({
+    entity: "variant",
+    idOrFilter: { ...req.filterableFields },
+    scope: req.scope,
+    fields: remapKeysForVariant(req.queryConfig.fields ?? []),
+    pagination: req.queryConfig.pagination,
+  })
 
   if (withInventoryQuantity) {
     await wrapVariantsWithTotalInventoryQuantity(req, variants || [])

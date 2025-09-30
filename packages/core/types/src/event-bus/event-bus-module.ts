@@ -1,4 +1,9 @@
-import { Message, Subscriber, SubscriberContext } from "./common"
+import {
+  InterceptorSubscriber,
+  Message,
+  Subscriber,
+  SubscriberContext,
+} from "./common"
 
 export interface IEventBusModuleService {
   /**
@@ -86,4 +91,31 @@ export interface IEventBusModuleService {
       eventNames?: string[]
     }
   ): Promise<void>
+
+  /**
+   * This method adds an interceptor to the event bus. This means that the interceptor will be
+   * called before the event is emitted.
+   *
+   * @param interceptor - The interceptor to add.
+   * @returns The instance of the Event Module
+   *
+   * @example
+   * eventModuleService.addInterceptor((message, context) => {
+   *   console.log("Interceptor", message, context)
+   * })
+   */
+  addInterceptor?(interceptor: InterceptorSubscriber): this
+
+  /**
+   * This method removes an interceptor from the event bus.
+   *
+   * @param interceptor - The interceptor to remove.
+   * @returns The instance of the Event Module
+   *
+   * @example
+   * eventModuleService.removeInterceptor((message, context) => {
+   *   console.log("Interceptor", message, context)
+   * })
+   */
+  removeInterceptor?(interceptor: InterceptorSubscriber): this
 }

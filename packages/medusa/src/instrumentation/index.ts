@@ -1,4 +1,3 @@
-import { snakeCase } from "lodash"
 import {
   MedusaNextFunction,
   MedusaRequest,
@@ -6,10 +5,15 @@ import {
   Query,
 } from "@medusajs/framework"
 import { ApiLoader } from "@medusajs/framework/http"
-import { Tracer } from "@medusajs/framework/telemetry"
-import type { SpanExporter } from "@opentelemetry/sdk-trace-node"
-import type { NodeSDKConfiguration } from "@opentelemetry/sdk-node"
 import { TransactionOrchestrator } from "@medusajs/framework/orchestration"
+import { Tracer } from "@medusajs/framework/telemetry"
+import { FeatureFlag } from "@medusajs/framework/utils"
+import { SpanStatusCode } from "@opentelemetry/api"
+import type { NodeSDKConfiguration } from "@opentelemetry/sdk-node"
+import type { SpanExporter } from "@opentelemetry/sdk-trace-node"
+import { snakeCase } from "lodash"
+import CacheModule from "../modules/caching"
+import { ICachingModuleService } from "@medusajs/framework/types"
 
 const EXCLUDED_RESOURCES = [".vite", "virtual:"]
 
@@ -261,6 +265,110 @@ export function instrumentWorkflows() {
   }
 }
 
+export function instrumentCache() {
+  if (!FeatureFlag.isFeatureEnabled("caching")) {
+    return
+  }
+
+  const CacheTracer = new Tracer("@medusajs/caching", "2.0.0")
+  const cacheModule_ = CacheModule as unknown as {
+    service: ICachingModuleService & {
+      traceGet: (
+        cacheGetFn: () => Promise<any>,
+        key: string,
+        tags: string[]
+      ) => Promise<any>
+      traceSet: (
+        cacheSetFn: () => Promise<any>,
+        key: string,
+        tags: string[],
+        options: { autoInvalidate?: boolean }
+      ) => Promise<any>
+      traceClear: (
+        cacheClearFn: () => Promise<any>,
+        key: string,
+        tags: string[],
+        options: { autoInvalidate?: boolean }
+      ) => Promise<any>
+    }
+  }
+
+  cacheModule_.service.traceGet = async function (cacheGetFn, key, tags) {
+    return await CacheTracer.trace(`cache.get`, async (span) => {
+      span.setAttributes({
+        "cache.key": key,
+        "cache.tags": tags,
+      })
+
+      try {
+        return await cacheGetFn()
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: error.message,
+        })
+        throw error
+      } finally {
+        span.end()
+      }
+    })
+  }
+
+  cacheModule_.service.traceSet = async function (
+    cacheSetFn,
+    key,
+    tags,
+    options = {}
+  ) {
+    return await CacheTracer.trace(`cache.set`, async (span) => {
+      span.setAttributes({
+        "cache.key": key,
+        "cache.tags": tags,
+        "cache.options": JSON.stringify(options),
+      })
+
+      try {
+        return await cacheSetFn()
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: error.message,
+        })
+        throw error
+      } finally {
+        span.end()
+      }
+    })
+  }
+
+  cacheModule_.service.traceClear = async function (
+    cacheClearFn,
+    key,
+    tags,
+    options = {}
+  ) {
+    return await CacheTracer.trace(`cache.clear`, async (span) => {
+      span.setAttributes({
+        "cache.key": key,
+        "cache.tags": tags,
+        "cache.options": JSON.stringify(options),
+      })
+
+      try {
+        return await cacheClearFn()
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: error.message,
+        })
+        throw error
+      } finally {
+        span.end()
+      }
+    })
+  }
+}
+
 /**
  * A helper function to configure the OpenTelemetry SDK with some defaults.
  * For better/more control, please configure the SDK manually.
@@ -283,6 +391,7 @@ export function registerOtel(
       query: boolean
       workflows: boolean
       db: boolean
+      cache: boolean
     }>
   }
 ) {
@@ -317,6 +426,9 @@ export function registerOtel(
   }
   if (instrument.workflows) {
     instrumentWorkflows()
+  }
+  if (instrument.cache) {
+    instrumentCache()
   }
 
   const sdk = new NodeSDK({

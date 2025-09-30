@@ -58,3 +58,8 @@ export type RawMessageFormat<TData = any> = {
   context?: Pick<Context, "eventGroupId">
   options?: Record<string, any>
 }
+
+export type InterceptorSubscriber<T = unknown> = (
+  message: Message<T>,
+  context?: { isGrouped?: boolean; eventGroupId?: string }
+) => Promise<void> | void

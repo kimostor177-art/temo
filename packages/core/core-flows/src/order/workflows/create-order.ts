@@ -247,6 +247,11 @@ export const createOrderWorkflow = createWorkflow(
       filters: {
         id: variantIdsWithoutCalculatedPrice,
       },
+      options: {
+        cache: {
+          enable: true,
+        },
+      },
     }).config({ name: "query-variants-without-calculated-price" })
 
     /**

@@ -1,6 +1,7 @@
 import { Constructor, IDmlEntity, ModuleExports } from "@medusajs/types"
 import { DmlEntity } from "../dml"
 import {
+  buildIdPrefixToEntityNameFromDmlObjects,
   buildLinkConfigFromLinkableKeys,
   buildLinkConfigFromModelObjects,
   defineJoinerConfig,
@@ -53,6 +54,10 @@ export function Module<
   // TODO: Add support for non linkable modifier DML object to be skipped from the linkable generation
 
   const linkableKeys = service.prototype.__joinerConfig().linkableKeys
+  service.prototype.__joinerConfig().idPrefixToEntityName =
+    buildIdPrefixToEntityNameFromDmlObjects(
+      dmlObjects.map(([, model]) => model) as DmlEntity<any, any>[]
+    )
 
   if (dmlObjects.length) {
     linkable = buildLinkConfigFromModelObjects<ServiceName, ModelObjects>(

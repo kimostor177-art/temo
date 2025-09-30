@@ -1,4 +1,3 @@
-import type { IPromotionModuleService } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   Modules,
@@ -40,9 +39,6 @@ export const updateCartPromotionsStep = createStep(
     const remoteQuery = container.resolve(
       ContainerRegistrationKeys.REMOTE_QUERY
     )
-    const promotionService = container.resolve<IPromotionModuleService>(
-      Modules.PROMOTION
-    )
 
     const existingCartPromotionLinks = await remoteQuery({
       entryPoint: "cart_promotion",
@@ -60,9 +56,18 @@ export const updateCartPromotionsStep = createStep(
     const linksToDismiss: any[] = []
 
     if (promo_codes?.length) {
-      const promotions = await promotionService.listPromotions(
-        { code: promo_codes },
-        { select: ["id"] }
+      const query = container.resolve(ContainerRegistrationKeys.QUERY)
+      const { data: promotions } = await query.graph(
+        {
+          entity: "promotion",
+          fields: ["id", "code"],
+          filters: { code: promo_codes },
+        },
+        {
+          cache: {
+            enable: true,
+          },
+        }
       )
 
       for (const promotion of promotions) {

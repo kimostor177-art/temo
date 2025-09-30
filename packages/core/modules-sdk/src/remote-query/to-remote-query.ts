@@ -69,8 +69,7 @@ export function toRemoteQuery<const TEntity extends string>(
       }
 
       if (QueryContext.isQueryContext(src)) {
-        const normalizedFilters = { ...src } as any
-        delete normalizedFilters.__type
+        const { __type, ...normalizedFilters } = src as any
 
         const prop = "context"
 
@@ -100,7 +99,7 @@ export function toRemoteQuery<const TEntity extends string>(
   }
 
   // Process filters and context recursively
-  processNestedObjects(joinerQuery[entity], context)
+  processNestedObjects(joinerQuery[entity], context, true)
 
   for (const field of fields) {
     const fieldAsString = field as string

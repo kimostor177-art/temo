@@ -15,12 +15,12 @@ export const POST = async (
     input: req.body,
   })
 
-  const paymentCollection = await refetchEntity(
-    "payment_collection",
-    result[0].id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const paymentCollection = await refetchEntity({
+    entity: "payment_collection",
+    idOrFilter: result[0].id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   res.status(200).json({ payment_collection: paymentCollection })
 }

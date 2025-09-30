@@ -18,12 +18,12 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<AdminReturnReasonResponse>
 ) => {
-  const return_reason = await refetchEntity(
-    "return_reason",
-    req.params.id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const return_reason = await refetchEntity({
+    entity: "return_reason",
+    idOrFilter: req.params.id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   if (!return_reason) {
     throw new MedusaError(

@@ -11,13 +11,14 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<HttpTypes.AdminPricePreferenceListParams>,
   res: MedusaResponse<HttpTypes.AdminPricePreferenceListResponse>
 ) => {
-  const { rows: price_preferences, metadata } = await refetchEntities(
-    "price_preference",
-    req.filterableFields,
-    req.scope,
-    req.queryConfig.fields,
-    req.queryConfig.pagination
-  )
+  const { data: price_preferences, metadata } = await refetchEntities({
+    entity: "price_preference",
+    idOrFilter: req.filterableFields,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+    pagination: req.queryConfig.pagination,
+  })
+
   res.json({
     price_preferences: price_preferences,
     count: metadata.count,
@@ -35,12 +36,12 @@ export const POST = async (
     input: [req.validatedBody],
   })
 
-  const price_preference = await refetchEntity(
-    "price_preference",
-    result[0].id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const price_preference = await refetchEntity({
+    entity: "price_preference",
+    idOrFilter: result[0].id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   res.status(200).json({ price_preference })
 }

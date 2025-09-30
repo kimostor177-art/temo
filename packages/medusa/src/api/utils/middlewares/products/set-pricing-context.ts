@@ -17,12 +17,17 @@ export function setPricingContext() {
     }
 
     // We validate the region ID in the previous middleware
-    const region = await refetchEntity(
-      "region",
-      req.filterableFields.region_id!,
-      req.scope,
-      ["id", "currency_code"]
-    )
+    const region = await refetchEntity({
+      entity: "region",
+      idOrFilter: req.filterableFields.region_id!,
+      scope: req.scope,
+      fields: ["id", "currency_code"],
+      options: {
+        cache: {
+          enable: true,
+        },
+      },
+    })
 
     if (!region) {
       try {
@@ -42,12 +47,12 @@ export function setPricingContext() {
 
     // Find all the customer groups the customer is a part of and set
     if (req.auth_context?.actor_id) {
-      const customerGroups = await refetchEntities(
-        "customer_group",
-        { customers: { id: req.auth_context.actor_id } },
-        req.scope,
-        ["id"]
-      )
+      const { data: customerGroups } = await refetchEntities({
+        entity: "customer_group",
+        idOrFilter: { customers: { id: req.auth_context.actor_id } },
+        scope: req.scope,
+        fields: ["id"],
+      })
 
       pricingContext.customer = { groups: [] }
       customerGroups.map((cg) =>

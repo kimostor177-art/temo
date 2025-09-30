@@ -158,6 +158,10 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
     const promises: Promise<unknown>[] = []
 
     if (eventsToEmit.length) {
+      eventsToEmit.map((eventData) =>
+        this.callInterceptors(eventData, { isGrouped: false })
+      )
+
       const emitData = this.buildEvents(eventsToEmit, options)
 
       promises.push(this.queue_.addBulk(emitData))
@@ -212,6 +216,21 @@ export default class RedisEventBusService extends AbstractEventBusModuleService 
 
   async releaseGroupedEvents(eventGroupId: string) {
     const groupedEvents = await this.getGroupedEvents(eventGroupId)
+
+    // Call interceptors before emitting grouped events
+    // Extract the original messages from the job data structure
+    groupedEvents.map((jobData) => {
+      // Reconstruct the message from the job data
+      const message = {
+        name: jobData.name,
+        data: jobData.data,
+        metadata: jobData.data.metadata,
+      }
+      this.callInterceptors(message as any, {
+        isGrouped: true,
+        eventGroupId,
+      })
+    })
 
     await this.queue_.addBulk(groupedEvents)
 

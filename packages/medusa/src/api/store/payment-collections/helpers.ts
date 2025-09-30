@@ -9,5 +9,10 @@ export const refetchPaymentCollection = async (
   scope: MedusaContainer,
   fields: string[]
 ): Promise<PaymentCollectionDTO> => {
-  return refetchEntity("payment_collection", id, scope, fields)
+  return refetchEntity({
+    entity: "payment_collection",
+    idOrFilter: id,
+    scope,
+    fields,
+  })
 }

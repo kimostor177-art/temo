@@ -69,9 +69,12 @@ export const DELETE = async (
 
   const { id, action_id } = req.params
 
-  const exchange = await refetchEntity("order_exchange", id, req.scope, [
-    "return_id",
-  ])
+  const exchange = await refetchEntity({
+    entity: "order_exchange",
+    idOrFilter: id,
+    scope: req.scope,
+    fields: ["return_id"],
+  })
 
   const { result: orderPreview } = await removeItemReturnActionWorkflow(
     req.scope

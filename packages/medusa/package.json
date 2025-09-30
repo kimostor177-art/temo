@@ -80,6 +80,8 @@
     "@medusajs/auth-google": "2.10.3",
     "@medusajs/cache-inmemory": "2.10.3",
     "@medusajs/cache-redis": "2.10.3",
+    "@medusajs/caching": "2.10.3",
+    "@medusajs/caching-redis": "2.10.3",
     "@medusajs/cart": "2.10.3",
     "@medusajs/core-flows": "2.10.3",
     "@medusajs/currency": "2.10.3",

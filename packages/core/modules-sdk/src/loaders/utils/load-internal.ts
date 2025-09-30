@@ -231,7 +231,8 @@ export async function loadInternalModule(args: {
     ContainerRegistrationKeys.CONFIG_MODULE,
     ContainerRegistrationKeys.LOGGER,
     ContainerRegistrationKeys.PG_CONNECTION,
-    Modules.EVENT_BUS
+    Modules.EVENT_BUS,
+    Modules.CACHING
   )
 
   for (const dependency of dependencies) {

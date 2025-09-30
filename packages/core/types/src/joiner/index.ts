@@ -1,3 +1,5 @@
+import { ICachingModuleService } from "../caching"
+
 export type JoinerRelationship = {
   alias: string
   foreignKey: string
@@ -92,6 +94,40 @@ export interface RemoteJoinerOptions {
   throwIfRelationNotFound?: boolean | string[]
   initialData?: object | object[]
   initialDataOnly?: boolean
+  cache?: {
+    /**
+     * Whether to enable the cache. This is only useful if you want to enable without providing any
+     * other options or if you want to enable/disable the cache based on the arguments.
+     */
+    enable?: boolean | ((args: any[]) => boolean | undefined)
+    /**
+     * The key to use for the cache.
+     * If a function is provided, it will be called with the arguments as the first argument and the
+     * container as the second argument.
+     */
+    key?:
+      | string
+      | ((
+          args: any[],
+          cachingModule: ICachingModuleService
+        ) => string | Promise<string>)
+    /**
+     * The tags to use for the cache.
+     */
+    tags?: string[] | ((args: any[]) => string[] | undefined)
+    /**
+     * The time-to-live (TTL) value in seconds.
+     */
+    ttl?: number | ((args: any[]) => number | undefined)
+    /**
+     * Whether to auto invalidate the cache whenever it is possible.
+     */
+    autoInvalidate?: boolean | ((args: any[]) => boolean | undefined)
+    /**
+     * The providers to use for the cache.
+     */
+    providers?: string[] | ((args: any[]) => string[] | undefined)
+  }
 }
 
 export interface RemoteNestedExpands {

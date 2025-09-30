@@ -38,12 +38,12 @@ export function setTaxContext() {
 }
 
 const getTaxInclusivityInfo = async (req: MedusaRequest) => {
-  const region = await refetchEntity(
-    "region",
-    req.filterableFields.region_id as string,
-    req.scope,
-    ["automatic_taxes"]
-  )
+  const region = await refetchEntity({
+    entity: "region",
+    idOrFilter: req.filterableFields.region_id as string,
+    scope: req.scope,
+    fields: ["automatic_taxes"],
+  })
 
   if (!region) {
     throw new MedusaError(

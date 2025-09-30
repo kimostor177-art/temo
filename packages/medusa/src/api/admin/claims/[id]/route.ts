@@ -10,12 +10,12 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<AdminClaimResponse>
 ) => {
-  const claim = await refetchEntity(
-    "order_claim",
-    req.params.id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const claim = await refetchEntity({
+    entity: "order_claim",
+    idOrFilter: req.params.id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   if (!claim) {
     throw new MedusaError(

@@ -19,12 +19,12 @@ export const POST = async (
     input: { id, ...req.validatedBody },
   })
 
-  const category = await refetchEntity(
-    "product_category",
-    id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const category = await refetchEntity({
+    entity: "product_category",
+    idOrFilter: id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   res.status(200).json({ product_category: category })
 }

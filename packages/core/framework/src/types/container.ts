@@ -5,6 +5,7 @@ import {
   IApiKeyModuleService,
   IAuthModuleService,
   ICacheService,
+  ICachingModuleService,
   ICartModuleService,
   ICurrencyModuleService,
   ICustomerModuleService,
@@ -76,6 +77,7 @@ declare module "@medusajs/types" {
     [Modules.NOTIFICATION]: INotificationModuleService
     [Modules.LOCKING]: ILockingModule
     [Modules.SETTINGS]: ISettingsModuleService
+    [Modules.CACHING]: ICachingModuleService
   }
 }
 

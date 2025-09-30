@@ -196,6 +196,7 @@ export type ModuleJoinerConfig = Omit<
    * GraphQL schema for the all module's available entities and fields
    */
   schema?: string
+  idPrefixToEntityName?: Record<string, string>
   relationships?: ModuleJoinerRelationship[]
   extends?: {
     serviceName: string

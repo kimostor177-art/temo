@@ -1,4 +1,8 @@
-import { EventBusTypes, InternalModuleDeclaration } from "@medusajs/types"
+import {
+  EventBusTypes,
+  InterceptorSubscriber,
+  InternalModuleDeclaration,
+} from "@medusajs/types"
 import { ulid } from "ulid"
 
 export abstract class AbstractEventBusModuleService
@@ -10,6 +14,8 @@ export abstract class AbstractEventBusModuleService
     string | symbol,
     EventBusTypes.SubscriberDescriptor[]
   > = new Map()
+
+  protected interceptorSubscribers_: Set<InterceptorSubscriber> = new Set()
 
   public get eventToSubscribersMap(): Map<
     string | symbol,
@@ -133,6 +139,49 @@ export abstract class AbstractEventBusModuleService
     }
 
     return this
+  }
+
+  /**
+   * Add an interceptor subscriber that receives all messages before they are emitted
+   *
+   * @param interceptor - Function that receives messages before emission
+   * @returns this for chaining
+   */
+  public addInterceptor(interceptor: InterceptorSubscriber): this {
+    this.interceptorSubscribers_.add(interceptor)
+    return this
+  }
+
+  /**
+   * Remove an interceptor subscriber
+   *
+   * @param interceptor - Function to remove from interceptors
+   * @returns this for chaining
+   */
+  public removeInterceptor(interceptor: InterceptorSubscriber): this {
+    this.interceptorSubscribers_.delete(interceptor)
+    return this
+  }
+
+  /**
+   * Call all interceptor subscribers with the message before emission
+   * This should be called by implementations before emitting events
+   *
+   * @param message - The message to be intercepted
+   * @param context - Optional context about the emission
+   */
+  protected async callInterceptors<T = unknown>(
+    message: EventBusTypes.Message<T>,
+    context?: { isGrouped?: boolean; eventGroupId?: string }
+  ): Promise<void> {
+    Array.from(this.interceptorSubscribers_).map(async (interceptor) => {
+      try {
+        await interceptor(message, context)
+      } catch (error) {
+        // Log error but don't stop other interceptors or the emission
+        console.error("Error in event bus interceptor:", error)
+      }
+    })
   }
 }
 

@@ -11,12 +11,12 @@ export const GET = async (
   req: AuthenticatedMedusaRequest<StoreProductCategoryParamsType>,
   res: MedusaResponse<StoreProductCategoryResponse>
 ) => {
-  const category = await refetchEntity(
-    "product_category",
-    { id: req.params.id, ...req.filterableFields },
-    req.scope,
-    req.queryConfig.fields
-  )
+  const category = await refetchEntity({
+    entity: "product_category",
+    idOrFilter: { id: req.params.id, ...req.filterableFields },
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   if (!category) {
     throw new MedusaError(

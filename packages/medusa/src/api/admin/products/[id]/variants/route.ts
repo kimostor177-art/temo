@@ -29,13 +29,13 @@ export const GET = async (
     )
   }
 
-  const { rows: variants, metadata } = await refetchEntities(
-    "variant",
-    { ...req.filterableFields, product_id: productId },
-    req.scope,
-    remapKeysForVariant(req.queryConfig.fields ?? []),
-    req.queryConfig.pagination
-  )
+  const { data: variants, metadata } = await refetchEntities({
+    entity: "variant",
+    idOrFilter: { ...req.filterableFields, product_id: productId },
+    scope: req.scope,
+    fields: remapKeysForVariant(req.queryConfig.fields ?? []),
+    pagination: req.queryConfig.pagination,
+  })
 
   if (withInventoryQuantity) {
     await wrapVariantsWithTotalInventoryQuantity(req, variants || [])
@@ -69,12 +69,12 @@ export const POST = async (
     input: { product_variants: input, additional_data },
   })
 
-  const product = await refetchEntity(
-    "product",
-    productId,
-    req.scope,
-    remapKeysForProduct(req.queryConfig.fields ?? [])
-  )
+  const product = await refetchEntity({
+    entity: "product",
+    idOrFilter: productId,
+    scope: req.scope,
+    fields: remapKeysForProduct(req.queryConfig.fields ?? []),
+  })
 
   res.status(200).json({ product: remapProductResponse(product) })
 }

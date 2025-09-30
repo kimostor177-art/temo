@@ -6,5 +6,5 @@ export const refetchOrder = async (
   scope: MedusaContainer,
   fields: string[]
 ) => {
-  return await refetchEntity("order", idOrFilter, scope, fields)
+  return await refetchEntity({ entity: "order", idOrFilter, scope, fields })
 }

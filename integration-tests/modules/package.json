@@ -13,6 +13,7 @@
     "@medusajs/api-key": "workspace:^",
     "@medusajs/auth": "workspace:*",
     "@medusajs/cache-inmemory": "workspace:*",
+    "@medusajs/caching": "workspace:*",
     "@medusajs/core-flows": "workspace:^",
     "@medusajs/currency": "workspace:^",
     "@medusajs/customer": "workspace:^",

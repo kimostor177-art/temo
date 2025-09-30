@@ -5,7 +5,6 @@ import {
   FeatureFlag,
   isPresent,
   QueryContext,
-  remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
 import IndexEngineFeatureFlag from "../../../feature-flags/index-engine"
 import { wrapVariantsWithInventoryQuantityForSalesChannel } from "../../utils/middlewares"
@@ -49,7 +48,9 @@ async function getProductsWithIndexEngine(
 
   if (isPresent(req.pricingContext)) {
     context["variants"] ??= {}
-    context["variants"]["calculated_price"] = QueryContext(req.pricingContext!)
+    context["variants"]["calculated_price"] ??= QueryContext(
+      req.pricingContext!
+    )
   }
 
   const filters: Record<string, any> = req.filterableFields
@@ -62,13 +63,20 @@ async function getProductsWithIndexEngine(
     delete filters.sales_channel_id
   }
 
-  const { data: products = [], metadata } = await query.index({
-    entity: "product",
-    fields: req.queryConfig.fields,
-    filters,
-    pagination: req.queryConfig.pagination,
-    context,
-  })
+  const { data: products = [], metadata } = await query.index(
+    {
+      entity: "product",
+      fields: req.queryConfig.fields,
+      filters,
+      pagination: req.queryConfig.pagination,
+      context,
+    },
+    {
+      cache: {
+        enable: true,
+      },
+    }
+  )
 
   if (withInventoryQuantity) {
     await wrapVariantsWithInventoryQuantityForSalesChannel(
@@ -91,7 +99,7 @@ async function getProducts(
   req: RequestWithContext<HttpTypes.StoreProductListParams>,
   res: MedusaResponse<HttpTypes.StoreProductListResponse>
 ) {
-  const remoteQuery = req.scope.resolve(ContainerRegistrationKeys.REMOTE_QUERY)
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
   const context: object = {}
   const withInventoryQuantity = req.queryConfig.fields.some((field) =>
     field.includes("variants.inventory_quantity")
@@ -104,22 +112,26 @@ async function getProducts(
   }
 
   if (isPresent(req.pricingContext)) {
-    context["variants.calculated_price"] = {
-      context: req.pricingContext,
-    }
+    context["variants"] ??= {}
+    context["variants"]["calculated_price"] ??= QueryContext(
+      req.pricingContext!
+    )
   }
 
-  const queryObject = remoteQueryObjectFromString({
-    entryPoint: "product",
-    variables: {
+  const { data: products = [], metadata } = await query.graph(
+    {
+      entity: "product",
+      fields: req.queryConfig.fields,
       filters: req.filterableFields,
-      ...req.queryConfig.pagination,
-      ...context,
+      pagination: req.queryConfig.pagination,
+      context,
     },
-    fields: req.queryConfig.fields,
-  })
-
-  const { rows: products, metadata } = await remoteQuery(queryObject)
+    {
+      cache: {
+        enable: true,
+      },
+    }
+  )
 
   if (withInventoryQuantity) {
     await wrapVariantsWithInventoryQuantityForSalesChannel(
@@ -131,8 +143,8 @@ async function getProducts(
   await wrapProductsWithTaxPrices(req, products)
   res.json({
     products,
-    count: metadata.count,
-    offset: metadata.skip,
-    limit: metadata.take,
+    count: metadata!.count,
+    offset: metadata!.skip,
+    limit: metadata!.take,
   })
 }

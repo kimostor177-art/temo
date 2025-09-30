@@ -48,9 +48,10 @@ export type QueryGraphFunction = {
  * a normalized/consistent output.
  */
 export type QueryIndexFunction = {
-  <const TEntry extends string>(queryOptions: IndexQueryInput<TEntry>): Promise<
-    Prettify<QueryResultSet<TEntry>>
-  >
+  <const TEntry extends string>(
+    queryOptions: IndexQueryInput<TEntry>,
+    options?: RemoteJoinerOptions
+  ): Promise<Prettify<QueryResultSet<TEntry>>>
 }
 
 /*export type RemoteQueryReturnedData<TEntry extends string> =

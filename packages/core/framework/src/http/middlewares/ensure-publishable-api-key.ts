@@ -30,20 +30,38 @@ export async function ensurePublishableApiKeyMiddleware(
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
   try {
-    const { data } = await query.graph({
-      entity: "api_key",
-      fields: ["id", "token", "sales_channels_link.sales_channel_id"],
-      filters: {
-        token: publishableApiKey,
-        type: ApiKeyType.PUBLISHABLE,
-        $or: [
-          { revoked_at: { $eq: null } },
-          { revoked_at: { $gt: new Date() } },
+    // Cache API key data and check revocation in memory
+    const { data } = await query.graph(
+      {
+        entity: "api_key",
+        fields: [
+          "id",
+          "token",
+          "revoked_at",
+          "sales_channels_link.sales_channel_id",
         ],
+        filters: {
+          token: publishableApiKey,
+          type: ApiKeyType.PUBLISHABLE,
+        },
       },
-    })
+      {
+        cache: {
+          enable: true,
+        },
+      }
+    )
 
-    apiKey = data[0]
+    if (data.length) {
+      const now = new Date()
+      const cachedApiKey = data[0]
+      const isRevoked =
+        !!cachedApiKey.revoked_at && new Date(cachedApiKey.revoked_at) <= now
+
+      if (!isRevoked) {
+        apiKey = cachedApiKey
+      }
+    }
   } catch (e) {
     return next(e)
   }

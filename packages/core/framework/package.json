@@ -16,6 +16,7 @@
   "exports": {
     ".": "./dist/index.js",
     "./config": "./dist/config/index.js",
+    "./caching": "./dist/caching/index.js",
     "./logger": "./dist/logger/index.js",
     "./database": "./dist/database/index.js",
     "./subscribers": "./dist/subscribers/index.js",

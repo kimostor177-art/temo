@@ -14,12 +14,12 @@ export const GET = async (
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse<RefundReasonResponse>
 ) => {
-  const refund_reason = await refetchEntity(
-    "refund_reason",
-    req.params.id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const refund_reason = await refetchEntity({
+    entity: "refund_reason",
+    idOrFilter: req.params.id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   res.json({ refund_reason })
 }
@@ -39,12 +39,12 @@ export const POST = async (
     ],
   })
 
-  const refund_reason = await refetchEntity(
-    "refund_reason",
-    req.params.id,
-    req.scope,
-    req.queryConfig.fields
-  )
+  const refund_reason = await refetchEntity({
+    entity: "refund_reason",
+    idOrFilter: req.params.id,
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+  })
 
   res.json({ refund_reason })
 }

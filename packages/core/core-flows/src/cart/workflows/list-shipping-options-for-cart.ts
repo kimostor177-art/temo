@@ -168,6 +168,11 @@ export const listShippingOptionsForCartWorkflow = createWorkflow(
         "stock_locations.name",
         "stock_locations.address.*",
       ],
+      options: {
+        cache: {
+          enable: true,
+        },
+      },
     }).config({ name: "sales_channels-fulfillment-query" })
 
     const scFulfillmentSets = transform(

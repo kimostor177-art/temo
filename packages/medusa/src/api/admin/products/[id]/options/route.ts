@@ -14,13 +14,13 @@ export const GET = async (
   res: MedusaResponse<HttpTypes.AdminProductOptionListResponse>
 ) => {
   const productId = req.params.id
-  const { rows: product_options, metadata } = await refetchEntities(
-    "product_option",
-    { ...req.filterableFields, product_id: productId },
-    req.scope,
-    req.queryConfig.fields,
-    req.queryConfig.pagination
-  )
+  const { data: product_options, metadata } = await refetchEntities({
+    entity: "product_option",
+    idOrFilter: { ...req.filterableFields, product_id: productId },
+    scope: req.scope,
+    fields: req.queryConfig.fields,
+    pagination: req.queryConfig.pagination,
+  })
 
   res.json({
     product_options,
@@ -51,11 +51,11 @@ export const POST = async (
     },
   })
 
-  const product = await refetchEntity(
-    "product",
-    productId,
-    req.scope,
-    remapKeysForProduct(req.queryConfig.fields ?? [])
-  )
+  const product = await refetchEntity({
+    entity: "product",
+    idOrFilter: productId,
+    scope: req.scope,
+    fields: remapKeysForProduct(req.queryConfig.fields ?? []),
+  })
   res.status(200).json({ product: remapProductResponse(product) })
 }

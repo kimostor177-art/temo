@@ -41,14 +41,14 @@ async function getProducts(
 ) {
   const selectFields = remapKeysForProduct(req.queryConfig.fields ?? [])
 
-  const { rows: products, metadata } = await refetchEntities(
-    "product",
-    req.filterableFields,
-    req.scope,
-    selectFields,
-    req.queryConfig.pagination,
-    req.queryConfig.withDeleted
-  )
+  const { data: products, metadata } = await refetchEntities({
+    entity: "product",
+    idOrFilter: req.filterableFields,
+    scope: req.scope,
+    fields: selectFields,
+    pagination: req.queryConfig.pagination,
+    withDeleted: req.queryConfig.withDeleted,
+  })
 
   res.json({
     products: products.map(remapProductResponse),
@@ -103,12 +103,12 @@ export const POST = async (
     input: { products: [products], additional_data },
   })
 
-  const product = await refetchEntity(
-    "product",
-    result[0].id,
-    req.scope,
-    remapKeysForProduct(req.queryConfig.fields ?? [])
-  )
+  const product = await refetchEntity({
+    entity: "product",
+    idOrFilter: result[0].id,
+    scope: req.scope,
+    fields: remapKeysForProduct(req.queryConfig.fields ?? []),
+  })
 
   res.status(200).json({ product: remapProductResponse(product) })
 }

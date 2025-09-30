@@ -48,6 +48,7 @@ describe("joiner-config-builder", () => {
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
         schema: "",
+        idPrefixToEntityName: {},
         linkableKeys: {
           fulfillment_set_id: FulfillmentSet.name,
           shipping_option_id: ShippingOption.name,
@@ -136,6 +137,7 @@ describe("joiner-config-builder", () => {
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
         schema: "",
+        idPrefixToEntityName: {},
         linkableKeys: {},
         alias: [
           {
@@ -176,6 +178,7 @@ describe("joiner-config-builder", () => {
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
         schema: "",
+        idPrefixToEntityName: {},
         linkableKeys: {
           fulfillment_set_id: FulfillmentSet.name,
           shipping_option_id: ShippingOption.name,
@@ -269,6 +272,7 @@ describe("joiner-config-builder", () => {
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
         schema: "",
+        idPrefixToEntityName: {},
         linkableKeys: {},
         alias: [
           {
@@ -300,6 +304,7 @@ describe("joiner-config-builder", () => {
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
         schema: "",
+        idPrefixToEntityName: {},
         linkableKeys: {
           fulfillment_set_id: FulfillmentSet.name,
         },
@@ -335,6 +340,7 @@ describe("joiner-config-builder", () => {
         serviceName: Modules.FULFILLMENT,
         primaryKeys: ["id"],
         schema: expect.any(String),
+        idPrefixToEntityName: {},
         linkableKeys: {
           fulfillment_set_id: FulfillmentSet.name,
           shipping_option_id: ShippingOption.name,
