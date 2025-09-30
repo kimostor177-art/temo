@@ -121,7 +121,35 @@ await link.create({
 
 ## Retrieve Custom Column with Link
 
-To retrieve linked records with their custom columns, use [Query](../query/page.mdx). A module link's definition, exported by a file under `src/links`, has a special `entryPoint` property. Use this property when specifying the `entity` property in Query's `graph` method.
+To retrieve linked records with their custom columns, use [Query](../query/page.mdx). This section explores two methods to retrieve a link's custom columns.
+
+### Method 1: Using Special Link Field
+
+A data model will have a special field for all its link tables. The field's name is in the `{camel_case_data_model_name}_link` format, where `{camel_case_data_model_name}` is the name of the linked data model in camel case.
+
+For example:
+
+export const method1Highlights = [
+  ["3", `"post_link.metadata"`, "Retrieve the `metadata` custom column."]
+]
+
+```ts highlights={method1Highlights}
+const { data } = await query.graph({
+  entity: "product",
+  fields: ["id", "title", "post_link.metadata", "post.*"],
+  filters: {
+    id: "prod_123",
+  },
+})
+```
+
+In this example, you retrieve a product and the `metadata` custom column in the link table between `product` and `post` using the `post_link.metadata` field.
+
+You can also retrieve all custom columns in the link table using the `post_link.*` field.
+
+### Method 2: Using Entry Point
+
+A module link's definition, exported by a file under `src/links`, has a special `entryPoint` property. Use this property when specifying the `entity` property in Query's `graph` method.
 
 For example:
 
