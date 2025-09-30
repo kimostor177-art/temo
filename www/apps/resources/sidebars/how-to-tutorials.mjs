@@ -257,11 +257,6 @@ While tutorials show you a specific use case, they also help you understand how 
             path: "https://docs.medusajs.com/learn/deployment/general",
             title: "General",
           },
-          {
-            type: "link",
-            path: "/deployment/medusa-application/railway",
-            title: "Railway",
-          },
         ],
       },
       {

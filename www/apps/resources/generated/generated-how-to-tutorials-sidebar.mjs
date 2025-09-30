@@ -659,14 +659,6 @@ const generatedgeneratedHowToTutorialsSidebarSidebar = {
               "path": "https://docs.medusajs.com/learn/deployment/general",
               "title": "General",
               "children": []
-            },
-            {
-              "loaded": true,
-              "isPathHref": true,
-              "type": "link",
-              "path": "/deployment/medusa-application/railway",
-              "title": "Railway",
-              "children": []
             }
           ]
         },

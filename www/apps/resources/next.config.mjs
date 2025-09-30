@@ -269,6 +269,11 @@ const nextConfig = {
         destination: "/storefront-development/products/list",
         permanent: true,
       },
+      {
+        source: "/deployment/medusa-application/railway",
+        destination: `${process.env.NEXT_PUBLIC_BASE_URL}/cloud/comparison`,
+        permanent: true,
+      },
     ])
   },
   outputFileTracingExcludes: {

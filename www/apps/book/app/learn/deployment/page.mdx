@@ -6,6 +6,21 @@ export const metadata = {
 
 In this chapter, you’ll learn the general approach to deploying the Medusa application.
 
+<Note title="Deploy with Cloud" type="success">
+
+Want Medusa to manage and maintain your infrastructure? [Sign up and learn more about Cloud](!cloud!)
+
+Cloud is our managed services offering that makes deploying and operating Medusa applications possible without having to worry about configuring, scaling, and maintaining infrastructure. Cloud hosts your server, Admin dashboard, database, and Redis instance.
+
+With Cloud, you maintain full customization control as you deploy your own modules and customizations directly from GitHub:
+
+- Push to deploy.
+- Multiple testing environments.
+- Preview environments for new PRs.
+- Test on production-like data.
+
+</Note>
+
 ## Medusa Project Components
 
 A standard Medusa project is made up of:
@@ -23,11 +38,11 @@ You deploy the Medusa application, with the server and admin, separately from th
 
 You must deploy the Medusa application before the storefront, as it connects to the server and won’t work without a deployed Medusa server URL.
 
-The Medusa application must be deployed to a hosting provider supporting Node.js server deployments, such as Railway, DigitalOcean, AWS, Heroku, etc…
+The Medusa application must be deployed to a hosting provider supporting Node.js server deployments.
 
 ![Medusa server deployment infrastructure diagram illustrating the backend services ecosystem: the Node.js Medusa server connected to essential services including PostgreSQL database for data storage, and Redis for caching and session management](https://res.cloudinary.com/dza7lstvk/image/upload/v1708600972/Medusa%20Book/backend_deployment_pgexo3.jpg)
 
-Your server connects to a PostgreSQL database, Redis, and other services relevant for your setup. Most hosting providers support deploying and managing these databases along with your Medusa server (such as Railway and DigitalOcean).
+Your server connects to a PostgreSQL database, Redis, and other services relevant for your setup. Most hosting providers support deploying and managing these databases along with your Medusa server.
 
 When you deploy your Medusa application, you also deploy the Medusa Admin. For optimal experience, your hosting provider and plan must offer at least 2GB of RAM.
 

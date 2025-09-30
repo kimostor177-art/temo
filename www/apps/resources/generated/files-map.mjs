@@ -728,10 +728,6 @@ export const filesMap = [
     "pathname": "/data-model-repository-reference/tips/filtering"
   },
   {
-    "filePath": "/www/apps/resources/app/deployment/medusa-application/railway/page.mdx",
-    "pathname": "/deployment/medusa-application/railway"
-  },
-  {
     "filePath": "/www/apps/resources/app/deployment/page.mdx",
     "pathname": "/deployment"
   },
