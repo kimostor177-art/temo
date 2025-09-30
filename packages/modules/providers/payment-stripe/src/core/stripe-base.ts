@@ -127,6 +127,11 @@ abstract class StripeBase extends AbstractPaymentProvider<StripeOptions> {
 
     res.return_url = extra?.return_url as string | undefined
 
+    // @ts-expect-error - Need to update Stripe SDK
+    res.shared_payment_token = extra?.shared_payment_token as
+      | string
+      | undefined
+
     return res
   }
 
