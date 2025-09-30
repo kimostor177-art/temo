@@ -1,6 +1,7 @@
 import { MedusaContainer } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
+  MedusaError,
   remoteQueryObjectFromString,
 } from "@medusajs/framework/utils"
 
@@ -17,6 +18,13 @@ export const refetchCart = async (
   })
 
   const [cart] = await remoteQuery(queryObject)
+
+  if (!cart) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Cart with id '${id}' not found`
+    )
+  }
 
   return cart
 }
