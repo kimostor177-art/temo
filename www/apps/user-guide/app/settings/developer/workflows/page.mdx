@@ -19,59 +19,87 @@ In this guide, you'll learn how to view workflow executions in the Medusa Admin.
 
 <Note>
 
-This guide is mainly useful for developers and technical teams building and debugging customizations of a Medusa application.
+This guide is primarily useful for developers and technical teams building and debugging customizations of a Medusa application.
 
 </Note>
 
 ## What are Workflow Executions?
 
-[Workflows](!docs!/learn/fundamentals/workflows) are a series of steps that perform a task. You build a workflow in your source code to implement custom commerce flows and features.
+[Workflows](!docs!/learn/fundamentals/workflows) are a series of steps that perform a task. You build workflows in your source code to implement custom commerce flows and features.
 
-When you execute a workflow, it runs the steps in sequence to complete the task. If you've configured the workflow to have its executions stored in the database as explained in [this technical guide](!docs!/learn/fundamentals/workflows/store-executions), you can view the executions and their details in the Medusa Admin. This is useful to debug workflows and ensure they ran as expected.
+When you execute a workflow, Medusa runs the steps in sequence to complete the task. If you've configured the workflow to store its executions in the database as explained in the [Store Workflow Executions guide](!docs!/learn/fundamentals/workflows/store-executions), you can view the workflow's executions and their details in the Medusa Admin. This is useful for debugging workflows and ensuring they run as expected.
 
 ---
 
 ## View Workflow Executions
 
-To view workflow executions, go to Settings → Workflows. There, you'll find the list of custom and Medusa workflows that have been executed and are stored in the database. You can search through the list to find the one you're looking for.
+To view workflow executions, go to Settings → Workflows. There, you'll find a list of custom and Medusa workflows that have been executed and are stored in the database. You can search through the list to find the one you're looking for.
 
 ![Workflow executions list](https://res.cloudinary.com/dza7lstvk/image/upload/v1740496862/User%20Guide/Screenshot_2025-02-25_at_5.16.30_PM_fjkbrc.png)
 
 ### Workflow Execution Status
 
-In the list, you can view the status of each workflow execution. A workflow's execution status can be:
+In the list, you can view the status of each workflow execution. A workflow execution's status can be:
 
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Status</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>
+        Status
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
     <Table.Row>
-      <Table.Cell>Not Started</Table.Cell>
-      <Table.Cell>The workflow has been executed, but its steps haven't been invoked yet.</Table.Cell>
+      <Table.Cell>
+        Not Started
+      </Table.Cell>
+      <Table.Cell>
+        The workflow has been executed, but its steps haven't been invoked yet.
+      </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>Invoking</Table.Cell>
-      <Table.Cell>The workflow execution is currently running, invoking its steps.</Table.Cell>
+      <Table.Cell>
+        Invoking
+      </Table.Cell>
+      <Table.Cell>
+        The workflow execution is currently running and invoking its steps.
+      </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>Done</Table.Cell>
-      <Table.Cell>The workflow execution has finished successfully.</Table.Cell>
+      <Table.Cell>
+        Done
+      </Table.Cell>
+      <Table.Cell>
+        The workflow execution has completed successfully.
+      </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>Failed</Table.Cell>
-      <Table.Cell>The workflow execution has failed.</Table.Cell>
+      <Table.Cell>
+        Failed
+      </Table.Cell>
+      <Table.Cell>
+        The workflow execution has failed.
+      </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>Compensating</Table.Cell>
-      <Table.Cell>The workflow execution is compensating its steps after a failure.</Table.Cell>
+      <Table.Cell>
+        Compensating
+      </Table.Cell>
+      <Table.Cell>
+        The workflow execution is compensating its steps after a failure.
+      </Table.Cell>
     </Table.Row>
     <Table.Row>
-      <Table.Cell>Reverted</Table.Cell>
-      <Table.Cell>The workflow execution has been reverted, which occurs when the workflow ran as part of another workflow and the parent workflow failed.</Table.Cell>
+      <Table.Cell>
+        Reverted
+      </Table.Cell>
+      <Table.Cell>
+        The workflow execution has been reverted, which occurs when the workflow runs as part of another workflow and the parent workflow fails.
+      </Table.Cell>
     </Table.Row>
   </Table.Body>
 </Table>
@@ -85,7 +113,7 @@ To view a workflow execution's details:
 1. Go to Settings → Workflows.
 2. Click on the workflow execution to view it.
 
-On the workflow execution's page, you'll find multiple sections with the execution's details.
+On the workflow execution's page, you'll find multiple sections containing the execution's details.
 
 ![Workflow executions details](https://res.cloudinary.com/dza7lstvk/image/upload/v1740496967/User%20Guide/Screenshot_2025-02-25_at_5.22.33_PM_z6al6a.png)
 
@@ -93,24 +121,28 @@ On the workflow execution's page, you'll find multiple sections with the executi
 
 In the first section, you'll find a summary of the workflow execution, including:
 
-- A badge at the top right indicating its [status](#workflow-execution-status).
+- A badge at the top end of the section indicating the [execution's status](#workflow-execution-status).
 - The workflow's unique ID, which you specify when you create the workflow.
 - The transaction ID, which is a unique identifier for the workflow execution. This is useful for debugging, tracking, and changing step statuses of [long-running workflows](!docs!/learn/fundamentals/workflows/long-running-workflow).
-- The workflow's progress which shows a quick overview of the steps that have been executed.
+- The workflow's progress, which shows a quick overview of the steps that have been executed.
 
 ### Timeline
 
-The timeline diagram shows you the step by step execution of the workflow. You can zoom in and out, and drag and move the mouse to view the entire diagram. You can also click on a step to view its execution details in the [History](#history) section.
+The timeline diagram shows you the step-by-step execution of the workflow. You can zoom in and out, and drag the mouse to view the entire diagram. You can also click on a step to view its execution details in the [History](#history) section.
 
 #### Step Status
 
-In the timeline diagram, each step node has a small box at its left whose color indicates its status:
+In the timeline diagram, each step node has a small box whose color indicates the step's status:
 
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Color</Table.HeaderCell>
-      <Table.HeaderCell>Description</Table.HeaderCell>
+      <Table.HeaderCell>
+        Color
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Description
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -143,7 +175,7 @@ In the timeline diagram, each step node has a small box at its left whose color 
         Gray
       </Table.Cell>
       <Table.Cell>
-        The step hasn't been executed yet, or it's been skipped, which can occur if the step is part of a [when condition](!docs!/learn/fundamentals/workflows/conditions).
+        The step hasn't been executed yet, or it has been skipped, which can occur if the step is part of a [when condition](!docs!/learn/fundamentals/workflows/conditions).
       </Table.Cell>
     </Table.Row>
   </Table.Body>
@@ -155,11 +187,11 @@ The JSON section allows you to view the execution's details as a raw JSON object
 
 ### History
 
-The History section shows you the execution of the workflow's steps by order of execution. You can see each step's name with a dot reflecting its status as explained in the [Step Status](#step-status) section.
+The History section shows you the execution of the workflow's steps in order of execution. You can see each step's name with a dot reflecting its status as explained in the [Step Status](#step-status) section.
 
 If you click on any executed step, you'll see its details, including:
 
-- **Definition**: the step's configurations which can be passed when you create the step. For example, the step's name, whether it has a compensation function, whether it's asynchronous, etc...
+- **Definition**: the step's configurations that can be passed when you create the step. For example, the step's name, whether it has a compensation function, or whether it's asynchronous.
 - **Output**: the step's output, which is the result of the step's execution.
 - **Compensation Input**: if the workflow failed and the step has a compensation function, you can see the input that the compensation function received.
 - **Error**: if the step failed, you can see the error message.

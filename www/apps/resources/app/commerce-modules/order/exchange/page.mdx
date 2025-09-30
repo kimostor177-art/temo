@@ -6,7 +6,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you’ll learn about order exchanges.
+In this guide, you’ll learn about order exchanges.
 
 <Note title="Looking for no-code docs?">
 
@@ -16,9 +16,9 @@ Refer to this [Medusa Admin User Guide](!user-guide!/orders/exchanges) to learn 
 
 ## What is an Exchange?
 
-An exchange is the replacement of an item that the customer ordered with another.
+An exchange is the replacement of an item that the customer ordered with another item.
 
-A merchant creates the exchange, specifying the items to be replaced and the new items to be sent.
+A merchant creates the exchange, specifying which items to return and which new items to send.
 
 The [OrderExchange data model](/references/order/models/OrderExchange) represents an exchange.
 
@@ -26,15 +26,15 @@ The [OrderExchange data model](/references/order/models/OrderExchange) represent
 
 ## Returned and New Items
 
-When the exchange is created, a return, represented by the [Return data model](/references/order/models/Return), is created to handle receiving the items back from the customer.
+When an exchange is created, a return, represented by the [Return data model](/references/order/models/Return), is also created to handle receiving the items back from the customer.
 
 <Note>
 
-Learn more about returns in [this guide](../return/page.mdx).
+Refer to the [Returns guide](../return/page.mdx) to learn more about returns and how they work.
 
 </Note>
 
-The [OrderExchangeItem data model](/references/order/models/OrderExchangeItem) represents the new items to be sent to the customer.
+The [OrderExchangeItem data model](/references/order/models/OrderExchangeItem) represents the new items to be sent to the customer. It's associated with the `OrderExchange` data model.
 
 ---
 
@@ -42,19 +42,23 @@ The [OrderExchangeItem data model](/references/order/models/OrderExchangeItem) r
 
 An exchange has shipping methods used to send the new items to the customer. They’re represented by the [OrderShippingMethod data model](/references/order/models/OrderShippingMethod).
 
-The shipping methods for the returned items are associated with the exchange's return, as explained in [this guide](../return/page.mdx#return-shipping-methods).
+The shipping methods for the returned items are associated with the exchange's return, as explained in the [Returns guide](../return/page.mdx#return-shipping-methods).
 
 ---
 
 ## Exchange Payment
 
-The `Exchange` data model has a `difference_due` property that stores the outstanding amount.
+The `OrderExchange` data model has a `difference_due` property that stores the outstanding amount.
 
 <Table>
   <Table.Header>
     <Table.Row>
-      <Table.HeaderCell>Condition</Table.HeaderCell>
-      <Table.HeaderCell>Result</Table.HeaderCell>
+      <Table.HeaderCell>
+        Condition
+      </Table.HeaderCell>
+      <Table.HeaderCell>
+        Result
+      </Table.HeaderCell>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -66,7 +70,7 @@ The `Exchange` data model has a `difference_due` property that stores the outsta
       </Table.Cell>
       <Table.Cell>
 
-      Merchant owes the customer a refund of the `difference_due` amount.
+      The merchant owes the customer a refund of the `difference_due` amount.
 
       </Table.Cell>
     </Table.Row>
@@ -78,7 +82,7 @@ The `Exchange` data model has a `difference_due` property that stores the outsta
       </Table.Cell>
       <Table.Cell>
 
-      Merchant requires additional payment from the customer of the `difference_due` amount.
+      The merchant requires additional payment from the customer of the `difference_due` amount.
 
       </Table.Cell>
     </Table.Row>
@@ -97,10 +101,10 @@ The `Exchange` data model has a `difference_due` property that stores the outsta
   </Table.Body>
 </Table>
 
-Any payment or refund made is stored in the [Transaction data model](/references/order/models/OrderTransaction).
+Any payments or refunds made are stored in the [OrderTransaction data model](/references/order/models/OrderTransaction).
 
 ---
 
 ## How Exchanges Impact an Order’s Version
 
-When an exchange is confirmed, the order’s version is incremented.
+When an exchange is confirmed, the order’s [version](../order-versioning/page.mdx) is incremented.

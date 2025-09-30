@@ -4,7 +4,7 @@ export const metadata = {
 
 # {metadata.title}
 
-In this document, you'll learn about campaigns.
+In this guide, you'll learn what a campaign is and its related concepts.
 
 <Note title="Looking for no-code docs?">
 
@@ -14,7 +14,9 @@ Refer to this [Medusa Admin User Guide](!user-guide!/promotions/campaigns) to le
 
 ## What is a Campaign?
 
-A [Campaign](/references/promotion/models/Campaign) combines promotions under the same conditions, such as start and end dates.
+A [Campaign](/references/promotion/models/Campaign) combines [promotions](../concepts/page.mdx#what-is-a-promotion) under the same conditions, such as start and end dates.
+
+Campaigns are useful for grouping promotions that share the same time frame or target audience. They're also useful for limiting the usage of promotions.
 
 ![A diagram showcasing the relation between the Campaign and Promotion data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709899225/Medusa%20Resources/campagin-promotion_hh3qsi.jpg)
 
@@ -22,11 +24,21 @@ A [Campaign](/references/promotion/models/Campaign) combines promotions under th
 
 ## Campaign Limits
 
-Each campaign has a budget represented by the [CampaignBudget data model](/references/promotion/models/CampaignBudget). The budget limits how many times the promotion can be used.
+Each campaign can have a budget represented by the [CampaignBudget data model](/references/promotion/models/CampaignBudget). The budget limits how many times the promotion can be used.
 
 There are two types of budgets:
 
-- `spend`: An amount that, when crossed, the promotion becomes unusable. For example, if the amount limit is set to `$100`, and the total amount of usage of this promotion crosses that threshold, the promotion can no longer be applied.
-- `usage`: The number of times that a promotion can be used. For example, if the usage limit is set to `10`, the promotion can be used only 10 times by customers. After that, it can no longer be applied.
+- `spend`: An amount that, when crossed, the promotion becomes unusable.
+    - For example, if the amount limit is set to `$100`, and the total amount of usage of this promotion crosses that threshold, the promotion can no longer be applied.
+- `usage`: The number of times that a promotion can be used.
+    - For example, if the usage limit is set to `10`, the promotion can be used only 10 times by customers. After that, it can no longer be applied.
 
 ![A diagram showcasing the relation between the Campaign and CampaignBudget data models](https://res.cloudinary.com/dza7lstvk/image/upload/v1709899463/Medusa%20Resources/campagin-budget_rvqlmi.jpg)
+
+### How Budgets Limit Promotion Usage
+
+When a customer tries to use a promotion, Medusa checks whether the campaign has a budget and if the budget limit has been reached. If so, the promotion cannot be applied.
+
+For example, if a campaign has a budget of type `usage` with a limit of `10`, and the promotion has already been used 10 times, it cannot be applied anymore and is considered expired.
+
+However, once a promotion is applied to a cart, it remains valid until the order is completed, even if the budget limit is reached in the meantime. This ensures that customers who have already applied the promotion can still benefit from it during checkout.
