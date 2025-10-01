@@ -64,6 +64,8 @@ Finally, run the migrations to create the necessary tables for the Index Module 
 npx medusa db:migrate
 ```
 
+### Ingest Data
+
 The Index Module only ingests data when you start your Medusa server. So, to ingest the [currently supported data models](#ingested-data-models), start the Medusa application:
 
 ```bash npm2yarn
@@ -90,6 +92,12 @@ info:    [Index engine] syncing entity 'LinkProductSalesChannel' done (+11.45ms)
 info:    [Index engine] syncing entity 'SalesChannel'
 info:    [Index engine] syncing entity 'SalesChannel' done (+7.00ms)
 ```
+
+### Update Index on Data Changes
+
+The Index Module automatically updates its data store when data in the ingested data models change. So, you don't need to do anything to keep the data in sync.
+
+For example, if you create a new product, the Index Module will ingest it into its data store.
 
 ### Enable Index Module Feature Flag
 
