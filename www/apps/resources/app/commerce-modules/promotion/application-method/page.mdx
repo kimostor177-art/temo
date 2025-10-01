@@ -111,11 +111,11 @@ In this example, the cart must have two product variants with the SKU `SHIRT` fo
 
 ---
 
-## Maxiumum Quantity Restriction
+## Maximum Quantity Restriction
 
-When the `allocation` property in the `ApplicationMethod` is set to `each`, you can restrict the maximum quantity of each applicable item that the promotion is applied to in the cart.
+When the `allocation` property in the `ApplicationMethod` is set to `each`, you can set the `max_quantity` property of `ApplicationMethod` to limit how many item quantities the promotion is applied to.
 
-For example, if the maximum quantity is set to `1` and the customer has a line item with quantity two in the cart, the promotion is only applied to one of them.
+For example, if the `max_quantity` property is set to `1` and the customer has a line item with quantity two in the cart, the promotion is only applied to one of them.
 
 ```json title="Example Cart"
 {
