@@ -74,7 +74,9 @@ If you chose the "Amount off Products" promotion type in the first section, fill
 ![Who can use this section](https://res.cloudinary.com/dza7lstvk/image/upload/v1739898104/User%20Guide/Screenshot_2025-02-18_at_7.01.14_PM_wvskll.png)
 
 6. In the Promotion Value field, set the amount to be discounted from applicable products when the promotion is applied. The amount is in the currency you chose in the previous section.
-7. In the Maximum Quantity field, set the maximum quantity of the applicable that the promotion is applied to in the cart. For example, if set to `1` and the customer has two applicable items in the cart, the promotion is only applied to one of them.
+7. In the Maximum Quantity field, set the maximum quantity line-item quantity that the promotion is applied to in the cart.
+    - For example, if set to `1` and the customer has a line item with quantity two in the cart, the promotion is only applied to one of them.
+    - This condition is applied on the quantity of every applicable item in the cart. For example, if set to `1` and the customer has two applicable items in the cart, the promotion is applied to one of each of them.
 8. In the "What items will the promotion be applied to?" section, you'll specify the items in the cart that the promotion can be applied to. To add a condition, click on the "Add condition" button. For each condition:
     - Select the attribute in the first field. This is the attribute that the condition applies to. It can be:
         - **Product**: The promotion applies / doesn't apply to the specified product(s).
