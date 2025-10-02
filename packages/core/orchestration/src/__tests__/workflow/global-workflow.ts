@@ -116,6 +116,8 @@ describe("WorkflowManager", () => {
   it("should continue an asyncronous transaction after reporting a successful step", async () => {
     const transaction = await flow.run("deliver-product", "t-id")
 
+    await new Promise((resolve) => process.nextTick(resolve))
+
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("callExternal").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("bar").invoke).toHaveBeenCalledTimes(0)
@@ -134,6 +136,8 @@ describe("WorkflowManager", () => {
 
   it("should revert an asyncronous transaction after reporting a failure step", async () => {
     const transaction = await flow.run("deliver-product", "t-id")
+
+    await new Promise((resolve) => process.nextTick(resolve))
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("callExternal").invoke).toHaveBeenCalledTimes(1)

@@ -1,3 +1,4 @@
+import { raw } from "@medusajs/framework/mikro-orm/core"
 import {
   DistributedTransactionType,
   IDistributedSchedulerStorage,
@@ -21,7 +22,6 @@ import {
   TransactionState,
   TransactionStepState,
 } from "@medusajs/framework/utils"
-import { raw } from "@medusajs/framework/mikro-orm/core"
 import { WorkflowOrchestratorService } from "@services"
 import { Queue, RepeatOptions, Worker } from "bullmq"
 import Redis from "ioredis"
@@ -425,13 +425,11 @@ export class RedisDistributedTransactionStorage
 
     const { retentionTime } = options ?? {}
 
-    if (data.flow.hasAsyncSteps) {
-      await this.#preventRaceConditionExecutionIfNecessary({
-        data,
-        key,
-        options,
-      })
-    }
+    await this.#preventRaceConditionExecutionIfNecessary({
+      data,
+      key,
+      options,
+    })
 
     if (hasFinished && retentionTime) {
       Object.assign(data, {
@@ -471,34 +469,37 @@ export class RedisDistributedTransactionStorage
       pipeline.unlink(key)
     }
 
-    const pipelinePromise = pipeline.exec().then((result) => {
-      if (!shouldSetNX) {
+    const execPipeline = () => {
+      return pipeline.exec().then((result) => {
+        if (!shouldSetNX) {
+          return result
+        }
+
+        const actionResult = result?.pop()
+        const isOk = !!actionResult?.pop()
+        if (!isOk) {
+          throw new SkipExecutionError(
+            "Transaction already started for transactionId: " +
+              data.flow.transactionId
+          )
+        }
+
         return result
-      }
-
-      const actionResult = result?.pop()
-      const isOk = !!actionResult?.pop()
-      if (!isOk) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
-          "Transaction already started for transactionId: " +
-            data.flow.transactionId
-        )
-      }
-
-      return result
-    })
+      })
+    }
 
     // Database operations
     if (hasFinished && !retentionTime) {
       // If the workflow is nested, we cant just remove it because it would break the compensation algorithm. Instead, it will get deleted when the top level parent is deleted.
       if (!data.flow.metadata?.parentStepIdempotencyKey) {
-        await promiseAll([pipelinePromise, this.deleteFromDb(data)])
+        await promiseAll([execPipeline(), this.deleteFromDb(data)])
       } else {
-        await promiseAll([pipelinePromise, this.saveToDb(data, retentionTime)])
+        await this.saveToDb(data, retentionTime)
+        await execPipeline()
       }
     } else {
-      await promiseAll([pipelinePromise, this.saveToDb(data, retentionTime)])
+      await this.saveToDb(data, retentionTime)
+      await execPipeline()
     }
   }
 

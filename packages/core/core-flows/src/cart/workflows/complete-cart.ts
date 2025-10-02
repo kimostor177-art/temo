@@ -109,10 +109,13 @@ export const completeCartWorkflow = createWorkflow(
       entity: "order_cart",
       fields: ["cart_id", "order_id"],
       filters: { cart_id: input.id },
+      options: {
+        isList: false,
+      },
     })
 
     const orderId = transform({ orderCart }, ({ orderCart }) => {
-      return orderCart.data[0]?.order_id
+      return orderCart?.data?.order_id
     })
 
     const cart = useRemoteQueryStep({
@@ -263,7 +266,7 @@ export const completeCartWorkflow = createWorkflow(
       const createdOrders = createOrdersStep([cartToOrder])
 
       const createdOrder = transform({ createdOrders }, ({ createdOrders }) => {
-        return createdOrders?.[0] ?? undefined
+        return createdOrders[0]
       })
 
       const reservationItemsData = transform(

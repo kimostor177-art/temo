@@ -158,6 +158,8 @@ describe("WorkflowManager", () => {
     const flow = new LocalWorkflow("deliver-product", container)
     const transaction = await flow.run("t-id")
 
+    await new Promise((resolve) => process.nextTick(resolve))
+
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("callExternal").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("bar").invoke).toHaveBeenCalledTimes(0)
@@ -176,6 +178,8 @@ describe("WorkflowManager", () => {
   it("should revert an asyncronous transaction after reporting a failure step", async () => {
     const flow = new LocalWorkflow("deliver-product", container)
     const transaction = await flow.run("t-id")
+
+    await new Promise((resolve) => process.nextTick(resolve))
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("callExternal").invoke).toHaveBeenCalledTimes(1)

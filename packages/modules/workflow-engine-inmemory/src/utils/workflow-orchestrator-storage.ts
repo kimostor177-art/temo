@@ -1,3 +1,4 @@
+import { raw } from "@medusajs/framework/mikro-orm/core"
 import {
   DistributedTransactionType,
   IDistributedSchedulerStorage,
@@ -24,7 +25,6 @@ import {
   TransactionStepState,
   isPresent,
 } from "@medusajs/framework/utils"
-import { raw } from "@medusajs/framework/mikro-orm/core"
 import { WorkflowOrchestratorService } from "@services"
 import { type CronExpression, parseExpression } from "cron-parser"
 import { WorkflowExecution } from "../models/workflow-execution"
@@ -162,12 +162,15 @@ export class InMemoryDistributedTransactionStorage
   }
 
   private createManagedTimer(
-    callback: () => void,
+    callback: () => void | Promise<void>,
     delay: number
   ): NodeJS.Timeout {
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       this.pendingTimers.delete(timer)
-      callback()
+      const res = callback()
+      if (res instanceof Promise) {
+        await res
+      }
     }, delay)
 
     this.pendingTimers.add(timer)
@@ -341,13 +344,11 @@ export class InMemoryDistributedTransactionStorage
 
     const { retentionTime } = options ?? {}
 
-    if (data.flow.hasAsyncSteps) {
-      await this.#preventRaceConditionExecutionIfNecessary({
-        data,
-        key,
-        options,
-      })
-    }
+    await this.#preventRaceConditionExecutionIfNecessary({
+      data,
+      key,
+      options,
+    })
 
     // Only store retention time if it's provided
     if (retentionTime) {
@@ -363,8 +364,7 @@ export class InMemoryDistributedTransactionStorage
     if (isNotStarted && isManualTransactionId) {
       const storedData = this.storage.get(key)
       if (storedData) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_ARGUMENT,
+        throw new SkipExecutionError(
           "Transaction already started for transactionId: " +
             data.flow.transactionId
         )

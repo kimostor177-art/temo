@@ -1,3 +1,4 @@
+import { asValue } from "@medusajs/framework/awilix"
 import {
   DistributedTransactionType,
   TransactionState,
@@ -27,7 +28,6 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
-import { asValue } from "@medusajs/framework/awilix"
 import { setTimeout as setTimeoutSync } from "timers"
 import { setTimeout } from "timers/promises"
 import { ulid } from "ulid"
@@ -37,28 +37,26 @@ import {
   workflowNotIdempotentWithRetentionStep2Invoke,
   workflowNotIdempotentWithRetentionStep3Invoke,
 } from "../__fixtures__"
-import { createScheduled } from "../__fixtures__/workflow_scheduled"
 import {
-  step1InvokeMock as step1InvokeMockAutoRetries,
-  step2InvokeMock as step2InvokeMockAutoRetries,
   step1CompensateMock as step1CompensateMockAutoRetries,
+  step1InvokeMock as step1InvokeMockAutoRetries,
   step2CompensateMock as step2CompensateMockAutoRetries,
+  step2InvokeMock as step2InvokeMockAutoRetries,
 } from "../__fixtures__/workflow_1_auto_retries"
 import {
-  step1InvokeMock as step1InvokeMockAutoRetriesFalse,
-  step2InvokeMock as step2InvokeMockAutoRetriesFalse,
   step1CompensateMock as step1CompensateMockAutoRetriesFalse,
+  step1InvokeMock as step1InvokeMockAutoRetriesFalse,
   step2CompensateMock as step2CompensateMockAutoRetriesFalse,
+  step2InvokeMock as step2InvokeMockAutoRetriesFalse,
 } from "../__fixtures__/workflow_1_auto_retries_false"
+import { createScheduled } from "../__fixtures__/workflow_scheduled"
 
+import { Redis } from "ioredis"
 import {
   step1InvokeMock as step1InvokeMockManualRetry,
   step2InvokeMock as step2InvokeMockManualRetry,
-  step1CompensateMock as step1CompensateMockManualRetry,
-  step2CompensateMock as step2CompensateMockManualRetry,
 } from "../__fixtures__/workflow_1_manual_retry_step"
 import { TestDatabase } from "../utils"
-import { Redis } from "ioredis"
 
 jest.setTimeout(300000)
 
@@ -523,7 +521,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
             expect(step1CompensateMockAutoRetriesFalse).toHaveBeenCalledTimes(0)
             expect(step2CompensateMockAutoRetriesFalse).toHaveBeenCalledTimes(0)
 
-          await setTimeout(3000)
+            await setTimeout(3000)
 
             await workflowOrcModule.run(workflowId, {
               input: {},
@@ -533,7 +531,7 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
 
             await setTimeout(2000)
 
-          await setTimeout(3000)
+            await setTimeout(3000)
 
             await workflowOrcModule.run(workflowId, {
               input: {},

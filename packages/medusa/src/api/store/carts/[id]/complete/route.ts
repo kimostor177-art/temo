@@ -1,10 +1,11 @@
-import { completeCartWorkflow } from "@medusajs/core-flows"
+import { completeCartWorkflowId } from "@medusajs/core-flows"
 import { prepareRetrieveQuery } from "@medusajs/framework"
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
 import { HttpTypes } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
   MedusaError,
+  Modules,
 } from "@medusajs/framework/utils"
 import { refetchCart } from "../../helpers"
 import { defaultStoreCartFields } from "../../query-config"
@@ -14,12 +15,20 @@ export const POST = async (
   res: MedusaResponse<HttpTypes.StoreCompleteCartResponse>
 ) => {
   const cart_id = req.params.id
+  const we = req.scope.resolve(Modules.WORKFLOW_ENGINE)
 
-  const { errors, result } = await completeCartWorkflow(req.scope).run({
+  const { errors, result, transaction } = await we.run(completeCartWorkflowId, {
     input: { id: cart_id },
-    context: { transactionId: cart_id },
+    transactionId: cart_id,
     throwOnError: false,
   })
+
+  if (!transaction.hasFinished()) {
+    throw new MedusaError(
+      MedusaError.Types.CONFLICT,
+      "Cart is already being completed by another request"
+    )
+  }
 
   const query = req.scope.resolve(ContainerRegistrationKeys.QUERY)
 
@@ -47,7 +56,7 @@ export const POST = async (
       ).remoteQueryConfig.fields
     )
 
-    if (!statusOKErrors.includes(error.type)) {
+    if (!statusOKErrors.includes(error?.type)) {
       throw error
     }
 

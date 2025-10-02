@@ -207,7 +207,6 @@ describe("Transaction Orchestrator", () => {
         },
         {
           action: "three",
-          async: true,
           maxRetries: 0,
           next: {
             action: "five",
@@ -228,23 +227,13 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
-    expect(transaction.getErrors()).toHaveLength(2)
+    expect(transaction.getErrors()).toHaveLength(1)
     expect(transaction.getErrors()).toEqual([
       {
         action: "three",
-        error: {
+        error: expect.objectContaining({
           message: "Step 3 failed",
           name: "Error",
-          stack: expect.any(String),
-        },
-        handlerType: "invoke",
-      },
-      {
-        action: "three",
-        error: expect.objectContaining({
-          message: expect.stringContaining(
-            "Converting circular structure to JSON"
-          ),
           stack: expect.any(String),
         }),
         handlerType: "invoke",
@@ -1052,6 +1041,8 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
+    await new Promise((resolve) => process.nextTick(resolve))
+
     expect(mocks.one).toHaveBeenCalledTimes(1)
     expect(mocks.two).toHaveBeenCalledTimes(0)
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
@@ -1148,6 +1139,8 @@ describe("Transaction Orchestrator", () => {
 
     await strategy.resume(transaction)
 
+    await new Promise((resolve) => process.nextTick(resolve))
+
     expect(mocks.one).toHaveBeenCalledTimes(1)
     expect(mocks.compensateOne).toHaveBeenCalledTimes(0)
     expect(mocks.two).toHaveBeenCalledTimes(0)
@@ -1170,6 +1163,8 @@ describe("Transaction Orchestrator", () => {
       handler,
       transaction,
     })
+
+    await new Promise((resolve) => process.nextTick(resolve))
 
     expect(resumedTransaction.getState()).toBe(TransactionState.COMPENSATING)
     expect(mocks.compensateOne).toHaveBeenCalledTimes(1)
@@ -1263,6 +1258,7 @@ describe("Transaction Orchestrator", () => {
     })
 
     await strategy.resume(transaction)
+    await new Promise((resolve) => process.nextTick(resolve))
 
     expect(mocks.one).toHaveBeenCalledTimes(1)
     expect(mocks.compensateOne).toHaveBeenCalledTimes(1)
@@ -1335,6 +1331,7 @@ describe("Transaction Orchestrator", () => {
     })
 
     await strategy.resume(transaction)
+    await new Promise((resolve) => process.nextTick(resolve))
 
     expect(transaction.getState()).toBe(TransactionState.DONE)
     expect(mocks.one).toHaveBeenCalledTimes(1)
