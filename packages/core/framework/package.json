@@ -39,6 +39,10 @@
     "./mikro-orm/knex": "./dist/deps/mikro-orm-knex.js",
     "./mikro-orm/migrations": "./dist/deps/mikro-orm-migrations.js",
     "./mikro-orm/postgresql": "./dist/deps/mikro-orm-postgresql.js",
+    "./opentelemetry/instrumentation-pg": "./dist/deps/opentelemetry-instrumentation-pg.js",
+    "./opentelemetry/sdk-node": "./dist/deps/opentelemetry-sdk-node.js",
+    "./opentelemetry/sdk-trace-node": "./dist/deps/opentelemetry-sdk-trace-node.js",
+    "./opentelemetry/resources": "./dist/deps/opentelemetry-resources.js",
     "./awilix": "./dist/deps/awilix.js",
     "./pg": "./dist/deps/pg.js"
   },
