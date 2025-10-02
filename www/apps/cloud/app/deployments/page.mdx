@@ -82,10 +82,10 @@ On the deployment details page, you'll find:
 
 ![Deployment details page with key sections highlighted](https://res.cloudinary.com/dza7lstvk/image/upload/v1750147821/Cloud/CleanShot_2025-06-17_at_11.08.58_2x_ea1l8s.png)
 
-1. **Commit**: The commit that the deployment was created from.
-2. **Status**: The current [status](#deployment-statuses-and-lifecycle) of the deployment. For example, "Live" or "Build Failed".
-3. **Author**: The GitHub user who pushed the commit that created the deployment.
-4. **Build Logs**: The logs from the build process. They are useful to understand why a deployment failed. Learn more in the [Logs](../logs/page.mdx) guide.
+1. **Commit**: The commit that the deployment was created from. This is the page's title.
+2. **Status**: The current [status](#deployment-statuses-and-lifecycle) of the deployment. For example, "Live" or "Build Failed". You can see it next to the "Redeploy" button.
+3. **Author**: The GitHub user who pushed the commit that created the deployment. You can see the user name when you hover over the user's avatar.
+4. **Build Logs**: This section shows the logs from the build process. They are useful to understand why a deployment failed. Learn more in the [Logs](../logs/page.mdx) guide.
 
 ### Switch Between Deployments
 
@@ -301,7 +301,7 @@ For each environment, you can change the rules that trigger a new deployment. Fo
 
 <Note>
 
-Changing the branch associted with an environment only works for long-lived environments.
+Changing the branch associated with an environment only works for [long-lived environments](../environments/long-lived/page.mdx).
 
 </Note>
 
@@ -309,11 +309,11 @@ To change the deployment rules for an environment:
 
 1. [Go to the environment's dashboard](#find-environment-deployments).
 2. Click on the "Settings" tab.
-3. Scroll down to the "Deployment rules" section. You'll find a `branch` rule in this section.
+3. Click on the "Deployment rules" tab in the sidebar.
+4. You'll find a `branch` rule. You can edit it by clicking the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choosing "Edit" from the dropdown.
 
 ![Deployment rules section in the environment's settings tab](https://res.cloudinary.com/dza7lstvk/image/upload/v1750171235/Cloud/CleanShot_2025-06-17_at_17.40.13_2x_v0vn1k.png)
 
-4. You can edit it by clicking the <InlineIcon Icon={EllipsisHorizontal} alt="three-dots" /> icon and choosing "Edit" from the dropdown.
 5. In the side window that opens, you can change the branch that the environment is connected to. For example, you can change it from `main` to `staging` to create a new deployment every time you push a commit to the `staging` branch.
 6. Click "Save" to apply the changes.
 

@@ -47,7 +47,7 @@ Medusa provides you with the following starters that you can use to quickly set 
 
 To create a project from either of these starters:
 
-1. Click on the **Browse Starters** button at the top right.
+1. Click on the **Browse Starters** button at the top right of the [project creation page](#create-a-project).
 2. Click the **Clone** button of the starter you want to use.
 3. In the Repository step, authenticate with your GitHub account if you haven't already.
 4. Choose a GitHub organization to clone the starter into in the "Organization" field.
@@ -82,7 +82,7 @@ So, make sure to remove any of these modules from your `medusa-config.ts` file, 
 
 To create a project from an existing Medusa application:
 
-1. In the GitHub section, authenticate with your GitHub account if you haven't already.
+1. In the GitHub section of the [project-creation page](#create-a-project), authenticate with your GitHub account if you haven't already.
 2. Under the Repository section, choose the repository to create the project from.
     - If you don't see your repository, you can click the **Configure repositories** link to manage the GitHub repositories that Medusa can access.
 3. Once you're done, click the **Continue** button.
@@ -140,6 +140,8 @@ If you encounter any issues while creating a project:
 
 ## Subdomain Restrictions for Projects
 
+Your project's URL must be a subdomain of `medusajs.app`. For example, if you choose `my-store` as your subdomain, your project's URL will be `my-store.medusajs.app`.
+
 When you choose a subdomain for your project, it must be at least five characters long. It also can't be one of the following reserved subdomains:
 
 - `medusa`
@@ -187,15 +189,16 @@ When you open a project's dashboard, its name will be shown at the top left next
 
 On the project's dashboard, you can view the following details:
 
-![The project dashboard with the details of a project](https://res.cloudinary.com/dza7lstvk/image/upload/v1749743078/Cloud/CleanShot_2025-06-12_at_18.42.54_2x_rin0pw.png)
+![The project dashboard with the details of a project](https://res.cloudinary.com/dza7lstvk/image/upload/v1759405506/Cloud/CleanShot_2025-10-02_at_14.42.33_2x_w4ql3x.png)
 
 1. **Region**: The region where the project is deployed. You'll find it below the project name.
 2. **Environments**: The environments for the project are shown as cards. By default, you'll find Production and Previews environments. You can learn more about environments in the [Environments](../environments/page.mdx) guide.
     - The Production environment is the live environment where your Medusa application is deployed and clients connect to.
     - The Previews environments are created whenever you create a pull request in the linked GitHub repository. They allow you to preview changes before merging them into the main branch.
+    - Other [Long-lived environments](../environments/long-lived/page.mdx) like Staging will be shown here if you create them.
 3. **Production URL**: The URL of the project's production deployment. You'll find it in the "Production" card under the title. Clicking it will open the production Medusa Admin in a new tab.
 4. **Repository**: The GitHub repository linked to the project. You'll find it as a "Repository" button at the top right of the project's dashboard. Clicking it will open the repository in a new tab.
-5. **Production Status**: The status of the project's environment, which may be "Live" or "Building". Learn more in the [Deployments](../deployments/page.mdx#deployment-statuses-and-lifecycle) guide.
+5. **Production Deployment Status**: The deployment status of the project's environment, which may be "Live" or "Building". Learn more in the [Deployments](../deployments/page.mdx#deployment-statuses-and-lifecycle) guide.
 
 ### Switch Projects
 
