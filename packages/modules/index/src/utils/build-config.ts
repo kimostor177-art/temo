@@ -845,7 +845,9 @@ function processEntity(
           ]
           intermediateEntityObjectRepresentationRef.moduleConfig =
             intermediateEntityModule
-          intermediateEntityObjectRepresentationRef.fields = ["id"]
+          if (!intermediateEntityObjectRepresentationRef.fields.includes("id")) {
+            intermediateEntityObjectRepresentationRef.fields.push("id")
+          }
 
           /**
            * We push the parent id only between intermediate entities but not between intermediate and link
