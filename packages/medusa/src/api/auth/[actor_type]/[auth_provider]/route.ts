@@ -43,6 +43,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       {
         authIdentity,
         actorType: actor_type,
+        authProvider: auth_provider,
       },
       {
         secret: http.jwtSecret!,

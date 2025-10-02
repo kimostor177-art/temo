@@ -9,7 +9,12 @@ export function generateJwtTokenForAuthIdentity(
   {
     authIdentity,
     actorType,
-  }: { authIdentity: AuthIdentityDTO; actorType: string },
+    authProvider,
+  }: {
+    authIdentity: AuthIdentityDTO
+    actorType: string
+    authProvider?: string
+  },
   {
     secret,
     expiresIn,
@@ -26,6 +31,12 @@ export function generateJwtTokenForAuthIdentity(
     | string
     | undefined
 
+  const providerIdentity = !authProvider
+    ? undefined
+    : authIdentity.provider_identities?.filter(
+        (identity) => identity.provider === authProvider
+      )[0]
+
   return generateJwtToken(
     {
       actor_id: entityId ?? "",
@@ -34,6 +45,7 @@ export function generateJwtTokenForAuthIdentity(
       app_metadata: {
         [entityIdKey]: entityId,
       },
+      user_metadata: providerIdentity?.user_metadata ?? {},
     },
     {
       secret,

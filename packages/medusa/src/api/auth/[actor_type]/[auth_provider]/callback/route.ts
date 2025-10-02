@@ -36,7 +36,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
     const { http } = config.projectConfig
 
     const token = generateJwtTokenForAuthIdentity(
-      { authIdentity, actorType: actor_type },
+      { authIdentity, actorType: actor_type, authProvider: auth_provider },
       {
         secret: http.jwtSecret!,
         expiresIn: http.jwtExpiresIn,
