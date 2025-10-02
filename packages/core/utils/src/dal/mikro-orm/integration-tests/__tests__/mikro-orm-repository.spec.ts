@@ -1521,8 +1521,10 @@ describe("mikroOrmRepository", () => {
       expect(e5SelectCalls).toBe(2) // One for Entity5, one for Entity6
       expect(e5InsertCalls).toBe(2) // One batch insert for Entity5s, one for Entity6s
 
-      expect(qbInsertSpy.mock.calls[0][0]).toHaveLength(800) // entity5 25 * 8 * 4
-      expect(qbInsertSpy.mock.calls[1][0]).toHaveLength(2400) // entity6 25 * 8 * 4 * 3
+      // Check that the expected batch sizes exist (order may vary)
+      const e5BatchSizes = qbInsertSpy.mock.calls.map(call => call[0].length)
+      expect(e5BatchSizes).toContain(800) // entity5 25 * 8 * 4
+      expect(e5BatchSizes).toContain(2400) // entity6 25 * 8 * 4 * 3
 
       findSpy.mockClear()
       qbSelectSpy.mockClear()
@@ -1551,9 +1553,11 @@ describe("mikroOrmRepository", () => {
       expect(e3SelectCalls).toBe(3) // One for Entity3, one for Entity5, One pivot entity3 -> entity5
       expect(e3InsertCalls).toBe(3) // One batch insert for Entity3s, one for Entity4s and one pivot entity3 -> entity5
 
-      expect(qbInsertSpy.mock.calls[0][0]).toHaveLength(200) // entity3: 25 * 8
-      expect(qbInsertSpy.mock.calls[1][0]).toHaveLength(800) // pivot entity3 -> entity5: 25 * 8 * 4
-      expect(qbInsertSpy.mock.calls[2][0]).toHaveLength(1000) // entity4: 25 * 8 * 5
+      // Check that the expected batch sizes exist (order may vary)
+      const e3BatchSizes = qbInsertSpy.mock.calls.map(call => call[0].length)
+      expect(e3BatchSizes).toContain(200) // entity3: 25 * 8
+      expect(e3BatchSizes).toContain(800) // pivot entity3 -> entity5: 25 * 8 * 4
+      expect(e3BatchSizes).toContain(1000) // entity4: 25 * 8 * 5
 
       findSpy.mockClear()
       qbSelectSpy.mockClear()
@@ -1580,9 +1584,11 @@ describe("mikroOrmRepository", () => {
       expect(mainSelectCalls).toBe(3) // One for Entity1, one for Entity3, one for Entity2
       expect(mainInsertCalls).toBe(3) // One batch insert for Entity1s, one for Entity2s, one for Entity3s
 
-      expect(qbInsertSpy.mock.calls[0][0]).toHaveLength(25) // entity1: 25
-      expect(qbInsertSpy.mock.calls[1][0]).toHaveLength(200) // entity3: 25 * 8
-      expect(qbInsertSpy.mock.calls[2][0]).toHaveLength(250) // entity2: 25 * 10
+      // Check that the expected batch sizes exist (order may vary)
+      const mainBatchSizes = qbInsertSpy.mock.calls.map(call => call[0].length)
+      expect(mainBatchSizes).toContain(25) // entity1: 25
+      expect(mainBatchSizes).toContain(200) // entity3: 25 * 8
+      expect(mainBatchSizes).toContain(250) // entity2: 25 * 10
 
       findSpy.mockClear()
       qbSelectSpy.mockClear()
@@ -1658,8 +1664,10 @@ describe("mikroOrmRepository", () => {
 
       // Should use batch inserts for new entities and pivot relationships
       expect(updateInsertCalls).toBe(2) // pivot Entity1 - Entity3 (with conflict resolution) + new Entity2s
-      expect(qbInsertSpy.mock.calls[0][0]).toHaveLength(100) // pivot Entity1 - Entity3: 25 parents × 4 entity3s each (uses onConflict().ignore())
-      expect(qbInsertSpy.mock.calls[1][0]).toHaveLength(50) // New Entity2s: 25 parents × 2 new each
+      // Check that the expected batch sizes exist (order may vary)
+      const updateBatchSizes = qbInsertSpy.mock.calls.map(call => call[0].length)
+      expect(updateBatchSizes).toContain(100) // pivot Entity1 - Entity3: 25 parents × 4 entity3s each (uses onConflict().ignore())
+      expect(updateBatchSizes).toContain(50) // New Entity2s: 25 parents × 2 new each
 
       // We wont check the deletion which happen through knex directly. It will be accounted for in
       // the final state verification

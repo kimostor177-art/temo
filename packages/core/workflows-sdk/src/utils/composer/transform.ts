@@ -170,7 +170,7 @@ export function transform(
   } as WorkflowData & {
     __id: string
     __type: string
-    __temporary_storage_key: { key: string } | null
+    __temporary_storage_key: string | null
   }
 
   const returnFn = async function (
@@ -179,8 +179,7 @@ export function transform(
   ): Promise<any> {
     if ("transaction" in transactionContext) {
       const temporaryDataKey = `${transactionContext.transaction.modelId}_${transactionContext.transaction.transactionId}_${uniqId}`
-
-      ret.__temporary_storage_key ??= { key: temporaryDataKey }
+      ret.__temporary_storage_key ??= temporaryDataKey
 
       if (
         transactionContext.transaction.hasTemporaryData(
