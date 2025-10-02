@@ -125,7 +125,7 @@ The workflow you'll create will have the following steps:
       },
       {
         type: "step",
-        name: "buildProductFieldXmlStep",
+        name: "buildProductFeedXmlStep",
         description: "Get the product feed as an XML string.",
         depth: 2
       }
@@ -360,13 +360,13 @@ For each product, you:
 
 The `feedItems` array will contain feed data for every product variant.
 
-### buildProductFieldXmlStep
+### buildProductFeedXmlStep
 
-In the `buildProductFieldXmlStep`, you will construct the XML string for the product feed.
+In the `buildProductFeedXmlStep`, you will construct the XML string for the product feed.
 
-To create the step, create the file `src/workflows/steps/build-product-field-xml.ts` with the following content:
+To create the step, create the file `src/workflows/steps/build-product-feed-xml.ts` with the following content:
 
-```ts title="src/workflows/steps/build-product-field-xml.ts"
+```ts title="src/workflows/steps/build-product-feed-xml.ts"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 import { FeedItem } from "./get-product-feed-items"
 
@@ -374,7 +374,7 @@ type StepInput = {
   items: FeedItem[]
 }
 
-export const buildProductFieldXmlStep = createStep(
+export const buildProductFeedXmlStep = createStep(
   "build-product-feed-xml",
   async (input: StepInput) => {
     const escape = (str: string) =>
@@ -434,7 +434,7 @@ Create the file `src/workflows/generate-product-feed.ts` with the following cont
 ```ts title="src/workflows/generate-product-feed.ts"
 import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk"
 import { getProductFeedItemsStep } from "./steps/get-product-feed-items"
-import { buildProductFieldXmlStep } from "./steps/build-product-field-xml"
+import { buildProductFeedXmlStep } from "./steps/build-product-field-xml"
 
 type GenerateProductFeedWorkflowInput = {
   currency_code: string
@@ -446,7 +446,7 @@ export const generateProductFeedWorkflow = createWorkflow(
   (input: GenerateProductFeedWorkflowInput) => {
     const { items: feedItems } = getProductFeedItemsStep(input)
 
-    const xml = buildProductFieldXmlStep({ 
+    const xml = buildProductFeedXmlStep({ 
       items: feedItems,
     })
 
@@ -466,7 +466,7 @@ The constructor function accepts an object holding the currency code and country
 In the function, you:
 
 - Get the product feed items using the `getProductFeedItemsStep`.
-- Build the product feed XML using the `buildProductFieldXmlStep`.
+- Build the product feed XML using the `buildProductFeedXmlStep`.
 
 A workflow must return an instance of `WorkflowResponse`. It receives as a parameter the data returned by the workflow, which is the XML string.
 
