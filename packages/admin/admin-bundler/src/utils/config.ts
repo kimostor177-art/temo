@@ -70,6 +70,15 @@ export async function getViteConfig(
     ],
   }
 
+  // Inject plugin environment variables with vite define
+  const pluginEnv: Record<string, string | undefined> = { BACKEND_URL: backendUrl }
+  for (const [key, value] of Object.entries(process.env)) {
+    if (key.startsWith("PLUGIN_")) {
+      pluginEnv[key.replace(/^PLUGIN_/, "")] = value
+    }
+  }
+  baseConfig.define!["process.env"] = JSON.stringify(pluginEnv)
+
   if (options.vite) {
     const customConfig = options.vite(baseConfig)
     return mergeConfig(baseConfig, customConfig)
