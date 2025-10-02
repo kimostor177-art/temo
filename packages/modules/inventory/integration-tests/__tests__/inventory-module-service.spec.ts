@@ -1,4 +1,4 @@
-import { IInventoryService, InventoryItemDTO } from "@medusajs/framework/types"
+import { IInventoryService, InventoryItemDTO, ReservationItemDTO } from "@medusajs/framework/types"
 import {
   BigNumber,
   CommonEvents,
@@ -548,6 +548,105 @@ moduleIntegrationTestRunner<IInventoryService>({
 
           expect(error.message).toEqual(
             `Not enough stock available for item ${inventoryItem.id} at location location-1`
+          )
+        })
+      })
+
+      describe("deleteReservationItems", () => {
+        let inventoryItem: InventoryItemDTO
+        let reservationItems: ReservationItemDTO[]
+
+        beforeEach(async () => {
+          inventoryItem = await service.createInventoryItems({
+            sku: "test-sku",
+            origin_country: "test-country",
+          })
+
+          await service.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              stocked_quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              stocked_quantity: 2,
+            },
+          ])
+
+          reservationItems = await service.createReservationItems([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-1",
+              quantity: 2,
+            },
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: "location-2",
+              quantity: 2,
+            },
+          ])
+        })
+
+        it("should delete reservation items by id", async () => {
+          const reservationItemsPreDeleted = await service.listReservationItems(
+            {
+              id: reservationItems.map((item) => item.id),
+            }
+          )
+
+          expect(reservationItemsPreDeleted).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                inventory_item_id: inventoryItem.id,
+                location_id: "location-1",
+                quantity: 2,
+              }),
+              expect.objectContaining({
+                inventory_item_id: inventoryItem.id,
+                location_id: "location-2",
+                quantity: 2,
+              }),
+            ])
+          )
+          expect(reservationItemsPreDeleted).toHaveLength(2)
+
+          await service.deleteReservationItems(
+            reservationItems.map((item) => item.id)
+          )
+
+          const reservationItemsPostDeleted =
+            await service.listReservationItems({
+              id: reservationItems.map((item) => item.id),
+            })
+
+          expect(reservationItemsPostDeleted).toEqual([])
+        })
+
+        it("should adjust inventory levels accordingly when removing reservations by id", async () => {
+          const reservationItem = (await service.listReservationItems({ location_id: "location-1"}))[0]
+          
+          const inventoryLevelBefore =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
+
+          expect(inventoryLevelBefore).toEqual(
+            expect.objectContaining({ reserved_quantity: 2 })
+          )
+
+          await service.deleteReservationItems(reservationItem.id)
+
+          const inventoryLevelAfter =
+            await service.retrieveInventoryLevelByItemAndLocation(
+              inventoryItem.id,
+              "location-1"
+            )
+
+          expect(inventoryLevelAfter).toEqual(
+            expect.objectContaining({ reserved_quantity: 0 })
           )
         })
       })

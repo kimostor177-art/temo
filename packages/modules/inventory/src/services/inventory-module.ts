@@ -714,6 +714,32 @@ export default class InventoryModuleService
   @InjectManager()
   @EmitEvents()
   // @ts-expect-error
+  async deleteReservationItems(
+    ids: string | string[],
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    return await this.deleteReservationItems_(ids, context)
+  }
+
+  @InjectTransactionManager()
+  protected async deleteReservationItems_(
+    ids: string | string[],
+    @MedusaContext() context: Context = {}
+  ): Promise<void> {
+    const reservations: InventoryTypes.ReservationItemDTO[] =
+      await this.reservationItemService_.list({ id: ids }, {}, context)
+
+    await super.deleteReservationItems(ids, context)
+
+    await this.adjustInventoryLevelsForReservationsDeletion(
+      reservations,
+      context
+    )
+  }
+
+  @InjectManager()
+  @EmitEvents()
+  // @ts-expect-error
   async softDeleteReservationItems(
     ids: string | string[],
     config?: SoftDeleteReturn<string>,
