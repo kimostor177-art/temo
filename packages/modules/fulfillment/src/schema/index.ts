@@ -42,7 +42,6 @@ type FulfillmentProvider {
   id: ID!
   name: String!
   metadata: JSON
-  shipping_options: [ShippingOption!]!
   created_at: DateTime!
   updated_at: DateTime!
   deleted_at: DateTime
