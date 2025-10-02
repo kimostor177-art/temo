@@ -57,7 +57,19 @@ export class LocalFileService extends AbstractFileProviderService {
     const filePath = this.getUploadFilePath(baseDir, fileKey)
     const fileUrl = this.getUploadFileUrl(fileKey)
 
-    const content = Buffer.from(file.content as string, "binary")
+    let content: Buffer
+    try {
+      const decoded = Buffer.from(file.content, "base64")
+      if (decoded.toString("base64") === file.content) {
+        content = decoded
+      } else {
+        content = Buffer.from(file.content, "utf8")
+      }
+    } catch {
+      // Last-resort fallback: binary
+      content = Buffer.from(file.content, "binary")
+    }
+
     await fs.writeFile(filePath, content)
 
     return {

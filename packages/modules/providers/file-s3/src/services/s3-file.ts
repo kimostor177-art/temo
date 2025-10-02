@@ -120,7 +120,19 @@ export class S3FileService extends AbstractFileProviderService {
       parsedFilename.ext
     }`
 
-    const content = Buffer.from(file.content, "binary")
+    let content: Buffer
+    try {
+      const decoded = Buffer.from(file.content, "base64")
+      if (decoded.toString("base64") === file.content) {
+        content = decoded
+      } else {
+        content = Buffer.from(file.content, "utf8")
+      }
+    } catch {
+      // Last-resort fallback: binary
+      content = Buffer.from(file.content, "binary")
+    }
+
     const command = new PutObjectCommand({
       // We probably also want to support a separate bucket altogether for private files
       // protected private_bucket_: string

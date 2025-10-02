@@ -1,11 +1,11 @@
 import { parse, Parser } from "csv-parse"
 import type { HttpTypes, IFileModuleService } from "@medusajs/framework/types"
 import {
-  Modules,
   CSVNormalizer,
+  Modules,
   productValidators,
 } from "@medusajs/framework/utils"
-import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
+import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"
 
 /**
  * The CSV file content to parse.
@@ -203,6 +203,7 @@ export const normalizeCsvToChunksStep = createStep(
       try {
         const file = container.resolve(Modules.FILE)
         const contents = await file.getDownloadStream(fileKey)
+
         const transformer = parse({
           columns: true,
           skip_empty_lines: true,
