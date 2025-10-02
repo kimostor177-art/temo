@@ -114,6 +114,10 @@ async function generateMigrations(
     logger.info(
       `Generating migrations for module ${moduleDescriptor.serviceName}...`
     )
+    if (moduleDescriptor.entities.length === 0) {
+      logger.info(`No entities found for module ${moduleDescriptor.serviceName}, skipping...`)
+      continue
+    }
 
     const mikroOrmConfig = defineMikroOrmCliConfig(
       moduleDescriptor.serviceName,
