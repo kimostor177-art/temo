@@ -8,6 +8,9 @@ import React, {
   useState,
 } from "react"
 import { Analytics, AnalyticsBrowser } from "@segment/analytics-next"
+import { PostHogProvider as PHProvider } from "posthog-js/react"
+import posthog from "posthog-js"
+
 // @ts-expect-error Doesn't have a types package
 import { loadReoScript } from "reodotdev"
 
@@ -36,6 +39,8 @@ const AnalyticsContext = createContext<AnalyticsContextType | null>(null)
 export type AnalyticsProviderProps = {
   segmentWriteKey?: string
   reoDevKey?: string
+  postHogKey?: string
+  postHogApiHost?: string
   children?: React.ReactNode
 }
 
@@ -45,6 +50,8 @@ export const AnalyticsProvider = ({
   segmentWriteKey = "temp",
   reoDevKey,
   children,
+  postHogKey,
+  postHogApiHost = "https://eu.i.posthog.com",
 }: AnalyticsProviderProps) => {
   // loaded is used to ensure that a connection has been made to segment
   // even if it failed. This is to ensure that the connection isn't
@@ -113,8 +120,21 @@ export const AnalyticsProvider = ({
     [analytics, loaded]
   )
 
+  const initPostHog = useCallback(() => {
+    if (!postHogKey) {
+      return
+    }
+
+    posthog.init(postHogKey, {
+      api_host: postHogApiHost,
+      person_profiles: "always",
+      defaults: "2025-05-24",
+    })
+  }, [])
+
   useEffect(() => {
     initSegment()
+    initPostHog()
   }, [initSegment])
 
   useEffect(() => {
@@ -153,7 +173,11 @@ export const AnalyticsProvider = ({
         loaded,
       }}
     >
-      {children}
+      {postHogKey ? (
+        <PHProvider client={posthog}>{children}</PHProvider>
+      ) : (
+        children
+      )}
     </AnalyticsContext.Provider>
   )
 }
