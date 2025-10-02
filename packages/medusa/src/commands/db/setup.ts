@@ -12,7 +12,9 @@ const main = async function ({
   executeAllLinks,
   executeSafeLinks,
 }) {
-  const container = await initializeContainer(directory)
+  let container = await initializeContainer(directory, {
+    skipDbConnection: true,
+  })
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
 
   try {
@@ -20,6 +22,8 @@ const main = async function ({
     if (!created) {
       process.exit(1)
     }
+
+    container = await initializeContainer(directory)
 
     const migrated = await migrate({
       directory,
