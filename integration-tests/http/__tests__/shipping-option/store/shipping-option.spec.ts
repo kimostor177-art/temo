@@ -4,6 +4,7 @@ import {
   generatePublishableKey,
   generateStoreHeaders,
 } from "../../../../helpers/create-admin-user"
+import { ProductStatus } from "@medusajs/utils"
 
 jest.setTimeout(50000)
 
@@ -78,6 +79,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "Test fixture",
+              status: ProductStatus.PUBLISHED,
               options: [
                 { title: "size", values: ["large", "small"] },
                 { title: "color", values: ["green"] },
@@ -634,6 +636,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "Test prod",
+              status: ProductStatus.PUBLISHED,
               options: [
                 { title: "size", values: ["large", "small"] },
                 { title: "color", values: ["green"] },

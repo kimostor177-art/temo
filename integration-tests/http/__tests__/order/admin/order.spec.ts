@@ -1,6 +1,6 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { AdminShippingOption } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { ModuleRegistrationName, ProductStatus } from "@medusajs/utils"
 import {
   adminHeaders,
   createAdminUser,
@@ -705,6 +705,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: `Test fixture`,
+              status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
               options: [
                 { title: "size", values: ["large", "small"] },
@@ -793,6 +794,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: `Test fixture 2`,
+              status: ProductStatus.PUBLISHED,
               options: [
                 { title: "size", values: ["large", "small"] },
                 { title: "color", values: ["green"] },
@@ -829,6 +831,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: `Test fixture 3`,
+              status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
               options: [
                 { title: "size", values: ["large", "small"] },
@@ -883,6 +886,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: `Test override 4`,
+              status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
               options: [{ title: "size", values: ["large"] }],
               variants: [
@@ -924,6 +928,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: `Test fixture 4`,
+              status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfileOverride.id,
               options: [
                 { title: "size", values: ["large", "small"] },
@@ -1310,6 +1315,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: `Wooden table`,
+              status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
               options: [{ title: "color", values: ["green"] }],
               variants: [
@@ -1474,6 +1480,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: `Tablet`,
+              status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
               options: [{ title: "color", values: ["green"] }],
               variants: [
@@ -1697,6 +1704,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: `Tablet`,
+              status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
               options: [{ title: "color", values: ["green"] }],
               variants: [
@@ -2101,6 +2109,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: `Bottle Packs`,
+              status: ProductStatus.PUBLISHED,
               shipping_profile_id: shippingProfile.id,
               options: [{ title: "packs", values: ["one", "two", "three"] }],
               variants: [
@@ -2907,6 +2916,7 @@ medusaIntegrationTestRunner({
               "/admin/products",
               {
                 title: `Wooden table`,
+                status: ProductStatus.PUBLISHED,
                 shipping_profile_id: shippingProfile.id,
                 options: [{ title: "color", values: ["green"] }],
                 variants: [

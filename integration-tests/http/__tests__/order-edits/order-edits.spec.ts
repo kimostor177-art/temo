@@ -3,6 +3,7 @@ import {
   ContainerRegistrationKeys,
   Modules,
   OrderChangeStatus,
+  ProductStatus,
   RuleOperator,
 } from "@medusajs/utils"
 import {
@@ -109,6 +110,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "Test product",
+            status: ProductStatus.PUBLISHED,
             options: [{ title: "size", values: ["large", "small"] }],
             shipping_profile_id: shippingProfile.id,
             variants: [
@@ -134,6 +136,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "Extra product",
+            status: ProductStatus.PUBLISHED,
             options: [{ title: "size", values: ["large", "small"] }],
             shipping_profile_id: shippingProfile.id,
             variants: [
@@ -607,6 +610,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "Shirt",
+              status: ProductStatus.PUBLISHED,
               options: [
                 { title: "size", values: ["large", "medium", "small"] },
               ],

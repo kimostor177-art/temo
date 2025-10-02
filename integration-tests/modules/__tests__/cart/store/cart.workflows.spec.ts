@@ -36,6 +36,7 @@ import {
   Modules,
   PriceListStatus,
   PriceListType,
+  ProductStatus,
   RuleOperator,
 } from "@medusajs/utils"
 import {
@@ -184,6 +185,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   title: "Test variant",
@@ -422,6 +424,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   title: "Test variant",
@@ -538,6 +541,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   title: "Test variant",
@@ -687,6 +691,7 @@ medusaIntegrationTestRunner({
             const [product] = await productModule.createProducts([
               {
                 title: "Test product",
+                status: ProductStatus.PUBLISHED,
                 variants: [
                   {
                     title: "Test variant",
@@ -855,6 +860,7 @@ medusaIntegrationTestRunner({
             const [product] = await productModule.createProducts([
               {
                 title: "Test product",
+                status: ProductStatus.PUBLISHED,
                 variants: [
                   {
                     title: "Test variant",
@@ -1263,6 +1269,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   title: "Test variant",
@@ -1456,6 +1463,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   title: "Test variant",
@@ -1691,6 +1699,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   title: "Test variant",
@@ -1809,6 +1818,153 @@ medusaIntegrationTestRunner({
           )
         })
 
+        it("should throw if product is not published", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          const location = await stockLocationModule.createStockLocations({
+            name: "Warehouse",
+          })
+
+          let cart = await cartModuleService.createCarts({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+          })
+
+          const [product] = await productModule.createProducts([
+            {
+              title: "Test product",
+              status: ProductStatus.DRAFT,
+              variants: [
+                {
+                  title: "Test variant",
+                },
+              ],
+            },
+          ])
+
+          const inventoryItem = await inventoryModule.createInventoryItems({
+            sku: "inv-1234",
+          })
+
+          await inventoryModule.createInventoryLevels([
+            {
+              inventory_item_id: inventoryItem.id,
+              location_id: location.id,
+              stocked_quantity: 2,
+              reserved_quantity: 0,
+            },
+          ])
+
+          const priceSet = await pricingModule.createPriceSets({
+            prices: [
+              {
+                amount: 3000,
+                currency_code: "usd",
+              },
+            ],
+          })
+
+          await pricingModule.createPricePreferences({
+            attribute: "currency_code",
+            value: "usd",
+            is_tax_inclusive: true,
+          })
+
+          await remoteLink.create([
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.PRICING]: {
+                price_set_id: priceSet.id,
+              },
+            },
+            {
+              [Modules.SALES_CHANNEL]: {
+                sales_channel_id: salesChannel.id,
+              },
+              [Modules.STOCK_LOCATION]: {
+                stock_location_id: location.id,
+              },
+            },
+            {
+              [Modules.PRODUCT]: {
+                variant_id: product.variants[0].id,
+              },
+              [Modules.INVENTORY]: {
+                inventory_item_id: inventoryItem.id,
+              },
+            },
+          ])
+
+          cart = await cartModuleService.retrieveCart(cart.id, {
+            select: ["id", "region_id", "currency_code", "sales_channel_id"],
+          })
+
+          const { errors } = await addToCartWorkflow(appContainer).run({
+            input: {
+              items: [
+                {
+                  variant_id: product.variants[0].id,
+                  quantity: 1,
+                },
+              ],
+              cart_id: cart.id,
+            },
+            throwOnError: false,
+          })
+
+          expect(errors).toEqual([
+            {
+              action: "get-variant-items-with-prices-workflow-as-step",
+              handlerType: "invoke",
+              error: expect.objectContaining({
+                message: expect.stringContaining(
+                  `Variants ${product.variants[0].id} do not exist or belong to a product that is not published`
+                ),
+              }),
+            },
+          ])
+        })
+
+        it("should throw if variant doesn't exist", async () => {
+          const salesChannel = await scModuleService.createSalesChannels({
+            name: "Webshop",
+          })
+
+          let cart = await cartModuleService.createCarts({
+            currency_code: "usd",
+            sales_channel_id: salesChannel.id,
+          })
+
+          const { errors } = await addToCartWorkflow(appContainer).run({
+            input: {
+              items: [
+                {
+                  variant_id: "var_1234",
+                  quantity: 1,
+                },
+              ],
+              cart_id: cart.id,
+            },
+            throwOnError: false,
+          })
+
+          expect(errors).toEqual([
+            {
+              action: "get-variant-items-with-prices-workflow-as-step",
+              handlerType: "invoke",
+              error: expect.objectContaining({
+                message: expect.stringContaining(
+                  `Variants var_1234 do not exist or belong to a product that is not published`
+                ),
+              }),
+            },
+          ])
+        })
+
         it("should throw if no price sets for variant exist", async () => {
           const salesChannel = await scModuleService.createSalesChannels({
             name: "Webshop",
@@ -1910,6 +2066,7 @@ medusaIntegrationTestRunner({
             const [product] = await productModule.createProducts([
               {
                 title: "Test product",
+                status: ProductStatus.PUBLISHED,
                 variants: [
                   {
                     title: "Test variant",
@@ -2062,6 +2219,7 @@ medusaIntegrationTestRunner({
             const [product] = await productModule.createProducts([
               {
                 title: "Test product",
+                status: ProductStatus.PUBLISHED,
                 variants: [
                   {
                     title: "Test variant",

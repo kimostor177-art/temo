@@ -9,6 +9,7 @@ import {
 import {
   ContainerRegistrationKeys,
   Modules,
+  ProductStatus,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 
@@ -94,6 +95,7 @@ export async function prepareDataFixtures({ container }) {
   const [product] = await productModule.createProducts([
     {
       title: "Test product",
+      status: ProductStatus.PUBLISHED,
       variants: [
         {
           title: "Test variant",

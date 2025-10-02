@@ -1,6 +1,6 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import { HttpTypes } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/utils"
+import { ModuleRegistrationName, ProductStatus } from "@medusajs/utils"
 import { adminHeaders, createAdminUser, } from "../../../../helpers/create-admin-user"
 import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 
@@ -312,6 +312,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "Shirt",
+              status: ProductStatus.PUBLISHED,
               options: [
                 { title: "size", values: ["large", "medium", "small"] },
               ],
@@ -537,6 +538,7 @@ medusaIntegrationTestRunner({
             "/admin/products",
             {
               title: "Shirt",
+              status: ProductStatus.PUBLISHED,
               options: [{ title: "size", values: ["large", "small"] }],
               variants: [
                 {

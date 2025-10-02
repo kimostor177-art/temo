@@ -2,6 +2,7 @@ import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
 import {
   ContainerRegistrationKeys,
   Modules,
+  ProductStatus,
   RuleOperator,
 } from "@medusajs/utils"
 import {
@@ -80,6 +81,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "Test product",
+            status: ProductStatus.PUBLISHED,
             shipping_profile_id: shippingProfile.id,
             options: [{ title: "size", values: ["large", "small"] }],
             variants: [
@@ -105,6 +107,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "Extra product",
+            status: ProductStatus.PUBLISHED,
             shipping_profile_id: shippingProfile.id,
             options: [{ title: "size", values: ["large", "small"] }],
             variants: [
@@ -130,6 +133,7 @@ medusaIntegrationTestRunner({
           "/admin/products",
           {
             title: "Extra product 2, same price",
+            status: ProductStatus.PUBLISHED,
             shipping_profile_id: shippingProfile.id,
             options: [{ title: "size", values: ["large", "small"] }],
             variants: [

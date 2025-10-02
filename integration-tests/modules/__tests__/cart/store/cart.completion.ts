@@ -26,6 +26,7 @@ import {
 import {
   ContainerRegistrationKeys,
   Modules,
+  ProductStatus,
   remoteQueryObjectFromString,
 } from "@medusajs/utils"
 import {
@@ -316,6 +317,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   title: "Test variant",
@@ -472,6 +474,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   title: "Test variant",
@@ -605,6 +608,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   title: "Test variant",
@@ -764,6 +768,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   title: "Test variant",

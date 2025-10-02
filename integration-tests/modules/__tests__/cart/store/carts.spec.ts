@@ -109,6 +109,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 {
                   manage_inventory: false,
@@ -215,6 +216,7 @@ medusaIntegrationTestRunner({
           const [product] = await productModule.createProducts([
             {
               title: "Test product default tax",
+              status: ProductStatus.PUBLISHED,
               variants: [
                 { title: "Test variant default tax", manage_inventory: false },
               ],
@@ -1334,6 +1336,7 @@ medusaIntegrationTestRunner({
               "/admin/products",
               {
                 title: "Test fixture",
+                status: ProductStatus.PUBLISHED,
                 options: [
                   { title: "size", values: ["large", "small"] },
                   { title: "color", values: ["green"] },

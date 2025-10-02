@@ -1,5 +1,5 @@
 import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { Modules, PromotionStatus, PromotionType } from "@medusajs/utils"
+import { Modules, ProductStatus, PromotionStatus, PromotionType } from "@medusajs/utils"
 import {
   createAdminUser,
   generatePublishableKey,
@@ -1724,6 +1724,7 @@ medusaIntegrationTestRunner({
               "/admin/products",
               {
                 title: "Discounted Medusa T-Shirt",
+                status: ProductStatus.PUBLISHED,
                 handle: "discounted-medusa-t-shirt",
                 options: [
                   {

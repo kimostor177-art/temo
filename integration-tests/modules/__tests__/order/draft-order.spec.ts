@@ -11,6 +11,7 @@ import {
 import {
   ContainerRegistrationKeys,
   Modules,
+  ProductStatus,
   PromotionStatus,
   PromotionType,
 } from "@medusajs/utils"
@@ -71,6 +72,7 @@ medusaIntegrationTestRunner({
         const [product, product_2] = await productModule.createProducts([
           {
             title: "Test product",
+            status: ProductStatus.PUBLISHED,
             variants: [
               {
                 title: "Test variant",
@@ -79,6 +81,7 @@ medusaIntegrationTestRunner({
           },
           {
             title: "Another product",
+            status: ProductStatus.PUBLISHED,
             variants: [
               {
                 title: "Variant variable",
@@ -401,6 +404,7 @@ medusaIntegrationTestRunner({
         const [product, product_2] = await productModule.createProducts([
           {
             title: "Test product",
+            status: ProductStatus.PUBLISHED,
             variants: [
               {
                 title: "Test variant",
@@ -409,6 +413,7 @@ medusaIntegrationTestRunner({
           },
           {
             title: "Another product",
+            status: ProductStatus.PUBLISHED,
             variants: [
               {
                 title: "Variant variable",
@@ -815,6 +820,7 @@ medusaIntegrationTestRunner({
         const [product] = await productModule.createProducts([
           {
             title: "Test product",
+            status: ProductStatus.PUBLISHED,
             type_id: productType.id,
             variants: [
               {
