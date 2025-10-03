@@ -61,6 +61,11 @@ moduleIntegrationTestRunner<ICachingModuleService>({
   injectedDependencies: {
     [Modules.EVENT_BUS]: mockEventBus,
   },
+  moduleOptions: {
+    in_memory: {
+      enable: true,
+    },
+  },
   testSuite: ({ service }) => {
     describe("Cache Invalidation with Entity Relationships", () => {
       afterEach(async () => {

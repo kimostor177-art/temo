@@ -1,40 +1,45 @@
 import NodeCache from "node-cache"
-import type { ICachingProviderService } from "@medusajs/framework/types"
+import type { ICachingProviderService, Logger } from "@medusajs/framework/types"
+import { MemoryCacheModuleOptions } from "@types"
 
-export interface MemoryCacheModuleOptions {
-  /**
-   * TTL in seconds
-   */
-  ttl?: number
-  /**
-   * Maximum number of keys to store (see node-cache documentation)
-   */
-  maxKeys?: number
-  /**
-   * Check period for expired keys in seconds (see node-cache documentation)
-   */
-  checkPeriod?: number
-  /**
-   * Use clones for cached data (see node-cache documentation)
-   */
-  useClones?: boolean
+const THREE_HUNDRED_MB = 300 * 1024 * 1024
+
+const formatBytes = (bytes: number): string => {
+  if (bytes < 1024) return `${bytes} B`
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`
+  return `${Math.round(bytes / 1024 / 1024)} MB`
 }
 
 export class MemoryCachingProvider implements ICachingProviderService {
   static identifier = "cache-memory"
 
+  protected logger: Logger
   protected cacheClient: NodeCache
   protected tagIndex: Map<string, Set<string>> = new Map() // tag -> keys
   protected keyTags: Map<string, Set<string>> = new Map() // key -> tags
   protected entryOptions: Map<string, { autoInvalidate?: boolean }> = new Map() // key -> options
+  protected keySizes: Map<string, number> = new Map() // key -> approximate size in bytes
+  protected approximateMemoryUsage: number = 0
   protected options: MemoryCacheModuleOptions
+  protected maxSize: number
+  protected hasher: (key: string) => string
 
-  constructor() {
+  constructor(
+    { logger, hasher }: { logger?: Logger; hasher: (key: string) => string },
+    options: MemoryCacheModuleOptions = {}
+  ) {
+    this.logger = logger ?? (console as unknown as Logger)
+    const { maxSize, ...rest } = options
+    this.maxSize = maxSize ?? THREE_HUNDRED_MB
+
+    this.hasher = hasher
+
     this.options = {
       ttl: 3600,
       maxKeys: 25000,
       checkPeriod: 60, // 10 minutes
-      useClones: false, // Default to false for speed, true would be slower but safer. we can discuss
+      useClones: false, // Default to false for speed, true would be slower but safer. we can ...discuss
+      ...rest,
     }
 
     const cacheClient = new NodeCache({
@@ -47,13 +52,29 @@ export class MemoryCachingProvider implements ICachingProviderService {
     this.cacheClient = cacheClient
 
     // Clean up tag indices when keys expire
-    this.cacheClient.on("expired", (key: string, value: any) => {
+    this.cacheClient.on("expired", (key: string) => {
       this.cleanupTagReferences(key)
     })
 
-    this.cacheClient.on("del", (key: string, value: any) => {
+    this.cacheClient.on("del", (key: string) => {
       this.cleanupTagReferences(key)
     })
+  }
+
+  private calculateEntrySize(
+    key: string,
+    data: object,
+    tags?: string[]
+  ): number {
+    const dataSize = Buffer.byteLength(JSON.stringify(data), "utf8")
+    const keySize = Buffer.byteLength(key, "utf8")
+
+    let tagsSize = 0
+    if (tags?.length) {
+      tagsSize = Buffer.byteLength(JSON.stringify(tags), "utf8")
+    }
+
+    return dataSize + keySize + tagsSize
   }
 
   private cleanupTagReferences(key: string): void {
@@ -70,20 +91,30 @@ export class MemoryCachingProvider implements ICachingProviderService {
       })
       this.keyTags.delete(key)
     }
+
+    // Clean up memory tracking
+    const keySize = this.keySizes.get(key)
+    if (keySize) {
+      this.approximateMemoryUsage -= keySize
+      this.keySizes.delete(key)
+    }
+
     // Also clean up entry options
     this.entryOptions.delete(key)
   }
 
   async get({ key, tags }: { key?: string; tags?: string[] }): Promise<any> {
     if (key) {
-      return this.cacheClient.get(key) ?? null
+      const hashedKey = this.hasher(key)
+      return this.cacheClient.get(hashedKey) ?? null
     }
 
-    if (tags && tags.length) {
+    if (tags?.length) {
       const allKeys = new Set<string>()
 
       tags.forEach((tag) => {
-        const keysForTag = this.tagIndex.get(tag)
+        const hashedTag = this.hasher(tag)
+        const keysForTag = this.tagIndex.get(hashedTag)
         if (keysForTag) {
           keysForTag.forEach((key) => allKeys.add(key))
         }
@@ -122,24 +153,39 @@ export class MemoryCachingProvider implements ICachingProviderService {
       autoInvalidate?: boolean
     }
   }): Promise<void> {
+    // Only reject if we're already over the limit
+    if (this.approximateMemoryUsage > this.maxSize) {
+      this.logger.warn(
+        `Cache is full. Current usage: ${formatBytes(
+          this.approximateMemoryUsage
+        )}, Max: ${formatBytes(this.maxSize)}. Skipping cache entry.`
+      )
+      return
+    }
+
+    const hashedKey = this.hasher(key)
+    const hashedTags = tags?.map((tag) => this.hasher(tag))
+
+    const totalSize = this.calculateEntrySize(hashedKey, data, hashedTags)
+
     // Set the cache entry
     const effectiveTTL = ttl ?? this.options.ttl ?? 3600
-    this.cacheClient.set(key, data, effectiveTTL)
+    this.cacheClient.set(hashedKey, data, effectiveTTL)
 
     // Handle tags if provided
-    if (tags && tags.length) {
+    if (hashedTags?.length) {
       // Clean up any existing tag references for this key
-      this.cleanupTagReferences(key)
+      this.cleanupTagReferences(hashedKey)
 
-      const tagSet = new Set(tags)
-      this.keyTags.set(key, tagSet)
+      const tagSet = new Set(hashedTags)
+      this.keyTags.set(hashedKey, tagSet)
 
       // Add this key to each tag's index
-      tags.forEach((tag) => {
+      hashedTags.forEach((tag) => {
         if (!this.tagIndex.has(tag)) {
           this.tagIndex.set(tag, new Set())
         }
-        this.tagIndex.get(tag)!.add(key)
+        this.tagIndex.get(tag)!.add(hashedKey)
       })
     }
 
@@ -148,8 +194,14 @@ export class MemoryCachingProvider implements ICachingProviderService {
       Object.keys(options ?? {}).length &&
       !Object.values(options ?? {}).every((value) => value === undefined)
     ) {
-      this.entryOptions.set(key, options!)
+      this.entryOptions.set(hashedKey, options!)
     }
+
+    // Track memory usage
+    const existingSize = this.keySizes.get(hashedKey) || 0
+    this.approximateMemoryUsage =
+      this.approximateMemoryUsage - existingSize + totalSize
+    this.keySizes.set(hashedKey, totalSize)
   }
 
   async clear({
@@ -164,13 +216,14 @@ export class MemoryCachingProvider implements ICachingProviderService {
     }
   }): Promise<void> {
     if (key) {
-      this.cacheClient.del(key)
+      const hashedKey = this.hasher(key)
+      this.cacheClient.del(hashedKey)
       return
     }
 
-    if (tags && tags.length) {
+    if (tags?.length) {
       // Handle wildcard tag to clear all cache data
-      if (tags.includes("*")) {
+      if (tags?.includes("*")) {
         this.cacheClient.flushAll()
         this.tagIndex.clear()
         this.keyTags.clear()
@@ -178,9 +231,10 @@ export class MemoryCachingProvider implements ICachingProviderService {
         return
       }
 
+      const hashedTags = tags.map((tag) => this.hasher(tag))
       const allKeys = new Set<string>()
 
-      tags.forEach((tag) => {
+      hashedTags.forEach((tag) => {
         const keysForTag = this.tagIndex.get(tag)
         if (keysForTag) {
           keysForTag.forEach((key) => allKeys.add(key))

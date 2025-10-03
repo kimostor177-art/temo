@@ -48,6 +48,11 @@ jest.spyOn(MedusaModule, "getAllJoinerConfigs").mockReturnValue([
 
 moduleIntegrationTestRunner<ICachingModuleService>({
   moduleName: Modules.CACHING,
+  moduleOptions: {
+    in_memory: {
+      enable: true,
+    },
+  },
   testSuite: ({ service }) => {
     describe("Caching Module Service", () => {
       beforeEach(async () => {

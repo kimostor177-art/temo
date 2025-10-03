@@ -49,21 +49,29 @@ export default async ({
   const strategy = DefaultCacheStrategy // Re enable custom strategy another time
   container.register("strategy", asValue(strategy))
 
-  // MemoryCachingProvider - default provider
-  container.register({
-    [CachingProviderRegistrationPrefix + MemoryCachingProvider.identifier]:
-      asFunction(() => new MemoryCachingProvider(), {
-        lifetime: Lifetime.SINGLETON,
-      }),
-  })
-  container.registerAdd(
-    CachingIdentifiersRegistrationName,
-    asValue(MemoryCachingProvider.identifier)
-  )
-  container.register(
-    CachingDefaultProvider,
-    asValue(MemoryCachingProvider.identifier)
-  )
+  const inMemoryOptions = options?.in_memory ?? {}
+  const { enable: isInMemoryEnabled, ...restInmemoryOptions } = inMemoryOptions
+
+  if (isInMemoryEnabled) {
+    // MemoryCachingProvider - default provider
+    container.register({
+      [CachingProviderRegistrationPrefix + MemoryCachingProvider.identifier]:
+        asFunction(
+          (cradle) => new MemoryCachingProvider(cradle, restInmemoryOptions),
+          {
+            lifetime: Lifetime.SINGLETON,
+          }
+        ),
+    })
+    container.registerAdd(
+      CachingIdentifiersRegistrationName,
+      asValue(MemoryCachingProvider.identifier)
+    )
+    container.register(
+      CachingDefaultProvider,
+      asValue(MemoryCachingProvider.identifier)
+    )
+  }
 
   // Load other providers
   await moduleProviderLoader({
@@ -85,10 +93,16 @@ export default async ({
 
   const logger = container.resolve(ContainerRegistrationKeys.LOGGER)
   if (!hasDefaultProvider) {
-    logger.warn(
-      `[caching-module]: No default caching provider defined. Using "${container.resolve(
-        CachingDefaultProvider
-      )}" as default.`
-    )
+    if (isInMemoryEnabled) {
+      logger.warn(
+        `[caching-module]: No default caching provider defined. Using "${container.resolve(
+          CachingDefaultProvider
+        )}" as default.`
+      )
+    } else {
+      throw new Error(
+        "[caching-module]: No providers have been configured and the built in memory cache has not been enabled."
+      )
+    }
   }
 }
