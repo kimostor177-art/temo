@@ -126,9 +126,12 @@ const TocItem = ({ item, activeItemId }: TocItemProps) => {
           scrollToElement(elm)
         }}
       >
-        {item.id === activeItemId && (
-          <span className="absolute left-0 top-0 w-[1.5px] h-full bg-medusa-fg-base rounded-full" />
-        )}
+        <span
+          className={clsx(
+            "absolute left-0 top-0 w-[1.5px] h-full bg-medusa-fg-base rounded-full",
+            item.id !== activeItemId && "invisible"
+          )}
+        />
         {item.title}
       </Link>
       {(item.children?.length ?? 0) > 0 && (
