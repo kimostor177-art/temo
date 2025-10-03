@@ -20,7 +20,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
     if (!("strategy" in findOptions_.options)) {
       if (findOptions_.options.limit != null || findOptions_.options.offset) {
         Object.assign(findOptions_.options, {
-          strategy: LoadStrategy.BALANCED,
+          strategy: LoadStrategy.SELECT_IN,
         })
       }
     }
@@ -99,7 +99,7 @@ export function setFindMethods<T>(klass: Constructor<T>, entity: any) {
 
     if (!("strategy" in findOptions_.options)) {
       Object.assign(findOptions_.options, {
-        strategy: LoadStrategy.BALANCED,
+        strategy: LoadStrategy.SELECT_IN,
       })
     }
 
