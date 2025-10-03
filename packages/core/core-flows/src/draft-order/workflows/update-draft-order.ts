@@ -17,6 +17,7 @@ import {
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { previewOrderChangeStep, registerOrderChangesStep } from "../../order"
 import { validateDraftOrderStep } from "../steps/validate-draft-order"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const updateDraftOrderWorkflowId = "update-draft-order"
 
@@ -149,6 +150,12 @@ export const updateDraftOrderStep = createStep(
 export const updateDraftOrderWorkflow = createWorkflow(
   updateDraftOrderWorkflowId,
   function (input: WorkflowData<UpdateDraftOrderWorkflowInput>) {
+    acquireLockStep({
+      key: input.id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
@@ -311,6 +318,10 @@ export const updateDraftOrderWorkflow = createWorkflow(
     })
 
     const preview = previewOrderChangeStep(input.id)
+
+    releaseLockStep({
+      key: input.id,
+    })
 
     return new WorkflowResponse(preview)
   }

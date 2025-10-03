@@ -22,6 +22,7 @@ import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-chan
 import { validateDraftOrderUpdateActionItemStep } from "../steps/validate-draft-order-update-action-item"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const updateDraftOrderActionItemId = "update-draft-order-action-item"
 
@@ -53,6 +54,12 @@ export const updateDraftOrderActionItemWorkflow = createWorkflow(
   function (
     input: WorkflowData<OrderWorkflow.UpdateOrderEditAddNewItemWorkflowInput>
   ) {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order: OrderDTO & {
       promotions: {
         code: string
@@ -134,6 +141,10 @@ export const updateDraftOrderActionItemWorkflow = createWorkflow(
           action: PromotionActions.REPLACE,
         },
       })
+    })
+
+    releaseLockStep({
+      key: input.order_id,
     })
 
     return new WorkflowResponse(previewOrderChangeStep(input.order_id))

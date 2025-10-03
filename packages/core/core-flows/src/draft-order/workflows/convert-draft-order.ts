@@ -6,6 +6,7 @@ import {
 import {
   createStep,
   createWorkflow,
+  parallelize,
   StepResponse,
   WorkflowData,
   WorkflowResponse,
@@ -13,6 +14,7 @@ import {
 import type { IOrderModuleService, OrderDTO } from "@medusajs/framework/types"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { validateDraftOrderStep } from "../steps/validate-draft-order"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const convertDraftOrderWorkflowId = "convert-draft-order"
 
@@ -99,6 +101,12 @@ export const convertDraftOrderWorkflow = createWorkflow(
   function (
     input: WorkflowData<ConvertDraftOrderWorkflowInput>
   ): WorkflowResponse<OrderDTO> {
+    acquireLockStep({
+      key: input.id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status", "is_draft_order"],
@@ -113,10 +121,15 @@ export const convertDraftOrderWorkflow = createWorkflow(
 
     const updatedOrder = convertDraftOrderStep({ id: input.id })
 
-    emitEventStep({
-      eventName: OrderWorkflowEvents.PLACED,
-      data: { id: updatedOrder.id },
-    })
+    parallelize(
+      releaseLockStep({
+        key: input.id,
+      }),
+      emitEventStep({
+        eventName: OrderWorkflowEvents.PLACED,
+        data: { id: updatedOrder.id },
+      })
+    )
 
     return new WorkflowResponse(updatedOrder)
   }

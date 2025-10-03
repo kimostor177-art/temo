@@ -16,6 +16,7 @@ import { createDraftOrderShippingMethodAdjustmentsStep } from "../steps/create-d
 import { removeDraftOrderLineItemAdjustmentsStep } from "../steps/remove-draft-order-line-item-adjustments"
 import { removeDraftOrderShippingMethodAdjustmentsStep } from "../steps/remove-draft-order-shipping-method-adjustments"
 import { updateDraftOrderPromotionsStep } from "../steps/update-draft-order-promotions"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const refreshDraftOrderAdjustmentsWorkflowId =
   "refresh-draft-order-adjustments"
@@ -78,6 +79,12 @@ export interface RefreshDraftOrderAdjustmentsWorkflowInput {
 export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
   refreshDraftOrderAdjustmentsWorkflowId,
   function (input: WorkflowData<RefreshDraftOrderAdjustmentsWorkflowInput>) {
+    acquireLockStep({
+      key: input.order.id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const promotionCodesToApply = getPromotionCodesToApply({
       cart: input.order,
       promo_codes: input.promo_codes,
@@ -117,6 +124,10 @@ export const refreshDraftOrderAdjustmentsWorkflow = createWorkflow(
         action: input.action,
       })
     )
+
+    releaseLockStep({
+      key: input.order.id,
+    })
 
     return new WorkflowResponse(void 0)
   }

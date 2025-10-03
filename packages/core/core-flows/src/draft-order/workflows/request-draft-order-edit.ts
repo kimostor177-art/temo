@@ -12,6 +12,7 @@ import {
   updateOrderChangesStep,
 } from "../../order"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const requestDraftOrderEditId = "request-draft-order-edit"
 
@@ -71,6 +72,12 @@ export type RequestDraftOrderEditWorkflowInput = {
 export const requestDraftOrderEditWorkflow = createWorkflow(
   requestDraftOrderEditId,
   function (input: RequestDraftOrderEditWorkflowInput) {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "version", "status", "is_draft_order", "canceled_at"],
@@ -103,6 +110,10 @@ export const requestDraftOrderEditWorkflow = createWorkflow(
       input: {
         order_id: order.id,
       },
+    })
+
+    releaseLockStep({
+      key: input.order_id,
     })
 
     return new WorkflowResponse(previewOrderChangeStep(order.id))

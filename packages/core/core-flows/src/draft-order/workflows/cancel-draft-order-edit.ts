@@ -17,6 +17,7 @@ import { restoreDraftOrderShippingMethodsStep } from "../steps/restore-draft-ord
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const cancelDraftOrderEditWorkflowId = "cancel-draft-order-edit"
 
@@ -52,6 +53,12 @@ export interface CancelDraftOrderEditWorkflowInput {
 export const cancelDraftOrderEditWorkflow = createWorkflow(
   cancelDraftOrderEditWorkflowId,
   function (input: WorkflowData<CancelDraftOrderEditWorkflowInput>) {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order: OrderDTO & {
       promotions: {
         code: string
@@ -165,6 +172,10 @@ export const cancelDraftOrderEditWorkflow = createWorkflow(
       restoreDraftOrderShippingMethodsStep({
         shippingMethods: shippingToRestore as any,
       })
+    })
+
+    releaseLockStep({
+      key: input.order_id,
     })
   }
 )

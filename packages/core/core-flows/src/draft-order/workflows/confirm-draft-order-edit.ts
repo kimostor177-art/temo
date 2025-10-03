@@ -1,31 +1,17 @@
-import {
-  ChangeActionType,
-  MathBN,
-  OrderChangeStatus,
-} from "@medusajs/framework/utils"
-import {
-  createWorkflow,
-  transform,
-  WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk"
-import {
-  BigNumberInput,
-  OrderChangeDTO,
-  OrderDTO,
-} from "@medusajs/framework/types"
+import { ChangeActionType, MathBN, OrderChangeStatus, } from "@medusajs/framework/utils"
+import { createWorkflow, transform, WorkflowResponse, } from "@medusajs/framework/workflows-sdk"
+import { BigNumberInput, OrderChangeDTO, OrderDTO, } from "@medusajs/framework/types"
 import { reserveInventoryStep } from "../../cart"
 import {
   prepareConfirmInventoryInput,
   requiredOrderFieldsForInventoryConfirmation,
 } from "../../cart/utils/prepare-confirm-inventory-input"
 import { useRemoteQueryStep } from "../../common"
-import {
-  createOrUpdateOrderPaymentCollectionWorkflow,
-  previewOrderChangeStep,
-} from "../../order"
+import { createOrUpdateOrderPaymentCollectionWorkflow, previewOrderChangeStep, } from "../../order"
 import { confirmOrderChanges } from "../../order/steps/confirm-order-changes"
 import { deleteReservationsByLineItemsStep } from "../../reservation"
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const confirmDraftOrderEditWorkflowId = "confirm-draft-order-edit"
 
@@ -63,6 +49,12 @@ export interface ConfirmDraftOrderEditWorkflowInput {
 export const confirmDraftOrderEditWorkflow = createWorkflow(
   confirmDraftOrderEditWorkflowId,
   function (input: ConfirmDraftOrderEditWorkflowInput) {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: [
@@ -219,6 +211,10 @@ export const confirmDraftOrderEditWorkflow = createWorkflow(
       input: {
         order_id: order.id,
       },
+    })
+
+    releaseLockStep({
+      key: input.order_id,
     })
 
     return new WorkflowResponse(orderPreview)

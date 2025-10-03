@@ -27,6 +27,7 @@ import { getDraftOrderPromotionContextStep } from "../steps/get-draft-order-prom
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const updateDraftOrderItemWorkflowId = "update-draft-order-item"
 
@@ -55,6 +56,12 @@ export const updateDraftOrderItemWorkflow = createWorkflow(
   function (
     input: WorkflowData<OrderWorkflow.OrderEditUpdateItemQuantityWorkflowInput>
   ): WorkflowResponse<OrderPreviewDTO> {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: draftOrderFieldsForRefreshSteps,
@@ -133,6 +140,10 @@ export const updateDraftOrderItemWorkflow = createWorkflow(
           action: PromotionActions.REPLACE,
         },
       })
+    })
+
+    releaseLockStep({
+      key: input.order_id,
     })
 
     return new WorkflowResponse(previewOrderChangeStep(input.order_id))

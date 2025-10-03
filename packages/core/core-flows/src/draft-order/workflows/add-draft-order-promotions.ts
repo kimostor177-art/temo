@@ -23,6 +23,7 @@ import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-chan
 import { validatePromoCodesToAddStep } from "../steps/validate-promo-codes-to-add"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const addDraftOrderPromotionWorkflowId = "add-draft-order-promotion"
 
@@ -63,6 +64,12 @@ export interface AddDraftOrderPromotionWorkflowInput {
 export const addDraftOrderPromotionWorkflow = createWorkflow(
   addDraftOrderPromotionWorkflowId,
   function (input: WorkflowData<AddDraftOrderPromotionWorkflowInput>) {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: draftOrderFieldsForRefreshSteps,
@@ -129,6 +136,10 @@ export const addDraftOrderPromotionWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: orderChangeActionInput,
+    })
+
+    releaseLockStep({
+      key: input.order_id,
     })
 
     return new WorkflowResponse(previewOrderChangeStep(input.order_id))

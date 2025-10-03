@@ -11,7 +11,7 @@ export interface AcquireLockStepInput {
    */
   key: string | string[]
   /**
-   * The maximum time to wait for acquiring the lock. If the lock cannot be acquired within this time, an error is thrown.
+   * The maximum time (in seconds) to wait for acquiring the lock. If the lock cannot be acquired within this time, an error is thrown.
    *
    * @defaultValue 0
    */

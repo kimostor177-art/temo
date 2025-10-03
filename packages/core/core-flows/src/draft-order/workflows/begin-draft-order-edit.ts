@@ -8,6 +8,7 @@ import type { OrderDTO, OrderWorkflow } from "@medusajs/framework/types"
 import { useRemoteQueryStep } from "../../common"
 import { createOrderChangeStep, previewOrderChangeStep } from "../../order"
 import { validateDraftOrderStep } from "../steps"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const beginDraftOrderEditWorkflowId = "begin-draft-order-edit"
 
@@ -35,6 +36,12 @@ export const beginDraftOrderEditWorkflowId = "begin-draft-order-edit"
 export const beginDraftOrderEditWorkflow = createWorkflow(
   beginDraftOrderEditWorkflowId,
   function (input: WorkflowData<OrderWorkflow.BeginorderEditWorkflowInput>) {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status", "is_draft_order"],
@@ -56,6 +63,10 @@ export const beginDraftOrderEditWorkflow = createWorkflow(
     })
 
     createOrderChangeStep(orderChangeInput)
+
+    releaseLockStep({
+      key: input.order_id,
+    })
 
     return new WorkflowResponse(previewOrderChangeStep(input.order_id))
   }

@@ -25,6 +25,7 @@ import { updateDraftOrderShippingMethodStep } from "../steps/update-draft-order-
 import { validateDraftOrderChangeStep } from "../steps/validate-draft-order-change"
 import { draftOrderFieldsForRefreshSteps } from "../utils/fields"
 import { refreshDraftOrderAdjustmentsWorkflow } from "./refresh-draft-order-adjustments"
+import { acquireLockStep, releaseLockStep } from "../../locking"
 
 export const updateDraftOrderShippingMethodWorkflowId =
   "update-draft-order-shipping-method"
@@ -83,6 +84,12 @@ export interface UpdateDraftOrderShippingMethodWorkflowInput {
 export const updateDraftOrderShippingMethodWorkflow = createWorkflow(
   updateDraftOrderShippingMethodWorkflowId,
   function (input: WorkflowData<UpdateDraftOrderShippingMethodWorkflowInput>) {
+    acquireLockStep({
+      key: input.order_id,
+      timeout: 2,
+      ttl: 10,
+    })
+
     const order: OrderDTO = useRemoteQueryStep({
       entry_point: "orders",
       fields: ["id", "status", "is_draft_order"],
@@ -169,6 +176,10 @@ export const updateDraftOrderShippingMethodWorkflow = createWorkflow(
 
     createOrderChangeActionsWorkflow.runAsStep({
       input: [orderChangeActionInput as any],
+    })
+
+    releaseLockStep({
+      key: input.order_id,
     })
 
     return new WorkflowResponse(previewOrderChangeStep(input.order_id))
