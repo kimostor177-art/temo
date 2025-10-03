@@ -1280,6 +1280,10 @@ export const filesMap = [
     "pathname": "/storefront-development"
   },
   {
+    "filePath": "/www/apps/resources/app/storefront-development/production-optimizations/page.mdx",
+    "pathname": "/storefront-development/production-optimizations"
+  },
+  {
     "filePath": "/www/apps/resources/app/storefront-development/products/categories/list/page.mdx",
     "pathname": "/storefront-development/products/categories/list"
   },

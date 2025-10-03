@@ -22,6 +22,11 @@ export const storefrontDevelopmentSidebar = [
         path: "/storefront-development/publishable-api-keys",
         title: "Publishable API Key",
       },
+      {
+        type: "link",
+        path: "/storefront-development/production-optimizations",
+        title: "Production Optimizations",
+      },
     ],
   },
   {

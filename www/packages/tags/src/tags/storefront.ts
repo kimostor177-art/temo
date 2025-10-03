@@ -104,6 +104,10 @@ export const storefront = [
     "path": "https://docs.medusajs.com/resources/storefront-development/guides/express-checkout"
   },
   {
+    "title": "Storefront Production Optimization Tips",
+    "path": "https://docs.medusajs.com/resources/storefront-development/production-optimizations"
+  },
+  {
     "title": "Show Product Categories in Storefront",
     "path": "https://docs.medusajs.com/resources/storefront-development/products/categories/list"
   },
