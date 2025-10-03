@@ -123,7 +123,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/orders/{id}/line-items' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Orders
  * responses:

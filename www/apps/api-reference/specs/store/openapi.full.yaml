@@ -1327,7 +1327,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/store/carts/{id}/customer' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'x-publishable-api-key: {your_publishable_api_key}'
       tags:
         - Carts
@@ -3438,7 +3438,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/store/customers/me' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'x-publishable-api-key: {your_publishable_api_key}'
       tags:
         - Customers
@@ -3525,7 +3525,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/store/customers/me' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'Content-Type: application/json' \
             -H 'x-publishable-api-key: {your_publishable_api_key}' \
             --data-raw '{
@@ -3714,7 +3714,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/store/customers/me/addresses' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'x-publishable-api-key: {your_publishable_api_key}'
       tags:
         - Customers
@@ -3802,7 +3802,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/store/customers/me/addresses' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'Content-Type: application/json' \
             -H 'x-publishable-api-key: {your_publishable_api_key}' \
             --data-raw '{
@@ -3906,7 +3906,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/store/customers/me/addresses/{address_id}' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'x-publishable-api-key: {your_publishable_api_key}'
       tags:
         - Customers
@@ -4003,7 +4003,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/store/customers/me/addresses/{address_id}' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'Content-Type: application/json' \
             -H 'x-publishable-api-key: {your_publishable_api_key}' \
             --data-raw '{
@@ -4096,7 +4096,7 @@ paths:
           label: cURL
           source: |-
             curl -X DELETE '{backend_url}/store/customers/me/addresses/{address_id}' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'x-publishable-api-key: {your_publishable_api_key}'
       tags:
         - Customers
@@ -4189,7 +4189,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/store/gift-cards/{idOrCode}' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'x-publishable-api-key: {your_publishable_api_key}'
       tags:
         - Gift Cards
@@ -4256,7 +4256,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/store/gift-cards/{idOrCode}/redeem' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'x-publishable-api-key: {your_publishable_api_key}'
       tags:
         - Gift Cards
@@ -4439,7 +4439,7 @@ paths:
           label: cURL
           source: |-
             curl '{backend_url}/store/orders' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'x-publishable-api-key: {your_publishable_api_key}'
       tags:
         - Orders
@@ -4747,7 +4747,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/store/orders/{id}/transfer/cancel' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'x-publishable-api-key: {your_publishable_api_key}'
       tags:
         - Orders
@@ -4953,7 +4953,7 @@ paths:
           label: cURL
           source: |-
             curl -X POST '{backend_url}/store/orders/{id}/transfer/request' \
-            -H 'Authorization: Bearer {access_token}' \
+            -H 'Authorization: Bearer {jwt_token}' \
             -H 'x-publishable-api-key: {your_publishable_api_key}'
       tags:
         - Orders

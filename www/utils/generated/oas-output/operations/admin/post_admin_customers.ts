@@ -93,7 +93,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/customers' \
- *       -H 'Authorization: Bearer {access_token}' \
+ *       -H 'Authorization: Bearer {jwt_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "email": "Tomas.Toy16@yahoo.com",

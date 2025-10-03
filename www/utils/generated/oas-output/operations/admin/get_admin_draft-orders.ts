@@ -1455,7 +1455,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/draft-orders' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Draft Orders
  * responses:

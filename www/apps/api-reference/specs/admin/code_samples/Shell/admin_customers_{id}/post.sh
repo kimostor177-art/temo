@@ -1,5 +1,5 @@
 curl -X POST '{backend_url}/admin/customers/{id}' \
--H 'Authorization: Bearer {access_token}' \
+-H 'Authorization: Bearer {jwt_token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "email": "Daren_Rodriguez-Rutherford93@gmail.com",

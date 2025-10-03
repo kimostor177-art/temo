@@ -59,7 +59,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/fulfillment-sets/{id}/service-zones/{zone_id}' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Fulfillment Sets
  * responses:

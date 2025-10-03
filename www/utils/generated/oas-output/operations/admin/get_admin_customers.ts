@@ -3365,7 +3365,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/customers' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Customers
  * responses:

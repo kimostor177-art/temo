@@ -49,7 +49,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/currencies/{code}' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Currencies
  * responses:

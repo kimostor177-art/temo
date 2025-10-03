@@ -857,7 +857,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/customer-groups' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Customer Groups
  * responses:

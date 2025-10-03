@@ -123,7 +123,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/fulfillment-providers' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Fulfillment Providers
  * responses:

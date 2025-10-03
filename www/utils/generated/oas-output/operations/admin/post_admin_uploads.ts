@@ -87,7 +87,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/uploads' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Uploads
  * responses:

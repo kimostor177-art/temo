@@ -1040,7 +1040,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/products' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Products
  * responses:

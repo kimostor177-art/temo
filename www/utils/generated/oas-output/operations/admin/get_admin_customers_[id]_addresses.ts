@@ -193,7 +193,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/customers/{id}/addresses' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Customers
  * responses:

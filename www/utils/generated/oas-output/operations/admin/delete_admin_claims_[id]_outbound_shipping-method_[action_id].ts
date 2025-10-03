@@ -60,7 +60,7 @@
  *       })
  *   - lang: Shell
  *     label: cURL
- *     source: "curl -X DELETE '{backend_url}/admin/claims/{id}/outbound/shipping-method/{action_id}' \\ -H 'Authorization: Bearer {access_token}'"
+ *     source: "curl -X DELETE '{backend_url}/admin/claims/{id}/outbound/shipping-method/{action_id}' \\ -H 'Authorization: Bearer {jwt_token}'"
  * tags:
  *   - Claims
  * responses:

@@ -105,7 +105,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/orders/{id}/fulfillments' \
- *       -H 'Authorization: Bearer {access_token}' \
+ *       -H 'Authorization: Bearer {jwt_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "items": [

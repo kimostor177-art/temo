@@ -1,5 +1,5 @@
 curl -X POST '{backend_url}/admin/price-lists/{id}' \
--H 'Authorization: Bearer {access_token}' \
+-H 'Authorization: Bearer {jwt_token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "description": "{value}",

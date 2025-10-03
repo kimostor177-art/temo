@@ -1,5 +1,5 @@
 curl -X POST '{backend_url}/admin/draft-orders' \
--H 'Authorization: Bearer {access_token}' \
+-H 'Authorization: Bearer {jwt_token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "sales_channel_id": "{value}",

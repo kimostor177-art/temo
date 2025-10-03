@@ -61,7 +61,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/store/customers/me' \
- *       -H 'Authorization: Bearer {access_token}' \
+ *       -H 'Authorization: Bearer {jwt_token}' \
  *       -H 'x-publishable-api-key: {your_publishable_api_key}'
  * tags:
  *   - Customers

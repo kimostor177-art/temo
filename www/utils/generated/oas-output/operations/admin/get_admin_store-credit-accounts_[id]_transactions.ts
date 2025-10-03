@@ -357,7 +357,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/store-credit-accounts/{id}/transactions' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Store Credit Accounts
  * responses:

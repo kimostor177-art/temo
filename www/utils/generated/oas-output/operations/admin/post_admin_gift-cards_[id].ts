@@ -40,7 +40,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/gift-cards/{id}' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Gift Cards
  * responses:

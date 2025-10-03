@@ -1,2 +1,2 @@
 curl '{backend_url}/admin/collections/{id}' \
--H 'Authorization: Bearer {access_token}'
+-H 'Authorization: Bearer {jwt_token}'

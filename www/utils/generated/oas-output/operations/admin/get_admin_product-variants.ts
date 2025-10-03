@@ -536,7 +536,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/product-variants' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Product Variants
  * responses:

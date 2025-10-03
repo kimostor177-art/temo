@@ -337,7 +337,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/promotions' \
- *       -H 'Authorization: Bearer {access_token}' \
+ *       -H 'Authorization: Bearer {jwt_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "code": "{value}",

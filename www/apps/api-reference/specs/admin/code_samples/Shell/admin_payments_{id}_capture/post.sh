@@ -1,2 +1,2 @@
 curl -X POST '{backend_url}/admin/payments/{id}/capture' \
--H 'Authorization: Bearer {access_token}'
+-H 'Authorization: Bearer {jwt_token}'

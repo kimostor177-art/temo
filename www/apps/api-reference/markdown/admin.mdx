@@ -226,12 +226,11 @@ curl -X POST 'localhost:9000/admin/api-keys' \
 
 #### How to Use the API Token
 
-
-You pass the API Key token as a base64 token in the authorization header. For example, when sending a request in JavaScript:
+You pass the API Key token in the Authorization Basic header. For example:
 
 <Note>
 
-When using the JS SDK, you only need to specify the API key token in the [configurations](!resources!/js-sdk#js-sdk-configurations). The JS SDK will handle passing the token as expected.
+Previous versions of Medusa required passing the API key token as base64. This is still supported for backwards compatibility, but you can pass the API token without encoding it as well.
 
 </Note>
 
@@ -240,6 +239,7 @@ When using the JS SDK, you only need to specify the API key token in the [config
 <DividedMarkdownCode>
 
 <CodeTabs group="app-type">
+
   <CodeTab label="JS SDK" value="js-sdk">
 
 ```js
@@ -252,27 +252,11 @@ export const sdk = new Medusa({
 ```
 
   </CodeTab>
-  <CodeTab label="Browser / Client" value="client">
+  <CodeTab label="cURL" value="curl">
 
-```js
-fetch(`{backend_url}/admin/products`, {
-  headers: {
-    Authorization: `Basic ${window.btoa(`${api_key_token}:`)}`,
-  },
-})
-```
-
-  </CodeTab>
-  <CodeTab label="Node.js / Server" value="server">
-
-```js
-fetch(`{backend_url}/admin/products`, {
-  headers: {
-    Authorization: `Basic ${
-      Buffer.from(`${api_key_token}:`).toString("base64")
-    }`,
-  },
-})
+```bash title="Use API token"
+curl '{backend_url}/admin/products' \
+-H 'Authorization: Basic {api_key_token}'
 ```
 
   </CodeTab>

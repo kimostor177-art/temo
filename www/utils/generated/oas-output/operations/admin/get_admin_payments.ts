@@ -490,7 +490,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/payments' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Payments
  * responses:

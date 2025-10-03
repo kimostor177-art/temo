@@ -53,7 +53,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/tax-rates' \
- *       -H 'Authorization: Bearer {access_token}' \
+ *       -H 'Authorization: Bearer {jwt_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "name": "Kaylin",

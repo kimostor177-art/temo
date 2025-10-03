@@ -1,5 +1,5 @@
 curl -X POST '{backend_url}/admin/fulfillments' \
--H 'Authorization: Bearer {access_token}' \
+-H 'Authorization: Bearer {jwt_token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "location_id": "{value}",

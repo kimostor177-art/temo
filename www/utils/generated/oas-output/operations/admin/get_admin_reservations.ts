@@ -559,7 +559,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/reservations' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Reservations
  * responses:

@@ -504,7 +504,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/regions' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Regions
  * responses:

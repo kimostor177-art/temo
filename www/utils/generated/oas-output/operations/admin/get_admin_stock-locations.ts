@@ -518,7 +518,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/stock-locations' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Stock Locations
  * responses:

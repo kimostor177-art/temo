@@ -637,7 +637,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/orders' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Orders
  * responses:

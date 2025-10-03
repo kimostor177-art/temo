@@ -49,7 +49,7 @@
  *     label: cURL
  *     source: |-
  *       curl '{backend_url}/admin/return-reasons/{id}' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Return Reasons
  * responses:

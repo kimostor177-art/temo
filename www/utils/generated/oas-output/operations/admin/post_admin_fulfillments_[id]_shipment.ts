@@ -63,7 +63,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/fulfillments/{id}/shipment' \
- *       -H 'Authorization: Bearer {access_token}' \
+ *       -H 'Authorization: Bearer {jwt_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "labels": [

@@ -25,7 +25,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/workflows-executions/{workflow_id}/run' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Workflows Executions
  * responses:

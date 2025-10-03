@@ -49,7 +49,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/inventory-items/{id}/location-levels/batch' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Inventory Items
  * responses:

@@ -58,7 +58,7 @@
  *     label: cURL
  *     source: |-
  *       curl -X POST '{backend_url}/admin/order-edits/{id}/items/{action_id}' \
- *       -H 'Authorization: Bearer {access_token}'
+ *       -H 'Authorization: Bearer {jwt_token}'
  * tags:
  *   - Order Edits
  * responses:
