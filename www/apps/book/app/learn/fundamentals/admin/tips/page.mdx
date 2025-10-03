@@ -161,6 +161,20 @@ You can also send requests to custom routes, as explained in the [JS SDK referen
 
 You may need to retrieve data before your component is rendered, or you may need to pass some initial data to your component to be used while data is being fetched. In those cases, you can use a [route loader](../routing/page.mdx).
 
+### Troubleshooting
+
+#### No QueryClient set
+
+If you're using `pnpm` as a package manager in your Medusa application, you might face the following error when you try to access the admin dashboard:
+
+```bash
+No QueryClient set, use QueryClientProvider to set one
+```
+
+This is a known issue when using `pnpm`. To fix it, you need to install the `@tanstack/react-query` package manually. Make sure to install the same version installed in [@medusajs/dashboard](https://github.com/medusajs/medusa/blob/d58462c9c91a3e335d03f758438e109caad1f839/packages/admin/dashboard/package.json#L54).
+
+Learn more in the [Errors with pnpm](!resources!/troubleshooting/pnpm) troubleshooting guide.
+
 ---
 
 ## Global Variables in Admin Customizations
