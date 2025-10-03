@@ -302,10 +302,10 @@ export const createCustomerHighlights = [
 ]
 
 ```ts highlights={createCustomerHighlights} title="JS SDK / React Applicable"
-const createCustomer = async () => {
+const createCustomer = async (email: string) => {
   // create customer
   await sdk.store.customer.create({
-    email: "example@medusajs.com",
+    email,
   })
 }
 
@@ -370,10 +370,12 @@ export const validateReactHighlights = [
 const validateCallback = async () => {
   const token = await sendCallback()
 
-  const shouldCreateCustomer = (decodeToken(token) as { actor_id: string }).actor_id === ""
+  const decodedToken = decodeToken(token) as { actor_id: string, user_metadata: Record<string, unknown> }
+
+  const shouldCreateCustomer = decodedToken.actor_id === ""
 
   if (shouldCreateCustomer) {
-    await createCustomer()
+    await createCustomer(decodedToken.user_metadata.email as string)
 
     await refreshToken()
   }
@@ -432,7 +434,7 @@ The `validateCallback` function uses the functions added earlier to implement th
 2. Decode the token to check if it has an `actor_id` property.
   - If the property exists, the customer is already registered. The authentication token can be used for subsequent authenticated requests.
   - If the property doesn't exist, this is the first time the customer is authenticating with the third-party service. So:
-      1. Create a customer.
+      1. Create a customer. The `user_metadata` in the decoded token will hold the customer's information in the third-party provider, such as their `email`. You can use this value as the customer's email in Medusa.
       2. Refetch the customer's authentication token.
       3. Use the token for subsequent authenticated requests.
 3. Retrieve the customer's details as an example of testing authentication.
