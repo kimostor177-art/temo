@@ -80,6 +80,13 @@ While tutorials show you a specific use case, they also help you understand how 
           "Learn how to add a gift option and message to items in the cart.",
       },
       {
+        type: "link",
+        title: "Agentic Commerce",
+        path: "/how-to-tutorials/tutorials/agentic-commerce",
+        description:
+          "Learn how to build Agentic Commerce with Medusa to support purchase with AI agents like ChatGPT.",
+      },
+      {
         type: "ref",
         title: "Analytics with Segment",
         path: "/integrations/guides/segment",
@@ -249,15 +256,9 @@ While tutorials show you a specific use case, they also help you understand how 
         path: "https://docs.medusajs.com/cloud",
       },
       {
-        type: "sub-category",
+        type: "link",
         title: "Self-Hosting",
-        children: [
-          {
-            type: "link",
-            path: "https://docs.medusajs.com/learn/deployment/general",
-            title: "General",
-          },
-        ],
+        path: "https://docs.medusajs.com/learn/deployment/general",
       },
       {
         type: "sub-category",

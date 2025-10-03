@@ -756,6 +756,10 @@ export const filesMap = [
     "pathname": "/how-to-tutorials/tutorials/abandoned-cart"
   },
   {
+    "filePath": "/www/apps/resources/app/how-to-tutorials/tutorials/agentic-commerce/page.mdx",
+    "pathname": "/how-to-tutorials/tutorials/agentic-commerce"
+  },
+  {
     "filePath": "/www/apps/resources/app/how-to-tutorials/tutorials/first-purchase-discounts/page.mdx",
     "pathname": "/how-to-tutorials/tutorials/first-purchase-discounts"
   },
