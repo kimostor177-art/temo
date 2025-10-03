@@ -19,8 +19,8 @@ import SectionContainer from "../../Section/Container"
 import { useArea } from "@/providers/area"
 import SectionDivider from "../../Section/Divider"
 import clsx from "clsx"
-import { Feedback, Loading, Link } from "docs-ui"
-import { usePathname, useRouter } from "next/navigation"
+import { Loading, Link } from "docs-ui"
+import { useRouter } from "next/navigation"
 import { OpenAPI } from "types"
 import TagSectionSchema from "./Schema"
 import checkElementInViewport from "../../../utils/check-element-in-viewport"
@@ -29,6 +29,7 @@ import useSWR from "swr"
 import basePathUrl from "../../../utils/base-path-url"
 import { getSectionId } from "docs-utils"
 import { RoutesSummary } from "./RoutesSummary"
+import { Feedback } from "../../Feedback"
 
 export type TagSectionProps = {
   tag: OpenAPI.TagObject
@@ -51,7 +52,6 @@ const TagSectionComponent = ({ tag }: TagSectionProps) => {
   const [loadData, setLoadData] = useState(false)
   const slugTagName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
-  const pathname = usePathname()
   const { scrollableElement, scrollToTop } = useScrollController()
   const { isBrowser } = useIsBrowser()
 
@@ -163,13 +163,9 @@ const TagSectionComponent = ({ tag }: TagSectionProps) => {
                 </p>
               )}
               <Feedback
-                event="survey_api-ref"
                 extraData={{
-                  area,
                   section: tag.name,
                 }}
-                pathName={pathname}
-                vertical
                 question="Was this section helpful?"
               />
             </div>

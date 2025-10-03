@@ -24,8 +24,6 @@ const Providers = ({ children }: ProvidersProps) => {
     <AnalyticsProvider
       segmentWriteKey={process.env.NEXT_PUBLIC_SEGMENT_API_KEY}
       reoDevKey={process.env.NEXT_PUBLIC_REO_DEV_CLIENT_ID}
-      postHogKey={process.env.NEXT_PUBLIC_POSTHOG_KEY}
-      postHogApiHost={process.env.NEXT_PUBLIC_POSTHOG_HOST}
     >
       <SiteConfigProvider config={config}>
         <LearningPathProvider

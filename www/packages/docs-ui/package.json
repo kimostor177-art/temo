@@ -52,6 +52,7 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "next": "*",
+    "posthog-js": "*",
     "react": "*",
     "react-dom": "*"
   },
@@ -70,7 +71,6 @@
     "mermaid": "^10.9.0",
     "minisearch": "^7.1.1",
     "npm-to-yarn": "^2.1.0",
-    "posthog-js": "^1.269.0",
     "prism-react-renderer": "2.4.0",
     "react": "rc",
     "react-dom": "rc",

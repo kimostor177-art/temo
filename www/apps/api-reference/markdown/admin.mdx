@@ -1,4 +1,5 @@
-import { Feedback, CodeTabs, CodeTab, H1 } from "docs-ui"
+import { CodeTabs, CodeTab, H1 } from "docs-ui"
+import { Feedback } from "@/components/Feedback"
 import SectionContainer from "@/components/Section/Container"
 import DividedMarkdownLayout from "@/layouts/DividedMarkdown"
 import { 
@@ -24,14 +25,10 @@ This API reference includes Medusa v2's Admin APIs, which are REST APIs exposed 
 All API Routes are prefixed with `/admin`. So, during development, the API Routes will be available under the path `http://localhost:9000/admin`. For production, replace `http://localhost:9000` with your Medusa application URL.
 
 <Feedback
-  event="survey_api-ref"
   extraData={{
-    area: "admin",
     section: "introduction"
   }}
-  pathName="/api/admin"
   question="Was this section helpful?"
-  vertical={true}
 />
 
 </DividedMarkdownContent>
@@ -391,14 +388,10 @@ fetch(`<BACKEND_URL>/admin/products`, {
 <DividedMarkdownLayout addYSpacing>
 
 <Feedback
-  event="survey_api-ref"
   extraData={{
-    area: "admin",
     section: "authentication-cookie"
   }}
-  pathName="/api/admin"
   question="Was this section helpful?"
-  vertical={true}
 />
 
 </DividedMarkdownLayout>
@@ -463,14 +456,10 @@ x-no-compression: false
 <DividedMarkdownLayout addYSpacing>
 
 <Feedback
-  event="survey_api-ref"
   extraData={{
-    area: "admin",
     section: "http-compression"
   }}
-  pathName="/api/admin"
   question="Was this section helpful?"
-  vertical={true}
 />
 
 </DividedMarkdownLayout>
@@ -648,14 +637,10 @@ sdk.admin.product.update("prod_123", {
 To remove a property from the `metadata`, pass the property in the request body with an empty string value. This will remove the property from the `metadata` without affecting other properties.
 
 <Feedback
-  event="survey_api-ref"
   extraData={{
-    area: "store",
     section: "metadata"
   }}
-  pathName="/api/store"
   question="Was this section helpful?"
-  vertical={true}
 />
 
 </DividedMarkdownContent>
@@ -942,14 +927,10 @@ However, some API routes restrict the fields and relations you can retrieve. To 
 <DividedMarkdownLayout>
 
 <Feedback
-  event="survey_api-ref"
   extraData={{
-    area: "admin",
     section: "select-fields"
   }}
-  pathName="/api/admin"
   question="Was this section helpful?"
-  vertical={true}
 />
 
 </DividedMarkdownLayout>
@@ -1315,14 +1296,10 @@ curl -g "http://localhost:9000/admin/products?created_at[$lt]=2023-02-17&created
 <DividedMarkdownLayout>
 
 <Feedback
-  event="survey_api-ref"
   extraData={{
-    area: "admin",
     section: "query-parameters"
   }}
-  pathName="/api/admin"
   question="Was this section helpful?"
-  vertical={true}
 />
 
 </DividedMarkdownLayout>
@@ -1496,14 +1473,10 @@ This sorts the products by their `created_at` field in the descending order.
 <DividedMarkdownLayout>
 
 <Feedback
-  event="survey_api-ref"
   extraData={{
-    area: "admin",
     section: "pagination"
   }}
-  pathName="/api/admin"
   question="Was this section helpful?"
-  vertical={true}
 />
 
 </DividedMarkdownLayout>
@@ -1527,14 +1500,10 @@ This is useful if you want to extend an API route and pass additional data or pe
 Refer to [this guide](!docs!/learn/customization/extend-features/extend-create-product) to find an example of extending an API route.
 
 <Feedback
-  event="survey_api-ref"
   extraData={{
-    area: "admin",
     section: "workflows"
   }}
-  pathName="/api/admin"
   question="Was this section helpful?"
-  vertical={true}
 />
 
 </DividedMarkdownContent>

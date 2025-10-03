@@ -31,14 +31,16 @@ export const Rating: React.FC<RatingProps> = ({
 
   const submitTracking = useCallback(
     (selectedRating?: number, feedback?: string) => {
-      track(
-        event,
-        {
-          rating: selectedRating || rating,
-          additionalFeedback: feedback || additionalFeedback,
+      track({
+        event: {
+          event,
+          options: {
+            rating: selectedRating || rating,
+            additionalFeedback: feedback || additionalFeedback,
+          },
+          callback: () => onRating?.(selectedRating || rating),
         },
-        () => onRating?.(selectedRating || rating)
-      )
+      })
     },
     [rating, additionalFeedback]
   )

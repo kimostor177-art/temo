@@ -105,28 +105,31 @@ export const Feedback = ({
     if (showForm) {
       setLoading(true)
     }
-    track(
-      event,
-      {
-        url: pathName,
-        label: document.title,
-        feedback:
-          (feedback !== null && feedback) ||
-          (feedback === null && positiveFeedback)
-            ? "yes"
-            : "no",
-        message: message?.length ? message : null,
-        os: window.navigator.userAgent,
-        feedbackOption,
-        ...extraData,
+    track({
+      event: {
+        event,
+        options: {
+          url: pathName,
+          label: document.title,
+          feedback:
+            (feedback !== null && feedback) ||
+            (feedback === null && positiveFeedback)
+              ? "yes"
+              : "no",
+          message: message?.length ? message : null,
+          os: window.navigator.userAgent,
+          feedbackOption,
+          ...extraData,
+        },
+        callback: function () {
+          if (showForm) {
+            setLoading(false)
+            resetForm()
+          }
+        },
+        tracker: ["segment", "posthog"],
       },
-      function () {
-        if (showForm) {
-          setLoading(false)
-          resetForm()
-        }
-      }
-    )
+    })
   }
 
   function resetForm() {

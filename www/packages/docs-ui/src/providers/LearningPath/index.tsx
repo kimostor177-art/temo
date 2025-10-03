@@ -71,9 +71,14 @@ export const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
       )
     }
 
-    track(`learning_path_${path.name}`, {
-      url: pathname,
-      state: `start`,
+    track({
+      event: {
+        event: `learning_path_${path.name}`,
+        options: {
+          url: pathname,
+          state: `start`,
+        },
+      },
     })
   }
 
@@ -86,14 +91,19 @@ export const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
   const endPath = () => {
     const didFinish = currentStep === (path?.steps.length || 0) - 1
     const reachedIndex = currentStep === -1 ? 0 : currentStep
-    track(`learning_path_${path?.name}`, {
-      url: pathname,
-      state: !didFinish ? `closed` : `end`,
-      reachedStep:
-        path?.steps[reachedIndex]?.title ||
-        path?.steps[reachedIndex]?.description ||
-        path?.steps[reachedIndex]?.descriptionJSX ||
-        reachedIndex,
+    track({
+      event: {
+        event: `learning_path_${path?.name}`,
+        options: {
+          url: pathname,
+          state: !didFinish ? `closed` : `end`,
+          reachedStep:
+            path?.steps[reachedIndex]?.title ||
+            path?.steps[reachedIndex]?.description ||
+            path?.steps[reachedIndex]?.descriptionJSX ||
+            reachedIndex,
+        },
+      },
     })
     setPath(null)
     setCurrentStep(-1)

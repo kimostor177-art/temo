@@ -7,9 +7,7 @@ import type { TagsOperationDescriptionSectionResponsesProps } from "./Responses"
 import dynamic from "next/dynamic"
 import TagsOperationDescriptionSectionParameters from "./Parameters"
 import MDXContentClient from "@/components/MDXContent/Client"
-import { useArea } from "../../../../providers/area"
 import {
-  Feedback,
   Badge,
   Link,
   FeatureFlagNotice,
@@ -17,10 +15,10 @@ import {
   Tooltip,
   MarkdownContent,
 } from "docs-ui"
-import { usePathname } from "next/navigation"
 import { TagsOperationDescriptionSectionWorkflowBadgeProps } from "./WorkflowBadge"
 import { TagsOperationDescriptionSectionEventsProps } from "./Events"
 import { TagsOperationDescriptionSectionDeprecationNoticeProps } from "./DeprecationNotice"
+import { Feedback } from "@/components/Feedback"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
@@ -58,9 +56,6 @@ type TagsOperationDescriptionSectionProps = {
 const TagsOperationDescriptionSection = ({
   operation,
 }: TagsOperationDescriptionSectionProps) => {
-  const { area } = useArea()
-  const pathname = usePathname()
-
   return (
     <>
       <H2>
@@ -127,14 +122,10 @@ const TagsOperationDescriptionSection = ({
         </>
       )}
       <Feedback
-        event="survey_api-ref"
         extraData={{
-          area,
           section: operation.summary,
         }}
-        pathName={pathname}
         className="!my-2"
-        vertical={true}
         question="Did this API Route run successfully?"
       />
       {operation.security && (
