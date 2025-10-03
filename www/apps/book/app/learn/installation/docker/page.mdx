@@ -141,6 +141,12 @@ Next, you need to create a script file that [runs database migrations](../../fun
 
 Create the file `start.sh` with the following content:
 
+<Note title="Windows Users">
+
+Ensure that the `start.sh` file uses LF line endings instead of CRLF. Git on Windows can sometimes automatically convert line endings, which causes errors when running the script inside the Linux-based Docker container. Learn how to configure your environment to maintain LF line endings in [this guide from GitHub](https://docs.github.com/en/get-started/git-basics/configuring-git-to-handle-line-endings).
+
+</Note>
+
 <CodeTabs group="npm2yarn" defaultValue="yarn">
   <CodeTab value="yarn" label="Yarn">
 ```shell title="start.sh"
