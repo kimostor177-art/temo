@@ -84,9 +84,7 @@ export default async ({
   let hasDefaultProvider = false
   for (const provider of options?.providers || []) {
     if (provider.is_default || isSingleProvider) {
-      if (provider.is_default) {
-        hasDefaultProvider = true
-      }
+      hasDefaultProvider = true
       container.register(CachingDefaultProvider, asValue(provider.id))
     }
   }
