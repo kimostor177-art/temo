@@ -1,8 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { request } from "@octokit/request"
-import { Link } from "@/components"
+import { Link, MDXComponents } from "@/components"
 
 export type SolutionsProps = {
   feedback: boolean
@@ -16,6 +15,11 @@ export type GitHubSearchItem = {
   [key: string]: unknown
 }
 
+const Ul = MDXComponents["ul"] as React.FC<
+  React.HTMLAttributes<HTMLUListElement>
+>
+const Li = MDXComponents["li"] as React.FC<React.HTMLAttributes<HTMLLIElement>>
+
 export const Solutions = ({ feedback, message }: SolutionsProps) => {
   const [possibleSolutionsQuery, setPossibleSolutionsQuery] =
     useState<string>("")
@@ -28,11 +32,14 @@ export const Solutions = ({ feedback, message }: SolutionsProps) => {
   }
 
   async function searchGitHub(query: string) {
-    return request(`GET /search/issues`, {
-      q: query,
-      sort: "updated",
-      per_page: 3,
-    })
+    return fetch(
+      `https://api.github.com/search/issues?q=${encodeURIComponent(query)}&sort=updated&per_page=3&advanced_search=true`,
+      {
+        headers: {
+          Accept: "application/vnd.github.v3+json",
+        },
+      }
+    ).then(async (res) => res.json() as Promise<{ items: GitHubSearchItem[] }>)
   }
 
   useEffect(() => {
@@ -43,13 +50,13 @@ export const Solutions = ({ feedback, message }: SolutionsProps) => {
       )
       searchGitHub(query)
         .then(async (result) => {
-          if (!result.data.items.length && message) {
+          if (!result.items.length && message) {
             query = constructQuery(document.title)
             result = await searchGitHub(query)
           }
 
           setPossibleSolutionsQuery(query)
-          setPossibleSolutions(result.data.items)
+          setPossibleSolutions(result.items)
         })
         .catch((err) => console.error(err))
     } else {
@@ -61,29 +68,35 @@ export const Solutions = ({ feedback, message }: SolutionsProps) => {
   return (
     <>
       {possibleSolutions.length > 0 && (
-        <div className="text-compact-large-plus font-normal">
+        <div className="txt-medium">
           <span className="my-docs_1 mx-0 inline-block">
             If you faced a problem, here are some possible solutions from
             GitHub:
           </span>
-          <ul>
+          <Ul>
             {possibleSolutions.map((solution) => (
-              <li key={solution.url} className="mb-docs_0.5 last:mb-0">
-                <Link href={solution.html_url} target="_blank" rel="noreferrer">
+              <Li key={solution.url}>
+                <Link
+                  href={solution.html_url}
+                  target="_blank"
+                  rel="noreferrer"
+                  variant="content"
+                >
                   {solution.title}
                 </Link>
-              </li>
+              </Li>
             ))}
-          </ul>
+          </Ul>
           <span>
             Explore more issues in{" "}
-            <a
+            <Link
               href={`https://github.com/medusajs/medusa/issues?q=${possibleSolutionsQuery}`}
               target="_blank"
               rel="noreferrer"
+              variant="content"
             >
               the GitHub repository
-            </a>
+            </Link>
           </span>
         </div>
       )}

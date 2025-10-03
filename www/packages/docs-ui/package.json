@@ -62,7 +62,6 @@
     "@medusajs/icons": "2.10.3",
     "@medusajs/ui": "4.0.23",
     "@next/third-parties": "15.3.5",
-    "@octokit/request": "^8.1.1",
     "@react-hook/resize-observer": "^1.2.6",
     "@segment/analytics-next": "^1.75.0",
     "@uidotdev/usehooks": "^2.4.1",

@@ -121,7 +121,6 @@ export const MDXComponents: MDXComponentsType = {
     return <ZoomImg {...rest} />
   },
   a: (props) => <Link {...props} variant="content" />,
-  // a: Link,
   strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => {
     return <strong className={clsx("txt-medium-plus", className)} {...props} />
   },
