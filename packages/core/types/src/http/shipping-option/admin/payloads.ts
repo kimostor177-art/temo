@@ -1,5 +1,6 @@
 import { RuleOperatorType } from "../../../common"
 import { ShippingOptionPriceType } from "../../../fulfillment"
+import { PriceRule } from "../../../pricing"
 
 export interface AdminCreateShippingOptionRule {
   /**
@@ -52,36 +53,12 @@ export interface AdminUpdateShippingOptionType {
   code?: string
 }
 
-interface AdminShippingOptionPriceRulePayload {
-  /**
-   * The operator of the shipping option price rule.
-   *
-   * @example
-   * "eq"
-   */
-  operator: string
-  /**
-   * The attribute of the shipping option price rule.
-   *
-   * @example
-   * "region_id"
-   */
-  attribute: string
-  /**
-   * The value of the shipping option price rule.
-   *
-   * @example
-   * "region_123"
-   */
-  value: string | string[] | number
-}
-
 interface AdminShippingOptionPriceWithRules {
   /**
    * The rules of the shipping option price that
    * indicate when the price should be applied.
    */
-  rules?: AdminShippingOptionPriceRulePayload[]
+  rules?: PriceRule[]
 }
 
 export interface AdminCreateShippingOptionPriceWithCurrency
@@ -111,7 +88,10 @@ export interface AdminCreateShippingOptionPriceWithRegion
   amount: number
 }
 
-export interface AdminCreateShippingOption {
+/**
+ * Common properties for all shipping option create inputs.
+ */
+interface AdminCreateShippingOptionBase {
   /**
    * The name of the shipping option. Customers can
    * view this name during checkout.
@@ -165,13 +145,6 @@ export interface AdminCreateShippingOption {
    */
   type_id?: string
   /**
-   * The prices of the shipping option.
-   */
-  prices: (
-    | AdminCreateShippingOptionPriceWithCurrency
-    | AdminCreateShippingOptionPriceWithRegion
-  )[]
-  /**
    * The rules of the shipping option.
    *
    * Learn more in the [Shipping Option Rules](https://docs.medusajs.com/resources/commerce-modules/fulfillment/shipping-option#shipping-option-rules)
@@ -183,6 +156,30 @@ export interface AdminCreateShippingOption {
    */
   metadata?: Record<string, unknown>
 }
+
+/**
+ * Flat rate shipping option creation input.
+ */
+export interface AdminCreateFlatRateShippingOption
+  extends AdminCreateShippingOptionBase {
+  price_type: "flat"
+  prices: (
+    | AdminCreateShippingOptionPriceWithCurrency
+    | AdminCreateShippingOptionPriceWithRegion
+  )[]
+}
+
+/**
+ * Calculated shipping option creation input.
+ */
+export interface AdminCreateCalculatedShippingOption
+  extends AdminCreateShippingOptionBase {
+  price_type: "calculated"
+}
+
+export type AdminCreateShippingOption =
+  | AdminCreateFlatRateShippingOption
+  | AdminCreateCalculatedShippingOption
 
 export interface AdminUpdateShippingOptionRule
   extends AdminCreateShippingOptionRule {

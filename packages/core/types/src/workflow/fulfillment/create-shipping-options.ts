@@ -1,14 +1,17 @@
 import { ShippingOptionDTO } from "../../fulfillment"
 import { RuleOperatorType } from "../../common"
+import { PriceRule } from "../../pricing"
 
 type CreateFlatRateShippingOptionPriceRecord =
   | {
       currency_code: string
       amount: number
+      rules?: PriceRule[]
     }
   | {
       region_id: string
       amount: number
+      rules?: PriceRule[]
     }
 
 /**
@@ -69,14 +72,14 @@ type CreateFlatShippingOptionInputBase = {
     attribute: string
     /**
      * The operator to use when matching the attribute.
-     * 
+     *
      * @example
      * in
      */
     operator: RuleOperatorType
     /**
      * The value to match against.
-     * 
+     *
      * @example
      * cusgrp_123
      */
