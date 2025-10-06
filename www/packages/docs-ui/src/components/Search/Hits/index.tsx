@@ -12,7 +12,7 @@ import {
 } from "react-instantsearch"
 import { SearchNoResult } from "../NoResults"
 import { useSearch } from "@/providers"
-import { Link, SearchHitGroupName } from "@/components"
+import { Badge, Link, SearchHitGroupName } from "@/components"
 
 export type Hierarchy = "lvl0" | "lvl1" | "lvl2" | "lvl3" | "lvl4" | "lvl5"
 
@@ -34,6 +34,7 @@ export type HitType = {
   __queryID?: string
   objectID: string
   description?: string
+  integration_vendor?: string
 }
 
 export type GroupedHitType = {
@@ -157,14 +158,14 @@ export const SearchHits = ({
           .join(" › ")
         return (
           <div
+            key={index}
             className={clsx(
-              "gap-docs_0.25 relative flex flex-1 flex-col p-docs_0.5",
-              "overflow-x-hidden text-ellipsis whitespace-nowrap break-words",
+              "p-docs_0.5",
               "hover:bg-medusa-bg-base-hover",
               "focus:bg-medusa-bg-base-hover",
-              "focus:outline-none"
+              "focus:outline-none",
+              "flex justify-between items-center"
             )}
-            key={index}
             tabIndex={index}
             data-hit
             onClick={(e) => {
@@ -174,49 +175,62 @@ export const SearchHits = ({
               }
             }}
           >
-            <span
+            <div
               className={clsx(
-                "text-compact-small-plus text-medusa-fg-base",
-                "max-w-full"
+                "gap-docs_0.25 relative flex flex-1 flex-col",
+                "overflow-x-hidden text-ellipsis whitespace-nowrap break-words"
               )}
             >
-              {/* @ts-expect-error React v19 doesn't see this type as a React element */}
-              <Snippet
-                attribute={getHierarchySnippetAttribute(item)}
-                hit={item}
-              />
-            </span>
-            <span className="text-compact-small text-medusa-fg-subtle text-ellipsis overflow-hidden">
-              {item.type === "content" && (
-                <>
-                  {/* @ts-expect-error React v19 doesn't see this type as a React element */}
-                  <Snippet attribute={"content"} hit={item} />
-                </>
-              )}
-              {item.type !== "content" && item.description}
-            </span>
+              <span
+                className={clsx(
+                  "text-compact-small-plus text-medusa-fg-base",
+                  "max-w-full"
+                )}
+              >
+                {/* @ts-expect-error React v19 doesn't see this type as a React element */}
+                <Snippet
+                  attribute={getHierarchySnippetAttribute(item)}
+                  hit={item}
+                />
+              </span>
+              <span className="text-compact-small text-medusa-fg-subtle text-ellipsis overflow-hidden">
+                {item.type === "content" && (
+                  <>
+                    {/* @ts-expect-error React v19 doesn't see this type as a React element */}
+                    <Snippet attribute={"content"} hit={item} />
+                  </>
+                )}
+                {item.type !== "content" && item.description}
+              </span>
 
-            <span
-              className={clsx(
-                "text-ellipsis overflow-hidden",
-                "text-medusa-fg-muted items-center text-compact-x-small"
+              <span
+                className={clsx(
+                  "text-ellipsis overflow-hidden",
+                  "text-medusa-fg-muted items-center text-compact-x-small"
+                )}
+              >
+                {hierarchies}
+              </span>
+              <Link
+                href={item.url}
+                className="absolute top-0 left-0 h-full w-full"
+                target="_self"
+                onClick={(e) => {
+                  sendEvent("click", item, "Search Result Clicked")
+                  if (checkIfInternal(item.url)) {
+                    e.preventDefault()
+                    window.location.href = item.url
+                    setIsOpen(false)
+                  }
+                }}
+              />
+            </div>
+            {!!item.integration_vendor &&
+              item.integration_vendor !== "Medusa" && (
+                <Badge variant="blue" badgeType="shaded">
+                  Community
+                </Badge>
               )}
-            >
-              {hierarchies}
-            </span>
-            <Link
-              href={item.url}
-              className="absolute top-0 left-0 h-full w-full"
-              target="_self"
-              onClick={(e) => {
-                sendEvent("click", item, "Search Result Clicked")
-                if (checkIfInternal(item.url)) {
-                  e.preventDefault()
-                  window.location.href = item.url
-                  setIsOpen(false)
-                }
-              }}
-            />
           </div>
         )
       })}
