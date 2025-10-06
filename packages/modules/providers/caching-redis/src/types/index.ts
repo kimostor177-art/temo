@@ -1,20 +1,13 @@
-export interface RedisCacheModuleOptions {
+import { RedisOptions } from "ioredis"
+export interface RedisCacheModuleOptions extends RedisOptions {
+  /**
+   * Redis connection string
+   */
+  redisUrl?: string
   /**
    * TTL in milliseconds
    */
   ttl?: number
-  /**
-   * Connection timeout in milliseconds
-   */
-  connectTimeout?: number
-  /**
-   * Lazyload connections
-   */
-  lazyConnect?: boolean
-  /**
-   * Connection retries
-   */
-  retryDelayOnFailover?: number
   /**
    * Key prefix for all cache keys
    */

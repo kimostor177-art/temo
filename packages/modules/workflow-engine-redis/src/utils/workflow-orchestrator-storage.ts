@@ -128,6 +128,7 @@ export class RedisDistributedTransactionStorage
   }
 
   async onApplicationStart() {
+    await this.ensureRedisConnection()
     const allowedJobs = [
       JobType.RETRY,
       JobType.STEP_TIMEOUT,
@@ -210,6 +211,64 @@ export class RedisDistributedTransactionStorage
 
   setWorkflowOrchestratorService(workflowOrchestratorService) {
     this.workflowOrchestratorService_ = workflowOrchestratorService
+  }
+
+  private async ensureRedisConnection(): Promise<void> {
+    const reconnectTasks: Promise<void>[] = []
+
+    if (this.redisClient.status !== "ready") {
+      this.logger_.warn(
+        `[Workflow-engine-redis] Redis connection is not ready (status: ${this.redisClient.status}). Attempting to reconnect...`
+      )
+      reconnectTasks.push(
+        this.redisClient
+          .connect()
+          .then(() => {
+            this.logger_.info(
+              "[Workflow-engine-redis] Redis connection reestablished successfully"
+            )
+          })
+          .catch((error) => {
+            this.logger_.error(
+              "[Workflow-engine-redis] Failed to reconnect to Redis",
+              error
+            )
+            throw new MedusaError(
+              MedusaError.Types.DB_ERROR,
+              `Redis connection failed: ${error.message}`
+            )
+          })
+      )
+    }
+
+    if (this.redisWorkerConnection.status !== "ready") {
+      this.logger_.warn(
+        `[Workflow-engine-redis] Redis worker connection is not ready (status: ${this.redisWorkerConnection.status}). Attempting to reconnect...`
+      )
+      reconnectTasks.push(
+        this.redisWorkerConnection
+          .connect()
+          .then(() => {
+            this.logger_.info(
+              "[Workflow-engine-redis] Redis worker connection reestablished successfully"
+            )
+          })
+          .catch((error) => {
+            this.logger_.error(
+              "[Workflow-engine-redis] Failed to reconnect to Redis worker connection",
+              error
+            )
+            throw new MedusaError(
+              MedusaError.Types.DB_ERROR,
+              `Redis worker connection failed: ${error.message}`
+            )
+          })
+      )
+    }
+
+    if (reconnectTasks.length > 0) {
+      await promiseAll(reconnectTasks)
+    }
   }
 
   private async saveToDb(data: TransactionCheckpoint, retentionTime?: number) {

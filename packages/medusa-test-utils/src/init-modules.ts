@@ -64,12 +64,12 @@ export async function initModules({
 
   async function shutdown() {
     const promises: Promise<void>[] = []
-    promises.push(medusaApp.onApplicationPrepareShutdown())
-    promises.push(medusaApp.onApplicationShutdown())
 
     if (shouldDestroyConnectionAutomatically) {
       promises.push((sharedPgConnection as any).context?.destroy())
       promises.push((sharedPgConnection as any).destroy())
+      promises.push(medusaApp.onApplicationPrepareShutdown())
+      promises.push(medusaApp.onApplicationShutdown())
     } else {
       if (!preventConnectionDestroyWarning) {
         logger.info(
