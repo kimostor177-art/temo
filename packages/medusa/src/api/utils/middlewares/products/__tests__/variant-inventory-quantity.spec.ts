@@ -7,8 +7,8 @@ import {
 } from "@medusajs/framework/utils"
 import { MedusaRequest, MedusaStoreRequest } from "@medusajs/framework/http"
 import {
-  wrapVariantsWithTotalInventoryQuantity,
   wrapVariantsWithInventoryQuantityForSalesChannel,
+  wrapVariantsWithTotalInventoryQuantity,
 } from "../variant-inventory-quantity"
 
 jest.mock("@medusajs/framework/utils", () => {
@@ -79,7 +79,12 @@ describe("variant-inventory-quantity", () => {
         "variant-1": { availability: 10 },
         "variant-2": { availability: 5 },
         "variant-3": { availability: 20 },
+        "variant-4": { availability: null },
       }
+      const _variants = [
+        ...variants,
+        { id: "variant-4", manage_inventory: true },
+      ]
 
       ;(getTotalVariantAvailability as jest.Mock).mockResolvedValueOnce(
         mockAvailability
@@ -87,12 +92,13 @@ describe("variant-inventory-quantity", () => {
 
       await wrapVariantsWithTotalInventoryQuantity(
         req as MedusaRequest,
-        variants
+        _variants
       )
 
-      expect(variants[0].inventory_quantity).toBe(10)
-      expect(variants[1].inventory_quantity).toBe(5)
-      expect(variants[2].inventory_quantity).toBeUndefined()
+      expect(_variants[0].inventory_quantity).toBe(10)
+      expect(_variants[1].inventory_quantity).toBe(5)
+      expect(_variants[2].inventory_quantity).toBeUndefined()
+      expect(_variants[3].inventory_quantity).toBeNull()
     })
   })
 

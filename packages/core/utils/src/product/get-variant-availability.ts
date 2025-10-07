@@ -9,7 +9,7 @@ export type VariantAvailabilityResult = {
     /**
      * The available inventory quantity for the variant in the sales channel.
      */
-    availability: number
+    availability: number | null
     /**
      * The ID of the sales channel for which the availability was computed.
      */
@@ -18,7 +18,7 @@ export type VariantAvailabilityResult = {
 }
 
 /**
- * Computes the varaint availability for a list of variants in a given sales channel
+ * Computes the variant availability for a list of variants in a given sales channel
  *
  * The availability algorithm works as follows:
  * 1. For each variant, we retrieve its inventory items.
@@ -76,7 +76,7 @@ export async function getTotalVariantAvailability(
   data: TotalVariantAvailabilityData
 ): Promise<{
   [variant_id: string]: {
-    availability: number
+    availability: number | null
   }
 }> {
   const { variantInventoriesMap, locationIds } = await getDataForComputation(
@@ -116,7 +116,7 @@ const computeVariantAvailability = (
   variantInventoryItems: VariantItems[],
   channelLocationsSet: Set<string>,
   { requireChannelCheck } = { requireChannelCheck: true }
-) => {
+): number | null => {
   const inventoryQuantities: number[] = []
 
   for (const link of variantInventoryItems) {
@@ -143,7 +143,7 @@ const computeVariantAvailability = (
     inventoryQuantities.push(maxInventoryQuantity)
   }
 
-  return inventoryQuantities.length ? Math.min(...inventoryQuantities) : 0
+  return inventoryQuantities.length ? Math.min(...inventoryQuantities) : null
 }
 
 type VariantAvailabilityData = {

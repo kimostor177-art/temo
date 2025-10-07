@@ -65,7 +65,7 @@ export const wrapVariantsWithInventoryQuantityForSalesChannel = async (
 
 type VariantInput = {
   id: string
-  inventory_quantity?: number
+  inventory_quantity?: number | null
   manage_inventory?: boolean
 }
 
