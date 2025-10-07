@@ -442,6 +442,7 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "shipping_methods.id",
         "shipping_methods.shipping_option_id",
         "shipping_methods.data",
+        "shipping_methods.amount",
       ],
       variables: { id: input.order_id },
       list: false,
