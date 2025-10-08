@@ -183,7 +183,7 @@ If you want to index other types of data, such as product categories, you can ad
 
 A module's service receives the module's options as a second parameter in its constructor. In the constructor, you initialize the Algolia client using the module's options.
 
-<Note title="What is th second constructor parameter?">
+<Note title="What is the first constructor parameter?">
 
 A module has a container that holds all resources registered in that module, and you can access those resources in the first parameter of the constructor. Learn more about it in the [Module Container documentation](!docs!/learn/fundamentals/modules/container).
 
@@ -535,7 +535,18 @@ export const syncProductsWorkflow = createWorkflow(
   ({ filters, limit, offset }: SyncProductsWorkflowInput) => {
     const { data, metadata } = useQueryGraphStep({
       entity: "product",
-      fields: ["id", "title", "description", "handle", "thumbnail", "categories.*", "tags.*"],
+      fields: [
+        "id", 
+        "title", 
+        "description", 
+        "handle", 
+        "thumbnail", 
+        "categories.id",
+        "categories.name",
+        "categories.handle",
+        "tags.id",
+        "tags.value",
+      ],
       pagination: {
         take: limit,
         skip: offset,

@@ -257,9 +257,17 @@ const generatedgeneratedIntegrationsSidebarSidebar = {
         {
           "loaded": true,
           "isPathHref": true,
-          "type": "ref",
+          "type": "link",
           "path": "/integrations/guides/algolia",
           "title": "Algolia",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
+          "path": "/integrations/guides/meilisearch",
+          "title": "Meilisearch",
           "children": []
         }
       ]

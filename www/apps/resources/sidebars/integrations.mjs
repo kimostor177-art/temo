@@ -174,9 +174,14 @@ export const integrationsSidebar = [
     initialOpen: true,
     children: [
       {
-        type: "ref",
+        type: "link",
         path: "/integrations/guides/algolia",
         title: "Algolia",
+      },
+      {
+        type: "link",
+        path: "/integrations/guides/meilisearch",
+        title: "Meilisearch",
       },
     ],
   },
