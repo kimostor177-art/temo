@@ -83,12 +83,16 @@ export const transferCartCustomerWorkflow = createWorkflow(
       entity: "customer",
       filters: { id: input.customer_id },
       fields: ["id", "email"],
-      options: { throwIfKeyNotFound: true },
+      options: {
+        throwIfKeyNotFound: true,
+        isList: false,
+        cache: { enable: true },
+      },
     }).config({ name: "get-customer" })
 
     const customer = transform(
       { customerQuery },
-      ({ customerQuery }) => customerQuery.data[0]
+      ({ customerQuery }) => customerQuery.data
     )
 
     // If its the same customer, we don't want the email to be overridden, so we skip the

@@ -71,7 +71,7 @@ export interface ICachingModuleService extends IModuleService {
    *
    * This example will try to get the data from the `caching-redis` provider first, and if not found, it will try to get it from the `caching-memcached` provider.
    */
-  get<T>({
+  get({
     key,
     tags,
     providers,
@@ -92,7 +92,7 @@ export interface ICachingModuleService extends IModuleService {
      * If not provided, the [default provider](https://docs.medusajs.com/infrastructure-modules/caching/providers#default-caching-module-provider) is used.
      */
     providers?: string[]
-  }): Promise<T | null>
+  }): Promise<any | null>
 
   /**
    * This method stores data in the cache.

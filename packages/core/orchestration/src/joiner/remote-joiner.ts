@@ -620,6 +620,9 @@ export class RemoteJoiner {
         isObject(ids) &&
         Object.keys(ids).some((key) => !!FilterOperatorMap[key])
       uniqueIds = isIdsUsingOperatorMap ? ids : Array.isArray(ids) ? ids : [ids]
+      uniqueIds = Array.isArray(uniqueIds)
+        ? uniqueIds.filter((id) => id != null)
+        : uniqueIds
     }
 
     if (uniqueIds && Array.isArray(uniqueIds)) {
@@ -635,8 +638,6 @@ export class RemoteJoiner {
       } else {
         uniqueIds = Array.from(new Set(uniqueIds.flat()))
       }
-
-      uniqueIds = uniqueIds.filter((id) => isDefined(id))
     }
 
     let pkFieldAdjusted = pkField

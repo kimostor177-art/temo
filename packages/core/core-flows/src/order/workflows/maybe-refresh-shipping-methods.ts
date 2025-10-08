@@ -70,10 +70,10 @@ export const maybeRefreshShippingMethodsWorkflowId =
 /**
  * This workflows refreshes shipping method prices of an order and its changes. It's used in Return Merchandise Authorization (RMA) flows. It's used
  * by other workflows, such as {@link refreshExchangeShippingWorkflow}.
- * 
+ *
  * You can use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around
  * refreshing shipping methods in your custom flows.
- * 
+ *
  * @example
  * const { result } = await maybeRefreshShippingMethodsWorkflow(container)
  * .run({
@@ -92,9 +92,9 @@ export const maybeRefreshShippingMethodsWorkflowId =
  *     }
  *  }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Refreshes the shipping method prices of an order and its changes.
  */
 export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
@@ -116,6 +116,11 @@ export const maybeRefreshShippingMethodsWorkflow = createWorkflow(
       entity: "shipping_option",
       fields: [...COMMON_OPTIONS_FIELDS],
       filters: { id: shippingMethod.shipping_option_id },
+      options: {
+        cache: {
+          enable: true,
+        },
+      },
     }).config({ name: "calculated-option" })
 
     const shippingOption = transform(shippingOptionQuery, ({ data }) => data[0])

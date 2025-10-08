@@ -1,4 +1,8 @@
-import { isDefined, ShippingOptionPriceType } from "@medusajs/framework/utils"
+import {
+  isDefined,
+  QueryContext,
+  ShippingOptionPriceType,
+} from "@medusajs/framework/utils"
 import {
   createHook,
   createWorkflow,
@@ -11,6 +15,7 @@ import {
   AdditionalData,
   CalculateShippingOptionPriceDTO,
   ListShippingOptionsForCartWithPricingWorkflowInput,
+  QueryContextType,
 } from "@medusajs/framework/types"
 
 import { useQueryGraphStep, validatePresenceOfStep } from "../../common"
@@ -206,14 +211,21 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
       setShippingOptionsContext.getResult()
 
     const commonOptions = transform(
-      { input, cart, fulfillmentSetIds, setShippingOptionsContextResult },
+      {
+        input,
+        cart,
+        fulfillmentSetIds,
+        optionIds,
+        setShippingOptionsContextResult,
+      },
       ({
         input,
         cart,
         fulfillmentSetIds,
+        optionIds,
         setShippingOptionsContextResult,
       }) => ({
-        context: {
+        context: QueryContext({
           ...(setShippingOptionsContextResult
             ? setShippingOptionsContextResult
             : {}),
@@ -223,9 +235,10 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
             : input.enabled_in_store
             ? "true"
             : "false",
-        },
+        }),
 
         filters: {
+          id: optionIds.length ? optionIds : undefined,
           fulfillment_set_id: fulfillmentSetIds,
 
           address: {
@@ -238,21 +251,19 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
       })
     )
 
-    const typeQueryFilters = transform(
-      { optionIds, commonOptions },
-      ({ optionIds, commonOptions }) => ({
-        id: optionIds.length ? optionIds : undefined,
-        ...commonOptions,
-      })
-    )
-
     /**
      * We need to prefetch exact same SO as in the final result but only to determine pricing calculations first.
      */
-    const initialOptions = useRemoteQueryStep({
-      entry_point: "shipping_options",
-      variables: typeQueryFilters,
+    const { data: initialOptions } = useQueryGraphStep({
+      entity: "shipping_options",
       fields: ["id", "price_type"],
+      filters: commonOptions.filters,
+      context: commonOptions.context as QueryContextType,
+      options: {
+        cache: {
+          enable: true,
+        },
+      },
     }).config({ name: "shipping-options-price-type-query" })
 
     /**
@@ -261,7 +272,7 @@ export const listShippingOptionsForCartWithPricingWorkflow = createWorkflow(
     const { flatRateOptionsQuery, calculatedShippingOptionsQuery } = transform(
       {
         cart,
-        initialOptions,
+        initialOptions: initialOptions,
         commonOptions,
       },
       ({ cart, initialOptions, commonOptions }) => {
