@@ -3603,6 +3603,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@changesets/get-github-info@patch:@changesets/get-github-info@npm:^0.5.2#.yarn/patches/changesets-github-info.patch::locator=root%40workspace%3A.":
+  version: 0.5.2
+  resolution: "@changesets/get-github-info@patch:@changesets/get-github-info@npm%3A0.5.2#.yarn/patches/changesets-github-info.patch::version=0.5.2&hash=9a2bd4&locator=root%40workspace%3A."
+  dependencies:
+    dataloader: ^1.4.0
+    node-fetch: ^2.5.0
+  checksum: 6b9adb6c6e879dcdf4a2140d1b1d17a19965d2db1e10676baefb1e99e183dce7d52abf6a333235cb77f52ecf860597a4caa87ad58cd4be946a0319fbc31b7730
+  languageName: node
+  linkType: hard
+
 "@changesets/get-release-plan@npm:^4.0.0":
   version: 4.0.0
   resolution: "@changesets/get-release-plan@npm:4.0.0"
