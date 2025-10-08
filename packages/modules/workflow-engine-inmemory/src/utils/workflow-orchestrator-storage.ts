@@ -184,6 +184,8 @@ export class InMemoryDistributedTransactionStorage
       TransactionState.FAILED,
       TransactionState.REVERTED,
     ].includes(data.flow.state)
+    const isWaitingToCompensate =
+      data.flow.state === TransactionState.WAITING_TO_COMPENSATE
 
     /**
      * Bit of explanation:
@@ -236,7 +238,10 @@ export class InMemoryDistributedTransactionStorage
         )
       : false
 
-    if (!(isNotStarted || isFinished) && !currentStepsIsAsync) {
+    if (
+      !(isNotStarted || isFinished || isWaitingToCompensate) &&
+      !currentStepsIsAsync
+    ) {
       return
     }
 

@@ -12,6 +12,7 @@ import { setTimeout as setTimeoutSync } from "timers"
 import { setTimeout } from "timers/promises"
 import { ulid } from "ulid"
 import "../__fixtures__"
+import { TestDatabase } from "../utils"
 
 jest.setTimeout(300000)
 
@@ -37,6 +38,10 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
   },
   testSuite: ({ service: workflowOrcModule, medusaApp }) => {
     describe("Testing race condition of the workflow during retry", () => {
+      afterEach(async () => {
+        await TestDatabase.clearTables()
+      })
+
       it("should prevent race continuation of the workflow during retryIntervalAwaiting in background execution", (done) => {
         const transactionId = "transaction_id" + ulid()
         const workflowId = "workflow-1" + ulid()

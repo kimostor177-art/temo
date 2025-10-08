@@ -51,7 +51,6 @@ import {
 } from "../__fixtures__/workflow_1_auto_retries_false"
 import { createScheduled } from "../__fixtures__/workflow_scheduled"
 
-import { Redis } from "ioredis"
 import {
   step1InvokeMock as step1InvokeMockManualRetry,
   step2InvokeMock as step2InvokeMockManualRetry,
@@ -110,31 +109,18 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
   testSuite: ({ service: workflowOrcModule, medusaApp }) => {
     describe("Workflow Orchestrator module", function () {
       beforeEach(async () => {
-        await TestDatabase.clearTables()
         jest.clearAllMocks()
+
+        query = medusaApp.query
+        sharedContainer_ = medusaApp.sharedContainer
       })
 
-      afterAll(async () => {
-        // empty redis
-        const connection = new Redis("localhost:6379", {
-          lazyConnect: true,
-        })
-
-        await new Promise(async (resolve) => {
-          await connection.connect(resolve)
-        })
-
-        await connection.flushall()
-        await connection.disconnect()
+      afterEach(async () => {
+        await TestDatabase.clearTables()
       })
 
       let query: RemoteQueryFunction
       let sharedContainer_: MedusaContainer
-
-      beforeEach(() => {
-        query = medusaApp.query
-        sharedContainer_ = medusaApp.sharedContainer
-      })
 
       it(`should export the appropriate linkable configuration`, () => {
         const linkable = Module(Modules.WORKFLOW_ENGINE, {
@@ -483,62 +469,66 @@ moduleIntegrationTestRunner<IWorkflowEngineService>({
           )
         })
 
-        it("should not retry steps X times automatically when maxRetries is set and autoRetry is false", (done) => {
-          ;(async () => {
-            const transactionId = "transaction-auto-retries" + ulid()
-            const workflowId = "workflow_1_auto_retries_false"
+        it("should not retry steps X times automatically when maxRetries is set and autoRetry is false", async () => {
+          const transactionId = "transaction-auto-retries" + ulid()
+          const workflowId = "workflow_1_auto_retries_false"
 
-            await workflowOrcModule.run(workflowId, {
-              input: {},
-              transactionId,
-              throwOnError: false,
-            })
+          await workflowOrcModule.run(workflowId, {
+            input: {},
+            transactionId,
+            throwOnError: false,
+          })
 
+          const onFinishPromise = new Promise<void>((resolve, reject) => {
             workflowOrcModule.subscribe({
               workflowId,
               transactionId,
               subscriber: async (event) => {
                 if (event.eventType === "onFinish") {
-                  expect(step1InvokeMockAutoRetriesFalse).toHaveBeenCalledTimes(
-                    1
-                  )
-                  expect(step2InvokeMockAutoRetriesFalse).toHaveBeenCalledTimes(
-                    3
-                  )
-                  expect(
-                    step1CompensateMockAutoRetriesFalse
-                  ).toHaveBeenCalledTimes(1)
-                  expect(
-                    step2CompensateMockAutoRetriesFalse
-                  ).toHaveBeenCalledTimes(1)
-                  done()
+                  try {
+                    expect(
+                      step1InvokeMockAutoRetriesFalse
+                    ).toHaveBeenCalledTimes(1)
+                    expect(
+                      step2InvokeMockAutoRetriesFalse
+                    ).toHaveBeenCalledTimes(3)
+                    expect(
+                      step1CompensateMockAutoRetriesFalse
+                    ).toHaveBeenCalledTimes(1)
+                    expect(
+                      step2CompensateMockAutoRetriesFalse
+                    ).toHaveBeenCalledTimes(1)
+                    resolve()
+                  } catch (error) {
+                    reject(error)
+                  }
                 }
               },
             })
+          })
 
-            expect(step1InvokeMockAutoRetriesFalse).toHaveBeenCalledTimes(1)
-            expect(step2InvokeMockAutoRetriesFalse).toHaveBeenCalledTimes(1)
-            expect(step1CompensateMockAutoRetriesFalse).toHaveBeenCalledTimes(0)
-            expect(step2CompensateMockAutoRetriesFalse).toHaveBeenCalledTimes(0)
+          expect(step1InvokeMockAutoRetriesFalse).toHaveBeenCalledTimes(1)
+          expect(step2InvokeMockAutoRetriesFalse).toHaveBeenCalledTimes(1)
+          expect(step1CompensateMockAutoRetriesFalse).toHaveBeenCalledTimes(0)
+          expect(step2CompensateMockAutoRetriesFalse).toHaveBeenCalledTimes(0)
 
-            await setTimeout(3000)
+          await setTimeout(3000)
 
-            await workflowOrcModule.run(workflowId, {
-              input: {},
-              transactionId,
-              throwOnError: false,
-            })
+          await workflowOrcModule.run(workflowId, {
+            input: {},
+            transactionId,
+            throwOnError: false,
+          })
 
-            await setTimeout(2000)
+          await setTimeout(3000)
 
-            await setTimeout(3000)
+          await workflowOrcModule.run(workflowId, {
+            input: {},
+            transactionId,
+            throwOnError: false,
+          })
 
-            await workflowOrcModule.run(workflowId, {
-              input: {},
-              transactionId,
-              throwOnError: false,
-            })
-          })()
+          await onFinishPromise
         })
 
         it("should prevent executing twice the same workflow in perfect concurrency with the same transactionId and non idempotent and not async but retention time is set", async () => {
