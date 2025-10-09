@@ -16,8 +16,8 @@ export const ConfigurableProductListTable = () => {
         heading={t("products.domain")}
         actions={[
           { label: t("actions.export"), to: `export${location.search}` },
-          { label: t("actions.import"), to: "import" },
-          { label: t("actions.create"), to: "create" }
+          { label: t("actions.import"), to: `import${location.search}` },
+          { label: t("actions.create"), to: "create" },
         ]}
       />
       <Outlet />
