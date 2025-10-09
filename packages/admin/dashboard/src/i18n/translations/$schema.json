@@ -8312,6 +8312,9 @@
             "total_used": {
               "type": "string"
             },
+            "totalUsedByAttribute": {
+              "type": "string"
+            },
             "budget_limit": {
               "type": "string"
             },
@@ -8333,6 +8336,7 @@
             "end_date",
             "total_spend",
             "total_used",
+            "totalUsedByAttribute",
             "budget_limit",
             "campaign_id"
           ],
@@ -8378,10 +8382,7 @@
                 "budgetAttributeTooltip": {
                   "type": "string"
                 },
-                "limitBudgetAttributeCustomer": {
-                  "type": "string"
-                },
-                "limitBudgetAttributeEmail": {
+                "totalUsedByAttribute": {
                   "type": "string"
                 }
               },
@@ -8392,8 +8393,7 @@
                 "used",
                 "budgetAttribute",
                 "budgetAttributeTooltip",
-                "limitBudgetAttributeCustomer",
-                "limitBudgetAttributeEmail"
+                "totalUsedByAttribute"
               ],
               "additionalProperties": false
             },
@@ -8425,9 +8425,22 @@
                   },
                   "required": ["title", "description"],
                   "additionalProperties": false
+                },
+                "useByAttribute": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["title", "description"],
+                  "additionalProperties": false
                 }
               },
-              "required": ["spend", "usage"],
+              "required": ["spend", "usage", "useByAttribute"],
               "additionalProperties": false
             },
             "edit": {
@@ -11162,6 +11175,9 @@
         "discountable": {
           "type": "string"
         },
+        "promotionCode": {
+          "type": "string"
+        },
         "handle": {
           "type": "string"
         },
@@ -11588,6 +11604,7 @@
         "category",
         "collection",
         "discountable",
+        "promotionCode",
         "handle",
         "subtitle",
         "by",

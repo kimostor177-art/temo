@@ -3,6 +3,12 @@ import { Heading, Text } from "@medusajs/ui"
 import { Fragment } from "react"
 import { useTranslation } from "react-i18next"
 
+const translationKeyMap = {
+  spend: "spend",
+  usage: "usage",
+  use_by_attribute: "useByAttribute",
+}
+
 type CampaignDetailsProps = {
   campaign?: AdminCampaign
 }
@@ -77,7 +83,14 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
           </Text>
 
           <div className="flex items-center gap-1">
-            <Text className="txt-small">{campaign.budget?.type || "-"}</Text>
+            <Text className="txt-small truncate">
+              {t(
+                `campaigns.budget.type.${translationKeyMap[campaign.budget?.type]}.title`,
+                {
+                  defaultValue: "-",
+                }
+              )}
+            </Text>
           </div>
         </div>
 
@@ -105,7 +118,9 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
 
         <div className="text-ui-fg-subtle grid grid-cols-2 items-center py-1">
           <Text className="txt-small-plus">
-            {t("campaigns.budget.fields.used")}
+            {campaign.budget?.type === "use_by_attribute"
+              ? t("campaigns.fields.totalUsedByAttribute")
+              : t("campaigns.budget.fields.used")}
           </Text>
 
           <div className="flex items-center gap-1">

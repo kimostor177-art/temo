@@ -2233,6 +2233,7 @@
       "end_date": "End date",
       "total_spend": "Budget spent",
       "total_used": "Budget used",
+      "totalUsedByAttribute": "Total used",
       "budget_limit": "Budget limit",
       "campaign_id": {
         "hint": "Disabled campaigns have budget in a different currency than the promotion."
@@ -2251,8 +2252,7 @@
         "used": "Used",
         "budgetAttribute": "Limit usage per",
         "budgetAttributeTooltip": "Define how many times the promotion can be used by a specific customer or email.",
-        "limitBudgetAttributeCustomer": "Budget limit per customer",
-        "limitBudgetAttributeEmail": "Budget limit per email"
+        "totalUsedByAttribute": "Budget limit per: {{attribute}}"
       },
       "type": {
         "spend": {
@@ -2262,6 +2262,10 @@
         "usage": {
           "title": "Usage",
           "description": "Set a limit on how many times the promotion can be used."
+        },
+        "useByAttribute": {
+          "title": "Usage by attribute (customer id, email, etc.)",
+          "description": "Set a limit on how many times the promotion can be used by a specific attribute value."
         }
       },
       "edit": {
@@ -3008,6 +3012,7 @@
     "category": "Category",
     "collection": "Collection",
     "discountable": "Discountable",
+    "promotionCode": "Promotion code",
     "handle": "Handle",
     "subtitle": "Subtitle",
     "by": "By",

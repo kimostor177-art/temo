@@ -40,6 +40,7 @@ export const CreateCampaignForm = () => {
 
   const handleSubmit = form.handleSubmit(async (data) => {
     const attribute = data.budget.attribute || null
+
     const type = attribute ? "use_by_attribute" : data.budget.type
 
     await mutateAsync(
