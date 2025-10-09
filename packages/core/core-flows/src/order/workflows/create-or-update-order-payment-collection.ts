@@ -11,7 +11,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { useQueryGraphStep } from "../../common"
 import { updatePaymentCollectionStep } from "../../payment-collection"
 import { cancelPaymentCollectionWorkflow } from "../../payment-collection/workflows/cancel-payment-collection"
 import { createOrderPaymentCollectionWorkflow } from "./create-order-payment-collection"
@@ -63,18 +63,17 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
       amount?: number
     }>
   ) => {
-    const order = useRemoteQueryStep({
-      entry_point: "order",
+    const { data: order } = useQueryGraphStep({
+      entity: "order",
       fields: ["id", "summary", "total", "currency_code", "region_id"],
-      variables: { id: input.order_id },
-      throw_if_key_not_found: true,
-      list: false,
+      filters: { id: input.order_id },
+      options: { throwIfKeyNotFound: true, isList: false },
     })
 
-    const orderPaymentCollections = useRemoteQueryStep({
-      entry_point: "order_payment_collection",
+    const { data: orderPaymentCollections } = useQueryGraphStep({
+      entity: "order_payment_collection",
       fields: ["payment_collection_id"],
-      variables: { order_id: order.id },
+      filters: { order_id: order.id },
     }).config({ name: "order-payment-collection-query" })
 
     const orderPaymentCollectionIds = transform(
@@ -83,23 +82,21 @@ export const createOrUpdateOrderPaymentCollectionWorkflow = createWorkflow(
         orderPaymentCollections.map((opc) => opc.payment_collection_id)
     )
 
-    const existingPaymentCollection = useRemoteQueryStep({
-      entry_point: "payment_collection",
+    const { data: existingPaymentCollection } = useQueryGraphStep({
+      entity: "payment_collection",
       fields: ["id", "status"],
-      variables: {
-        filters: {
-          id: orderPaymentCollectionIds,
-          status: [
-            // To update the collection amoun
-            PaymentCollectionStatus.NOT_PAID,
-            PaymentCollectionStatus.AWAITING,
-            // To cancel the authorized payments and create a new collection
-            PaymentCollectionStatus.AUTHORIZED,
-            PaymentCollectionStatus.PARTIALLY_AUTHORIZED,
-          ],
-        },
+      filters: {
+        id: orderPaymentCollectionIds,
+        status: [
+          // To update the collection amoun
+          PaymentCollectionStatus.NOT_PAID,
+          PaymentCollectionStatus.AWAITING,
+          // To cancel the authorized payments and create a new collection
+          PaymentCollectionStatus.AUTHORIZED,
+          PaymentCollectionStatus.PARTIALLY_AUTHORIZED,
+        ],
       },
-      list: false,
+      options: { isList: false },
     }).config({ name: "payment-collection-query" })
 
     const shouldRecreate = transform(

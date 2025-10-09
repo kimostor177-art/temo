@@ -14,14 +14,14 @@ import {
   Modules,
 } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createStep,
   createWorkflow,
   parallelize,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { emitEventStep, useRemoteQueryStep } from "../../common"
+import { emitEventStep, useQueryGraphStep } from "../../common"
 import { markFulfillmentAsDeliveredWorkflow } from "../../fulfillment"
 import { registerOrderDeliveryStep } from "../steps/register-delivery"
 import {
@@ -221,16 +221,17 @@ export const markOrderFulfillmentAsDeliveredWorkflow = createWorkflow(
   markOrderFulfillmentAsDeliveredWorkflowId,
   (input: WorkflowData<MarkOrderFulfillmentAsDeliveredWorkflowInput>) => {
     const { fulfillmentId, orderId } = input
-    const fulfillment = useRemoteQueryStep({
-      entry_point: "fulfillment",
-      fields: ["id"],
-      variables: { id: fulfillmentId },
-      throw_if_key_not_found: true,
-      list: false,
-    })
 
-    const order = useRemoteQueryStep({
-      entry_point: "order",
+    const { data: fulfillment } = useQueryGraphStep({
+      entity: "fulfillment",
+      filters: { id: fulfillmentId },
+      fields: ["id"],
+      options: { throwIfKeyNotFound: true, isList: false },
+    }).config({ name: "get-fulfillment" })
+
+    const { data: order } = useQueryGraphStep({
+      entity: "order",
+      filters: { id: orderId },
       fields: [
         "id",
         "summary",
@@ -248,9 +249,7 @@ export const markOrderFulfillmentAsDeliveredWorkflow = createWorkflow(
         "items.variant.inventory_items.inventory.id",
         "items.variant.inventory_items.required_quantity",
       ],
-      variables: { id: orderId },
-      throw_if_key_not_found: true,
-      list: false,
+      options: { throwIfKeyNotFound: true, isList: false },
     }).config({ name: "order-query" })
 
     orderFulfillmentDeliverablilityValidationStep({ order, fulfillment })

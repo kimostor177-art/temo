@@ -6,15 +6,15 @@ import {
   ShippingOptionDTO,
 } from "@medusajs/framework/types"
 import {
-  WorkflowResponse,
   createHook,
   createWorkflow,
   transform,
   when,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { BigNumber, ShippingOptionPriceType } from "@medusajs/framework/utils"
 import { calculateShippingOptionsPricesStep } from "../../fulfillment/steps"
-import { useRemoteQueryStep } from "../../common"
+import { useQueryGraphStep, useRemoteQueryStep } from "../../common"
 import { pricingContextResult } from "../../cart/utils/schemas"
 
 const COMMON_OPTIONS_FIELDS = [
@@ -167,11 +167,11 @@ export const fetchShippingOptionsForOrderWorkflowId = "fetch-shipping-option"
 export const fetchShippingOptionForOrderWorkflow = createWorkflow(
   fetchShippingOptionsForOrderWorkflowId,
   function (input: FetchShippingOptionForOrderWorkflowInput) {
-    const initialOption = useRemoteQueryStep({
-      entry_point: "shipping_option",
-      variables: { id: input.shipping_option_id },
+    const { data: initialOption } = useQueryGraphStep({
+      entity: "shipping_option",
+      filters: { id: input.shipping_option_id },
       fields: ["id", "price_type"],
-      list: false,
+      options: { isList: false },
     }).config({ name: "shipping-option-query" })
 
     const isCalculatedPriceShippingOption = transform(
@@ -184,19 +184,18 @@ export const fetchShippingOptionForOrderWorkflow = createWorkflow(
       { isCalculatedPriceShippingOption },
       ({ isCalculatedPriceShippingOption }) => isCalculatedPriceShippingOption
     ).then(() => {
-      const order = useRemoteQueryStep({
-        entry_point: "orders",
+      const { data: order } = useQueryGraphStep({
+        entity: "order",
+        filters: { id: input.order_id },
         fields: ["id", "shipping_address", "items.*", "items.variant.*"],
-        variables: { id: input.order_id },
-        list: false,
-        throw_if_key_not_found: true,
+        options: { throwIfKeyNotFound: true, isList: false },
       }).config({ name: "order-query" })
 
-      const shippingOption = useRemoteQueryStep({
-        entry_point: "shipping_option",
+      const { data: shippingOption } = useQueryGraphStep({
+        entity: "shipping_option",
+        filters: { id: input.shipping_option_id },
         fields: [...COMMON_OPTIONS_FIELDS],
-        variables: { id: input.shipping_option_id },
-        list: false,
+        options: { isList: false },
       }).config({ name: "calculated-option" })
 
       const calculateShippingOptionsPricesData = transform(

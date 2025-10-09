@@ -5,11 +5,11 @@ import {
   PaymentCollectionStatus,
 } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
   createStep,
   createWorkflow,
+  WorkflowData,
 } from "@medusajs/framework/workflows-sdk"
-import { removeRemoteLinkStep, useRemoteQueryStep } from "../../common"
+import { removeRemoteLinkStep, useQueryGraphStep } from "../../common"
 
 /**
  * This step validates that the order doesn't have an active payment collection.
@@ -62,12 +62,11 @@ export const deleteOrderPaymentCollections = createWorkflow(
   (
     input: WorkflowData<DeleteOrderPaymentCollectionsInput>
   ): WorkflowData<void> => {
-    const paymentCollection = useRemoteQueryStep({
-      entry_point: "payment_collection",
+    const { data: paymentCollection } = useQueryGraphStep({
+      entity: "payment_collection",
+      filters: { id: input.id },
       fields: ["id", "status"],
-      variables: { id: input.id },
-      throw_if_key_not_found: true,
-      list: false,
+      options: { throwIfKeyNotFound: true, isList: false },
     }).config({ name: "payment-collection-query" })
 
     throwUnlessStatusIsNotPaid({ paymentCollection })

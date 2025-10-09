@@ -8,17 +8,21 @@ import {
   OrderWorkflow,
   ProductVariantDTO,
 } from "@medusajs/framework/types"
-import { FulfillmentWorkflowEvents, MathBN, Modules } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
+  FulfillmentWorkflowEvents,
+  MathBN,
+  Modules,
+} from "@medusajs/framework/utils"
+import {
   createHook,
   createStep,
   createWorkflow,
   parallelize,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { emitEventStep, useRemoteQueryStep } from "../../common"
+import { emitEventStep, useQueryGraphStep } from "../../common"
 import { createShipmentWorkflow } from "../../fulfillment"
 import { registerOrderShipmentStep } from "../steps"
 import {
@@ -198,8 +202,9 @@ export const createOrderShipmentWorkflowId = "create-order-shipment"
 export const createOrderShipmentWorkflow = createWorkflow(
   createOrderShipmentWorkflowId,
   (input: WorkflowData<CreateOrderShipmentWorkflowInput>) => {
-    const order: OrderDTO = useRemoteQueryStep({
-      entry_point: "orders",
+    const { data: order } = useQueryGraphStep({
+      entity: "order",
+      filters: { id: input.order_id },
       fields: [
         "id",
         "status",
@@ -216,10 +221,8 @@ export const createOrderShipmentWorkflow = createWorkflow(
         "fulfillments.items.line_item_id",
         "fulfillments.items.inventory_item_id",
       ],
-      variables: { id: input.order_id },
-      list: false,
-      throw_if_key_not_found: true,
-    })
+      options: { throwIfKeyNotFound: true, isList: false },
+    }).config({ name: "get-order" })
 
     createShipmentValidateOrder({ order, input })
 

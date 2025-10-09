@@ -21,7 +21,7 @@ import { requiredVariantFieldsForInventoryConfirmation } from "../../cart/utils/
 import { pricingContextResult } from "../../cart/utils/schemas"
 import { confirmVariantInventoryWorkflow } from "../../cart/workflows/confirm-variant-inventory"
 import { getVariantsAndItemsWithPrices } from "../../cart/workflows/get-variants-and-items-with-prices"
-import { useRemoteQueryStep } from "../../common"
+import { useQueryGraphStep } from "../../common"
 import { createOrderLineItemsStep } from "../steps"
 import { productVariantsFields } from "../utils/fields"
 
@@ -98,8 +98,9 @@ export const addOrderLineItemsWorkflow = createWorkflow(
       OrderWorkflow.OrderAddLineItemWorkflowInput & AdditionalData
     >
   ) => {
-    const order = useRemoteQueryStep({
-      entry_point: "orders",
+    const { data: order } = useQueryGraphStep({
+      entity: "order",
+      filters: { id: input.order_id },
       fields: [
         "id",
         "sales_channel_id",
@@ -108,9 +109,7 @@ export const addOrderLineItemsWorkflow = createWorkflow(
         "email",
         "currency_code",
       ],
-      variables: { id: input.order_id },
-      list: false,
-      throw_if_key_not_found: true,
+      options: { throwIfKeyNotFound: true, isList: false },
     }).config({ name: "order-query" })
 
     const variantIds = transform({ input }, (data) => {

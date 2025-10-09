@@ -1,12 +1,12 @@
 import { Modules } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createWorkflow,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { createPaymentCollectionsStep } from "../../cart"
-import { createRemoteLinkStep, useRemoteQueryStep } from "../../common"
+import { createRemoteLinkStep, useQueryGraphStep } from "../../common"
 
 /**
  * The details of the payment collection to create.
@@ -47,13 +47,12 @@ export const createOrderPaymentCollectionWorkflowId =
 export const createOrderPaymentCollectionWorkflow = createWorkflow(
   createOrderPaymentCollectionWorkflowId,
   (input: WorkflowData<CreateOrderPaymentCollectionWorkflowInput>) => {
-    const order = useRemoteQueryStep({
-      entry_point: "order",
+    const { data: order } = useQueryGraphStep({
+      entity: "order",
+      filters: { id: input.order_id },
       fields: ["id", "summary", "total", "currency_code", "region_id"],
-      variables: { id: input.order_id },
-      throw_if_key_not_found: true,
-      list: false,
-    })
+      options: { throwIfKeyNotFound: true, isList: false },
+    }).config({ name: "get-order" })
 
     const paymentCollectionData = transform(
       { order, input },

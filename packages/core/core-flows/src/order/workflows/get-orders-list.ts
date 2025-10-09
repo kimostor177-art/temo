@@ -1,10 +1,10 @@
-import type { OrderDTO, OrderDetailDTO } from "@medusajs/framework/types"
+import type { OrderDetailDTO, OrderDTO } from "@medusajs/framework/types"
 import { deduplicate } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createWorkflow,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useRemoteQueryStep } from "../../common"
 import {

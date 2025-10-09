@@ -1,11 +1,11 @@
 import type { OrderWorkflowDTO } from "@medusajs/framework/types"
 import {
-  WorkflowData,
   createWorkflow,
   transform,
   when,
+  WorkflowData,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { useQueryGraphStep } from "../../common"
 import { getItemTaxLinesStep } from "../../tax/steps/get-item-tax-lines"
 import { setOrderTaxLinesForItemsStep } from "../steps"
 
@@ -190,31 +190,35 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
       return isFullOrder ? completeOrderFields : orderFields
     })
 
-    const order = useRemoteQueryStep({
-      entry_point: "order",
+    const { data: order } = useQueryGraphStep({
+      entity: "order",
+      filters: { id: input.order_id },
       fields: fetchOrderFields,
-      variables: { id: input.order_id },
-      list: false,
-    })
+      options: { isList: false },
+    }).config({ name: "order-query" })
 
     const items = when({ input }, ({ input }) => {
       return input.item_ids!?.length > 0
     }).then(() => {
-      return useRemoteQueryStep({
-        entry_point: "order_line_item",
+      const { data: orderLineItems } = useQueryGraphStep({
+        entity: "order_line_item",
+        filters: { id: input.item_ids },
         fields: lineItemFields,
-        variables: { id: input.item_ids },
       }).config({ name: "query-order-line-items" })
+
+      return orderLineItems
     })
 
     const shippingMethods = when({ input }, ({ input }) => {
       return input.shipping_method_ids!?.length > 0
     }).then(() => {
-      return useRemoteQueryStep({
-        entry_point: "order_shipping_method",
+      const { data: orderShippingMethods } = useQueryGraphStep({
+        entity: "order_shipping_method",
+        filters: { id: input.shipping_method_ids },
         fields: shippingMethodFields,
-        variables: { id: input.shipping_method_ids },
       }).config({ name: "query-order-shipping-methods" })
+
+      return orderShippingMethods
     })
 
     const taxLineItems = getItemTaxLinesStep(

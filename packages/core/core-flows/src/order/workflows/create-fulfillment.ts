@@ -18,17 +18,18 @@ import {
   OrderWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createHook,
   createStep,
   createWorkflow,
   parallelize,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import {
   createRemoteLinkStep,
   emitEventStep,
+  useQueryGraphStep,
   useRemoteQueryStep,
 } from "../../common"
 import { createFulfillmentWorkflow } from "../../fulfillment"
@@ -393,8 +394,9 @@ export const createOrderFulfillmentWorkflowId = "create-order-fulfillment"
 export const createOrderFulfillmentWorkflow = createWorkflow(
   createOrderFulfillmentWorkflowId,
   (input: WorkflowData<CreateOrderFulfillmentWorkflowInput>) => {
-    const order: OrderDTO = useRemoteQueryStep({
-      entry_point: "orders",
+    const { data: order } = useQueryGraphStep({
+      entity: "order",
+      filters: { id: input.order_id },
       fields: [
         "id",
         "display_id",
@@ -444,10 +446,8 @@ export const createOrderFulfillmentWorkflow = createWorkflow(
         "shipping_methods.data",
         "shipping_methods.amount",
       ],
-      variables: { id: input.order_id },
-      list: false,
-      throw_if_key_not_found: true,
-    })
+      options: { throwIfKeyNotFound: true, isList: false },
+    }).config({ name: "get-order" })
 
     createFulfillmentValidateOrder({ order, inputItems: input.items })
 

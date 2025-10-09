@@ -1,12 +1,12 @@
 import type { PaymentCollectionDTO } from "@medusajs/framework/types"
 import { MedusaError } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createStep,
   createWorkflow,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { useQueryGraphStep } from "../../common"
 import {
   authorizePaymentSessionStep,
   capturePaymentWorkflow,
@@ -97,13 +97,12 @@ export const markPaymentCollectionAsPaidId = "mark-payment-collection-as-paid"
 export const markPaymentCollectionAsPaid = createWorkflow(
   markPaymentCollectionAsPaidId,
   (input: WorkflowData<MarkPaymentCollectionAsPaidInput>) => {
-    const paymentCollection = useRemoteQueryStep({
-      entry_point: "payment_collection",
+    const { data: paymentCollection } = useQueryGraphStep({
+      entity: "payment_collection",
+      filters: { id: input.payment_collection_id },
       fields: ["id", "status", "amount"],
-      variables: { id: input.payment_collection_id },
-      throw_if_key_not_found: true,
-      list: false,
-    })
+      options: { throwIfKeyNotFound: true, isList: false },
+    }).config({ name: "get-payment-collection" })
 
     throwUnlessPaymentCollectionNotPaid({ paymentCollection })
 

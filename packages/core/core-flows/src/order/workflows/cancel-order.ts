@@ -5,21 +5,21 @@ import {
   PaymentCollectionDTO,
 } from "@medusajs/framework/types"
 import {
+  deepFlatMap,
   MathBN,
   MedusaError,
   OrderWorkflowEvents,
   PaymentCollectionStatus,
-  deepFlatMap,
 } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createHook,
   createStep,
   createWorkflow,
   parallelize,
   transform,
   when,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useQueryGraphStep } from "../../common"
 import { updatePaymentCollectionStep } from "../../payment-collection"
@@ -47,14 +47,14 @@ export type CancelValidateOrderStepInput = {
 /**
  * This step validates that an order can be canceled. If the order has fulfillments that
  * aren't canceled, or the order was canceled previously, the step throws an error.
- * 
+ *
  * :::note
- * 
+ *
  * You can retrieve an order's details using [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query),
  * or [useQueryGraphStep](https://docs.medusajs.com/resources/references/medusa-workflows/steps/useQueryGraphStep).
- * 
+ *
  * :::
- * 
+ *
  * @example
  * const data = cancelValidateOrder({
  *   order: {
@@ -68,9 +68,7 @@ export type CancelValidateOrderStepInput = {
  */
 export const cancelValidateOrder = createStep(
   "cancel-validate-order",
-  ({
-    order,
-  }: CancelValidateOrderStepInput) => {
+  ({ order }: CancelValidateOrderStepInput) => {
     const order_ = order as OrderDTO & {
       payment_collections: PaymentCollectionDTO[]
       fulfillments: FulfillmentDTO[]
@@ -102,14 +100,14 @@ export const cancelOrderWorkflowId = "cancel-order"
  * This workflow cancels an order. An order can only be canceled if it doesn't have
  * any fulfillments, or if all fulfillments are canceled. The workflow will also cancel
  * any uncaptured payments, and refund any captured payments.
- * 
+ *
  * This workflow is used by the [Cancel Order Admin API Route](https://docs.medusajs.com/api/admin#orders_postordersidcancel).
- * 
- * This workflow has a hook that allows you to perform custom actions on the canceled order. For example, you can 
+ *
+ * This workflow has a hook that allows you to perform custom actions on the canceled order. For example, you can
  * make changes to custom models linked to the order.
- * 
+ *
  * You can also use this workflow within your customizations or your own custom workflows, allowing you to wrap custom logic around canceling an order.
- * 
+ *
  * @example
  * const { result } = await cancelOrderWorkflow(container)
  * .run({
@@ -117,18 +115,18 @@ export const cancelOrderWorkflowId = "cancel-order"
  *     order_id: "order_123",
  *   }
  * })
- * 
+ *
  * @summary
- * 
+ *
  * Cancel an order.
- * 
+ *
  * @property hooks.orderCanceled - This hook is executed after the order is canceled. You can consume this hook to perform custom actions on the canceled order.
  */
 export const cancelOrderWorkflow = createWorkflow(
   cancelOrderWorkflowId,
   (input: WorkflowData<OrderWorkflow.CancelOrderWorkflowInput>) => {
     const orderQuery = useQueryGraphStep({
-      entity: "orders",
+      entity: "order",
       fields: [
         "id",
         "status",
@@ -143,7 +141,7 @@ export const cancelOrderWorkflow = createWorkflow(
       ],
       filters: { id: input.order_id },
       options: { throwIfKeyNotFound: true },
-    }).config({ name: "get-cart" })
+    }).config({ name: "get-order" })
 
     const order = transform(
       { orderQuery },

@@ -16,15 +16,19 @@ import {
   OrderWorkflowEvents,
 } from "@medusajs/framework/utils"
 import {
-  WorkflowData,
-  WorkflowResponse,
   createHook,
   createStep,
   createWorkflow,
   parallelize,
   transform,
+  WorkflowData,
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { emitEventStep, useRemoteQueryStep } from "../../common"
+import {
+  emitEventStep,
+  useQueryGraphStep,
+  useRemoteQueryStep,
+} from "../../common"
 import { cancelFulfillmentWorkflow } from "../../fulfillment"
 import { adjustInventoryLevelsStep } from "../../inventory"
 import { cancelOrderFulfillmentStep } from "../steps/cancel-fulfillment"
@@ -32,8 +36,10 @@ import {
   throwIfItemsDoesNotExistsInOrder,
   throwIfOrderIsCancelled,
 } from "../utils/order-validation"
-import { createReservationsStep } from "../../reservation"
-import { updateReservationsStep } from "../../reservation"
+import {
+  createReservationsStep,
+  updateReservationsStep,
+} from "../../reservation"
 
 type OrderItemWithVariantDTO = OrderLineItemDTO & {
   variant?: ProductVariantDTO & {
@@ -307,31 +313,29 @@ export const cancelOrderFulfillmentWorkflowId = "cancel-order-fulfillment"
 export const cancelOrderFulfillmentWorkflow = createWorkflow(
   cancelOrderFulfillmentWorkflowId,
   (input: WorkflowData<CancelOrderFulfillmentWorkflowInput>) => {
-    const order: OrderDTO & { fulfillments: FulfillmentDTO[] } =
-      useRemoteQueryStep({
-        entry_point: "orders",
-        fields: [
-          "id",
-          "status",
-          "items.id",
-          "items.quantity",
-          "items.variant.allow_backorder",
-          "items.variant.manage_inventory",
-          "items.variant.inventory_items.inventory.id",
-          "items.variant.inventory_items.required_quantity",
-          "fulfillments.id",
-          "fulfillments.canceled_at",
-          "fulfillments.shipped_at",
-          "fulfillments.location_id",
-          "fulfillments.items.id",
-          "fulfillments.items.quantity",
-          "fulfillments.items.line_item_id",
-          "fulfillments.items.inventory_item_id",
-        ],
-        variables: { id: input.order_id },
-        list: false,
-        throw_if_key_not_found: true,
-      })
+    const { data: order } = useQueryGraphStep({
+      entity: "order",
+      filters: { id: input.order_id },
+      fields: [
+        "id",
+        "status",
+        "items.id",
+        "items.quantity",
+        "items.variant.allow_backorder",
+        "items.variant.manage_inventory",
+        "items.variant.inventory_items.inventory.id",
+        "items.variant.inventory_items.required_quantity",
+        "fulfillments.id",
+        "fulfillments.canceled_at",
+        "fulfillments.shipped_at",
+        "fulfillments.location_id",
+        "fulfillments.items.id",
+        "fulfillments.items.quantity",
+        "fulfillments.items.line_item_id",
+        "fulfillments.items.inventory_item_id",
+      ],
+      options: { throwIfKeyNotFound: true, isList: false },
+    }).config({ name: "get-order" })
 
     cancelOrderFulfillmentValidateOrder({ order, input })
 
