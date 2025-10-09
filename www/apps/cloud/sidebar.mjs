@@ -135,6 +135,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Manage Plans",
+            path: "/billing/plans",
+          },
+          {
+            type: "link",
             title: "Manage Billing Details",
             path: "/billing/manage",
           },

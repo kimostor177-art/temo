@@ -199,6 +199,14 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "Manage Plans",
+            "path": "/billing/plans",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "Manage Billing Details",
             "path": "/billing/manage",
             "children": []

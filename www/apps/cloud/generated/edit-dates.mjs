@@ -16,11 +16,12 @@ export const generatedEditDates = {
   "app/environments/environment-variables/page.mdx": "2025-08-15T15:35:24.085Z",
   "app/environments/long-lived/page.mdx": "2025-10-02T11:58:36.623Z",
   "app/environments/preview/page.mdx": "2025-10-02T13:06:32.356Z",
-  "app/faq/page.mdx": "2025-09-11T14:26:01.400Z",
-  "app/billing/page.mdx": "2025-10-02T14:37:27.199Z",
+  "app/faq/page.mdx": "2025-10-08T14:43:21.930Z",
+  "app/billing/page.mdx": "2025-10-08T14:37:11.611Z",
   "app/usage/page.mdx": "2025-08-25T07:25:54.703Z",
-  "app/billing/manage/page.mdx": "2025-10-02T13:08:08.552Z",
+  "app/billing/manage/page.mdx": "2025-10-08T14:40:23.629Z",
   "app/pricing/page.mdx": "2025-09-05T10:31:59.059Z",
-  "app/sign-up/page.mdx": "2025-09-29T10:16:20.885Z",
-  "app/comparison/page.mdx": "2025-09-30T06:17:40.257Z"
+  "app/sign-up/page.mdx": "2025-10-08T14:40:47.993Z",
+  "app/comparison/page.mdx": "2025-09-30T06:17:40.257Z",
+  "app/billing/plans/page.mdx": "2025-10-08T14:49:27.009Z"
 }
