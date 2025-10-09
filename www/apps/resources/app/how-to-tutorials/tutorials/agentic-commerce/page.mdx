@@ -340,12 +340,6 @@ You also pass an `options` property with module options, including the signature
 
 Your module is now ready for use. You'll build workflows around it in the following steps.
 
-<Note title="Tip">
-
-To avoid type errors when using the module's service in the next step, start the Medusa application once with the `npm run dev` or `yarn dev` command. This generates the necessary type definitions, as explained in the [Automatically Generated Types guide](!docs!/learn/fundamentals/generated-types).
-
-</Note>
-
 ---
 
 ## Step 3: Send Product Feed
@@ -702,6 +696,12 @@ Finally, you return the XML string in a `StepResponse` instance.
 The final step is `sendProductFeedStep`, which sends product feed XML to AI agents.
 
 Create the file `src/workflows/steps/send-product-feed.ts` with the following content:
+
+<Note>
+
+If you get a type error on resolving the Agentic Commerce Module, run the Medusa application once with the `npm run dev` or `yarn dev` command to generate the necessary type definitions, as explained in the [Automatically Generated Types guide](!docs!/learn/fundamentals/generated-types).
+
+</Note>
 
 ```ts title="src/workflows/steps/send-product-feed.ts"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"

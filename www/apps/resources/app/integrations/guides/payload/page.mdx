@@ -1462,6 +1462,12 @@ The `createPayloadItemsStep` will create an item in a Payload collection, such a
 
 To create the step, create the file `src/workflows/steps/create-payload-items.ts` with the following content:
 
+<Note>
+
+If you get a type error on resolving the Payload Module, run the Medusa application once with the `npm run dev` or `yarn dev` command to generate the necessary type definitions, as explained in the [Automatically Generated Types guide](!docs!/learn/fundamentals/generated-types).
+
+</Note>
+
 export const createPayloadItemsStepHighlights = [
   ["13", "payloadModuleService", "Resolve the Payload Module's service from the Medusa container."],
   ["15", "createdItems", "Create items in Payload."],

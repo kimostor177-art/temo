@@ -1297,6 +1297,12 @@ In the second step, you create the retrieved products in Contentful.
 
 To create the step, create the file `src/workflows/steps/create-products-contentful.ts` with the following content:
 
+<Note>
+
+If you get a type error on resolving the Contentful Module, run the Medusa application once with the `npm run dev` or `yarn dev` command to generate the necessary type definitions, as explained in the [Automatically Generated Types guide](!docs!/learn/fundamentals/generated-types).
+
+</Note>
+
 export const createProductsContentfulStepHighlights = [
   ["12", `"create-products-contentful-step"`, "The step's unique name."],
   ["13", "input", "The step's input."],

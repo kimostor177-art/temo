@@ -621,6 +621,12 @@ To return data from a step, you return an instance of `StepResponse` from the Wo
 
 If the order's cart has a loyalty promotion, you need to deduct points from the customer's loyalty points. To do this, create the file `src/workflows/steps/deduct-purchase-points.ts` with the following content:
 
+<Note>
+
+If you get a type error on resolving the Loyalty Module, run the Medusa application once with the `npm run dev` or `yarn dev` command to generate the necessary type definitions, as explained in the [Automatically Generated Types guide](!docs!/learn/fundamentals/generated-types).
+
+</Note>
+
 export const deductStepHighlights = [
   ["18", "loyaltyModuleService", "Resolve the Loyalty Module's service."],
   ["22", "calculatePointsFromAmount", "Calculate the points to deduct from the promotion's amount."],

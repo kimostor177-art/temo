@@ -435,6 +435,12 @@ The workflow that manages invoice configurations will have a single step that up
 
 To create a step, create the file `src/workflows/steps/update-invoice-config.ts` with the following content:
 
+<Note>
+
+If you get a type error on resolving the Invoice Generator Module, run the Medusa application once with the `npm run dev` or `yarn dev` command to generate the necessary type definitions, as explained in the [Automatically Generated Types guide](!docs!/learn/fundamentals/generated-types).
+
+</Note>
+
 export const updateInvoiceConfigHighlights = [
   ["19", "prevData", "Retrieve the invoice configurations before the update."],
   ["23", "updatedData", "Update the invoice configurations with the new data."],

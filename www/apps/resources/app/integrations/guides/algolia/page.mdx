@@ -419,6 +419,12 @@ In the second step of the workflow, you create or update indexes in Algolia for 
 
 To create the step, create the file `src/workflows/steps/sync-products.ts` with the following content:
 
+<Note>
+
+If you get a type error on resolving the Algolia Module, run the Medusa application once with the `npm run dev` or `yarn dev` command to generate the necessary type definitions, as explained in the [Automatically Generated Types guide](!docs!/learn/fundamentals/generated-types).
+
+</Note>
+
 ```ts title="src/workflows/steps/sync-products.ts"
 import { ProductDTO } from "@medusajs/framework/types"
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk"

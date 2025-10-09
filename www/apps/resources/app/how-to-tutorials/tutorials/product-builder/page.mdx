@@ -711,6 +711,12 @@ The `createProductBuilderStep` creates a new product builder configuration.
 
 To create the step, create the file `src/workflows/steps/create-product-builder.ts` with the following content:
 
+<Note>
+
+If you get a type error on resolving the Product Builder Module, run the Medusa application once with the `npm run dev` or `yarn dev` command to generate the necessary type definitions, as explained in the [Automatically Generated Types guide](!docs!/learn/fundamentals/generated-types).
+
+</Note>
+
 export const createProductBuilderStepHighlights = [
   ["11", "productBuilderModuleService", "Resolve the module service from container."],
   ["13", "productBuilder", "Create the product builder record."],

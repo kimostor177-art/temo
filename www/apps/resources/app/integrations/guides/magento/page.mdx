@@ -735,6 +735,12 @@ The first step of the workflow retrieves and returns the products from Magento.
 
 In your plugin, create the file `src/workflows/steps/get-magento-products.ts` with the following content:
 
+<Note>
+
+If you get a type error on resolving the Magento Module, run the Medusa application once with the `npm run dev` or `yarn dev` command to generate the necessary type definitions, as explained in the [Automatically Generated Types guide](!docs!/learn/fundamentals/generated-types).
+
+</Note>
+
 ![Diagram showcasing the get-magento-products file to create](https://res.cloudinary.com/dza7lstvk/image/upload/v1739349590/Medusa%20Resources/magento-5_ueb4wn.jpg)
 
 ```ts title="src/workflows/steps/get-magento-products.ts"

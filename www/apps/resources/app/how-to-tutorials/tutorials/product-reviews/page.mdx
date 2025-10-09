@@ -399,6 +399,12 @@ The `useQueryGraphStep` step is provided by Medusa in its `@medusajs/medusa/core
 
 In the second step of the workflow, you create the review. To create a step, create the file `src/workflows/steps/create-review.ts` with the following content:
 
+<Note>
+
+If you get a type error on resolving the Product Review Module, run the Medusa application once with the `npm run dev` or `yarn dev` command to generate the necessary type definitions, as explained in the [Automatically Generated Types guide](!docs!/learn/fundamentals/generated-types).
+
+</Note>
+
 export const createReviewHighlights = [
   ["22", "reviewModuleService", "Resolve the Review Module's service"],
   ["26", "createReviews", "Create the review"],
