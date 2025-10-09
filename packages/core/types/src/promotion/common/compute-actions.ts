@@ -15,7 +15,7 @@ export type ComputeActions =
  */
 export type UsageComputedActions = {
   /**
-   * The amount to remove off the shipping method's total.
+   * The amount (of usage or money) to adjust the campaign budget by.
    */
   amount: BigNumberInput
 
@@ -241,6 +241,11 @@ export interface ComputeActionContext extends Record<string, unknown> {
    * The cart's currency
    */
   currency_code: string
+
+  /**
+   * The cart's email
+   */
+  email?: string
 
   /**
    * The cart's line items.

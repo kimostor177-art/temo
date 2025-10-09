@@ -11,7 +11,7 @@ export interface AdminCreateCampaign {
   description?: string
   /**
    * The campaign's currency code.
-   * 
+   *
    * @example
    * usd
    */
@@ -33,13 +33,13 @@ export interface AdminCreateCampaign {
    */
   budget?: {
     /**
-     * The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions; 
+     * The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions;
      * `usage` means the limit is set on the total number of times the campaign's promotions can be used.
      */
     type?: CampaignBudgetTypeValues
     /**
      * The budget's currency code.
-     * 
+     *
      * @example
      * usd
      */
@@ -48,6 +48,10 @@ export interface AdminCreateCampaign {
      * The budget's limit.
      */
     limit?: number | null
+    /**
+     * The budget's attribute.
+     */
+    attribute?: string | null
   } | null
 }
 
@@ -62,7 +66,7 @@ export interface AdminUpdateCampaign {
   description?: string
   /**
    * The campaign's currency code.
-   * 
+   *
    * @example
    * usd
    */
@@ -84,13 +88,13 @@ export interface AdminUpdateCampaign {
    */
   budget?: {
     /**
-     * The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions; 
+     * The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions;
      * `usage` means the limit is set on the total number of times the campaign's promotions can be used.
      */
     type?: CampaignBudgetTypeValues
     /**
      * The budget's currency code.
-     * 
+     *
      * @example
      * usd
      */

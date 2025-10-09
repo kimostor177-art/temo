@@ -25,7 +25,11 @@ export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
             className="text-ui-fg-subtle ms-10 mt-[1.5px] font-normal"
             level="h3"
           >
-            {t("campaigns.fields.budget_limit")}
+            {campaign.budget?.type === "use_by_attribute"
+              ? campaign.budget?.attribute === "customer_id"
+                ? t("campaigns.budget.fields.limitBudgetAttributeCustomer")
+                : t("campaigns.budget.fields.limitBudgetAttributeEmail")
+              : t("campaigns.fields.budget_limit")}
           </Heading>
         </div>
 

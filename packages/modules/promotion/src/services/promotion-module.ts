@@ -1,5 +1,6 @@
 import {
   CampaignBudgetTypeValues,
+  CampaignBudgetUsageDTO,
   Context,
   DAL,
   FilterablePromotionProps,
@@ -37,6 +38,7 @@ import {
   ApplicationMethod,
   Campaign,
   CampaignBudget,
+  CampaignBudgetUsage,
   Promotion,
   PromotionRule,
   PromotionRuleValue,
@@ -72,6 +74,7 @@ type InjectedDependencies = {
   promotionRuleValueService: ModulesSdkTypes.IMedusaInternalService<any>
   campaignService: ModulesSdkTypes.IMedusaInternalService<any>
   campaignBudgetService: ModulesSdkTypes.IMedusaInternalService<any>
+  campaignBudgetUsageService: ModulesSdkTypes.IMedusaInternalService<any>
 }
 
 export default class PromotionModuleService
@@ -80,6 +83,7 @@ export default class PromotionModuleService
     ApplicationMethod: { dto: PromotionTypes.ApplicationMethodDTO }
     Campaign: { dto: PromotionTypes.CampaignDTO }
     CampaignBudget: { dto: PromotionTypes.CampaignBudgetDTO }
+    CampaignBudgetUsage: { dto: PromotionTypes.CampaignBudgetUsageDTO }
     PromotionRule: { dto: PromotionTypes.PromotionRuleDTO }
     PromotionRuleValue: { dto: PromotionTypes.PromotionRuleValueDTO }
   }>({
@@ -87,6 +91,7 @@ export default class PromotionModuleService
     ApplicationMethod,
     Campaign,
     CampaignBudget,
+    CampaignBudgetUsage,
     PromotionRule,
     PromotionRuleValue,
   })
@@ -112,6 +117,10 @@ export default class PromotionModuleService
     InferEntityType<typeof CampaignBudget>
   >
 
+  protected campaignBudgetUsageService_: ModulesSdkTypes.IMedusaInternalService<
+    InferEntityType<typeof CampaignBudgetUsage>
+  >
+
   constructor(
     {
       baseRepository,
@@ -121,6 +130,7 @@ export default class PromotionModuleService
       promotionRuleValueService,
       campaignService,
       campaignBudgetService,
+      campaignBudgetUsageService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -134,6 +144,7 @@ export default class PromotionModuleService
     this.promotionRuleValueService_ = promotionRuleValueService
     this.campaignService_ = campaignService
     this.campaignBudgetService_ = campaignBudgetService
+    this.campaignBudgetUsageService_ = campaignBudgetUsageService
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -195,9 +206,105 @@ export default class PromotionModuleService
   }
 
   @InjectTransactionManager()
+  protected async registerCampaignBudgetUsageByAttribute_(
+    budgetId: string,
+    attributeValue: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const [campaignBudgetUsagePerAttributeValue] =
+      await this.campaignBudgetUsageService_.list(
+        {
+          budget_id: budgetId,
+          attribute_value: attributeValue,
+        },
+        { relations: ["budget"] },
+        sharedContext
+      )
+
+    if (!campaignBudgetUsagePerAttributeValue) {
+      await this.campaignBudgetUsageService_.create(
+        {
+          budget_id: budgetId,
+          attribute_value: attributeValue,
+          used: MathBN.convert(1),
+        },
+        sharedContext
+      )
+    } else {
+      const limit = campaignBudgetUsagePerAttributeValue.budget.limit
+      const newUsedValue = MathBN.add(
+        campaignBudgetUsagePerAttributeValue.used ?? 0,
+        1
+      )
+
+      if (limit && MathBN.gt(newUsedValue, limit)) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Promotion usage exceeds the budget limit."
+        )
+      }
+
+      await this.campaignBudgetUsageService_.update(
+        {
+          id: campaignBudgetUsagePerAttributeValue.id,
+          used: newUsedValue,
+        },
+        sharedContext
+      )
+    }
+  }
+
+  @InjectTransactionManager()
+  protected async revertCampaignBudgetUsageByAttribute_(
+    budgetId: string,
+    attributeValue: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    const [campaignBudgetUsagePerAttributeValue] =
+      await this.campaignBudgetUsageService_.list(
+        {
+          budget_id: budgetId,
+          attribute_value: attributeValue,
+        },
+        {},
+        sharedContext
+      )
+
+    if (!campaignBudgetUsagePerAttributeValue) {
+      return
+    }
+
+    if (MathBN.lte(campaignBudgetUsagePerAttributeValue.used ?? 0, 1)) {
+      await this.campaignBudgetUsageService_.delete(
+        campaignBudgetUsagePerAttributeValue.id,
+        sharedContext
+      )
+    } else {
+      await this.campaignBudgetUsageService_.update(
+        {
+          id: campaignBudgetUsagePerAttributeValue.id,
+          used: MathBN.sub(campaignBudgetUsagePerAttributeValue.used ?? 0, 1),
+        },
+        sharedContext
+      )
+    }
+  }
+
+  @InjectTransactionManager()
   @EmitEvents()
+  /**
+   * Register the usage of promotions in the campaign budget and
+   * increment the used value if the budget is not exceeded,
+   * throws an error if the budget is exceeded.
+   *
+   * @param computedActions - The computed actions to register usage for.
+   * @param registrationContext - The context of the campaign budget usage.
+   * @returns void
+   * @throws {MedusaError} - If the promotion usage exceeds the budget limit.
+   */
   async registerUsage(
     computedActions: PromotionTypes.UsageComputedActions[],
+    registrationContext: PromotionTypes.CampaignBudgetUsageContext,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     const promotionCodes = computedActions
@@ -209,7 +316,7 @@ export default class PromotionModuleService
 
     const existingPromotions = await this.listActivePromotions_(
       { code: promotionCodes },
-      { relations: ["campaign", "campaign.budget"] },
+      { relations: ["campaign", "campaign.budget", "campaign.budget.usages"] },
       sharedContext
     )
 
@@ -257,10 +364,13 @@ export default class PromotionModuleService
           campaignBudget.limit &&
           MathBN.gt(newUsedValue, campaignBudget.limit)
         ) {
-          continue
-        } else {
-          campaignBudgetData.used = newUsedValue
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Promotion usage exceeds the budget limit."
+          )
         }
+
+        campaignBudgetData.used = newUsedValue
 
         campaignBudgetMap.set(campaignBudget.id, campaignBudgetData)
       }
@@ -275,21 +385,52 @@ export default class PromotionModuleService
 
         const newUsedValue = MathBN.add(campaignBudget.used ?? 0, 1)
 
-        // Check if it exceeds the limit and cap it if necessary
         if (
           campaignBudget.limit &&
           MathBN.gt(newUsedValue, campaignBudget.limit)
         ) {
-          campaignBudgetMap.set(campaignBudget.id, {
-            id: campaignBudget.id,
-            used: campaignBudget.limit,
-          })
-        } else {
-          campaignBudgetMap.set(campaignBudget.id, {
-            id: campaignBudget.id,
-            used: newUsedValue,
-          })
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Promotion usage exceeds the budget limit."
+          )
         }
+
+        campaignBudgetMap.set(campaignBudget.id, {
+          id: campaignBudget.id,
+          used: newUsedValue,
+        })
+
+        promotionCodeUsageMap.set(promotion.code!, true)
+      }
+
+      if (campaignBudget.type === CampaignBudgetType.USE_BY_ATTRIBUTE) {
+        const promotionAlreadyUsed =
+          promotionCodeUsageMap.get(promotion.code!) || false
+
+        if (promotionAlreadyUsed) {
+          continue
+        }
+
+        const attribute = campaignBudget.attribute!
+        const attributeValue = registrationContext[attribute]
+
+        if (!attributeValue) {
+          continue
+        }
+
+        await this.registerCampaignBudgetUsageByAttribute_(
+          campaignBudget.id,
+          attributeValue,
+          sharedContext
+        )
+
+        const newUsedValue = MathBN.add(campaignBudget.used ?? 0, 1)
+
+        // update the global budget usage to keep track but it is not used anywhere atm
+        campaignBudgetMap.set(campaignBudget.id, {
+          id: campaignBudget.id,
+          used: newUsedValue,
+        })
 
         promotionCodeUsageMap.set(promotion.code!, true)
       }
@@ -298,6 +439,13 @@ export default class PromotionModuleService
     if (campaignBudgetMap.size > 0) {
       const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
       for (const [_, campaignBudgetData] of campaignBudgetMap) {
+        // usages by attribute are updated separatley
+        if (campaignBudgetData.usages) {
+          const { usages, ...campaignBudgetDataWithoutUsages } =
+            campaignBudgetData
+          campaignBudgetsData.push(campaignBudgetDataWithoutUsages)
+          continue
+        }
         campaignBudgetsData.push(campaignBudgetData)
       }
 
@@ -312,6 +460,7 @@ export default class PromotionModuleService
   @EmitEvents()
   async revertUsage(
     computedActions: PromotionTypes.UsageComputedActions[],
+    registrationContext: PromotionTypes.CampaignBudgetUsageContext,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     const promotionCodeUsageMap = new Map<string, boolean>()
@@ -390,11 +539,49 @@ export default class PromotionModuleService
 
         promotionCodeUsageMap.set(promotion.code!, true)
       }
+
+      if (campaignBudget.type === CampaignBudgetType.USE_BY_ATTRIBUTE) {
+        const promotionAlreadyUsed =
+          promotionCodeUsageMap.get(promotion.code!) || false
+
+        if (promotionAlreadyUsed) {
+          continue
+        }
+
+        const attribute = campaignBudget.attribute!
+        const attributeValue = registrationContext[attribute]
+
+        if (!attributeValue) {
+          continue
+        }
+
+        await this.revertCampaignBudgetUsageByAttribute_(
+          campaignBudget.id,
+          attributeValue,
+          sharedContext
+        )
+        const newUsedValue = MathBN.sub(campaignBudget.used ?? 0, 1)
+        const usedValue = MathBN.lt(newUsedValue, 0) ? 0 : newUsedValue
+
+        // update the global budget usage to keep track but it is not used anywhere atm
+        campaignBudgetMap.set(campaignBudget.id, {
+          id: campaignBudget.id,
+          used: usedValue,
+        })
+
+        promotionCodeUsageMap.set(promotion.code!, true)
+      }
     }
 
     if (campaignBudgetMap.size > 0) {
       const campaignBudgetsData: UpdateCampaignBudgetDTO[] = []
       for (const [_, campaignBudgetData] of campaignBudgetMap) {
+        if (campaignBudgetData.usages) {
+          const { usages, ...campaignBudgetDataWithoutUsages } =
+            campaignBudgetData
+          campaignBudgetsData.push(campaignBudgetDataWithoutUsages)
+          continue
+        }
         campaignBudgetsData.push(campaignBudgetData)
       }
 
@@ -580,6 +767,47 @@ export default class PromotionModuleService
         application_method: applicationMethod,
         rules: promotionRules = [],
       } = promotion
+
+      if (
+        promotion.campaign?.budget?.type === CampaignBudgetType.USE_BY_ATTRIBUTE
+      ) {
+        const attribute = promotion.campaign?.budget?.attribute!
+        const budgetUsageContext =
+          ComputeActionUtils.getBudgetUsageContextFromComputeActionContext(
+            applicationContext
+          )
+        const attributeValue = budgetUsageContext[attribute]
+
+        if (!attributeValue) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Attribute value for "${attribute}" is required by promotion campaing budget`
+          )
+        }
+
+        const [campaignBudgetUsagePerAttribute] =
+          (await this.campaignBudgetUsageService_.list(
+            {
+              budget_id: promotion.campaign?.budget?.id,
+              attribute_value: attributeValue,
+            },
+            {},
+            sharedContext
+          )) as unknown as CampaignBudgetUsageDTO[]
+
+        if (campaignBudgetUsagePerAttribute) {
+          const action = ComputeActionUtils.computeActionForBudgetExceeded(
+            promotion,
+            1,
+            campaignBudgetUsagePerAttribute
+          )
+
+          if (action) {
+            computedActions.push(action)
+            continue
+          }
+        }
+      }
 
       const isCurrencyCodeValid =
         !isPresent(applicationMethod.currency_code) ||

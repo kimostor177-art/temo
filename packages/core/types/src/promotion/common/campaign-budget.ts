@@ -1,9 +1,14 @@
 import { BaseFilterable } from "../../dal"
+import { CampaignBudgetUsageDTO } from "./campaing-budget-usage"
 
 /**
  * The campaign budget's possible types.
  */
-export type CampaignBudgetTypeValues = "spend" | "usage"
+export type CampaignBudgetTypeValues =
+  | "spend"
+  | "usage"
+  | "use_by_attribute"
+  | "spend_by_attribute"
 
 /**
  * The campaign budget details.
@@ -19,6 +24,8 @@ export interface CampaignBudgetDTO {
    *
    * - `spend` indicates that the budget is limited by the amount discounted by the promotions in the associated campaign.
    * - `usage` indicates that the budget is limited by the number of times the promotions of the associated campaign have been used.
+   * - `use_by_attribute` indicates that the budget is limited by the number of times the promotions of the associated campaign have been used by a specific attribute value.
+   * - `spend_by_attribute` indicates that the budget is limited by the amount discounted by the promotions in the associated campaign by a specific attribute value.
    *
    */
   type?: CampaignBudgetTypeValues
@@ -41,6 +48,16 @@ export interface CampaignBudgetDTO {
    * The currency of the campaign.
    */
   currency_code?: string
+
+  /**
+   * The attribute of the campaign budget.
+   */
+  attribute?: string
+
+  /**
+   * The usages of the campaign budget.
+   */
+  usages?: CampaignBudgetUsageDTO[]
 }
 
 /**

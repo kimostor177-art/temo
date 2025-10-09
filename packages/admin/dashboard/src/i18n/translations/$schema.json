@@ -8371,9 +8371,30 @@
                 },
                 "used": {
                   "type": "string"
+                },
+                "budgetAttribute": {
+                  "type": "string"
+                },
+                "budgetAttributeTooltip": {
+                  "type": "string"
+                },
+                "limitBudgetAttributeCustomer": {
+                  "type": "string"
+                },
+                "limitBudgetAttributeEmail": {
+                  "type": "string"
                 }
               },
-              "required": ["type", "currency", "limit", "used"],
+              "required": [
+                "type",
+                "currency",
+                "limit",
+                "used",
+                "budgetAttribute",
+                "budgetAttributeTooltip",
+                "limitBudgetAttributeCustomer",
+                "limitBudgetAttributeEmail"
+              ],
               "additionalProperties": false
             },
             "type": {

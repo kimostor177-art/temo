@@ -2204,7 +2204,7 @@
     "delete": {
       "title": "Are you sure?",
       "description": "You are about to delete the campaign '{{name}}'. This action cannot be undone.",
-      "successToast": "Campaign '{{name}}' was successfully created."
+      "successToast": "Campaign '{{name}}' was successfully deleted."
     },
     "edit": {
       "header": "Edit Campaign",
@@ -2248,7 +2248,11 @@
         "type": "Type",
         "currency": "Currency",
         "limit": "Limit",
-        "used": "Used"
+        "used": "Used",
+        "budgetAttribute": "Limit usage per",
+        "budgetAttributeTooltip": "Define how many times the promotion can be used by a specific customer or email.",
+        "limitBudgetAttributeCustomer": "Budget limit per customer",
+        "limitBudgetAttributeEmail": "Budget limit per email"
       },
       "type": {
         "spend": {

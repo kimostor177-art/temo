@@ -151,7 +151,9 @@
           "nullable": false,
           "enumItems": [
             "spend",
-            "usage"
+            "usage",
+            "use_by_attribute",
+            "spend_by_attribute"
           ],
           "mappedType": "enum"
         },
@@ -190,6 +192,15 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "mappedType": "text"
+        },
+        "attribute": {
+          "name": "attribute",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
           "mappedType": "text"
         },
         "raw_limit": {
@@ -296,6 +307,146 @@
             "id"
           ],
           "referencedTableName": "public.promotion_campaign",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "attribute_value": {
+          "name": "attribute_value",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "used": {
+          "name": "used",
+          "type": "numeric",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "0",
+          "mappedType": "decimal"
+        },
+        "budget_id": {
+          "name": "budget_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "raw_used": {
+          "name": "raw_used",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 6,
+          "default": "now()",
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "promotion_campaign_budget_usage",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "IDX_promotion_campaign_budget_usage_budget_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_promotion_campaign_budget_usage_budget_id\" ON \"promotion_campaign_budget_usage\" (budget_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_promotion_campaign_budget_usage_deleted_at",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_promotion_campaign_budget_usage_deleted_at\" ON \"promotion_campaign_budget_usage\" (deleted_at) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_promotion_campaign_budget_usage_attribute_value_budget_id_unique",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_promotion_campaign_budget_usage_attribute_value_budget_id_unique\" ON \"promotion_campaign_budget_usage\" (attribute_value, budget_id) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "promotion_campaign_budget_usage_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "promotion_campaign_budget_usage_budget_id_foreign": {
+          "constraintName": "promotion_campaign_budget_usage_budget_id_foreign",
+          "columnNames": [
+            "budget_id"
+          ],
+          "localTableName": "public.promotion_campaign_budget_usage",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.promotion_campaign_budget",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }

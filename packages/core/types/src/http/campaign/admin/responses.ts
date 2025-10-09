@@ -16,7 +16,7 @@ export interface AdminCampaign {
   description: string
   /**
    * The campaign's currency code.
-   * 
+   *
    * @example
    * usd
    */
@@ -42,13 +42,13 @@ export interface AdminCampaign {
      */
     id: string
     /**
-     * The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions; 
+     * The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions;
      * `usage` means the limit is set on the total number of times the campaign's promotions can be used.
      */
     type: CampaignBudgetTypeValues
     /**
      * The budget's currency code.
-     * 
+     *
      * @example
      * usd
      */
@@ -58,11 +58,15 @@ export interface AdminCampaign {
      */
     limit: number
     /**
-     * How much of the budget has been used. If the limit is `spend`, this property holds the total amount 
+     * How much of the budget has been used. If the limit is `spend`, this property holds the total amount
      * discounted so far. If the limit is `usage`, it holds the number of times the campaign's
      * promotions have been used so far.
      */
     used: number
+    /**
+     * The budget's attribute if type is `use_by_attribute`.
+     */
+    attribute: string
   }
   created_at: string
   updated_at: string

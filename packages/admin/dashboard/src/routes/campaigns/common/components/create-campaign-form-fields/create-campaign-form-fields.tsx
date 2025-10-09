@@ -19,6 +19,7 @@ import {
   currencies,
   getCurrencySymbol,
 } from "../../../../../lib/data/currencies"
+import { Combobox } from "../../../../../components/inputs/combobox"
 
 export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
   const { t } = useTranslation()
@@ -209,17 +210,19 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
               <Form.Control>
                 <RadioGroup
                   dir={direction}
-                  className="flex gap-y-3"
+                  className="flex gap-x-4 gap-y-3"
                   {...field}
                   onValueChange={field.onChange}
                 >
                   <RadioGroup.ChoiceBox
+                    className="flex-1"
                     value={"usage"}
                     label={t("campaigns.budget.type.usage.title")}
                     description={t("campaigns.budget.type.usage.description")}
                   />
 
                   <RadioGroup.ChoiceBox
+                    className="flex-1"
                     value={"spend"}
                     label={t("campaigns.budget.type.spend.title")}
                     description={t("campaigns.budget.type.spend.description")}
@@ -342,6 +345,52 @@ export const CreateCampaignFormFields = ({ form, fieldScope = "" }) => {
             )
           }}
         />
+
+        {!isTypeSpend && (
+          <Form.Field
+            control={form.control}
+            name={`${fieldScope}budget.attribute`}
+            render={({ field }) => {
+              return (
+                <Form.Item className="basis-1/2">
+                  <Form.Label
+                    tooltip={t(
+                      "campaigns.budget.fields.budgetAttributeTooltip"
+                    )}
+                  >
+                    {t("campaigns.budget.fields.budgetAttribute")}
+                  </Form.Label>
+
+                  <Form.Control>
+                    <Combobox
+                      key="attribute"
+                      {...field}
+                      onChange={(e) => {
+                        if (typeof e === "undefined") {
+                          field.onChange(null)
+                        } else {
+                          field.onChange(e)
+                        }
+                      }}
+                      allowClear
+                      options={[
+                        {
+                          label: t("fields.customer"),
+                          value: "customer_id",
+                        },
+                        {
+                          label: t("fields.email"),
+                          value: "customer_email",
+                        },
+                      ]}
+                    ></Combobox>
+                  </Form.Control>
+                  <Form.ErrorMessage />
+                </Form.Item>
+              )
+            }}
+          />
+        )}
       </div>
     </div>
   )

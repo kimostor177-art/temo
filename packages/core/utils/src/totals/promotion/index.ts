@@ -1,5 +1,8 @@
 import { BigNumberInput } from "@medusajs/types"
-import { ApplicationMethodAllocation, ApplicationMethodType, } from "../../promotion"
+import {
+  ApplicationMethodAllocation,
+  ApplicationMethodType,
+} from "../../promotion"
 import { MathBN } from "../math"
 import { MEDUSA_EPSILON } from "../big-number"
 

@@ -338,7 +338,13 @@ export const completeCartWorkflow = createWorkflow(
             })
           }
 
-          return promotionUsage
+          return {
+            computedActions: promotionUsage,
+            registrationContext: {
+              customer_id: cart.customer?.id || null,
+              customer_email: cart.email || null,
+            },
+          }
         }
       )
 

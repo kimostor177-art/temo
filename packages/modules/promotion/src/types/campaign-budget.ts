@@ -19,4 +19,16 @@ export interface UpdateCampaignBudgetDTO {
   limit?: BigNumberInput | null
   currency_code?: string | null
   used?: BigNumberInput
+  usages?: CreateCampaignBudgetUsageDTO[]
+}
+
+export interface CreateCampaignBudgetUsageDTO {
+  budget_id: string
+  attribute_value: string
+  used: BigNumberInput
+}
+
+export interface UpdateCampaignBudgetUsageDTO {
+  id: string
+  used: BigNumberInput
 }

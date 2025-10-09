@@ -4,6 +4,7 @@ import { IModuleService } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   CampaignDTO,
+  CampaignBudgetUsageContext,
   ComputeActionContext,
   ComputeActions,
   CreatePromotionDTO,
@@ -34,6 +35,7 @@ export interface IPromotionModuleService extends IModuleService {
    * computed actions.
    *
    * @param {UsageComputedActions[]} computedActions - The computed actions to adjust their promotion's campaign budget.
+   * @param {CampaignBudgetUsageContext} registrationContext - The context of the campaign budget usage.
    * @returns {Promise<void>} Resolves when the campaign budgets have been adjusted successfully.
    *
    * @example
@@ -48,13 +50,17 @@ export interface IPromotionModuleService extends IModuleService {
    *   },
    * ])
    */
-  registerUsage(computedActions: UsageComputedActions[]): Promise<void>
+  registerUsage(
+    computedActions: UsageComputedActions[],
+    registrationContext: CampaignBudgetUsageContext
+  ): Promise<void>
 
   /**
    * This method is used to revert the changes made by registerUsage action
    *
    * @param {UsageComputedActions[]} computedActions - The computed actions to adjust their promotion's campaign budget.
-   * @returns {Promise<void>} Resolves when the campaign budgets have been adjusted successfully.
+   * @param {CampaignBudgetUsageContext} registrationContext - The context of the campaign budget usage.
+   * @returns {Promise<void>} Resolves when the campaign budgets have been reverted successfully.
    *
    * @example
    * await promotionModuleService.revertUsage([
@@ -68,7 +74,10 @@ export interface IPromotionModuleService extends IModuleService {
    *   },
    * ])
    */
-  revertUsage(computedActions: UsageComputedActions[]): Promise<void>
+  revertUsage(
+    computedActions: UsageComputedActions[],
+    registrationContext: CampaignBudgetUsageContext
+  ): Promise<void>
 
   /**
    * This method provides the actions to perform on a cart based on the specified promotions
@@ -276,12 +285,12 @@ export interface IPromotionModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the promotions:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -336,12 +345,12 @@ export interface IPromotionModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the promotions:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -396,12 +405,12 @@ export interface IPromotionModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -744,12 +753,12 @@ export interface IPromotionModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the promotion rules:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -826,12 +835,12 @@ export interface IPromotionModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the campaigns:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -886,12 +895,12 @@ export interface IPromotionModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved within the campaigns:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts
@@ -946,12 +955,12 @@ export interface IPromotionModuleService extends IModuleService {
    * ```
    *
    * To specify relations that should be retrieved:
-   * 
+   *
    * :::note
-   * 
+   *
    * You can only retrieve data models defined in the same module. To retrieve linked data models
    * from other modules, use [Query](https://docs.medusajs.com/learn/fundamentals/module-links/query) instead.
-   * 
+   *
    * :::
    *
    * ```ts

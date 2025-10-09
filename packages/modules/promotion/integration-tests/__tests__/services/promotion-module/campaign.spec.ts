@@ -3,7 +3,10 @@ import { Modules } from "@medusajs/framework/utils"
 import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
 import { CampaignBudgetType } from "../../../../../../core/utils/src/promotion/index"
 import { createCampaigns } from "../../../__fixtures__/campaigns"
-import { createPromotions } from "../../../__fixtures__/promotion"
+import {
+  createDefaultPromotion,
+  createPromotions,
+} from "../../../__fixtures__/promotion"
 
 jest.setTimeout(30000)
 
@@ -484,6 +487,41 @@ moduleIntegrationTestRunner<IPromotionModuleService>({
               promotions: expect.arrayContaining([
                 expect.objectContaining({ id: "promotion-id-2" }),
               ]),
+            })
+          )
+        })
+      })
+
+      describe("campaignBudgetUsage", () => {
+        it("should create a campaign budget by attribute usage successfully", async () => {
+          const [createdCampaign] = await service.createCampaigns([
+            {
+              name: "test",
+              campaign_identifier: "test",
+              budget: {
+                type: CampaignBudgetType.USE_BY_ATTRIBUTE,
+                attribute: "customer_id",
+                limit: 5,
+              },
+            },
+          ])
+
+          let campaigns = await service.listCampaigns(
+            {
+              id: [createdCampaign.id],
+            },
+            { relations: ["budget", "budget.usages"] }
+          )
+
+          expect(campaigns).toHaveLength(1)
+
+          expect(campaigns[0]).toEqual(
+            expect.objectContaining({
+              budget: expect.objectContaining({
+                usages: [],
+                limit: 5,
+                type: CampaignBudgetType.USE_BY_ATTRIBUTE,
+              }),
             })
           )
         })

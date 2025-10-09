@@ -23,6 +23,11 @@ export interface CreateCampaignBudgetDTO {
    * The currency of the campaign.
    */
   currency_code?: string | null
+
+  /**
+   * The attribute by which the campaign budget usage is limited.
+   */
+  attribute?: string | null
 }
 
 /**

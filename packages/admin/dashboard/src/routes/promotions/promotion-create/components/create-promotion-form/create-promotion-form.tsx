@@ -139,6 +139,13 @@ export const CreatePromotionForm = () => {
           }))
       }
 
+      if (data.campaign) {
+        data.campaign.budget.attribute = data.campaign.budget.attribute || null
+        data.campaign.budget.type = data.campaign.budget.attribute
+          ? "use_by_attribute"
+          : data.campaign.budget.type
+      }
+
       createPromotion(
         {
           ...promotionData,

@@ -2104,6 +2104,220 @@ medusaIntegrationTestRunner({
             )
           })
 
+          it("should fail to complete a cart if that would exceed the promotion limit", async () => {
+            const product = (
+              await api.post(
+                `/admin/products`,
+                {
+                  status: ProductStatus.PUBLISHED,
+                  title: "Product for camapign",
+                  description: "test",
+                  options: [
+                    {
+                      title: "Type",
+                      values: ["L"],
+                    },
+                  ],
+                  variants: [
+                    {
+                      title: "L",
+                      sku: "campaign-product-l",
+                      options: {
+                        Type: "L",
+                      },
+                      manage_inventory: false,
+                      prices: [
+                        {
+                          amount: 300,
+                          currency_code: "usd",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                adminHeaders
+              )
+            ).data.product
+
+            const campaign = (
+              await api.post(
+                `/admin/campaigns`,
+                {
+                  name: "TEST-1",
+                  budget: {
+                    type: "spend",
+                    currency_code: "usd",
+                    limit: 100, // -> promotions value can't exceed 100$
+                  },
+                  campaign_identifier: "PROMO_CAMPAIGN",
+                },
+                adminHeaders
+              )
+            ).data.campaign
+
+            const promotion = (
+              await api
+                .post(
+                  `/admin/promotions`,
+                  {
+                    code: "TEST_PROMO",
+                    type: PromotionType.STANDARD,
+                    status: PromotionStatus.ACTIVE,
+                    is_automatic: false,
+                    is_tax_inclusive: true,
+                    application_method: {
+                      target_type: "items",
+                      type: "fixed",
+                      allocation: "across",
+                      currency_code: "usd",
+                      value: 100, // -> promotion applies 100$ fixed discount on the entire order
+                    },
+                    campaign_id: campaign.id,
+                  },
+                  adminHeaders
+                )
+                .catch((e) => console.log(e))
+            ).data.promotion
+
+            const cart1 = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                  items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+                  promo_codes: [promotion.code],
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            expect(cart1).toEqual(
+              expect.objectContaining({
+                promotions: [
+                  expect.objectContaining({
+                    code: promotion.code,
+                  }),
+                ],
+              })
+            )
+
+            const cart2 = (
+              await api.post(
+                `/store/carts`,
+                {
+                  currency_code: "usd",
+                  sales_channel_id: salesChannel.id,
+                  region_id: region.id,
+                  shipping_address: shippingAddressData,
+                  items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+                  promo_codes: [promotion.code],
+                },
+                storeHeadersWithCustomer
+              )
+            ).data.cart
+
+            expect(cart2).toEqual(
+              expect.objectContaining({
+                promotions: [
+                  expect.objectContaining({
+                    code: promotion.code,
+                  }),
+                ],
+              })
+            )
+
+            /**
+             * At this point both carts have the same promotion applied successfully
+             */
+
+            const paymentCollection1 = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: cart1.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection1.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            const order1 = (
+              await api.post(
+                `/store/carts/${cart1.id}/complete`,
+                {},
+                storeHeaders
+              )
+            ).data.order
+
+            expect(order1).toEqual(
+              expect.objectContaining({ discount_total: 100 })
+            )
+
+            let campaignAfter = (
+              await api.get(
+                `/admin/campaigns/${campaign.id}?fields=budget.*`,
+                adminHeaders
+              )
+            ).data.campaign
+
+            expect(campaignAfter).toEqual(
+              expect.objectContaining({
+                budget: expect.objectContaining({
+                  used: 100,
+                  limit: 100,
+                }),
+              })
+            )
+
+            const paymentCollection2 = (
+              await api.post(
+                `/store/payment-collections`,
+                { cart_id: cart2.id },
+                storeHeaders
+              )
+            ).data.payment_collection
+
+            await api.post(
+              `/store/payment-collections/${paymentCollection2.id}/payment-sessions`,
+              { provider_id: "pp_system_default" },
+              storeHeaders
+            )
+
+            const response2 = await api
+              .post(`/store/carts/${cart2.id}/complete`, {}, storeHeaders)
+              .catch((e) => e)
+
+            expect(response2.response.status).toEqual(400)
+            expect(response2.response.data).toEqual(
+              expect.objectContaining({
+                type: "not_allowed",
+                message: "Promotion usage exceeds the budget limit.",
+              })
+            )
+
+            campaignAfter = (
+              await api.get(
+                `/admin/campaigns/${campaign.id}?fields=budget.*`,
+                adminHeaders
+              )
+            ).data.campaign
+
+            expect(campaignAfter).toEqual(
+              expect.objectContaining({
+                budget: expect.objectContaining({
+                  used: 100,
+                  limit: 100,
+                }),
+              })
+            )
+          })
+
           it("should successfully complete cart without shipping for digital products", async () => {
             /**
              * Product has a shipping profile so cart item should not require shipping

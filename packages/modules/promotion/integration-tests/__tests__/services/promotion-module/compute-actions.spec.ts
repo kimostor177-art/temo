@@ -4,6 +4,7 @@ import {
 } from "@medusajs/framework/types"
 import {
   ApplicationMethodType,
+  CampaignBudgetType,
   Modules,
   PromotionStatus,
   PromotionType,
@@ -786,6 +787,8 @@ moduleIntegrationTestRunner({
               id: "item_cotton_tshirt",
               quantity: 1,
               subtotal: 100,
+              original_total: 100,
+              is_discountable: true,
               product_category: {
                 id: "catg_cotton",
               },
@@ -797,6 +800,8 @@ moduleIntegrationTestRunner({
               id: "item_cotton_sweater",
               quantity: 5,
               subtotal: 750,
+              original_total: 750,
+              is_discountable: true,
               product_category: {
                 id: "catg_cotton",
               },
@@ -824,6 +829,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt",
                 quantity: 1,
                 subtotal: 100,
+                original_total: 100,
+                is_discountable: true,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -835,6 +842,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_sweater",
                 quantity: 5,
                 subtotal: 750,
+                original_total: 750,
+                is_discountable: true,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -888,6 +897,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 1,
                   subtotal: 100,
+                  original_total: 100,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -899,6 +910,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_sweater",
                   quantity: 5,
                   subtotal: 750,
+                  original_total: 750,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -935,6 +948,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 1,
                     subtotal: 100,
+                    original_total: 100,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -946,6 +961,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_sweater",
                     quantity: 5,
                     subtotal: 750,
+                    original_total: 750,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -1026,6 +1043,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 1,
                     subtotal: 50,
+                    original_total: 50,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -1037,6 +1056,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_sweater",
                     quantity: 1,
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -1137,6 +1158,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 1,
                     subtotal: 50,
+                    original_total: 50,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -1148,6 +1171,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_sweater",
                     quantity: 1,
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -1214,6 +1239,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 5,
                   subtotal: 5000,
+                  original_total: 5000,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -1277,6 +1304,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 5,
                   subtotal: 5000,
+                  original_total: 5000,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -1331,6 +1360,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 1,
                   subtotal: 100,
+                  original_total: 100,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -1342,6 +1373,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_sweater",
                   quantity: 5,
                   subtotal: 750,
+                  original_total: 750,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -1434,6 +1467,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 3,
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -1445,6 +1480,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_sweater",
                     quantity: 1,
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -1536,6 +1573,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 4,
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -1629,6 +1668,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 1,
                     subtotal: 50,
+                    original_total: 50,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -1640,6 +1681,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_sweater",
                     quantity: 1,
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -1706,6 +1749,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 5,
                   subtotal: 10000,
+                  original_total: 10000,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -1764,6 +1809,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 5,
                   subtotal: 5000,
+                  original_total: 5000,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -1820,6 +1867,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 2,
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -1831,6 +1880,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_sweater",
                   quantity: 2,
                   subtotal: 600,
+                  original_total: 600,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -1896,6 +1947,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 2,
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -1907,6 +1960,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_sweater",
                   quantity: 2,
                   subtotal: 600,
+                  original_total: 600,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -1998,6 +2053,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 1,
                     subtotal: 50,
+                    original_total: 50,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -2009,6 +2066,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_sweater",
                     quantity: 1,
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -2115,6 +2174,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 1,
                     subtotal: 50,
+                    original_total: 50,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -2126,6 +2187,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_sweater",
                     quantity: 1,
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -2191,6 +2254,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 5,
                   subtotal: 5000,
+                  original_total: 5000,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -2248,6 +2313,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 5,
                   subtotal: 5000,
+                  original_total: 5000,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -2301,6 +2368,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 2,
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -2312,6 +2381,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_sweater",
                   quantity: 2,
                   subtotal: 600,
+                  original_total: 600,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -2377,6 +2448,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 2,
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -2388,6 +2461,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_sweater",
                   quantity: 2,
                   subtotal: 600,
+                  original_total: 600,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -2478,6 +2553,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 1,
                     subtotal: 50,
+                    original_total: 50,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -2489,6 +2566,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_sweater",
                     quantity: 1,
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -2578,6 +2657,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 4,
                     subtotal: 300,
+                    original_total: 300,
+                    is_discountable: true,
                     product: {
                       id: "prod_tshirt",
                     },
@@ -2586,6 +2667,8 @@ moduleIntegrationTestRunner({
                     id: "item_wool_tshirt",
                     quantity: 4,
                     subtotal: 100,
+                    original_total: 100,
+                    is_discountable: true,
                     product: {
                       id: "prod_tshirt",
                     },
@@ -2656,6 +2739,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 4,
                     subtotal: 300,
+                    original_total: 300,
+                    is_discountable: true,
                     product: {
                       id: "prod_tshirt",
                     },
@@ -2664,6 +2749,8 @@ moduleIntegrationTestRunner({
                     id: "item_wool_tshirt",
                     quantity: 4,
                     subtotal: 100,
+                    original_total: 100,
+                    is_discountable: true,
                     product: {
                       id: "prod_tshirt",
                     },
@@ -2754,6 +2841,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_tshirt",
                     quantity: 1,
                     subtotal: 50,
+                    original_total: 50,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -2765,6 +2854,8 @@ moduleIntegrationTestRunner({
                     id: "item_cotton_sweater",
                     quantity: 1,
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     product_category: {
                       id: "catg_cotton",
                     },
@@ -2844,6 +2935,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 5,
                   subtotal: 5000,
+                  original_total: 5000,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -2901,6 +2994,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 5,
                   subtotal: 5000,
+                  original_total: 5000,
+                  is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -2913,6 +3008,147 @@ moduleIntegrationTestRunner({
 
             expect(JSON.parse(JSON.stringify(result))).toEqual([
               { action: "campaignBudgetExceeded", code: "PROMOTION_TEST" },
+            ])
+          })
+
+          it("should compute budget exceeded action when usage by attribute exceeds campaign budget for type use_by_attribute", async () => {
+            const testCampaign = await service.createCampaigns({
+              name: "test",
+              campaign_identifier: "test",
+              budget: {
+                type: CampaignBudgetType.USE_BY_ATTRIBUTE,
+                attribute: "customer_email",
+                limit: 2,
+              },
+            })
+
+            await createDefaultPromotion(service, {
+              campaign_id: testCampaign.id,
+              application_method: {
+                type: ApplicationMethodType.PERCENTAGE,
+                target_type: "items",
+                allocation: "across",
+                value: 10,
+                target_rules: [
+                  {
+                    attribute: "product_category.id",
+                    operator: "eq",
+                    values: ["catg_cotton"],
+                  },
+                ],
+              } as any,
+            })
+
+            let result = await service.computeActions(["PROMOTION_TEST"], {
+              currency_code: "usd",
+              email: "test@test.com",
+              customer: {
+                email: "test@test.com",
+              },
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 100,
+                  original_total: 100,
+                  is_discountable: true,
+                  product_category: {
+                    id: "catg_cotton",
+                  },
+                  product: {
+                    id: "prod_tshirt",
+                  },
+                },
+              ],
+            })
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                code: "PROMOTION_TEST",
+                amount: 10,
+                is_tax_inclusive: false,
+                item_id: "item_cotton_tshirt",
+              },
+            ])
+
+            await service.registerUsage(
+              [{ amount: 10, code: "PROMOTION_TEST" }],
+              {
+                customer_id: null,
+                customer_email: "test@test.com",
+              }
+            )
+
+            await service.registerUsage(
+              [{ amount: 10, code: "PROMOTION_TEST" }],
+              {
+                customer_id: null,
+                customer_email: "test@test.com",
+              }
+            )
+
+            result = await service.computeActions(["PROMOTION_TEST"], {
+              currency_code: "usd",
+              email: "test@test.com",
+              customer: {
+                email: "test@test.com",
+              },
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 100,
+                  original_total: 100,
+                  is_discountable: true,
+                  product_category: {
+                    id: "catg_cotton",
+                  },
+                  product: {
+                    id: "prod_tshirt",
+                  },
+                },
+              ],
+            })
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "campaignBudgetExceeded",
+                code: "PROMOTION_TEST",
+              },
+            ])
+
+            result = await service.computeActions(["PROMOTION_TEST"], {
+              currency_code: "usd",
+              email: "another@test.com", // another email can sucessfully use the promotion
+              customer: {
+                email: "another@test.com",
+              },
+              items: [
+                {
+                  id: "item_cotton_tshirt",
+                  quantity: 1,
+                  subtotal: 100,
+                  original_total: 100,
+                  is_discountable: true,
+                  product_category: {
+                    id: "catg_cotton",
+                  },
+                  product: {
+                    id: "prod_tshirt",
+                  },
+                },
+              ],
+            })
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                code: "PROMOTION_TEST",
+                amount: 10,
+                is_tax_inclusive: false,
+                item_id: "item_cotton_tshirt",
+              },
             ])
           })
         })
@@ -2956,6 +3192,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 250,
+                  original_total: 250,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -2963,6 +3201,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_standard",
                   subtotal: 150,
+                  original_total: 150,
+                  is_discountable: true,
                   shipping_option: {
                     id: "standard",
                   },
@@ -2970,6 +3210,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_snail",
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "snail",
                   },
@@ -3030,6 +3272,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 250,
+                  original_total: 250,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -3037,6 +3281,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_standard",
                   subtotal: 150,
+                  original_total: 150,
+                  is_discountable: true,
                   shipping_option: {
                     id: "standard",
                   },
@@ -3044,6 +3290,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_snail",
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "snail",
                   },
@@ -3106,6 +3354,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_express",
                     subtotal: 250,
+                    original_total: 250,
+                    is_discountable: true,
                     shipping_option: {
                       id: "express",
                     },
@@ -3113,6 +3363,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_standard",
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     shipping_option: {
                       id: "standard",
                     },
@@ -3120,6 +3372,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_snail",
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     shipping_option: {
                       id: "snail",
                     },
@@ -3195,6 +3449,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_express",
                     subtotal: 250,
+                    original_total: 250,
+                    is_discountable: true,
                     shipping_option: {
                       id: "express",
                     },
@@ -3202,6 +3458,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_standard",
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     shipping_option: {
                       id: "standard",
                     },
@@ -3209,6 +3467,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_snail",
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     shipping_option: {
                       id: "snail",
                     },
@@ -3302,6 +3562,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_express",
                     subtotal: 250,
+                    original_total: 250,
+                    is_discountable: true,
                     shipping_option: {
                       id: "express",
                     },
@@ -3309,6 +3571,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_standard",
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     shipping_option: {
                       id: "standard",
                     },
@@ -3316,6 +3580,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_snail",
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     shipping_option: {
                       id: "snail",
                     },
@@ -3376,6 +3642,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 1200,
+                  original_total: 1200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -3430,6 +3698,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 1200,
+                  original_total: 1200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -3480,6 +3750,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 250,
+                  original_total: 250,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -3487,6 +3759,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_standard",
                   subtotal: 150,
+                  original_total: 150,
+                  is_discountable: true,
                   shipping_option: {
                     id: "standard",
                   },
@@ -3494,6 +3768,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_snail",
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "snail",
                   },
@@ -3554,6 +3830,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 250,
+                  original_total: 250,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -3561,6 +3839,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_standard",
                   subtotal: 150,
+                  original_total: 150,
+                  is_discountable: true,
                   shipping_option: {
                     id: "standard",
                   },
@@ -3568,6 +3848,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_snail",
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "snail",
                   },
@@ -3630,6 +3912,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_express",
                     subtotal: 250,
+                    original_total: 250,
+                    is_discountable: true,
                     shipping_option: {
                       id: "express",
                     },
@@ -3637,6 +3921,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_standard",
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     shipping_option: {
                       id: "standard",
                     },
@@ -3644,6 +3930,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_snail",
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     shipping_option: {
                       id: "snail",
                     },
@@ -3720,6 +4008,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_express",
                     subtotal: 250,
+                    original_total: 250,
+                    is_discountable: true,
                     shipping_option: {
                       id: "express",
                     },
@@ -3727,6 +4017,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_standard",
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     shipping_option: {
                       id: "standard",
                     },
@@ -3734,6 +4026,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_snail",
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     shipping_option: {
                       id: "snail",
                     },
@@ -3833,6 +4127,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_express",
                     subtotal: 250,
+                    original_total: 250,
+                    is_discountable: true,
                     shipping_option: {
                       id: "express",
                     },
@@ -3840,6 +4136,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_standard",
                     subtotal: 150,
+                    original_total: 150,
+                    is_discountable: true,
                     shipping_option: {
                       id: "standard",
                     },
@@ -3847,6 +4145,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_snail",
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     shipping_option: {
                       id: "snail",
                     },
@@ -3919,6 +4219,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 1200,
+                  original_total: 1200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -3973,6 +4275,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 1200,
+                  original_total: 1200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -4024,6 +4328,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 500,
+                  original_total: 500,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -4031,6 +4337,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_standard",
                   subtotal: 100,
+                  original_total: 100,
+                  is_discountable: true,
                   shipping_option: {
                     id: "standard",
                   },
@@ -4038,6 +4346,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_snail",
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "snail",
                   },
@@ -4097,6 +4407,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 500,
+                  original_total: 500,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -4104,6 +4416,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_standard",
                   subtotal: 100,
+                  original_total: 100,
+                  is_discountable: true,
                   shipping_option: {
                     id: "standard",
                   },
@@ -4111,6 +4425,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_snail",
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "snail",
                   },
@@ -4195,6 +4511,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_express",
                     subtotal: 500,
+                    original_total: 500,
+                    is_discountable: true,
                     shipping_option: {
                       id: "express",
                     },
@@ -4202,6 +4520,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_standard",
                     subtotal: 100,
+                    original_total: 100,
+                    is_discountable: true,
                     shipping_option: {
                       id: "standard",
                     },
@@ -4209,6 +4529,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_snail",
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     shipping_option: {
                       id: "snail",
                     },
@@ -4306,6 +4628,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_express",
                     subtotal: 500,
+                    original_total: 500,
+                    is_discountable: true,
                     shipping_option: {
                       id: "express",
                     },
@@ -4313,6 +4637,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_standard",
                     subtotal: 100,
+                    original_total: 100,
+                    is_discountable: true,
                     shipping_option: {
                       id: "standard",
                     },
@@ -4320,6 +4646,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_snail",
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     shipping_option: {
                       id: "snail",
                     },
@@ -4379,6 +4707,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 1200,
+                  original_total: 1200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -4432,6 +4762,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 1200,
+                  original_total: 1200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -4481,6 +4813,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 500,
+                  original_total: 500,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -4488,6 +4822,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_standard",
                   subtotal: 100,
+                  original_total: 100,
+                  is_discountable: true,
                   shipping_option: {
                     id: "standard",
                   },
@@ -4495,6 +4831,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_snail",
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "snail",
                   },
@@ -4554,6 +4892,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 500,
+                  original_total: 500,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -4561,6 +4901,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_standard",
                   subtotal: 100,
+                  original_total: 100,
+                  is_discountable: true,
                   shipping_option: {
                     id: "standard",
                   },
@@ -4568,6 +4910,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_snail",
                   subtotal: 200,
+                  original_total: 200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "snail",
                   },
@@ -4652,6 +4996,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_express",
                     subtotal: 500,
+                    original_total: 500,
+                    is_discountable: true,
                     shipping_option: {
                       id: "express",
                     },
@@ -4659,6 +5005,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_standard",
                     subtotal: 100,
+                    original_total: 100,
+                    is_discountable: true,
                     shipping_option: {
                       id: "standard",
                     },
@@ -4666,6 +5014,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_snail",
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     shipping_option: {
                       id: "snail",
                     },
@@ -4763,6 +5113,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_express",
                     subtotal: 500,
+                    original_total: 500,
+                    is_discountable: true,
                     shipping_option: {
                       id: "express",
                     },
@@ -4770,6 +5122,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_standard",
                     subtotal: 100,
+                    original_total: 100,
+                    is_discountable: true,
                     shipping_option: {
                       id: "standard",
                     },
@@ -4777,6 +5131,8 @@ moduleIntegrationTestRunner({
                   {
                     id: "shipping_method_snail",
                     subtotal: 200,
+                    original_total: 200,
+                    is_discountable: true,
                     shipping_option: {
                       id: "snail",
                     },
@@ -4842,6 +5198,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 1200,
+                  original_total: 1200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -4895,6 +5253,8 @@ moduleIntegrationTestRunner({
                 {
                   id: "shipping_method_express",
                   subtotal: 1200,
+                  original_total: 1200,
+                  is_discountable: true,
                   shipping_option: {
                     id: "express",
                   },
@@ -4940,6 +5300,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt",
                 quantity: 1,
                 subtotal: 100,
+                original_total: 100,
+                is_discountable: true,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -5008,9 +5370,10 @@ moduleIntegrationTestRunner({
             items: [
               {
                 id: "item_cotton_tshirt",
-                is_discountable: true,
                 quantity: 1,
                 subtotal: 100,
+                original_total: 100,
+                is_discountable: true,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -5020,9 +5383,10 @@ moduleIntegrationTestRunner({
               },
               {
                 id: "item_cotton_sweater",
-                is_discountable: true,
                 quantity: 2,
                 subtotal: 300,
+                original_total: 300,
+                is_discountable: true,
                 product_category: {
                   id: "catg_cotton",
                 },
@@ -5101,6 +5465,7 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 1,
                   subtotal: 50,
+                  original_total: 50,
                   is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
@@ -5113,6 +5478,7 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_sweater",
                   quantity: 1,
                   subtotal: 150,
+                  original_total: 150,
                   is_discountable: true,
                   product_category: {
                     id: "catg_cotton",
@@ -5207,6 +5573,7 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 1,
                   subtotal: 50,
+                  original_total: 50,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -5219,6 +5586,7 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_sweater",
                   quantity: 1,
                   subtotal: 150,
+                  original_total: 150,
                   product_category: {
                     id: "catg_cotton",
                   },
@@ -5292,6 +5660,7 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt",
                 quantity: 1,
                 subtotal: 100,
+                original_total: 100,
                 is_discountable: true,
                 product_category: {
                   id: "catg_cotton",
@@ -5310,6 +5679,7 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_sweater",
                 quantity: 5,
                 subtotal: 750,
+                original_total: 750,
                 is_discountable: true,
                 product_category: {
                   id: "catg_cotton",
@@ -5384,6 +5754,8 @@ moduleIntegrationTestRunner({
               {
                 id: "shipping_method_express",
                 subtotal: 500,
+                original_total: 500,
+                is_discountable: true,
                 shipping_option: {
                   id: "express",
                 },
@@ -5397,6 +5769,8 @@ moduleIntegrationTestRunner({
               {
                 id: "shipping_method_standard",
                 subtotal: 100,
+                original_total: 100,
+                is_discountable: true,
                 shipping_option: {
                   id: "standard",
                 },
@@ -5404,6 +5778,8 @@ moduleIntegrationTestRunner({
               {
                 id: "shipping_method_snail",
                 subtotal: 200,
+                original_total: 200,
+                is_discountable: true,
                 shipping_option: {
                   id: "snail",
                 },
@@ -5447,6 +5823,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt",
                 quantity: 2,
                 subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_tshirt",
                 },
@@ -5458,6 +5836,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt2",
                 quantity: 2,
                 subtotal: 2000,
+                original_total: 2000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_tshirt",
                 },
@@ -5469,6 +5849,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_sweater",
                 quantity: 2,
                 subtotal: 2000,
+                original_total: 2000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_sweater",
                 },
@@ -5541,6 +5923,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt",
                 quantity: 2,
                 subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_tshirt",
                 },
@@ -5552,6 +5936,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt2",
                 quantity: 2,
                 subtotal: 2000,
+                original_total: 2000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_tshirt",
                 },
@@ -5563,6 +5949,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_sweater",
                 quantity: 2,
                 subtotal: 2000,
+                original_total: 2000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_sweater",
                 },
@@ -5628,6 +6016,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt",
                 quantity: 2,
                 subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_tshirt",
                 },
@@ -5639,6 +6029,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt2",
                 quantity: 2,
                 subtotal: 2000,
+                original_total: 2000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_tshirt",
                 },
@@ -5650,6 +6042,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_sweater",
                 quantity: 2,
                 subtotal: 2000,
+                original_total: 2000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_sweater",
                 },
@@ -5729,6 +6123,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt",
                 quantity: 2,
                 subtotal: 1000,
+                original_total: 1000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_tshirt",
                 },
@@ -5740,6 +6136,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_tshirt2",
                 quantity: 2,
                 subtotal: 2000,
+                original_total: 2000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_tshirt",
                 },
@@ -5751,6 +6149,8 @@ moduleIntegrationTestRunner({
                 id: "item_cotton_sweater",
                 quantity: 2,
                 subtotal: 2000,
+                original_total: 2000,
+                is_discountable: true,
                 product_category: {
                   id: "catg_sweater",
                 },
@@ -5846,12 +6246,16 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 4,
                   subtotal: 1000,
+                  original_total: 1000,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
                 {
                   id: "item_cotton_tshirt2",
                   quantity: 2,
                   subtotal: 2000,
+                  original_total: 2000,
+                  is_discountable: true,
                   product: { id: product2 },
                 },
               ],
@@ -5912,6 +6316,8 @@ moduleIntegrationTestRunner({
                   id: "item_1",
                   quantity: 2,
                   subtotal: 1000,
+                  original_total: 1000,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -5932,6 +6338,8 @@ moduleIntegrationTestRunner({
                   id: "item_1",
                   quantity: 3,
                   subtotal: 1500,
+                  original_total: 1500,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -5959,6 +6367,8 @@ moduleIntegrationTestRunner({
                   id: "item_1",
                   quantity: 5,
                   subtotal: 2500,
+                  original_total: 2500,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -5986,6 +6396,8 @@ moduleIntegrationTestRunner({
                   id: "item_1",
                   quantity: 6,
                   subtotal: 3000,
+                  original_total: 3000,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -6079,6 +6491,8 @@ moduleIntegrationTestRunner({
                   id: "item_1",
                   quantity: 3,
                   subtotal: 1500,
+                  original_total: 1500,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -6110,6 +6524,8 @@ moduleIntegrationTestRunner({
                   id: "item_1",
                   quantity: 6,
                   subtotal: 3000,
+                  original_total: 3000,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -6147,6 +6563,8 @@ moduleIntegrationTestRunner({
                   id: "item_1",
                   quantity: 7,
                   subtotal: 3500,
+                  original_total: 3500,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -6184,6 +6602,8 @@ moduleIntegrationTestRunner({
                   id: "item_1",
                   quantity: 9,
                   subtotal: 4500,
+                  original_total: 4500,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -6220,6 +6640,8 @@ moduleIntegrationTestRunner({
                   id: "item_1",
                   quantity: 1000,
                   subtotal: 500000,
+                  original_total: 500000,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -6256,7 +6678,7 @@ moduleIntegrationTestRunner({
               {
                 code: "BUY50GET1000",
                 type: PromotionType.BUYGET,
-                campaign_id: null,
+                campaign_id: undefined,
                 application_method: {
                   type: "percentage",
                   target_type: "items",
@@ -6288,7 +6710,7 @@ moduleIntegrationTestRunner({
               {
                 code: "BUY10GET200",
                 type: PromotionType.BUYGET,
-                campaign_id: null,
+                campaign_id: undefined,
                 application_method: {
                   type: "percentage",
                   target_type: "items",
@@ -6322,6 +6744,8 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 1080,
                   subtotal: 2700,
+                  original_total: 2700,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -6354,7 +6778,7 @@ moduleIntegrationTestRunner({
               {
                 code: "BUY50GET1000",
                 type: PromotionType.BUYGET,
-                campaign_id: null,
+                campaign_id: undefined,
                 application_method: {
                   type: "percentage",
                   target_type: "items",
@@ -6386,7 +6810,7 @@ moduleIntegrationTestRunner({
               {
                 code: "BUY10GET200",
                 type: PromotionType.BUYGET,
-                campaign_id: null,
+                campaign_id: undefined,
                 application_method: {
                   type: "percentage",
                   target_type: "items",
@@ -6420,12 +6844,16 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 540,
                   subtotal: 1350,
+                  original_total: 1350,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
                 {
                   id: "item_cotton_tshirt2",
                   quantity: 540,
                   subtotal: 1350,
+                  original_total: 1350,
+                  is_discountable: true,
                   product: { id: product1 },
                 },
               ],
@@ -6847,6 +7275,7 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 1,
                   subtotal: 500,
+                  original_total: 500,
                   product: { id: product1 },
                   is_discountable: true,
                 },
@@ -6854,6 +7283,7 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt1",
                   quantity: 1,
                   subtotal: 500,
+                  original_total: 500,
                   product: { id: product1 },
                   is_discountable: true,
                 },
@@ -6861,15 +7291,17 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt2",
                   quantity: 1,
                   subtotal: 1000,
-                  product: { id: product1 },
+                  original_total: 1000,
                   is_discountable: true,
+                  product: { id: product1 },
                 },
                 {
                   id: "item_cotton_tshirt3",
                   quantity: 1,
                   subtotal: 1000,
-                  product: { id: product1 },
+                  original_total: 1000,
                   is_discountable: true,
+                  product: { id: product1 },
                 },
               ],
             }
@@ -6903,8 +7335,9 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 3,
                   subtotal: 1000,
-                  product: { id: product1 },
+                  original_total: 1000,
                   is_discountable: true,
+                  product: { id: product1 },
                 },
               ],
             }
@@ -6925,22 +7358,25 @@ moduleIntegrationTestRunner({
                   id: "item_cotton_tshirt",
                   quantity: 1,
                   subtotal: 1000,
-                  product: { id: product1 },
+                  original_total: 1000,
                   is_discountable: true,
+                  product: { id: product1 },
                 },
                 {
                   id: "item_cotton_tshirt1",
                   quantity: 1,
                   subtotal: 1000,
-                  product: { id: product1 },
+                  original_total: 1000,
                   is_discountable: true,
+                  product: { id: product1 },
                 },
                 {
                   id: "item_cotton_tshirt2",
                   quantity: 1,
                   subtotal: 1000,
-                  product: { id: product1 },
+                  original_total: 1000,
                   is_discountable: true,
+                  product: { id: product1 },
                 },
               ],
             }
