@@ -7,7 +7,7 @@ type Providers = string[] | {
   id: string;
   /**
    * Optional custom time-to-live (TTL) (in seconds) for this provider. If not provided, the default TTL configured
-   * in the provider is used.
+   * in the provider is used, or the default TTL of the Caching Module if not configured in the provider.
    */ 
   ttl?: number
 }[]
@@ -48,7 +48,7 @@ export interface ICachingModuleService extends IModuleService {
    * 
    * ```ts
    * const data = await cacheModuleService.get({
-   *   key: "products",
+   *   key: "products", // this key would typically be a hash
    * }) as { id: string; title: string; }
    * ```
    * 
@@ -56,7 +56,7 @@ export interface ICachingModuleService extends IModuleService {
    * 
    * ```ts
    * const data = await cacheModuleService.get({
-   *   tags: ["products-list"],
+   *   tags: ["Product:list:*"],
    * }) as { id: string; title: string; }[]
    * ```
    *
@@ -64,7 +64,7 @@ export interface ICachingModuleService extends IModuleService {
    * 
    * ```ts
    * const data = await cacheModuleService.get({
-   *   key: "products",
+   *   key: "products", // this key would typically be a hash
    *   providers: ["caching-redis", "caching-memcached"]
    * }) as { id: string; title: string; }
    * ```
@@ -95,7 +95,8 @@ export interface ICachingModuleService extends IModuleService {
   }): Promise<any | null>
 
   /**
-   * This method stores data in the cache.
+   * This method stores data in the cache using the 
+   * [default Caching Module Provider](https://docs.medusajs.com/infrastructure-modules/caching/providers#default-caching-module-provider).
    *
    * @param param0 - The options for storing the item.
    * @returns A promise that resolves when the item has been stored.
@@ -104,28 +105,40 @@ export interface ICachingModuleService extends IModuleService {
    * To store with key:
    * 
    * ```ts
+   * const data = { id: "prod_123", title: "Product 123" }
+   * const key = await cacheModuleService.computeKey(data)
    * await cacheModuleService.set({
-   *   key: "products",
-   *   data: { id: "prod_123", title: "Product 123" },
+   *   key,
+   *   data
    * })
    * ```
    * 
    * To store with tags:
    * 
+   * :::note
+   * 
+   * Tags should follow [conventions](https://docs.medusajs.com/infrastructure-modules/caching/concepts#caching-tags-convention) to ensure they're automatically invalidated.
+   * 
+   * :::
+   * 
    * ```ts
+   * const data = [{ id: "prod_123", title: "Product 123" }]
+   * const key = await cacheModuleService.computeKey(data)
    * await cacheModuleService.set({
-   *   key: "products-list",
-   *   data: [{ id: "prod_123", title: "Product 123" }],
-   *   tags: ["products"]
+   *   key,
+   *   data,
+   *   tags: [`Product:${data[0].id}`, "Product:list:*"]
    * })
    * ```
    * 
    * To disable auto-invalidation for the item:
    * 
    * ```ts
+   * const data = [{ id: "prod_123", title: "Product 123" }]
+   * const key = await cacheModuleService.computeKey(data)
    * await cacheModuleService.set({
-   *   key: "products-list",
-   *   data: [{ id: "prod_123", title: "Product 123" }],
+   *   key,
+   *   data,
    *   options: { autoInvalidate: false }
    * })
    * ```
@@ -135,9 +148,11 @@ export interface ICachingModuleService extends IModuleService {
    * To store with specific providers:
    * 
    * ```ts
+   * const data = { id: "prod_123", title: "Product 123" }
+   * const key = await cacheModuleService.computeKey(data)
    * await cacheModuleService.set({
-   *   key: "products",
-   *   data: { id: "prod_123", title: "Product 123" },
+   *   key,
+   *   data,
    *   providers: [
    *     "caching-redis",
    *     { id: "caching-memcached", ttl: 120 } // custom TTL for this provider
@@ -145,7 +160,7 @@ export interface ICachingModuleService extends IModuleService {
    * })
    * ```
    * 
-   * This example will store the item in both the `caching-redis` and `caching-memcached` providers, with a custom TTL of 120 seconds for the `caching-memcached` provider.
+   * This example will store the item in both the `caching-redis` and `caching-memcached` providers, with a custom TTL of `120` seconds for the `caching-memcached` provider.
    *
    */
   set({
@@ -196,8 +211,8 @@ export interface ICachingModuleService extends IModuleService {
   /**
    * This method clears data from the cache. If neither `key` nor `tags` are provided, nothing is cleared.
    * 
-   * If no options are specified, all items matching the key or tags are cleared.
-   * Otherwise, only items matching the options are cleared.
+   * By default, all items matching the key or tags are cleared regardless of their options. If you provide `options.autoInvalidate: true`,
+   * only items that were set with `options.autoInvalidate: true` are cleared.
    * 
    * For example, if you set `options.autoInvalidate: true`, only items that were set with `options.autoInvalidate: true` are cleared.
    * Items that were set with `options.autoInvalidate: false` are only cleared when you don't provide any options.
@@ -206,36 +221,36 @@ export interface ICachingModuleService extends IModuleService {
    * @returns A promise that resolves when the item(s) have been cleared.
    *
    * @example
-   * To clear by key:
+   * To invalidate cache by key:
    * 
    * ```ts
    * await cacheModuleService.clear({
-   *  key: "products"
+   *  key: "products" // this key would typically be a hash
    * })
    * ```
    * 
    * This example will clear the item with the key `products` regardless of its `options.autoInvalidate` value.
    * 
-   * To clear by tags:
+   * To invalidate cache by tags:
    * 
    * ```ts
    * await cacheModuleService.clear({
-   *  tags: ["products-list"]
+   *  tags: ["Product:list:*"]
    * })
    * ```
    * 
-   * This example will clear all items with the tag `products-list` regardless of their `options.autoInvalidate` value.
+   * This example will clear all items with the tag `Product:list:*` regardless of their `options.autoInvalidate` value.
    * 
-   * To clear only items that were set to automatically invalidate:
+   * To invalidate only the cache data that were set to automatically invalidate:
    * 
    * ```ts
    * await cacheModuleService.clear({
-   *  tags: ["products-list"],
+   *  tags: ["Product:list:*"],
    *  options: { autoInvalidate: true }
    * })
    * ```
    * 
-   * This example will only clear items with the tag `products-list` that were set with `options.autoInvalidate: true`.
+   * This example will only clear items with the tag `Product:list:*` that were set with `options.autoInvalidate: true`.
    * Items that were set with `options.autoInvalidate: false` will not be cleared.
    * 
    * :::note
@@ -245,7 +260,7 @@ export interface ICachingModuleService extends IModuleService {
    * 
    * :::
    * 
-   * To clear from specific providers:
+   * To invalidate cache from specific providers:
    * 
    * ```ts
    * await cacheModuleService.clear({
@@ -300,7 +315,7 @@ export interface ICachingModuleService extends IModuleService {
    *   id: "prod_123",
    *   title: "Product 123"
    * })
-   * // key will be a string like "a1b2c3d4e5f6g7h8i9j0"
+   * // key will be a hash string like "a1b2c3d4e5f6g7h8i9j0"
    */
   computeKey(input: object): Promise<string>
 
@@ -314,11 +329,10 @@ export interface ICachingModuleService extends IModuleService {
    * @example
    * const tags = await cacheModuleService.computeTags({
    *   products: [{ id: "prod_123" }, { id: "prod_456" }],
-   *   category: { id: "cat_123" }
    * }, {
    *   operation: "updated"
    * })
-   * // tags might be ["product-prod_123", "product-prod_456", "category-cat_123"]
+   * // tags might be ["Product:prod_123", "Product:prod_456", "Product:list:*"]
    */
   computeTags(input: object, options?: Record<string, any>): Promise<string[]>
 }
@@ -394,7 +408,7 @@ export interface ICachingModuleService extends IModuleService {
  */
 export interface ICachingProviderService {
   /**
-   * This method retrieves data from the cache. If neither `key` nor `tags` are provided, `null` should be returned.
+   * This method retrieves data from the cache either by `key` or `tags`. If neither `key` nor `tags` are provided, `null` should be returned.
    * If both `key` and `tags` are provided, `key` should take precedence over `tags`.
    * 
    * @param param0 - The parameters for retrieving the item.
