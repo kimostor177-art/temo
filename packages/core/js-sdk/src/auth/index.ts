@@ -1,6 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { Client } from "../client"
-import { Config } from "../types"
+import { ClientHeaders, Config } from "../types"
 
 export class Auth {
   private client: Client
@@ -214,6 +214,7 @@ export class Auth {
    * For an example of implementing third-party authentication, refer to the
    * [Third-Party Login in Storefront](https://docs.medusajs.com/resources/storefront-development/customers/third-party-login) guide.
    * 
+   * @param headers - Headers to pass in the request
    *
    * @returns The refreshed JWT authentication token.
    *
@@ -225,11 +226,12 @@ export class Auth {
    * // all subsequent requests will use the token in the header
    * const { customer } = await sdk.store.customer.retrieve()
    */
-  refresh = async () => {
+  refresh = async (headers?: ClientHeaders) => {
     const { token } = await this.client.fetch<{ token: string }>(
       "/auth/token/refresh",
       {
         method: "POST",
+        headers,
       }
     )
 
