@@ -14,6 +14,7 @@
     "./core-flows": "./dist/core-flows/index.js",
     "./loaders/*": "./dist/loaders/*.js",
     "./commands/*": "./dist/commands/*.js",
+    "./feature-flags/*": "./dist/feature-flags/*.js",
     "./*": "./dist/modules/*.js"
   },
   "repository": {
