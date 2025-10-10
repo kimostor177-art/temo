@@ -9,7 +9,6 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../common"
-import { useRemoteQueryStep } from "../../common/steps/use-remote-query"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { updateLineItemsStep } from "../steps"
 import { cartFieldsForRefreshSteps } from "../utils/fields"
@@ -169,15 +168,18 @@ export const refreshCartItemsWorkflow = createWorkflow(
       })
     })
 
-    const refetchedCart = useRemoteQueryStep({
-      entry_point: "cart",
+    const { data: refetchedCart } = useQueryGraphStep({
+      entity: "cart",
       fields: cartFieldsForRefreshSteps,
-      variables: { id: input.cart_id },
-      list: false,
-    }).config({ name: "refetch–cart" })
+      filters: { id: input.cart_id },
+      options: { isList: false },
+    }).config({ name: "refetch-cart" })
 
     refreshCartShippingMethodsWorkflow.runAsStep({
-      input: { cart: refetchedCart, additional_data: input.additional_data },
+      input: {
+        cart: refetchedCart, // Pass cart to avoid refetch
+        additional_data: input.additional_data,
+      },
     })
 
     when("force-refresh-update-tax-lines", { input }, ({ input }) => {
@@ -223,6 +225,7 @@ export const refreshCartItemsWorkflow = createWorkflow(
     updateCartPromotionsWorkflow.runAsStep({
       input: {
         cart_id: input.cart_id,
+        cart: refetchedCart, // Pass cart to avoid refetch in updateCartPromotionsWorkflow
         promo_codes: cartPromoCodes,
         action: PromotionActions.REPLACE,
       },

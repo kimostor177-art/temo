@@ -2,12 +2,14 @@ import {
   AddItemAdjustmentAction,
   AddShippingMethodAdjustment,
   ComputeActions,
-  IPromotionModuleService,
   PromotionDTO,
   RemoveItemAdjustmentAction,
   RemoveShippingMethodAdjustment,
 } from "@medusajs/framework/types"
-import { ComputedActions, Modules } from "@medusajs/framework/utils"
+import {
+  ComputedActions,
+  ContainerRegistrationKeys,
+} from "@medusajs/framework/utils"
 import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk"
 
 /**
@@ -102,9 +104,7 @@ export const prepareAdjustmentsFromPromotionActionsStep = createStep(
     data: PrepareAdjustmentsFromPromotionActionsStepInput,
     { container }
   ) => {
-    const promotionModuleService: IPromotionModuleService = container.resolve(
-      Modules.PROMOTION
-    )
+    const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
     const { actions = [] } = data
 
@@ -118,46 +118,59 @@ export const prepareAdjustmentsFromPromotionActionsStep = createStep(
       } as PrepareAdjustmentsFromPromotionActionsStepOutput)
     }
 
-    const promotions = await promotionModuleService.listPromotions(
-      { code: actions.map((a) => a.code) },
-      { select: ["id", "code"] }
+    const { data: promotions } = await query.graph(
+      {
+        entity: "promotion",
+        fields: ["id", "code"],
+        filters: { code: actions.map((a) => a.code) },
+      },
+      { cache: { enable: true } }
     )
 
     const promotionsMap = new Map<string, PromotionDTO>(
       promotions.map((promotion) => [promotion.code!, promotion])
     )
 
-    const lineItemAdjustmentsToCreate = actions
-      .filter((a) => a.action === ComputedActions.ADD_ITEM_ADJUSTMENT)
-      .map((action) => ({
-        code: action.code,
-        amount: (action as AddItemAdjustmentAction).amount,
-        is_tax_inclusive: (action as AddItemAdjustmentAction).is_tax_inclusive,
-        item_id: (action as AddItemAdjustmentAction).item_id,
-        promotion_id: promotionsMap.get(action.code)?.id,
-      }))
+    const lineItemAdjustmentsToCreate: PrepareAdjustmentsFromPromotionActionsStepOutput["lineItemAdjustmentsToCreate"] =
+      []
+    const lineItemAdjustmentIdsToRemove: string[] = []
+    const shippingMethodAdjustmentsToCreate: PrepareAdjustmentsFromPromotionActionsStepOutput["shippingMethodAdjustmentsToCreate"] =
+      []
+    const shippingMethodAdjustmentIdsToRemove: string[] = []
 
-    const lineItemAdjustmentIdsToRemove = actions
-      .filter((a) => a.action === ComputedActions.REMOVE_ITEM_ADJUSTMENT)
-      .map((a) => (a as RemoveItemAdjustmentAction).adjustment_id)
-
-    const shippingMethodAdjustmentsToCreate = actions
-      .filter(
-        (a) => a.action === ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT
-      )
-      .map((action) => ({
-        code: action.code,
-        amount: (action as AddShippingMethodAdjustment).amount,
-        shipping_method_id: (action as AddShippingMethodAdjustment)
-          .shipping_method_id,
-        promotion_id: promotionsMap.get(action.code)?.id,
-      }))
-
-    const shippingMethodAdjustmentIdsToRemove = actions
-      .filter(
-        (a) => a.action === ComputedActions.REMOVE_SHIPPING_METHOD_ADJUSTMENT
-      )
-      .map((a) => (a as RemoveShippingMethodAdjustment).adjustment_id)
+    for (const action of actions) {
+      switch (action.action) {
+        case ComputedActions.ADD_ITEM_ADJUSTMENT:
+          const itemAction = action as AddItemAdjustmentAction
+          lineItemAdjustmentsToCreate.push({
+            code: action.code,
+            amount: itemAction.amount as number,
+            is_tax_inclusive: itemAction.is_tax_inclusive, // TODO: there is a discrepeancy between the type and the actual data
+            item_id: itemAction.item_id,
+            promotion_id: promotionsMap.get(action.code)?.id,
+          } as PrepareAdjustmentsFromPromotionActionsStepOutput["lineItemAdjustmentsToCreate"][number])
+          break
+        case ComputedActions.REMOVE_ITEM_ADJUSTMENT:
+          lineItemAdjustmentIdsToRemove.push(
+            (action as RemoveItemAdjustmentAction).adjustment_id
+          )
+          break
+        case ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT:
+          const shippingAction = action as AddShippingMethodAdjustment
+          shippingMethodAdjustmentsToCreate.push({
+            code: action.code,
+            amount: shippingAction.amount as number,
+            shipping_method_id: shippingAction.shipping_method_id,
+            promotion_id: promotionsMap.get(action.code)?.id,
+          })
+          break
+        case ComputedActions.REMOVE_SHIPPING_METHOD_ADJUSTMENT:
+          shippingMethodAdjustmentIdsToRemove.push(
+            (action as RemoveShippingMethodAdjustment).adjustment_id
+          )
+          break
+      }
+    }
 
     const computedPromotionCodes = [
       ...lineItemAdjustmentsToCreate,

@@ -7,16 +7,16 @@ import {
 } from "@medusajs/framework/utils"
 
 import {
+  Knex,
+  SqlEntityManager,
+} from "@medusajs/framework/mikro-orm/postgresql"
+import {
   CalculatedPriceSetDTO,
   Context,
   PricingContext,
   PricingFilters,
   PricingRepositoryService,
 } from "@medusajs/framework/types"
-import {
-  Knex,
-  SqlEntityManager,
-} from "@medusajs/framework/mikro-orm/postgresql"
 
 export class PricingRepository
   extends MikroOrmBase
@@ -172,101 +172,108 @@ export class PricingRepository
     })
 
     if (hasComplexContext) {
-      const priceRuleConditions = knex.raw(
-        `
-        (
-          price.rules_count = 0 OR
-          (
-            /* Count all matching rules and compare to total rule count */
-            SELECT COUNT(*) 
-            FROM price_rule pr
-            WHERE pr.price_id = price.id 
-            AND pr.deleted_at IS NULL
-            AND (
-            ${flattenedContext
-              .map(([key, value]) => {
-                if (typeof value === "number") {
-                  return `
-                    (pr.attribute = ? AND (
-                      (pr.operator = 'eq' AND pr.value = ?) OR
-                      (pr.operator = 'gt' AND ? > pr.value::numeric) OR
-                      (pr.operator = 'gte' AND ? >= pr.value::numeric) OR
-                      (pr.operator = 'lt' AND ? < pr.value::numeric) OR
-                      (pr.operator = 'lte' AND ? <= pr.value::numeric)
-                    ))
-                    `
-                } else {
-                  const normalizeValue = Array.isArray(value) ? value : [value]
-                  const placeholders = normalizeValue.map(() => "?").join(",")
-                  return `(pr.attribute = ? AND pr.value IN (${placeholders}))`
-                }
-              })
-              .join(" OR ")})
-          ) = (
-            /* Get total rule count */
-            SELECT COUNT(*) 
-            FROM price_rule pr
-            WHERE pr.price_id = price.id 
-            AND pr.deleted_at IS NULL
-          )
-        )
-        `,
-        flattenedContext.flatMap(([key, value]) => {
+      // Build match conditions for LATERAL join
+      const priceRuleMatchConditions = flattenedContext
+        .map(([_key, value]) => {
           if (typeof value === "number") {
-            return [key, value.toString(), value, value, value, value]
+            return `
+              (pr.attribute = ? AND (
+                (pr.operator = 'eq' AND pr.value = ?) OR
+                (pr.operator = 'gt' AND ? > pr.value::numeric) OR
+                (pr.operator = 'gte' AND ? >= pr.value::numeric) OR
+                (pr.operator = 'lt' AND ? < pr.value::numeric) OR
+                (pr.operator = 'lte' AND ? <= pr.value::numeric)
+              ))
+            `
           } else {
             const normalizeValue = Array.isArray(value) ? value : [value]
-            return [key, ...normalizeValue]
+            const placeholders = normalizeValue.map(() => "?").join(",")
+            return `(pr.attribute = ? AND pr.value IN (${placeholders}))`
           }
         })
-      )
+        .join(" OR ")
 
-      const priceListRuleConditions = knex.raw(
-        `
-        (
-          pl.rules_count = 0 OR
-          (
-            /* Count all matching rules and compare to total rule count */
-            SELECT COUNT(*) 
-            FROM price_list_rule plr
-            WHERE plr.price_list_id = pl.id
-              AND plr.deleted_at IS NULL
-              AND (
-              ${flattenedContext
-                .map(([key, value]) => {
-                  if (Array.isArray(value)) {
-                    return value
-                      .map((v) => `(plr.attribute = ? AND plr.value @> ?)`)
-                      .join(" OR ")
-                  }
-                  return `(plr.attribute = ? AND plr.value @> ?)`
-                })
-                .join(" OR ")}
-              )
-          ) = (
-            /* Get total rule count */
-            SELECT COUNT(*) 
-            FROM price_list_rule plr
-            WHERE plr.price_list_id = pl.id
-              AND plr.deleted_at IS NULL
-          )
-        )
-        `,
-        flattenedContext.flatMap(([key, value]) => {
+      const priceRuleMatchParams = flattenedContext.flatMap(([key, value]) => {
+        if (typeof value === "number") {
+          return [key, value.toString(), value, value, value, value]
+        } else {
+          const normalizeValue = Array.isArray(value) ? value : [value]
+          return [key, ...normalizeValue]
+        }
+      })
+
+      const priceListRuleMatchConditions = flattenedContext
+        .map(([_key, value]) => {
+          if (Array.isArray(value)) {
+            return value
+              .map((_v) => `(plr.attribute = ? AND plr.value @> ?)`)
+              .join(" OR ")
+          }
+          return `(plr.attribute = ? AND plr.value @> ?)`
+        })
+        .join(" OR ")
+
+      const priceListRuleMatchParams = flattenedContext.flatMap(
+        ([key, value]) => {
           const valueAsArray = Array.isArray(value) ? value : [value]
           return valueAsArray.flatMap((v) => [key, JSON.stringify(v)])
-        })
+        }
       )
 
+      // Use LATERAL joins to compute matched and total counts in one go
+      query
+        .leftJoin(
+          knex.raw(
+            `LATERAL (
+            SELECT
+              COUNT(*) FILTER (WHERE ${priceRuleMatchConditions}) as matched_count,
+              COUNT(*) as total_count
+            FROM price_rule pr
+            WHERE pr.price_id = price.id
+              AND pr.deleted_at IS NULL
+          ) pr_stats`,
+            priceRuleMatchParams
+          ),
+          knex.raw("true")
+        )
+        .leftJoin(
+          knex.raw(
+            `LATERAL (
+            SELECT
+              COUNT(*) FILTER (WHERE ${priceListRuleMatchConditions}) as matched_count,
+              COUNT(*) as total_count
+            FROM price_list_rule plr
+            WHERE plr.price_list_id = pl.id
+              AND plr.deleted_at IS NULL
+          ) plr_stats`,
+            priceListRuleMatchParams
+          ),
+          knex.raw("true")
+        )
+
       query.where((qb) => {
-        qb.whereNull("price.price_list_id")
-          .andWhereRaw(priceRuleConditions)
-          .orWhere((qb2) => {
-            qb2
-              .whereNotNull("price.price_list_id")
-              .whereRaw(priceListRuleConditions)
-              .andWhereRaw(priceRuleConditions)
+        qb.where((qb2) => {
+          // No price list: price rules must match or be zero
+          qb2.whereNull("price.price_list_id").andWhere((qb3) => {
+            qb3
+              .where("price.rules_count", 0)
+              .orWhereRaw("pr_stats.matched_count = price.rules_count")
           })
+        }).orWhere((qb2) => {
+          // Has price list: both price rules and price list rules must match
+          qb2
+            .whereNotNull("price.price_list_id")
+            .andWhere((qb3) => {
+              qb3
+                .where("price.rules_count", 0)
+                .orWhereRaw("pr_stats.matched_count = price.rules_count")
+            })
+            .andWhere((qb3) => {
+              qb3
+                .where("pl.rules_count", 0)
+                .orWhereRaw("plr_stats.matched_count = pl.rules_count")
+            })
+        })
       })
     } else {
       query.where(function (this: Knex.QueryBuilder) {

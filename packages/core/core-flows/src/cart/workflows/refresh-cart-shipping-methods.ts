@@ -9,7 +9,7 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { AdditionalData } from "@medusajs/types"
-import { useRemoteQueryStep } from "../../common"
+import { useQueryGraphStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import { removeShippingMethodFromCartStep } from "../steps"
 import { updateShippingMethodsStep } from "../steps/update-shipping-methods"
@@ -62,10 +62,11 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
     >
   ) => {
     const shouldExecute = transform({ input }, ({ input }) => {
-      return (
-        !!input.cart_id ||
-        (!!input.cart && !!input.cart.shipping_methods?.length)
-      )
+      if (input.cart) {
+        return !!input.cart.shipping_methods?.length
+      }
+
+      return !!input.cart_id
     })
 
     const cartId = transform({ input }, ({ input }) => {
@@ -79,8 +80,8 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
         return shouldExecute
       }
     ).then(() => {
-      return useRemoteQueryStep({
-        entry_point: "cart",
+      const { data: cart } = useQueryGraphStep({
+        entity: "cart",
         fields: [
           "id",
           "sales_channel_id",
@@ -94,10 +95,14 @@ export const refreshCartShippingMethodsWorkflow = createWorkflow(
           "shipping_methods.data",
           "total",
         ],
-        variables: { id: cartId },
-        throw_if_key_not_found: true,
-        list: false,
+        filters: { id: cartId },
+        options: {
+          throwIfKeyNotFound: true,
+          isList: false,
+        },
       }).config({ name: "get-cart" })
+
+      return cart
     })
 
     const cart = transform({ fetchCart, input }, ({ fetchCart, input }) => {

@@ -18,7 +18,7 @@ export interface GetVariantsStepInput {
 export const getVariantsStepId = "get-variants"
 /**
  * This step retrieves variants matching the specified filters.
- * 
+ *
  * @example
  * const data = getVariantsStep({
  *   filter: {

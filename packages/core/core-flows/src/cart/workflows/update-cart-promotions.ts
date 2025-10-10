@@ -8,7 +8,7 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { useRemoteQueryStep } from "../../common"
+import { useQueryGraphStep } from "../../common"
 import { acquireLockStep, releaseLockStep } from "../../locking"
 import {
   createLineItemAdjustmentsStep,
@@ -82,12 +82,14 @@ export const updateCartPromotionsWorkflow = createWorkflow(
     const fetchCart = when("should-fetch-cart", { input }, ({ input }) => {
       return !input.cart
     }).then(() => {
-      return useRemoteQueryStep({
-        entry_point: "cart",
+      const { data: cart } = useQueryGraphStep({
+        entity: "cart",
         fields: cartFieldsForRefreshSteps,
-        variables: { id: input.cart_id },
-        list: false,
-      })
+        filters: { id: input.cart_id },
+        options: { isList: false },
+      }).config({ name: "fetch-cart" })
+
+      return cart
     })
 
     const cart = transform({ fetchCart, input }, ({ fetchCart, input }) => {

@@ -26,5 +26,11 @@ const PriceList = model
   .cascades({
     delete: ["price_list_rules", "prices"],
   })
+  .indexes([
+    {
+      on: ["id", "status", "starts_at", "ends_at"],
+      where: "deleted_at IS NULL AND status = 'active'",
+    },
+  ])
 
 export default PriceList

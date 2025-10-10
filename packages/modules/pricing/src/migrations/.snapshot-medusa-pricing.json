@@ -137,6 +137,15 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_deleted_at\" ON \"price_list\" (deleted_at) WHERE deleted_at IS NULL"
         },
         {
+          "keyName": "IDX_price_list_id_status_starts_at_ends_at",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_id_status_starts_at_ends_at\" ON \"price_list\" (id, status, starts_at, ends_at) WHERE deleted_at IS NULL AND status = 'active'"
+        },
+        {
           "keyName": "price_list_pkey",
           "columnNames": [
             "id"
@@ -251,6 +260,15 @@
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_attribute\" ON \"price_list_rule\" (attribute) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_price_list_rule_value",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_list_rule_value\" ON \"price_list_rule\" USING gin (value) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "price_list_rule_pkey",
@@ -626,6 +644,15 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_currency_code\" ON \"price\" (currency_code) WHERE deleted_at IS NULL"
         },
         {
+          "keyName": "IDX_price_currency_code_price_set_id_min_quantity",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_currency_code_price_set_id_min_quantity\" ON \"price\" (currency_code, price_set_id, min_quantity) WHERE deleted_at IS NULL"
+        },
+        {
           "keyName": "price_pkey",
           "columnNames": [
             "id"
@@ -821,6 +848,15 @@
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_rule_operator_value\" ON \"price_rule\" (operator, value) WHERE deleted_at IS NULL"
+        },
+        {
+          "keyName": "IDX_price_rule_attribute_value_price_id",
+          "columnNames": [],
+          "composite": false,
+          "constraint": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_price_rule_attribute_value_price_id\" ON \"price_rule\" (attribute, value, price_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "price_rule_pkey",

@@ -98,7 +98,12 @@ export async function mikroOrmCreateConnection(
     filters: database.filters ?? {},
     useBatchInserts: true,
     useBatchUpdates: true,
+    implicitTransactions: false,
+    ignoreUndefinedInQuery: true,
     batchSize: 100,
+    metadataCache: {
+      enabled: true,
+    },
     assign: {
       convertCustomTypes: true,
     },

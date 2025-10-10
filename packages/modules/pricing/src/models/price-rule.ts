@@ -30,6 +30,10 @@ const PriceRule = model
       on: ["operator", "value"],
       where: "deleted_at IS NULL",
     },
+    {
+      on: ["attribute", "value", "price_id"],
+      where: "deleted_at IS NULL",
+    },
   ])
 
 export default PriceRule

@@ -280,12 +280,8 @@ export default class CartModuleService
 
     const carts = await this.createCarts_(input, sharedContext)
 
-    const result = await this.listCarts(
-      { id: carts.map((p) => p!.id) },
-      {
-        relations: ["shipping_address", "billing_address"],
-      },
-      sharedContext
+    const result = await this.baseRepository_.serialize<CartTypes.CartDTO[]>(
+      carts
     )
 
     return (Array.isArray(data) ? result : result[0]) as
@@ -297,23 +293,30 @@ export default class CartModuleService
   protected async createCarts_(
     data: CartTypes.CreateCartDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ) {
+  ): Promise<InferEntityType<typeof Cart>[]> {
+    const cartsWithItems = data.map(({ items, ...cart }) => {
+      const cartId = generateEntityId((cart as any).id, "cart")
+      return {
+        cart: { ...cart, id: cartId },
+        items: items || [],
+      }
+    })
+
+    // Batch create all carts a once instead of sequentially
+    const createdCarts = await this.cartService_.create(
+      cartsWithItems.map((c) => c.cart),
+      sharedContext
+    )
+
     const lineItemsToCreate: CreateLineItemDTO[] = []
-    const createdCarts: InferEntityType<typeof Cart>[] = []
-    for (const { items, ...cart } of data) {
-      const [created] = await this.cartService_.create([cart], sharedContext)
-
-      createdCarts.push(created)
-
-      if (items?.length) {
-        const cartItems = items.map((item) => {
-          return {
+    for (const { cart, items } of cartsWithItems) {
+      if (items.length) {
+        lineItemsToCreate.push(
+          ...items.map((item) => ({
             ...item,
-            cart_id: created.id,
-          }
-        })
-
-        lineItemsToCreate.push(...cartItems)
+            cart_id: cart.id,
+          }))
+        )
       }
     }
 
@@ -321,7 +324,19 @@ export default class CartModuleService
       await this.addLineItemsBulk_(lineItemsToCreate, sharedContext)
     }
 
-    return createdCarts
+    const fullCarts = await this.cartService_.list(
+      { id: createdCarts.map((c) => c.id) },
+      {
+        relations: ["shipping_address", "billing_address"],
+      },
+      sharedContext
+    )
+
+    // Return in the same input order
+    const orderedInputId = cartsWithItems.map((c) => c.cart.id)
+    return orderedInputId.map((id) =>
+      fullCarts.find((c) => c.id === id)
+    ) as InferEntityType<typeof Cart>[]
   }
 
   // @ts-expect-error

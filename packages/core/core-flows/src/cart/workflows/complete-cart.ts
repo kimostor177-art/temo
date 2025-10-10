@@ -104,28 +104,29 @@ export const completeCartWorkflow = createWorkflow(
       ttl: TWO_MINUTES,
     })
 
-    const orderCart = useQueryGraphStep({
-      entity: "order_cart",
-      fields: ["cart_id", "order_id"],
-      filters: { cart_id: input.id },
-      options: {
-        isList: false,
-      },
-    })
+    const [orderCart, cartData] = parallelize(
+      useQueryGraphStep({
+        entity: "order_cart",
+        fields: ["cart_id", "order_id"],
+        filters: { cart_id: input.id },
+        options: {
+          isList: false,
+        },
+      }),
+      useQueryGraphStep({
+        entity: "cart",
+        fields: completeCartFields,
+        filters: { id: input.id },
+        options: {
+          isList: false,
+        },
+      }).config({
+        name: "cart-query",
+      })
+    )
 
     const orderId = transform({ orderCart }, ({ orderCart }) => {
       return orderCart?.data?.order_id
-    })
-
-    const cartData = useQueryGraphStep({
-      entity: "cart",
-      fields: completeCartFields,
-      filters: { id: input.id },
-      options: {
-        isList: false,
-      },
-    }).config({
-      name: "cart-query",
     })
 
     // this needs to be before the validation step
