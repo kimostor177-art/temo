@@ -307,6 +307,12 @@ export declare type DmlFile = {
   [k: string]: {
     filePath: string
     properties: DmlObject
+    since?: string
+    deprecated?: {
+      is_deprecated: boolean
+      description?: string
+    }
+    featureFlag?: string
   }
 }
 

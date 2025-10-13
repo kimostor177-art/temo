@@ -66,7 +66,12 @@ export function getReflectionTypeParameters({
       description = loadComment(typeName, project)
     }
 
-    return {
+    const deprecatedTag = comment?.blockTags.find(
+      (tag) => tag.tag === "@deprecated"
+    )
+    const sinceTag = comment?.blockTags.find((tag) => tag.tag === "@since")
+
+    const parameter: Parameter = {
       name: "name" in reflectionType ? reflectionType.name : typeName,
       type,
       optional:
@@ -84,6 +89,19 @@ export function getReflectionTypeParameters({
       featureFlag: Handlebars.helpers.featureFlag(comment),
       children: [],
     }
+
+    if (sinceTag) {
+      parameter.since = sinceTag.content.map((c) => c.text).join("")
+    }
+
+    if (deprecatedTag) {
+      parameter.deprecated = {
+        is_deprecated: true,
+        description: deprecatedTag?.content.map((c) => c.text).join(""),
+      }
+    }
+
+    return parameter
   }
 
   const componentItem: Parameter[] = []

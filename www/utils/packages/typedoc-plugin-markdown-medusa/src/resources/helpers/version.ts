@@ -13,6 +13,6 @@ export default function () {
 
     const tagContent = sinceTag.content.map((content) => content.text).join("")
 
-    return `:::note\n\nThis is available starting from Medusa \`v${tagContent}\`.\n\n:::`
+    return `:::note\n\nThis is available starting from [Medusa v${tagContent}](https://github.com/medusajs/medusa/releases/tag/v${tagContent}).\n\n:::`
   })
 }

@@ -133,6 +133,10 @@ export function reflectionComponentFormatter({
     reflection.flags.isOptional ||
     reflection.kind === ReflectionKind.EnumMember
   const comments = getComments(reflection)
+  const deprecatedTag = comments?.blockTags.find(
+    (tag) => tag.tag === "@deprecated"
+  )
+  const sinceTag = comments?.blockTags.find((tag) => tag.tag === "@since")
   const componentItem: Parameter = {
     name: reflection.name,
     type: reflection.type
@@ -158,6 +162,17 @@ export function reflectionComponentFormatter({
     expandable: reflection.comment?.hasModifier(`@expandable`) || false,
     featureFlag: Handlebars.helpers.featureFlag(reflection.comment),
     children: [],
+  }
+
+  if (sinceTag) {
+    componentItem.since = sinceTag.content.map((c) => c.text).join("")
+  }
+
+  if (deprecatedTag) {
+    componentItem.deprecated = {
+      is_deprecated: true,
+      description: deprecatedTag?.content.map((c) => c.text).join(""),
+    }
   }
 
   if (level + 1 > (maxLevel || MarkdownTheme.MAX_LEVEL)) {

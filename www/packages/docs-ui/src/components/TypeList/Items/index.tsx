@@ -22,6 +22,8 @@ import {
 import { decodeStr, isInView } from "@/utils"
 import { usePathname } from "next/navigation"
 import { useIsBrowser, useSiteConfig } from "../../.."
+import { VersionNotice } from "../../Notices/VersionNotice"
+import { DeprecatedNotice } from "../../Notices/DeprecatedNotice"
 
 type CommonProps = ParentCommonProps & {
   level?: number
@@ -235,6 +237,15 @@ const TypeListItem = ({
                 badgeClassName="!p-docs_0.25 block leading-none"
                 badgeContent={<ArrowsPointingOutMini />}
               />
+            )}
+            {item.since && (
+              <VersionNotice
+                version={item.since}
+                badgeClassName="!p-0 leading-none"
+              />
+            )}
+            {item.deprecated?.is_deprecated && (
+              <DeprecatedNotice description={item.deprecated?.description} />
             )}
           </div>
         </div>

@@ -17,6 +17,11 @@ export type Type = {
   featureFlag?: string
   expandable: boolean
   children?: Type[]
+  deprecated?: {
+    is_deprecated: boolean
+    description?: string
+  }
+  since?: string
 }
 
 type ParameterTypesType = {

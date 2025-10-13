@@ -606,14 +606,22 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
     deprecatedTag: ts.JSDocTag | undefined
     sinceTag: ts.JSDocTag | undefined
     featureFlagTag: ts.JSDocTag | undefined
+    summary: string | undefined
   } {
     const nodeComments = ts.getJSDocCommentsAndTags(node)
     let deprecatedTag: ts.JSDocTag | undefined
     let sinceTag: ts.JSDocTag | undefined
     let featureFlagTag: ts.JSDocTag | undefined
+    let summary: string | undefined
 
     nodeComments.forEach((comment) => {
       if (!("tags" in comment)) {
+        if (ts.isJSDoc(comment) && comment.comment) {
+          summary =
+            typeof comment.comment === "string"
+              ? comment.comment
+              : comment.comment.map((part) => part.text).join(" ")
+        }
         return
       }
 
@@ -636,7 +644,20 @@ class DefaultKindGenerator<T extends ts.Node = ts.Node> {
       deprecatedTag,
       sinceTag,
       featureFlagTag,
+      summary,
     }
+  }
+
+  formatJSDocTag(tag: ts.JSDocTag | undefined): string | undefined {
+    if (!tag) {
+      return undefined
+    }
+
+    if (typeof tag.comment === "string") {
+      return tag.comment
+    }
+
+    return tag.comment?.map((part) => part.text).join(" ")
   }
 
   /**

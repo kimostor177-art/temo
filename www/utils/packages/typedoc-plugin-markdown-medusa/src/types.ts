@@ -34,4 +34,9 @@ export type Parameter = {
   featureFlag?: string
   expandable: boolean
   children?: Parameter[]
+  since?: string
+  deprecated?: {
+    is_deprecated: boolean
+    description?: string
+  }
 }

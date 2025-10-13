@@ -101,10 +101,24 @@ class DmlKindGenerator extends DefaultKindGenerator<ts.CallExpression> {
           dataModelName,
         })
 
+    /**
+     * Use parent to get tags like since, deprecated, featureFlag
+     */
+    const parent = node.parent?.parent?.parent
+
+    const { sinceTag, deprecatedTag, featureFlagTag } =
+      this.getInformationFromTags(parent)
+
     const dmlFile: DmlFile = {
       [dataModelName]: {
         filePath: getBasePath(node.getSourceFile().fileName),
         properties,
+        since: this.formatJSDocTag(sinceTag),
+        deprecated: {
+          is_deprecated: !!deprecatedTag,
+          description: this.formatJSDocTag(deprecatedTag),
+        },
+        featureFlag: this.formatJSDocTag(featureFlagTag),
       },
     }
 
@@ -229,8 +243,11 @@ class DmlKindGenerator extends DefaultKindGenerator<ts.CallExpression> {
       )
       const isBoolean = propertyTypeStr.includes("BooleanProperty")
       const relationName = isRelation ? camelToWords(propertyName) : undefined
+      const { summary, sinceTag, deprecatedTag, featureFlagTag } =
+        this.getInformationFromTags(propertyNode)
 
       let propertyDescription =
+        summary ||
         this.knowledgeBaseFactory.tryToGetObjectPropertySummary({
           retrieveOptions: {
             str: propertyName,
@@ -249,6 +266,24 @@ class DmlKindGenerator extends DefaultKindGenerator<ts.CallExpression> {
 
       if (isRelation) {
         propertyDescription += `\n\n@expandable`
+      }
+
+      if (sinceTag) {
+        propertyDescription += `\n\n@since ${
+          this.formatJSDocTag(sinceTag) ?? ""
+        }`
+      }
+
+      if (featureFlagTag) {
+        propertyDescription += `\n\n@featureFlag ${
+          this.formatJSDocTag(featureFlagTag) ?? ""
+        }`
+      }
+
+      if (deprecatedTag) {
+        propertyDescription += `\n\n@deprecated ${
+          this.formatJSDocTag(deprecatedTag) ?? ""
+        }`
       }
 
       properties[propertyName] = propertyDescription
