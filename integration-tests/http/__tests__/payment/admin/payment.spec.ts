@@ -254,7 +254,7 @@ medusaIntegrationTestRunner({
                 refund_reason_id: refundReason.id,
                 refund_reason: expect.objectContaining({
                   label: "test",
-                  code: "test"
+                  code: "test",
                 }),
               }),
             ],
@@ -363,6 +363,73 @@ medusaIntegrationTestRunner({
 
         expect(updatedOrder.credit_line_total).toEqual(50)
         expect(updatedOrder.credit_lines).toEqual([
+          expect.objectContaining({
+            reference: "Test",
+            reference_id: "test",
+          }),
+        ])
+      })
+
+      it("should throw if the refund amount exceeds the payment amount", async () => {
+        const payment = order.payment_collections[0].payments[0]
+
+        const refundReason = (
+          await api.post(
+            `/admin/refund-reasons`,
+            { label: "Test", code: "test" },
+            adminHeaders
+          )
+        ).data.refund_reason
+
+        await api.post(
+          `/admin/payments/${payment.id}/capture`,
+          undefined,
+          adminHeaders
+        )
+
+        await api.post(
+          `/admin/payments/${payment.id}/refund`,
+          {
+            amount: 50,
+            refund_reason_id: refundReason.id,
+          },
+          adminHeaders
+        )
+
+        const updatedOrder = (
+          await api.get(`/admin/orders/${order.id}`, adminHeaders)
+        ).data.order
+
+        expect(updatedOrder.credit_line_total).toEqual(50)
+        expect(updatedOrder.credit_lines).toEqual([
+          expect.objectContaining({
+            reference: "Test",
+            reference_id: "test",
+          }),
+        ])
+
+        try {
+          await api.post(
+            `/admin/payments/${payment.id}/refund`,
+            {
+              amount: 5000,
+              refund_reason_id: refundReason.id,
+            },
+            adminHeaders
+          )
+        } catch (error) {
+          expect(error.response.status).toBe(400)
+          expect(error.response.data.message).toBe(
+            "You are not allowed to refund more than the captured amount"
+          )
+        }
+
+        const updatedUpdatedOrder = (
+          await api.get(`/admin/orders/${order.id}`, adminHeaders)
+        ).data.order
+
+        expect(updatedUpdatedOrder.credit_line_total).toEqual(50)
+        expect(updatedUpdatedOrder.credit_lines).toEqual([
           expect.objectContaining({
             reference: "Test",
             reference_id: "test",

@@ -1,6 +1,15 @@
 import type { BigNumberInput, OrderDTO } from "@medusajs/framework/types"
-import { ChangeActionType, OrderChangeStatus, OrderChangeType, } from "@medusajs/framework/utils"
-import { createStep, createWorkflow, transform, WorkflowData, } from "@medusajs/framework/workflows-sdk"
+import {
+  ChangeActionType,
+  OrderChangeStatus,
+  OrderChangeType,
+} from "@medusajs/framework/utils"
+import {
+  createStep,
+  createWorkflow,
+  transform,
+  WorkflowData,
+} from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "../../../common"
 import { confirmOrderChanges } from "../../steps/confirm-order-changes"
 import { createOrderChangeStep } from "../../steps/create-order-change"
@@ -27,8 +36,8 @@ export const createOrderRefundCreditLinesWorkflow = createWorkflow(
   function (
     input: WorkflowData<{
       order_id: string
-      amount: BigNumberInput,
-      reference?: string,
+      amount: BigNumberInput
+      reference?: string
       referenceId?: string
       created_by?: string
     }>

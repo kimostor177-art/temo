@@ -1,10 +1,22 @@
-import { BigNumberInput } from "@medusajs/framework/types"
-import { MathBN, PaymentEvents } from "@medusajs/framework/utils"
-import { createWorkflow, transform, when, WorkflowData, WorkflowResponse, } from "@medusajs/framework/workflows-sdk"
+import { BigNumberInput, PaymentDTO } from "@medusajs/framework/types"
+import {
+  BigNumber,
+  MathBN,
+  MedusaError,
+  PaymentEvents,
+} from "@medusajs/framework/utils"
+import {
+  createStep,
+  createWorkflow,
+  transform,
+  when,
+  WorkflowData,
+  WorkflowResponse,
+} from "@medusajs/framework/workflows-sdk"
 import { emitEventStep, useRemoteQueryStep } from "../../common"
 import { addOrderTransactionStep } from "../../order/steps/add-order-transaction"
-import { refundPaymentStep } from "../steps/refund-payment"
 import { createOrderRefundCreditLinesWorkflow } from "../../order/workflows/payments/create-order-refund-credit-lines"
+import { refundPaymentStep } from "../steps/refund-payment"
 
 /**
  * The data to refund a payment.
@@ -31,6 +43,49 @@ export type RefundPaymentWorkflowInput = {
    */
   refund_reason_id?: string
 }
+
+/**
+ * This step validates that an order refund credit line can be issued
+ */
+export const validateRefundPaymentExceedsCapturedAmountStep = createStep(
+  "validate-refund-payment-exceeds-captured-amount",
+  async function ({
+    payment,
+    refundAmount,
+  }: {
+    payment: PaymentDTO
+    refundAmount: BigNumberInput
+  }) {
+    const capturedAmount = (payment.captures || []).reduce(
+      (captureAmount, next) => {
+        const amountAsBigNumber = new BigNumber(
+          next.raw_amount as BigNumberInput
+        )
+        return MathBN.add(captureAmount, amountAsBigNumber)
+      },
+      MathBN.convert(0)
+    )
+
+    const refundedAmount = (payment.refunds || []).reduce(
+      (refundedAmount, next) => {
+        const amountAsBigNumber = new BigNumber(
+          next.raw_amount as BigNumberInput
+        )
+        return MathBN.add(refundedAmount, amountAsBigNumber)
+      },
+      MathBN.convert(0)
+    )
+
+    const totalRefundedAmount = MathBN.add(refundedAmount, refundAmount)
+
+    if (MathBN.lt(capturedAmount, totalRefundedAmount)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `You are not allowed to refund more than the captured amount`
+      )
+    }
+  }
+)
 
 export const refundPaymentWorkflowId = "refund-payment-workflow"
 /**
@@ -63,11 +118,20 @@ export const refundPaymentWorkflow = createWorkflow(
         "currency_code",
         "amount",
         "raw_amount",
+        "captures.raw_amount",
+        "refunds.raw_amount",
       ],
       variables: { id: input.payment_id },
       list: false,
       throw_if_key_not_found: true,
     })
+
+    when({ input }, ({ input }) => !!input.amount).then(() =>
+      validateRefundPaymentExceedsCapturedAmountStep({
+        payment,
+        refundAmount: input.amount as BigNumberInput,
+      })
+    )
 
     const orderPaymentCollection = useRemoteQueryStep({
       entry_point: "order_payment_collection",
@@ -87,8 +151,8 @@ export const refundPaymentWorkflow = createWorkflow(
 
     const refundReason = when(
       "fetch-refund-reason",
-      { input }, ({ input }) =>
-        !!input.refund_reason_id
+      { input },
+      ({ input }) => !!input.refund_reason_id
     ).then(() => {
       return useRemoteQueryStep({
         entry_point: "refund_reason",
@@ -99,33 +163,29 @@ export const refundPaymentWorkflow = createWorkflow(
       }).config({ name: "refund-reason" })
     })
 
-    const creditLineAmount = transform({ order, payment, input }, ({ order, payment, input }) => {
-      const pendingDifference = order.summary?.raw_pending_difference! ?? order.summary?.pending_difference! ?? 0
-      const amountToRefund = input.amount ?? payment.raw_amount ?? payment.amount
-
-      if (MathBN.lt(pendingDifference, 0)) {
-        const amountOwed = MathBN.mult(pendingDifference, -1)
-
-        return MathBN.gt(amountToRefund, amountOwed) ?  MathBN.sub(amountToRefund, amountOwed) : 0
-      }
-
-      return amountToRefund
-    })
-
-    when(
-      { creditLineAmount, refundReason }, ({ creditLineAmount, refundReason }) => MathBN.gt(creditLineAmount, 0)
-    ).then(() => {
-      createOrderRefundCreditLinesWorkflow.runAsStep({
-        input: {
-          order_id: order.id,
-          amount: creditLineAmount,
-          reference: refundReason?.label,
-          referenceId: refundReason?.code
-        },
-      })
-    })
-
     const refundPayment = refundPaymentStep(input)
+
+    const creditLineAmount = transform(
+      { order, payment, input },
+      ({ order, payment, input }) => {
+        const pendingDifference =
+          order.summary?.raw_pending_difference! ??
+          order.summary?.pending_difference! ??
+          0
+        const amountToRefund =
+          input.amount ?? payment.raw_amount ?? payment.amount
+
+        if (MathBN.lt(pendingDifference, 0)) {
+          const amountOwed = MathBN.mult(pendingDifference, -1)
+
+          return MathBN.gt(amountToRefund, amountOwed)
+            ? MathBN.sub(amountToRefund, amountOwed)
+            : 0
+        }
+
+        return amountToRefund
+      }
+    )
 
     when({ orderPaymentCollection }, ({ orderPaymentCollection }) => {
       return !!orderPaymentCollection?.order?.id
@@ -149,6 +209,19 @@ export const refundPaymentWorkflow = createWorkflow(
       )
 
       addOrderTransactionStep(orderTransactionData)
+    })
+
+    when({ creditLineAmount }, ({ creditLineAmount }) =>
+      MathBN.gt(creditLineAmount, 0)
+    ).then(() => {
+      createOrderRefundCreditLinesWorkflow.runAsStep({
+        input: {
+          order_id: order.id,
+          amount: creditLineAmount,
+          reference: refundReason?.label,
+          referenceId: refundReason?.code,
+        },
+      })
     })
 
     emitEventStep({
