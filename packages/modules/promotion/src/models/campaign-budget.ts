@@ -17,9 +17,15 @@ const CampaignBudget = model
         mappedBy: "budget",
       }),
 
+      /**
+       * @since 2.11.0
+       */
       attribute: model.text().nullable(), // e.g. "customer_id", "customer_email"
 
       // usages when budget type is "limit/use by attribute"
+      /**
+       * @since 2.11.0
+       */
       usages: model.hasMany(() => CampaignBudgetUsage, {
         mappedBy: "budget",
       }),
