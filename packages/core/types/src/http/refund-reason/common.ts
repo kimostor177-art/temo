@@ -39,11 +39,32 @@ export interface BaseRefundReason {
 }
 
 export interface BaseRefundReasonListParams extends FindParams {
+  /**
+   * A search term to search for refund reasons by label or description.
+   */
   q?: string
+  /**
+   * Filter by refund reason ID(s).
+   */
   id?: string | string[]
+  /**
+   * Filter by label(s).
+   */
   label?: string | OperatorMap<string>
+  /**
+   * Filter by description(s).
+   */
   description?: string | OperatorMap<string>
+  /**
+   * Filter by parent refund reason ID(s).
+   */
   parent_refund_reason_id?: string | OperatorMap<string | string[]>
+  /**
+   * Filter by creation date.
+   */
   created_at?: OperatorMap<string>
+  /**
+   * Filter by update date.
+   */
   updated_at?: OperatorMap<string>
 }
