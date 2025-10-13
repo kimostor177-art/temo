@@ -197,7 +197,7 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
       options: { isList: false },
     }).config({ name: "order-query" })
 
-    const items = when({ input }, ({ input }) => {
+    const items = when("get-order-line-items", { input }, ({ input }) => {
       return input.item_ids!?.length > 0
     }).then(() => {
       const { data: orderLineItems } = useQueryGraphStep({
@@ -209,7 +209,7 @@ export const updateOrderTaxLinesWorkflow = createWorkflow(
       return orderLineItems
     })
 
-    const shippingMethods = when({ input }, ({ input }) => {
+    const shippingMethods = when("get-order-shipping-methods", { input }, ({ input }) => {
       return input.shipping_method_ids!?.length > 0
     }).then(() => {
       const { data: orderShippingMethods } = useQueryGraphStep({
