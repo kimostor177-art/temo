@@ -11,6 +11,22 @@ type CampaignBudgetProps = {
 export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
   const { t } = useTranslation()
 
+  const getTranslation = () => {
+    const budget = campaign.budget
+
+    if (budget?.type === "use_by_attribute") {
+      if (budget?.attribute === "customer_id") {
+        return t(`campaigns.budget.fields.totalUsedByAttributeCustomerId`)
+      } else if (budget?.attribute === "customer_email") {
+        return t(`campaigns.budget.fields.totalUsedByAttributeEmail`)
+      }
+      return t(`campaigns.budget.fields.totalUsedByAttribute`, {
+        attribute: budget?.attribute,
+      })
+    }
+    return t(`campaigns.fields.budget_limit`)
+  }
+
   return (
     <Container className="flex flex-col gap-y-4 px-6 py-4">
       <div className="flex justify-between">
@@ -25,11 +41,7 @@ export const CampaignBudget = ({ campaign }: CampaignBudgetProps) => {
             className="text-ui-fg-subtle ms-10 mt-[1.5px] font-normal"
             level="h3"
           >
-            {campaign.budget?.type === "use_by_attribute"
-              ? t("campaigns.budget.fields.totalUsedByAttribute", {
-                  attribute: campaign.budget?.attribute,
-                })
-              : t("campaigns.fields.budget_limit")}
+            {getTranslation()}
           </Heading>
         </div>
 

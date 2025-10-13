@@ -9,6 +9,21 @@ const translationKeyMap = {
   use_by_attribute: "useByAttribute",
 }
 
+const getTranslationKey = (budget: AdminCampaign["budget"]) => {
+  const translationKey = translationKeyMap[budget?.type] || "-"
+
+  if (budget?.type === "use_by_attribute") {
+    if (budget?.attribute === "customer_id") {
+      return `campaigns.budget.type.useByAttribute.titleCustomerId`
+    } else if (budget?.attribute === "customer_email") {
+      return `campaigns.budget.type.useByAttribute.titleEmail`
+    }
+    return `campaigns.budget.type.useByAttribute.title`
+  }
+
+  return `campaigns.budget.type.${translationKey}.title`
+}
+
 type CampaignDetailsProps = {
   campaign?: AdminCampaign
 }
@@ -84,12 +99,9 @@ export const CampaignDetails = ({ campaign }: CampaignDetailsProps) => {
 
           <div className="flex items-center gap-1">
             <Text className="txt-small truncate">
-              {t(
-                `campaigns.budget.type.${translationKeyMap[campaign.budget?.type]}.title`,
-                {
-                  defaultValue: "-",
-                }
-              )}
+              {t(getTranslationKey(campaign.budget), {
+                defaultValue: "-",
+              })}
             </Text>
           </div>
         </div>
