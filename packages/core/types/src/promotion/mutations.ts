@@ -25,7 +25,13 @@ export interface CreateCampaignBudgetDTO {
   currency_code?: string | null
 
   /**
-   * The attribute by which the campaign budget usage is limited.
+   * The attribute that the budget limit is applied to. By default,
+   * the budget is applied globally. If the type is `use_by_attribute`, this field indicates the 
+   * attribute the budget is tracked by. For example, `customer_id` means the budget is tracked per customer.
+   * 
+   * @example
+   * customer_id
+   * @since 2.11.0
    */
   attribute?: string | null
 }

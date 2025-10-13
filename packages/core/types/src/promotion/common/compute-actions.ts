@@ -244,6 +244,8 @@ export interface ComputeActionContext extends Record<string, unknown> {
 
   /**
    * The cart's email
+   * 
+   * @since 2.11.0
    */
   email?: string
 

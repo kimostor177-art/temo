@@ -24,8 +24,8 @@ export interface CampaignBudgetDTO {
    *
    * - `spend` indicates that the budget is limited by the amount discounted by the promotions in the associated campaign.
    * - `usage` indicates that the budget is limited by the number of times the promotions of the associated campaign have been used.
-   * - `use_by_attribute` indicates that the budget is limited by the number of times the promotions of the associated campaign have been used by a specific attribute value.
-   * - `spend_by_attribute` indicates that the budget is limited by the amount discounted by the promotions in the associated campaign by a specific attribute value.
+   * - `use_by_attribute` indicates that the budget is limited by the number of times the promotions of the associated campaign have been used by a specific attribute value (for example, per customer)
+   * - `spend_by_attribute` indicates that the budget is limited by the amount discounted by the promotions in the associated campaign by a specific attribute value (for example, per customer)
    *
    */
   type?: CampaignBudgetTypeValues
@@ -50,12 +50,22 @@ export interface CampaignBudgetDTO {
   currency_code?: string
 
   /**
-   * The attribute of the campaign budget.
+   * The attribute that the budget limit is applied to. By default,
+   * the budget is applied globally. If the type is `use_by_attribute`, this field indicates the 
+   * attribute the budget is tracked by. For example, `customer_id` means the budget is tracked per customer.
+   * 
+   * @example
+   * customer_id
+   * @since 2.11.0
    */
   attribute?: string
 
   /**
-   * The usages of the campaign budget.
+   * The usages of the campaign budget. This is only set if the
+   * budget's type is `use_by_attribute` or `spend_by_attribute`.
+   * Each usage tracks the budget usage for a specific attribute value.
+   * 
+   * @since 2.11.0
    */
   usages?: CampaignBudgetUsageDTO[]
 }

@@ -12,7 +12,10 @@ export type CampaignBudgetUsageContext = {
   customer_email: string | null
 }
 /**
- * Record of promotion usage as part of a campaign
+ * Record of promotion usage as part of a campaign whose budget type
+ * is `use_by_attribute` or `spend_by_attribute`.
+ * 
+ * @since 2.11.0
  */
 export interface CampaignBudgetUsageDTO {
   /**
@@ -21,14 +24,14 @@ export interface CampaignBudgetUsageDTO {
   id: string
   /**
    * The value of the attribute that the promotion was used by.
-   * e.g. if budget campaign is defined on `email` as a useage attribute,
-   * `attribute_value` could contains email addresses
+   * For example, if the budget campaign's attribute is `customer_id`,',
+   * this value will be the ID of the customer that used the promotion.
    */
   attribute_value: string
   /**
    * The amount of times the promotion was used or
-   * the amount of money discounted by the promotion.
-   * Depends on the CampaignBudget type.
+   * the amount of money discounted by the promotion,
+   * depending on the campaign budget's type.
    */
   used: number
   /**

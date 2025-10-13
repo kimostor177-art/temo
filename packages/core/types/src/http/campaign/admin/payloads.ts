@@ -35,6 +35,7 @@ export interface AdminCreateCampaign {
     /**
      * The budget's type. `spend` means the limit is set on the total amount discounted by the campaign's promotions;
      * `usage` means the limit is set on the total number of times the campaign's promotions can be used.
+     * `use_by_attribute` means the limit is set for a specific condition, such as per customer.
      */
     type?: CampaignBudgetTypeValues
     /**
@@ -49,7 +50,13 @@ export interface AdminCreateCampaign {
      */
     limit?: number | null
     /**
-     * The budget's attribute.
+     * The attribute that the budget limit is applied to. By default,
+     * the budget is applied globally. If the type is `use_by_attribute`, this field indicates the 
+     * attribute the budget is tracked by. For example, `customer_id` means the budget is tracked per customer.
+     *
+     * @example
+     * customer_id
+     * @since 2.11.0
      */
     attribute?: string | null
   } | null
