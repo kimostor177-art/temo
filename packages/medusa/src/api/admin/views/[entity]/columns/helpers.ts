@@ -257,6 +257,10 @@ export const getTypeInfoFromGraphQLType = (
 
 type Entities = keyof typeof ENTITY_MAPPINGS
 
+const ADDITIONAL_ENTITY_TYPES: Partial<Record<Entities, string[]>> = {
+  orders: ["OrderDetail"],
+}
+
 export const DEFAULT_COLUMN_ORDERS: Record<Entities, Record<string, number>> = {
   orders: {
     display_id: 100,
@@ -333,6 +337,12 @@ export const generateEntityColumns = (
     entityMapping.graphqlType
   ] as GraphQLObjectType
 
+  const entityFields = entityType?.getFields?.() ?? {}
+  const additionalFieldDefinitions = new Map<
+    string,
+    ReturnType<GraphQLObjectType["getFields"]>[string]
+  >()
+
   const allDirectFields = graphqlSchemaToFields(
     schemaTypeMap,
     entityMapping.graphqlType,
@@ -341,7 +351,7 @@ export const generateEntityColumns = (
 
   // Filter out problematic fields
   const directFields = allDirectFields.filter((fieldName) => {
-    const field = entityType?.getFields()[fieldName]
+    const field = entityFields[fieldName]
     if (!field) return true
 
     const isArray = isArrayField(field.type)
@@ -359,6 +369,48 @@ export const generateEntityColumns = (
   if (entity === "orders" && !directFields.includes("display_id")) {
     directFields.unshift("display_id")
   }
+
+  const additionalTypes = ADDITIONAL_ENTITY_TYPES[entity as Entities] ?? []
+
+  additionalTypes.forEach((typeName) => {
+    const additionalType = schemaTypeMap[typeName] as
+      | GraphQLObjectType
+      | undefined
+    if (!additionalType) {
+      return
+    }
+
+    const additionalFields = graphqlSchemaToFields(
+      schemaTypeMap,
+      typeName,
+      []
+    )
+
+    additionalFields.forEach((fieldName) => {
+      if (directFields.includes(fieldName)) {
+        return
+      }
+
+      const field = additionalType.getFields()[fieldName]
+
+      if (field) {
+        const isArray = isArrayField(field.type)
+        if (isArray) {
+          return
+        }
+      }
+
+      if (shouldExcludeField(fieldName, entityMapping.fieldFilters)) {
+        return
+      }
+
+      directFields.push(fieldName)
+
+      if (field) {
+        additionalFieldDefinitions.set(fieldName, field)
+      }
+    })
+  })
 
   const relationMap = extractRelationsFromGQL(
     new Map(Object.entries(schemaTypeMap))
@@ -408,8 +460,7 @@ export const generateEntityColumns = (
   const directColumns = directFields.map((fieldName) => {
     const displayName = formatFieldName(fieldName)
 
-    const type = schemaTypeMap[entityMapping.graphqlType] as GraphQLObjectType
-    const fieldDef = type?.getFields()?.[fieldName]
+    const fieldDef = entityFields[fieldName] || additionalFieldDefinitions.get(fieldName)
     const typeInfo = fieldDef
       ? getTypeInfoFromGraphQLType(fieldDef.type, fieldName)
       : getTypeInfoFromGraphQLType(null, fieldName)

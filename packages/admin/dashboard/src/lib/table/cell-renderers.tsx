@@ -13,6 +13,7 @@ import { DisplayIdCell } from "../../components/table/table-cells/order/display-
 import { TotalCell } from "../../components/table/table-cells/order/total-cell"
 import { MoneyAmountCell } from "../../components/table/table-cells/common/money-amount-cell"
 import { TFunction } from "i18next"
+import { toCamelCase } from "../common"
 
 export type CellRenderer<TData = any> = (
   value: any,
@@ -71,10 +72,11 @@ const StatusRenderer: CellRenderer = (value, row, column, t) => {
   }
 
   // Use existing translation keys where available
-  const getTranslatedStatus = (status: string): string => {
+  const getTranslatedStatus = (status: string, column: HttpTypes.AdminColumn): string => {
     if (!t) return status
 
     const lowerStatus = status.toLowerCase()
+    const camelCaseStatus = toCamelCase(lowerStatus)
     switch (lowerStatus) {
       case 'active':
         return t('general.active', 'Active') as string
@@ -87,12 +89,18 @@ const StatusRenderer: CellRenderer = (value, row, column, t) => {
       case 'canceled':
         return t('orders.status.canceled', 'Canceled') as string
       default:
+        if (column.context === 'payment') {
+          return t(`orders.payment.status.${camelCaseStatus}`, status) as string
+        }
+        if (column.context === 'fulfillment') {
+          return t(`orders.fulfillment.status.${camelCaseStatus}`, status) as string
+        }
         // Try generic status translation with fallback
         return t(`status.${lowerStatus}`, status) as string
     }
   }
 
-  const translatedValue = getTranslatedStatus(value)
+  const translatedValue = getTranslatedStatus(value, column)
 
   return (
     <StatusBadge color={getStatusColor(value)}>
