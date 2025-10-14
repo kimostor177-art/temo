@@ -26,7 +26,6 @@ describe("CSV processor", () => {
       {
         "toCreate": {
           "sweatshirt": {
-            "categories": [],
             "description": "Reimagine the feeling of a classic sweatshirt. With our cotton sweatshirt, everyday essentials no longer have to be ordinary.",
             "discountable": true,
             "handle": "sweatshirt",
@@ -52,7 +51,6 @@ describe("CSV processor", () => {
               },
             ],
             "status": "published",
-            "tags": [],
             "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatshirt-vintage-front.png",
             "title": "Medusa Sweatshirt",
             "variants": [
@@ -99,7 +97,6 @@ describe("CSV processor", () => {
       {
         "toCreate": {
           "sweatshirt": {
-            "categories": [],
             "description": "Reimagine the feeling of a classic sweatshirt. With our cotton sweatshirt, everyday essentials no longer have to be ordinary.",
             "discountable": true,
             "handle": "sweatshirt",
@@ -127,7 +124,6 @@ describe("CSV processor", () => {
               },
             ],
             "status": "published",
-            "tags": [],
             "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatshirt-vintage-front.png",
             "title": "Medusa Sweatshirt",
             "variants": [
@@ -216,7 +212,6 @@ describe("CSV processor", () => {
       {
         "toCreate": {
           "sweatshirt": {
-            "categories": [],
             "description": "Reimagine the feeling of a classic sweatshirt. With our cotton sweatshirt, everyday essentials no longer have to be ordinary.",
             "discountable": true,
             "handle": "sweatshirt",
@@ -251,7 +246,6 @@ describe("CSV processor", () => {
               },
             ],
             "status": "published",
-            "tags": [],
             "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatshirt-vintage-front.png",
             "title": "Medusa Sweatshirt",
             "variants": [
@@ -343,7 +337,6 @@ describe("CSV processor", () => {
       {
         "toCreate": {
           "shorts": {
-            "categories": [],
             "description": "Reimagine the feeling of classic shorts. With our cotton shorts, everyday essentials no longer have to be ordinary.",
             "discountable": true,
             "handle": "shorts",
@@ -372,7 +365,6 @@ describe("CSV processor", () => {
               },
             ],
             "status": "published",
-            "tags": [],
             "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/shorts-vintage-front.png",
             "title": "Medusa Shorts",
             "variants": [
@@ -464,7 +456,6 @@ describe("CSV processor", () => {
             "weight": 400,
           },
           "sweatpants": {
-            "categories": [],
             "description": "Reimagine the feeling of classic sweatpants. With our cotton sweatpants, everyday essentials no longer have to be ordinary.",
             "discountable": true,
             "handle": "sweatpants",
@@ -493,7 +484,6 @@ describe("CSV processor", () => {
               },
             ],
             "status": "published",
-            "tags": [],
             "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatpants-gray-front.png",
             "title": "Medusa Sweatpants",
             "variants": [
@@ -585,7 +575,6 @@ describe("CSV processor", () => {
             "weight": 400,
           },
           "t-shirt": {
-            "categories": [],
             "description": "Reimagine the feeling of a classic T-shirt. With our cotton T-shirts, everyday essentials no longer have to be ordinary.",
             "discountable": true,
             "handle": "t-shirt",
@@ -627,7 +616,6 @@ describe("CSV processor", () => {
               },
             ],
             "status": "published",
-            "tags": [],
             "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-front.png",
             "title": "Medusa T-Shirt",
             "variants": [
@@ -813,7 +801,6 @@ describe("CSV processor", () => {
         },
         "toUpdate": {
           "prod_01JSXX3ZVW4M4RS0NH4MSWCQWA": {
-            "categories": [],
             "description": "Reimagine the feeling of a classic sweatshirt. With our cotton sweatshirt, everyday essentials no longer have to be ordinary.",
             "discountable": true,
             "handle": "sweatshirt",
@@ -843,7 +830,6 @@ describe("CSV processor", () => {
               },
             ],
             "status": "published",
-            "tags": [],
             "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatshirt-vintage-front.png",
             "title": "Medusa Sweatshirt",
             "variants": [
@@ -935,7 +921,6 @@ describe("CSV processor", () => {
             "weight": 400,
           },
           "prod_01JT598HEWAE555V0A6BD602MG": {
-            "categories": [],
             "description": "Every programmer's best friend.",
             "discountable": true,
             "handle": "coffee-mug-v3",
@@ -955,7 +940,6 @@ describe("CSV processor", () => {
             ],
             "sales_channels": [],
             "status": "published",
-            "tags": [],
             "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/coffee-mug.png",
             "title": "Medusa Coffee Mug",
             "variants": [
@@ -983,7 +967,6 @@ describe("CSV processor", () => {
             "weight": 400,
           },
           "prod_01JT598HEX26EHDG7SRK37Q3FG": {
-            "categories": [],
             "description": "Reimagine the feeling of classic sweatpants. With our cotton sweatpants, everyday essentials no longer have to be ordinary.",
             "discountable": true,
             "handle": "sweatpants-v2",
@@ -1009,7 +992,6 @@ describe("CSV processor", () => {
             ],
             "sales_channels": [],
             "status": "published",
-            "tags": [],
             "thumbnail": "https://medusa-public-images.s3.eu-west-1.amazonaws.com/sweatpants-gray-front.png",
             "title": "Medusa Sweatpants",
             "variants": [
@@ -1123,7 +1105,7 @@ describe("CSV processor", () => {
       const csvRow = {
         "Product Handle": "test-product",
         "Variant Title": "Test Variant",
-        "Variant Metadata": 'invalid json',
+        "Variant Metadata": "invalid json",
       }
 
       const normalized = CSVNormalizer.preProcess(csvRow, 1)
@@ -1158,12 +1140,12 @@ describe("CSV processor", () => {
       // Should be in toCreate since we only have handle
       expect(result.toCreate["test-product"]).toBeDefined()
       expect(result.toCreate["test-product"].is_giftcard).toBe(true)
-      
+
       // Timestamp fields should not be in the output since they're ignored
       expect(result.toCreate["test-product"]["created_at"]).toBeUndefined()
       expect(result.toCreate["test-product"]["updated_at"]).toBeUndefined()
       expect(result.toCreate["test-product"]["deleted_at"]).toBeUndefined()
-      
+
       // Verify that the timestamp fields are present in normalized data but ignored during processing
       expect(normalized["product created at"]).toBe("")
       expect(normalized["product updated at"]).toBe("")
@@ -1194,17 +1176,17 @@ describe("CSV processor", () => {
       // Should be in toCreate since we only have handle
       expect(result.toCreate["test-product"]).toBeDefined()
       expect(result.toCreate["test-product"].variants).toHaveLength(1)
-      
+
       const variant = result.toCreate["test-product"].variants[0]
       expect(variant.title).toBe("Test Variant")
       expect(variant.sku).toBe("TEST-SKU")
-      
+
       // Timestamp fields should not be in the variant output since they're ignored
       expect(variant["created_at"]).toBeUndefined()
       expect(variant["updated_at"]).toBeUndefined()
       expect(variant["deleted_at"]).toBeUndefined()
       expect(variant["product_id"]).toBeUndefined()
-      
+
       // Verify that the timestamp fields are present in normalized data but ignored during processing
       expect(normalized["variant created at"]).toBe("")
       expect(normalized["variant updated at"]).toBe("")
@@ -1259,7 +1241,9 @@ describe("CSV processor", () => {
         const processor = new CSVNormalizer([normalized])
         const result = processor.proccess()
 
-        expect(result.toCreate[`test-product-${value}`].is_giftcard).toBe(expected)
+        expect(result.toCreate[`test-product-${value}`].is_giftcard).toBe(
+          expected
+        )
       })
     })
   })

@@ -1,9 +1,9 @@
 import {
   isPresent,
-  tryConvertToNumber,
-  tryConvertToBoolean,
   MedusaError,
   normalizeCSVValue,
+  tryConvertToBoolean,
+  tryConvertToNumber,
 } from "../common"
 import { AdminCreateProduct, AdminCreateProductVariant } from "@medusajs/types"
 
@@ -89,11 +89,14 @@ function processAsJson<Output>(
   return (csvRow, _, rowNumber, output) => {
     const value = csvRow[inputKey]
     if (isPresent(value)) {
-      if (typeof value === 'string') {
+      if (typeof value === "string") {
         try {
-          output[outputKey] = JSON.parse(value);
+          output[outputKey] = JSON.parse(value)
         } catch (error) {
-          throw createError(rowNumber, `Invalid value provided for "${inputKey}". Expected a valid JSON string, received "${value}"`);
+          throw createError(
+            rowNumber,
+            `Invalid value provided for "${inputKey}". Expected a valid JSON string, received "${value}"`
+          )
         }
       }
     }
@@ -164,17 +167,21 @@ function processAsCounterValue<Output extends Record<string, any[]>>(
   outputKey: keyof Output
 ): ColumnProcessor<Output> {
   return (csvRow, rowColumns, _, output) => {
-    output[outputKey] = output[outputKey] ?? []
-    const existingIds = output[outputKey].map((item) => item[arrayItemKey])
+    const matchingColumns = rowColumns.filter((rowKey) => inputMatcher.test(rowKey))
 
-    rowColumns
-      .filter((rowKey) => inputMatcher.test(rowKey))
-      .forEach((rowKey) => {
+    // Only initialize the array if there are matching columns in the CSV
+    if (matchingColumns.length > 0) {
+      output[outputKey] = output[outputKey] ?? []
+
+      const existingIds = output[outputKey].map((item) => item[arrayItemKey])
+
+      matchingColumns.forEach((rowKey) => {
         const value = csvRow[rowKey]
         if (!existingIds.includes(value) && isPresent(value)) {
           output[outputKey].push({ [arrayItemKey]: value })
         }
       })
+    }
   }
 }
 
