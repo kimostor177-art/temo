@@ -9,6 +9,7 @@ import {
   PromotionStatus,
   PromotionType,
 } from "@medusajs/utils"
+import { setTimeout } from "timers/promises"
 import {
   createAdminUser,
   generatePublishableKey,
@@ -17,7 +18,6 @@ import {
 import { setupTaxStructure } from "../../../../modules/__tests__/fixtures"
 import { createAuthenticatedCustomer } from "../../../../modules/helpers/create-authenticated-customer"
 import { medusaTshirtProduct } from "../../../__fixtures__/product"
-import { setTimeout } from "timers/promises"
 
 jest.setTimeout(100000)
 
@@ -4985,6 +4985,315 @@ medusaIntegrationTestRunner({
                   ]),
                 })
               )
+            })
+          })
+
+          describe("ONCE allocation promotions", () => {
+            it("should apply fixed promotion to lowest priced items first and respect max_quantity across cart", async () => {
+              // Create two products with different prices
+              const expensiveProduct = (
+                await api.post(
+                  "/admin/products",
+                  {
+                    title: "Expensive Product",
+                    status: ProductStatus.PUBLISHED,
+                    options: [{ title: "Size", values: ["L"] }],
+                    variants: [
+                      {
+                        title: "Large",
+                        sku: "expensive-l",
+                        options: { Size: "L" },
+                        manage_inventory: false,
+                        prices: [{ amount: 10000, currency_code: "usd" }], // $100
+                      },
+                    ],
+                    shipping_profile_id: shippingProfile.id,
+                  },
+                  adminHeaders
+                )
+              ).data.product
+
+              const cheapProduct = (
+                await api.post(
+                  "/admin/products",
+                  {
+                    title: "Cheap Product",
+                    status: ProductStatus.PUBLISHED,
+                    options: [{ title: "Size", values: ["M"] }],
+                    variants: [
+                      {
+                        title: "Medium",
+                        sku: "cheap-m",
+                        options: { Size: "M" },
+                        manage_inventory: false,
+                        prices: [{ amount: 5000, currency_code: "usd" }], // $50
+                      },
+                    ],
+                    shipping_profile_id: shippingProfile.id,
+                  },
+                  adminHeaders
+                )
+              ).data.product
+
+              const oncePromotion = (
+                await api.post(
+                  `/admin/promotions`,
+                  {
+                    code: "ONCE_PROMO_FIXED",
+                    type: PromotionType.STANDARD,
+                    status: PromotionStatus.ACTIVE,
+                    is_automatic: false,
+                    application_method: {
+                      type: "fixed",
+                      target_type: "items",
+                      allocation: "once",
+                      value: 1000, // $10 off
+                      max_quantity: 2,
+                      currency_code: "usd",
+                      target_rules: [],
+                    },
+                  },
+                  adminHeaders
+                )
+              ).data.promotion
+
+              cart = (
+                await api.post(
+                  `/store/carts`,
+                  {
+                    currency_code: "usd",
+                    sales_channel_id: salesChannel.id,
+                    region_id: region.id,
+                    shipping_address: shippingAddressData,
+                    items: [
+                      {
+                        variant_id: expensiveProduct.variants[0].id,
+                        quantity: 3,
+                      },
+                      { variant_id: cheapProduct.variants[0].id, quantity: 5 },
+                    ],
+                    promo_codes: [oncePromotion.code],
+                  },
+                  storeHeadersWithCustomer
+                )
+              ).data.cart
+
+              // Should apply $10 discount twice to the cheap product only (lowest price)
+              const cheapItem = cart.items.find(
+                (i) => i.variant_id === cheapProduct.variants[0].id
+              )
+              const expensiveItem = cart.items.find(
+                (i) => i.variant_id === expensiveProduct.variants[0].id
+              )
+
+              expect(cheapItem.adjustments).toHaveLength(1)
+              expect(cheapItem.adjustments[0].amount).toBe(2000) // 2 * $10
+              expect(cheapItem.adjustments[0].code).toBe(oncePromotion.code)
+
+              expect(expensiveItem.adjustments).toHaveLength(0)
+            })
+
+            it("should distribute promotion across multiple items when max_quantity exceeds first item quantity", async () => {
+              const product1 = (
+                await api.post(
+                  "/admin/products",
+                  {
+                    title: "Product 1",
+                    status: ProductStatus.PUBLISHED,
+                    options: [{ title: "Size", values: ["S"] }],
+                    variants: [
+                      {
+                        title: "Small",
+                        sku: "prod1-s",
+                        options: { Size: "S" },
+                        manage_inventory: false,
+                        prices: [{ amount: 5000, currency_code: "usd" }], // $50
+                      },
+                    ],
+                    shipping_profile_id: shippingProfile.id,
+                  },
+                  adminHeaders
+                )
+              ).data.product
+
+              const product2 = (
+                await api.post(
+                  "/admin/products",
+                  {
+                    title: "Product 2",
+                    status: ProductStatus.PUBLISHED,
+                    options: [{ title: "Size", values: ["M"] }],
+                    variants: [
+                      {
+                        title: "Medium",
+                        sku: "prod2-m",
+                        options: { Size: "M" },
+                        manage_inventory: false,
+                        prices: [{ amount: 6000, currency_code: "usd" }], // $60
+                      },
+                    ],
+                    shipping_profile_id: shippingProfile.id,
+                  },
+                  adminHeaders
+                )
+              ).data.product
+
+              const oncePromotion = (
+                await api.post(
+                  `/admin/promotions`,
+                  {
+                    code: "ONCE_PROMO_DISTRIBUTE",
+                    type: PromotionType.STANDARD,
+                    status: PromotionStatus.ACTIVE,
+                    is_automatic: false,
+                    application_method: {
+                      type: "fixed",
+                      target_type: "items",
+                      allocation: "once",
+                      value: 500, // $5 off
+                      max_quantity: 4,
+                      currency_code: "usd",
+                      target_rules: [],
+                    },
+                  },
+                  adminHeaders
+                )
+              ).data.promotion
+
+              cart = (
+                await api.post(
+                  `/store/carts`,
+                  {
+                    currency_code: "usd",
+                    sales_channel_id: salesChannel.id,
+                    region_id: region.id,
+                    shipping_address: shippingAddressData,
+                    items: [
+                      { variant_id: product1.variants[0].id, quantity: 2 },
+                      { variant_id: product2.variants[0].id, quantity: 3 },
+                    ],
+                    promo_codes: [oncePromotion.code],
+                  },
+                  storeHeadersWithCustomer
+                )
+              ).data.cart
+
+              // Should apply: 2 units to product1 ($50), 2 units to product2 ($60)
+              const item1 = cart.items.find(
+                (i) => i.variant_id === product1.variants[0].id
+              )
+              const item2 = cart.items.find(
+                (i) => i.variant_id === product2.variants[0].id
+              )
+
+              expect(item1.adjustments).toHaveLength(1)
+              expect(item1.adjustments[0].amount).toBe(1000) // 2 * $5
+
+              expect(item2.adjustments).toHaveLength(1)
+              expect(item2.adjustments[0].amount).toBe(1000) // 2 * $5
+            })
+
+            it("should apply percentage promotion with once allocation to lowest priced items", async () => {
+              const product1 = (
+                await api.post(
+                  "/admin/products",
+                  {
+                    title: "Expensive Product",
+                    status: ProductStatus.PUBLISHED,
+                    options: [{ title: "Size", values: ["L"] }],
+                    variants: [
+                      {
+                        title: "Large",
+                        sku: "expensive-prod",
+                        options: { Size: "L" },
+                        manage_inventory: false,
+                        prices: [{ amount: 10000, currency_code: "usd" }], // $100
+                      },
+                    ],
+                    shipping_profile_id: shippingProfile.id,
+                  },
+                  adminHeaders
+                )
+              ).data.product
+
+              const product2 = (
+                await api.post(
+                  "/admin/products",
+                  {
+                    title: "Cheap Product",
+                    status: ProductStatus.PUBLISHED,
+                    options: [{ title: "Size", values: ["S"] }],
+                    variants: [
+                      {
+                        title: "Small",
+                        sku: "cheap-prod",
+                        options: { Size: "S" },
+                        manage_inventory: false,
+                        prices: [{ amount: 5000, currency_code: "usd" }], // $50
+                      },
+                    ],
+                    shipping_profile_id: shippingProfile.id,
+                  },
+                  adminHeaders
+                )
+              ).data.product
+
+              const oncePromotion = (
+                await api.post(
+                  `/admin/promotions`,
+                  {
+                    code: "ONCE_PROMO_PERCENTAGE",
+                    type: PromotionType.STANDARD,
+                    status: PromotionStatus.ACTIVE,
+                    is_automatic: false,
+                    application_method: {
+                      type: "percentage",
+                      target_type: "items",
+                      allocation: "once",
+                      value: 20, // 20% off
+                      max_quantity: 3,
+                      currency_code: "usd",
+                      target_rules: [],
+                    },
+                  },
+                  adminHeaders
+                )
+              ).data.promotion
+
+              cart = (
+                await api.post(
+                  `/store/carts`,
+                  {
+                    currency_code: "usd",
+                    sales_channel_id: salesChannel.id,
+                    region_id: region.id,
+                    shipping_address: shippingAddressData,
+                    items: [
+                      { variant_id: product1.variants[0].id, quantity: 5 },
+                      { variant_id: product2.variants[0].id, quantity: 4 },
+                    ],
+                    promo_codes: [oncePromotion.code],
+                  },
+                  storeHeadersWithCustomer
+                )
+              ).data.cart
+
+              // Should apply 20% to 3 units of the cheap product
+              // Tax-inclusive calculation: (($50 * 1.05) * 3 * 20%) / 1.05 ≈ $28.57 per unit * 3 = ~$2857
+              // The promotion inherits tax_inclusive from the cart's currency settings
+              const cheapItem = cart.items.find(
+                (i) => i.variant_id === product2.variants[0].id
+              )
+              const expensiveItem = cart.items.find(
+                (i) => i.variant_id === product1.variants[0].id
+              )
+
+              expect(cheapItem.adjustments).toHaveLength(1)
+              // Tax-inclusive: 20% of (3 units * $50 tax-inclusive) accounting for 5% tax
+              expect(cheapItem.adjustments[0].amount).toBeCloseTo(2857.14, 0)
+              expect(cheapItem.adjustments[0].code).toBe(oncePromotion.code)
+
+              expect(expensiveItem.adjustments).toHaveLength(0)
             })
           })
         })

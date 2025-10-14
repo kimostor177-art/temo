@@ -7569,6 +7569,9 @@
             "allocation": {
               "type": "string"
             },
+            "allocationTooltip": {
+              "type": "string"
+            },
             "addCondition": {
               "type": "string"
             },
@@ -8048,9 +8051,22 @@
                   },
                   "required": ["title", "description"],
                   "additionalProperties": false
+                },
+                "once": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["title", "description"],
+                  "additionalProperties": false
                 }
               },
-              "required": ["each", "across"],
+              "required": ["each", "across", "once"],
               "additionalProperties": false
             },
             "code": {

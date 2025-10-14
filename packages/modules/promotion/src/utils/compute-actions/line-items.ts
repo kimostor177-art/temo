@@ -7,15 +7,16 @@ import {
 import {
   ApplicationMethodAllocation,
   ApplicationMethodTargetType,
-  ApplicationMethodTargetType as TargetType,
   calculateAdjustmentAmountFromPromotion,
   ComputedActions,
   MathBN,
   MedusaError,
+  ApplicationMethodTargetType as TargetType,
 } from "@medusajs/framework/utils"
-import { areRulesValidForContext } from "../validations"
-import { computeActionForBudgetExceeded } from "./usage"
 import { Promotion } from "@models"
+import { areRulesValidForContext } from "../validations"
+import { sortLineItemByPriceAscending } from "./sort-by-price"
+import { computeActionForBudgetExceeded } from "./usage"
 
 function validateContext(
   contextKey: string,
@@ -66,16 +67,24 @@ function applyPromotionToItems(
 
   const computedActions: PromotionTypes.ComputeActions[] = []
 
-  const applicableItems = getValidItemsForPromotion(items, promotion)
+  let applicableItems = getValidItemsForPromotion(
+    items,
+    promotion
+  ) as PromotionTypes.ComputeActionItemLine[]
 
   if (!applicableItems.length) {
     return computedActions
+  }
+
+  if (allocation === ApplicationMethodAllocation.ONCE) {
+    applicableItems = applicableItems.sort(sortLineItemByPriceAscending)
   }
 
   const isTargetLineItems = target === TargetType.ITEMS
   const isTargetOrder = target === TargetType.ORDER
   const promotionValue = applicationMethod?.value ?? 0
   const maxQuantity = applicationMethod?.max_quantity!
+  let remainingQuota = maxQuantity ?? 0
 
   let lineItemsAmount = MathBN.convert(0)
   if (allocation === ApplicationMethodAllocation.ACROSS) {
@@ -98,6 +107,12 @@ function applyPromotionToItems(
 
   for (const item of applicableItems) {
     if (
+      allocation === ApplicationMethodAllocation.ONCE &&
+      remainingQuota <= 0
+    ) {
+      break
+    }
+    if (
       MathBN.lte(
         promotion.is_tax_inclusive ? item.original_total : item.subtotal,
         0
@@ -108,15 +123,26 @@ function applyPromotionToItems(
 
     const appliedPromoValue = appliedPromotionsMap.get(item.id) ?? 0
 
+    const effectiveMaxQuantity =
+      allocation === ApplicationMethodAllocation.ONCE
+        ? Math.min(remainingQuota ?? 0, Number(item.quantity))
+        : maxQuantity
+
+    // If the allocation is once, we rely on the existing logic for each allocation, as the calculate is the same: apply the promotion value to the line item
+    const effectiveAllocation =
+      allocation === ApplicationMethodAllocation.ONCE
+        ? ApplicationMethodAllocation.EACH
+        : allocation
+
     const amount = calculateAdjustmentAmountFromPromotion(
       item,
       {
         value: promotionValue,
         applied_value: appliedPromoValue,
         is_tax_inclusive: promotion.is_tax_inclusive,
-        max_quantity: maxQuantity,
+        max_quantity: effectiveMaxQuantity,
         type: applicationMethod?.type!,
-        allocation,
+        allocation: effectiveAllocation,
       },
       lineItemsAmount
     )
@@ -136,6 +162,15 @@ function applyPromotionToItems(
     }
 
     appliedPromotionsMap.set(item.id, MathBN.add(appliedPromoValue, amount))
+
+    if (allocation === ApplicationMethodAllocation.ONCE) {
+      // We already know exactly how many units we applied via effectiveMaxQuantity
+      const quantityApplied = Math.min(
+        effectiveMaxQuantity,
+        Number(item.quantity)
+      )
+      remainingQuota -= quantityApplied
+    }
 
     if (isTargetLineItems || isTargetOrder) {
       computedActions.push({

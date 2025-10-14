@@ -11,16 +11,17 @@ import {
   MathBN,
   MedusaError,
 } from "@medusajs/framework/utils"
-import { areRulesValidForContext } from "../validations"
-import { computeActionForBudgetExceeded } from "./usage"
 import { Promotion } from "@models"
+import { areRulesValidForContext } from "../validations"
+import { sortShippingLineByPriceAscending } from "./sort-by-price"
+import { computeActionForBudgetExceeded } from "./usage"
 
 export function getComputedActionsForShippingMethods(
   promotion: PromotionTypes.PromotionDTO | InferEntityType<typeof Promotion>,
   shippingMethodApplicationContext: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS],
   methodIdPromoValueMap: Map<string, number>
 ): PromotionTypes.ComputeActions[] {
-  const applicableShippingItems: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS] =
+  let applicableShippingItems: PromotionTypes.ComputeActionContext[ApplicationMethodTargetType.SHIPPING_METHODS] =
     []
 
   if (!shippingMethodApplicationContext) {
@@ -44,6 +45,13 @@ export function getComputedActionsForShippingMethods(
     applicableShippingItems.push(shippingMethodContext)
   }
 
+  const allocation = promotion.application_method?.allocation!
+  if (allocation === ApplicationMethodAllocation.ONCE) {
+    applicableShippingItems = applicableShippingItems.sort(
+      sortShippingLineByPriceAscending
+    )
+  }
+
   return applyPromotionToShippingMethods(
     promotion,
     applicableShippingItems,
@@ -59,9 +67,20 @@ export function applyPromotionToShippingMethods(
   const { application_method: applicationMethod } = promotion
   const allocation = applicationMethod?.allocation!
   const computedActions: PromotionTypes.ComputeActions[] = []
+  const maxQuantity = applicationMethod?.max_quantity ?? 0
+  let remainingQuota = maxQuantity
 
-  if (allocation === ApplicationMethodAllocation.EACH) {
+  if (
+    allocation === ApplicationMethodAllocation.EACH ||
+    allocation === ApplicationMethodAllocation.ONCE
+  ) {
     for (const method of shippingMethods!) {
+      if (
+        allocation === ApplicationMethodAllocation.ONCE &&
+        remainingQuota <= 0
+      ) {
+        break
+      }
       if (!method.subtotal) {
         continue
       }
@@ -98,6 +117,10 @@ export function applyPromotionToShippingMethods(
         method.id,
         MathBN.add(appliedPromoValue, amount)
       )
+
+      if (allocation === ApplicationMethodAllocation.ONCE) {
+        remainingQuota -= 1
+      }
 
       computedActions.push({
         action: ComputedActions.ADD_SHIPPING_METHOD_ADJUSTMENT,

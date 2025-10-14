@@ -33,6 +33,7 @@ enum ApplicationMethodTargetTypeValues {
 enum ApplicationMethodAllocationValues {
   each
   across
+  once
 }
 
 type Promotion {

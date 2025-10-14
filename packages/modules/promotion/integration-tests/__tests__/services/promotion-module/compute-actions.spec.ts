@@ -7390,6 +7390,282 @@ moduleIntegrationTestRunner({
           })
         })
       })
+
+      describe("when promotion allocation is once", () => {
+        describe("when application type is fixed", () => {
+          it("should apply promotion to lowest priced items first and respect max_quantity limit across all items", async () => {
+            await createDefaultPromotion(service, {
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "once",
+                value: 10,
+                max_quantity: 2,
+              } as any,
+            })
+
+            const result = await service.computeActions(["PROMOTION_TEST"], {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_expensive",
+                  quantity: 3,
+                  subtotal: 300, // $100/unit
+                },
+                {
+                  id: "item_cheap",
+                  quantity: 5,
+                  subtotal: 250, // $50/unit - lowest price, should get discount first
+                },
+                {
+                  id: "item_medium",
+                  quantity: 2,
+                  subtotal: 150, // $75/unit
+                },
+              ],
+            })
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cheap",
+                amount: 20, // 2 units * $10
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: false,
+              },
+            ])
+          })
+
+          it("should distribute across items when max_quantity exceeds first item quantity", async () => {
+            await createDefaultPromotion(service, {
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "once",
+                value: 5,
+                max_quantity: 4,
+              } as any,
+            })
+
+            const result = await service.computeActions(["PROMOTION_TEST"], {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_a",
+                  quantity: 2,
+                  subtotal: 100, // $50/unit
+                },
+                {
+                  id: "item_b",
+                  quantity: 3,
+                  subtotal: 180, // $60/unit
+                },
+              ],
+            })
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_a",
+                amount: 10, // 2 units * $5
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: false,
+              },
+              {
+                action: "addItemAdjustment",
+                item_id: "item_b",
+                amount: 10, // 2 units * $5 (remaining quota)
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: false,
+              },
+            ])
+          })
+
+          it("should apply to only one item when max_quantity is 1", async () => {
+            await createDefaultPromotion(service, {
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "once",
+                value: 10,
+                max_quantity: 1,
+              } as any,
+            })
+
+            const result = await service.computeActions(["PROMOTION_TEST"], {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_1",
+                  quantity: 3,
+                  subtotal: 90, // $30/unit - lowest
+                },
+                {
+                  id: "item_2",
+                  quantity: 2,
+                  subtotal: 100, // $50/unit
+                },
+              ],
+            })
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_1",
+                amount: 10, // 1 unit * $10
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: false,
+              },
+            ])
+          })
+        })
+
+        describe("when application type is percentage", () => {
+          it("should apply percentage discount to lowest priced items first", async () => {
+            await createDefaultPromotion(service, {
+              application_method: {
+                type: "percentage",
+                target_type: "items",
+                allocation: "once",
+                value: 20,
+                max_quantity: 3,
+              } as any,
+            })
+
+            const result = await service.computeActions(["PROMOTION_TEST"], {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_expensive",
+                  quantity: 5,
+                  subtotal: 500, // $100/unit
+                },
+                {
+                  id: "item_cheap",
+                  quantity: 4,
+                  subtotal: 200, // $50/unit - lowest price
+                },
+              ],
+            })
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_cheap",
+                amount: 30, // 3 units * $50 * 20% = $30
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: false,
+              },
+            ])
+          })
+
+          it("should distribute percentage discount across multiple items when max_quantity exceeds first item quantity", async () => {
+            await createDefaultPromotion(service, {
+              application_method: {
+                type: "percentage",
+                target_type: "items",
+                allocation: "once",
+                value: 25,
+                max_quantity: 5,
+              } as any,
+            })
+
+            const result = await service.computeActions(["PROMOTION_TEST"], {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_a",
+                  quantity: 2,
+                  subtotal: 100, // $50/unit - cheapest
+                },
+                {
+                  id: "item_b",
+                  quantity: 3,
+                  subtotal: 180, // $60/unit - second cheapest
+                },
+                {
+                  id: "item_c",
+                  quantity: 4,
+                  subtotal: 400, // $100/unit - most expensive
+                },
+              ],
+            })
+
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_a",
+                amount: 25, // 2 units * $50 * 25% = $25
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: false,
+              },
+              {
+                action: "addItemAdjustment",
+                item_id: "item_b",
+                amount: 45, // 3 units * $60 * 25% = $45 (remaining quota)
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: false,
+              },
+            ])
+          })
+        })
+
+        describe("with target rules", () => {
+          it("should only apply to items matching target rules and respect once allocation", async () => {
+            await createDefaultPromotion(service, {
+              application_method: {
+                type: "fixed",
+                target_type: "items",
+                allocation: "once",
+                value: 15,
+                max_quantity: 2,
+                target_rules: [
+                  {
+                    attribute: "items.product_category.id",
+                    operator: "eq",
+                    values: ["catg_electronics"],
+                  },
+                ],
+              } as any,
+            })
+
+            const result = await service.computeActions(["PROMOTION_TEST"], {
+              currency_code: "usd",
+              items: [
+                {
+                  id: "item_phone",
+                  quantity: 3,
+                  subtotal: 3000,
+                  product_category: { id: "catg_electronics" },
+                },
+                {
+                  id: "item_book",
+                  quantity: 5,
+                  subtotal: 50, // Cheaper but doesn't match rules
+                  product_category: { id: "catg_books" },
+                },
+                {
+                  id: "item_tablet",
+                  quantity: 2,
+                  subtotal: 1000,
+                  product_category: { id: "catg_electronics" },
+                },
+              ],
+            })
+
+            // Should only consider electronics items, and apply to cheapest one (tablet at $500/unit vs phone at $1000/unit)
+            expect(JSON.parse(JSON.stringify(result))).toEqual([
+              {
+                action: "addItemAdjustment",
+                item_id: "item_tablet",
+                amount: 30, // 2 units * $15
+                code: "PROMOTION_TEST",
+                is_tax_inclusive: false,
+              },
+            ])
+          })
+        })
+      })
     })
   },
 })

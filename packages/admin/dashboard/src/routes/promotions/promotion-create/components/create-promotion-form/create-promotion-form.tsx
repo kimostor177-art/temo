@@ -714,7 +714,7 @@ export const CreatePromotionForm = () => {
                               <Form.Control>
                                 <RadioGroup
                                   dir={direction}
-                                className="flex gap-y-3"
+                                  className="flex gap-y-3"
                                   {...field}
                                   onValueChange={field.onChange}
                                 >
@@ -840,7 +840,9 @@ export const CreatePromotionForm = () => {
                     </>
                   )}
 
-                  {((isTypeStandard && watchAllocation === "each") ||
+                  {((isTypeStandard &&
+                    (watchAllocation === "each" ||
+                      watchAllocation === "once")) ||
                     isTypeBuyGet) && (
                     <>
                       {isTypeBuyGet && (
@@ -898,7 +900,9 @@ export const CreatePromotionForm = () => {
                         render={({ field }) => {
                           return (
                             <Form.Item>
-                              <Form.Label>
+                              <Form.Label
+                                tooltip={t("promotions.fields.allocationTooltip")}
+                              >
                                 {t("promotions.fields.allocation")}
                               </Form.Label>
 
@@ -909,27 +913,50 @@ export const CreatePromotionForm = () => {
                                   {...field}
                                   onValueChange={field.onChange}
                                 >
-                                  <RadioGroup.ChoiceBox
-                                    value={"each"}
-                                    label={t(
-                                      "promotions.form.allocation.each.title"
-                                    )}
-                                    description={t(
-                                      "promotions.form.allocation.each.description"
-                                    )}
-                                    className={clx("basis-1/2")}
-                                  />
+                                  {!currentTemplate?.hiddenFields?.includes(
+                                    "application_method.allocation.each"
+                                  ) && (
+                                    <RadioGroup.ChoiceBox
+                                      value={"each"}
+                                      label={t(
+                                        "promotions.form.allocation.each.title"
+                                      )}
+                                      description={t(
+                                        "promotions.form.allocation.each.description"
+                                      )}
+                                      className={clx("basis-1/3")}
+                                    />
+                                  )}
 
-                                  <RadioGroup.ChoiceBox
-                                    value={"across"}
-                                    label={t(
-                                      "promotions.form.allocation.across.title"
-                                    )}
-                                    description={t(
-                                      "promotions.form.allocation.across.description"
-                                    )}
-                                    className={clx("basis-1/2")}
-                                  />
+                                  {!currentTemplate?.hiddenFields?.includes(
+                                    "application_method.allocation.across"
+                                  ) && (
+                                    <RadioGroup.ChoiceBox
+                                      value={"across"}
+                                      label={t(
+                                        "promotions.form.allocation.across.title"
+                                      )}
+                                      description={t(
+                                        "promotions.form.allocation.across.description"
+                                      )}
+                                      className={clx("basis-1/3")}
+                                    />
+                                  )}
+
+                                  {!currentTemplate?.hiddenFields?.includes(
+                                    "application_method.allocation.once"
+                                  ) && (
+                                    <RadioGroup.ChoiceBox
+                                      value={"once"}
+                                      label={t(
+                                        "promotions.form.allocation.once.title"
+                                      )}
+                                      description={t(
+                                        "promotions.form.allocation.once.description"
+                                      )}
+                                      className={clx("basis-1/3")}
+                                    />
+                                  )}
                                 </RadioGroup>
                               </Form.Control>
                               <Form.ErrorMessage />

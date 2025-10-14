@@ -23,6 +23,7 @@ export enum ApplicationMethodTargetType {
 export enum ApplicationMethodAllocation {
   EACH = "each",
   ACROSS = "across",
+  ONCE = "once",
 }
 
 export enum PromotionRuleOperator {

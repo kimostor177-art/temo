@@ -226,7 +226,7 @@ moduleIntegrationTestRunner({
           }).catch((e) => e)
 
           expect(error.message).toContain(
-            "application_method.allocation should be either 'across OR each' when application_method.target_type is either 'shipping_methods OR items'"
+            "application_method.allocation should be either 'across OR each OR once' when application_method.target_type is either 'shipping_methods OR items'"
           )
         })
 
@@ -239,7 +239,7 @@ moduleIntegrationTestRunner({
           }).catch((e) => e)
 
           expect(error.message).toContain(
-            "application_method.max_quantity is required when application_method.allocation is 'each'"
+            "application_method.max_quantity is required when application_method.allocation is 'each OR once'"
           )
         })
 

@@ -21,10 +21,12 @@ export const allowedAllocationTargetTypes: string[] = [
 export const allowedAllocationTypes: string[] = [
   ApplicationMethodAllocation.ACROSS,
   ApplicationMethodAllocation.EACH,
+  ApplicationMethodAllocation.ONCE,
 ]
 
 export const allowedAllocationForQuantity: string[] = [
   ApplicationMethodAllocation.EACH,
+  ApplicationMethodAllocation.ONCE,
 ]
 
 export function validateApplicationMethodAttributes(
@@ -156,6 +158,16 @@ export function validateApplicationMethodAttributes(
       `application_method.max_quantity is required when application_method.allocation is '${allowedAllocationForQuantity.join(
         " OR "
       )}'`
+    )
+  }
+
+  if (
+    allocation === ApplicationMethodAllocation.ONCE &&
+    targetType === ApplicationMethodTargetType.ORDER
+  ) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `application_method.allocation 'once' is not compatible with target_type 'order'`
     )
   }
 }
