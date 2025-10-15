@@ -4,11 +4,11 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn about the managed Redis service that Medusa provides as part of your project environments.
+In this guide, you'll learn about the managed Redis service that Medusa provides as part of your project environments on Cloud.
 
-## Managed Redis Service
+## Managed Redis Service on Cloud
 
-Medusa provisions and manages Redis servers for each of your environments.
+Medusa provisions and manages Redis servers for each of your environments on Cloud.
 
 Each project environment has a dedicated Redis server. These Redis servers are entirely isolated from one another, similar to the Postgres databases.
 
@@ -16,9 +16,9 @@ Each project environment has a dedicated Redis server. These Redis servers are e
 
 ---
 
-## Configured Redis Infrastructure Modules
+## Configured Redis Infrastructure Modules on Cloud
 
-Medusa automatically configures your Medusa application to use Redis-based Infrastructure Modules, including:
+Medusa automatically configures your Medusa application hosted on Cloud to use Redis-based Infrastructure Modules, including:
 
 - [Redis Event Module](!resources!/infrastructure-modules/event/redis)
 - [Redis Cache Module](!resources!/infrastructure-modules/cache/redis)
@@ -33,13 +33,13 @@ If you're using a Medusa version before v2.7.0, contact support for assistance i
 
 </Note>
 
-### Access Redis Configurations
+### Access Redis Configurations on Cloud
 
 Since Cloud is a managed service, you can't directly access your Redis instance or its configurations. Medusa also doesn't expose the Redis instance connection or configuration details.
 
-### Override Redis Configurations
+### Override Redis Configurations on Cloud
 
-If you need to customize the Redis configurations for any of the Redis modules and providers, you must host and manage your own Redis instance externally.
+If you need to customize the Redis configurations for any of the Redis modules and providers in your Cloud project, you must host and manage your own Redis instance externally.
 
 Then, configure the modules and providers you're overriding in your `medusa-config.ts` file to connect to your external Redis instance. Refer to the documentation for each module for more details on how to configure it.
 

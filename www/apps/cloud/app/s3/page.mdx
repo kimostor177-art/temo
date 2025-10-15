@@ -4,11 +4,11 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn about the managed S3 storage service that Medusa provides as part of your project environments.
+In this guide, you'll learn about the managed S3 storage service that Medusa provides as part of your project environments on Cloud.
 
-## Managed S3 Storage Service
+## Managed S3 Storage Service on Cloud
 
-Medusa offers a managed S3 storage service for your project environments. Each environment has its own dedicated S3 bucket that is automatically provisioned when the environment is created.
+Medusa offers a managed S3 storage service for your project environments on Cloud. Each environment has its own dedicated S3 bucket that is automatically provisioned when the environment is created.
 
 So, when you create a new project, Medusa creates a production S3 bucket for the production environment. If you create a staging environment, Medusa creates a separate S3 bucket for that environment as well.
 
@@ -18,9 +18,9 @@ By default, the S3 bucket is private, but the files you upload to the bucket are
 
 ---
 
-## Configured S3 File Module Provider
+## Configured S3 File Module Provider on Cloud
 
-Medusa automatically configures your Medusa application to use the [S3 File Module Provider](!resources!/infrastructure-modules/file/s3).
+Medusa automatically configures your Medusa application hosted on Cloud to use the [S3 File Module Provider](!resources!/infrastructure-modules/file/s3).
 
 So, you don't need to configure the S3 File Module Provider or set up S3 manually. Also, if you have the S3 File Module Provider configured in `medusa-config.ts`, remove it to avoid conflicts.
 
@@ -30,13 +30,13 @@ If you're using a Medusa version before v2.7.0, contact support for assistance i
 
 </Note>
 
-### Access S3 Configurations
+### Access S3 Configurations on Cloud
 
 Since Cloud is a managed service, you can't directly access your S3 bucket or its configurations. Medusa also doesn't expose the S3 bucket connection or configuration details.
 
-### Override S3 Configurations
+### Override S3 Configurations on Cloud
 
-If you need to override the default S3 configurations, such as changing public access to assets, you can do so by setting up and managing your own S3 bucket externally.
+If you need to override the default S3 configurations of your Cloud project, such as changing public access to assets, you can do so by setting up and managing your own S3 bucket externally.
 
 Then, configure the S3 File Module Provider in your `medusa-config.ts` file to connect to your external S3 instance. Refer to the [S3 File Module Provider documentation](!resources!/infrastructure-modules/file/s3) for more details on how to configure it.
 

@@ -4,11 +4,11 @@ export const metadata = {
 
 # {metadata.title}
 
-In this guide, you'll learn about the managed database service that Medusa provides as part of your project environments.
+In this guide, you'll learn about the managed database service that Medusa provides as part of your project environments on Cloud.
 
-## Managed Database Service
+## Managed Database Service on Cloud
 
-Medusa provisions and manages databases for each of your environments.
+Medusa provisions and manages databases for each of your environments on Cloud.
 
 Each project environment has a dedicated PostgreSQL database. These databases are entirely isolated from one another.
 
@@ -18,25 +18,25 @@ This isolation allows you to safely make or test changes in environments without
 
 ---
 
-## Database Configurations
+## Cloud Database Configurations
 
-Medusa automatically configures the database for your environments. So, you don't need to worry about setting up the database, configuring it with your Medusa application, or monitoring performance and availability on your end.
+Medusa automatically configures the database for your environments on Cloud. So, you don't need to worry about setting up the database, configuring it with your Medusa application, or monitoring performance and availability on your end.
 
 ---
 
-## Database Backups
+## Cloud Database Backups
 
-Medusa provides automatic backups for your environment databases. These backups are retained for 14 days and allow you to restore your database to a previous state, if needed.
+Medusa provides automatic backups for your environment databases on Cloud. These backups are retained for 14 days and allow you to restore your database to a previous state, if needed.
 
 If you need to restore a database backup, you can contact support to request a point-in-time recovery. This is useful if you accidentally delete data or need to revert changes made to the database.
 
 ---
 
-## Connect to the Database
+## Connect to a Cloud Database
 
-In some cases, you may need to access the database directly, such as to export or import data.
+In some cases, you may need to access your Cloud project's database directly, such as to export or import data.
 
-Medusa gives you read access to your database, which is useful when you need to export data, perform analytics, or troubleshoot issues.
+Medusa gives you read access to your Cloud project's database, which is useful when you need to export data, perform analytics, or troubleshoot issues.
 
 To get the read-only connection string for an environment's database:
 
@@ -58,9 +58,9 @@ After connecting to the database, you can run SQL queries to interact with your 
 
 ---
 
-## Import/Export Database Dumps
+## Import/Export Cloud Database Dumps
 
-Medusa allows you to export and import database dumps for any environment. This is useful for seeding the database with initial data, migrating from other hosting platforms, or debugging issues locally.
+Medusa allows you to export and import database dumps for any environment on Cloud. This is useful for seeding the database with initial data, migrating from other hosting platforms, or debugging issues locally.
 
 To import or export a database dump for an environment:
 
@@ -95,7 +95,7 @@ pg_restore --no-acl --no-owner --no-privileges --clean --if-exists -d 'postgres:
 
 ## Change Preview Environment Database
 
-By default, when Medusa creates a [preview environment](../environments/preview/page.mdx), it replicates the Production database. This allows you to test changes in a safe environment that mirrors production, without affecting the live data.
+By default, when Medusa creates a [preview environment](../environments/preview/page.mdx) on Cloud, it replicates the Production database. This allows you to test changes in a safe environment that mirrors production, without affecting the live data.
 
 Cloud also allows you to configure which environment's database to replicate the preview database from. For example, you can replicate the Staging environment's database instead of Production.
 
