@@ -1,6 +1,6 @@
 import { PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, Heading, StatusBadge, usePrompt } from "@medusajs/ui"
+import { Container, Heading, StatusBadge, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
 
@@ -57,6 +57,11 @@ export const ProductGeneralSection = ({
     await mutateAsync(undefined, {
       onSuccess: () => {
         navigate("..")
+      },
+      onError: (e) => {
+        toast.error(t("products.toasts.delete.error.header"), {
+          description: e.message,
+        })
       },
     })
   }
