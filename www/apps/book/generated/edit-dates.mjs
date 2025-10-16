@@ -1,5 +1,5 @@
 export const generatedEditDates = {
-  "app/learn/fundamentals/scheduled-jobs/page.mdx": "2025-07-25T15:56:17.926Z",
+  "app/learn/fundamentals/scheduled-jobs/page.mdx": "2025-10-16T09:35:54.393Z",
   "app/learn/fundamentals/workflows/page.mdx": "2024-12-09T14:45:17.837Z",
   "app/learn/deployment/page.mdx": "2025-09-29T10:25:29.915Z",
   "app/learn/page.mdx": "2025-06-27T11:39:15.941Z",
@@ -15,7 +15,7 @@ export const generatedEditDates = {
   "app/learn/fundamentals/medusa-container/page.mdx": "2025-07-25T13:18:36.859Z",
   "app/learn/fundamentals/api-routes/page.mdx": "2025-07-25T15:19:33.365Z",
   "app/learn/fundamentals/modules/modules-directory-structure/page.mdx": "2025-07-25T15:40:20.362Z",
-  "app/learn/fundamentals/events-and-subscribers/page.mdx": "2025-05-16T13:40:16.111Z",
+  "app/learn/fundamentals/events-and-subscribers/page.mdx": "2025-10-16T09:36:04.864Z",
   "app/learn/fundamentals/modules/container/page.mdx": "2025-07-31T14:24:04.087Z",
   "app/learn/fundamentals/workflows/execute-another-workflow/page.mdx": "2025-08-01T07:28:51.036Z",
   "app/learn/fundamentals/modules/loaders/page.mdx": "2025-06-16T13:34:16.462Z",

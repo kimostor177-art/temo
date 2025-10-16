@@ -1,14 +1,12 @@
 If you have a scheduled job that is configured with a cron expression, it may not run at the expected times sometimes.
 
-## Why this Happens
+### Why this Happens
 
 When a scheduled job is configured with a cron expression, it will only run when the specified time is reached.
 
 So, if the events system is busy and the specified time is missed, the job will not run until the next scheduled time.
 
----
-
-## How to Fix it
+### How to Fix it
 
 If you prioritize running your scheduled jobs consistently over precise timing, consider using a scheduled job interval instead.
 
@@ -33,8 +31,6 @@ export const config = {
 }
 ```
 
----
-
-## Additional Resources
+### Additional Resources
 
 - [Set Interval for Scheduled Jobs](!docs!/learn/fundamentals/scheduled-jobs/interval)

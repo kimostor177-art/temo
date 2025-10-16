@@ -111,6 +111,11 @@ export const troubleshootingSidebar = [
       },
       {
         type: "link",
+        path: "/troubleshooting/subscribers/not-working",
+        title: "Subscribers Not Working",
+      },
+      {
+        type: "link",
         path: "/troubleshooting/test-errors",
         title: "Test Errors",
       },

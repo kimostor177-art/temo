@@ -170,6 +170,14 @@ const generatedgeneratedTroubleshootingSidebarSidebar = {
           "loaded": true,
           "isPathHref": true,
           "type": "link",
+          "path": "/troubleshooting/subscribers/not-working",
+          "title": "Subscribers Not Working",
+          "children": []
+        },
+        {
+          "loaded": true,
+          "isPathHref": true,
+          "type": "link",
           "path": "/troubleshooting/test-errors",
           "title": "Test Errors",
           "children": []
