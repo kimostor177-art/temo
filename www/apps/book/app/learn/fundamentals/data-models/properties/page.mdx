@@ -76,7 +76,10 @@ const Post = model.define("post", {
   // ...
 })
 .checks([
-  (columns) => `${columns.name.length} <= 50`,
+  {
+    name: "limit_name_length",
+    expression: (columns) => `LENGTH(${columns.name}) <= 50`,
+  }
 ])
 
 export default Post
