@@ -121,10 +121,10 @@ module.exports = defineConfig({
 
 To test out your Authentication Module Provider, use any of the [Authentication Routes](https://docs.medusajs.com/resources/commerce-modules/auth/authentication-route), using your provider's ID as a path parameter.
 
-For example, to get a registration token for an admin user, send a \`POST\` request to \`/auth/user/my-auth/register\` replacing \`my-auth\` with your Authentication Module Provider's ID:
+For example, to get a registration token for a customer, send a \`POST\` request to \`/auth/customer/my-auth/register\` replacing \`my-auth\` with your Authentication Module Provider's ID:
 
 \`\`\`bash
-curl -X POST http://localhost:9000/auth/user/my-auth/register
+curl -X POST http://localhost:9000/auth/customer/my-auth/register
 -H 'Content-Type: application/json' \
 --data-raw '{
   "email": "Whitney_Schultz@gmail.com",
@@ -132,9 +132,11 @@ curl -X POST http://localhost:9000/auth/user/my-auth/register
 }'
 \`\`\`
 
-Change the request body to pass the data required for your Authentication Module Provider to register the user.
+Change the request body to pass the data required for your Authentication Module Provider to register the customer.
 
 If registration is successful, the response will have a \`token\` property.
+
+You can then use the token to create a customer by sending a request to the [Create Customer API route](https://docs.medusajs.com/api/store#customers_postcustomers).
       `,
     ],
   },

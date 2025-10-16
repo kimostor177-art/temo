@@ -838,7 +838,7 @@ export const generatedEditDates = {
   "references/auth/IAuthModuleService/methods/auth.IAuthModuleService.authenticate/page.mdx": "2025-01-07T12:54:18.941Z",
   "references/auth/IAuthModuleService/methods/auth.IAuthModuleService.validateCallback/page.mdx": "2025-01-07T12:54:18.948Z",
   "references/auth/interfaces/auth.AuthenticationResponse/page.mdx": "2024-12-09T13:21:36.233Z",
-  "references/auth_provider/classes/auth_provider.AbstractAuthModuleProvider/page.mdx": "2025-05-20T07:51:40.736Z",
+  "references/auth_provider/classes/auth_provider.AbstractAuthModuleProvider/page.mdx": "2025-10-15T15:45:41.565Z",
   "references/core_flows/Invite/Workflows_Invite/functions/core_flows.Invite.Workflows_Invite.refreshInviteTokensWorkflow/page.mdx": "2025-09-18T17:04:39.919Z",
   "references/types/CommonTypes/types/types.CommonTypes.BatchMethodResponse/page.mdx": "2024-12-09T13:21:32.849Z",
   "references/types/HttpTypes/interfaces/types.HttpTypes.AdminAddReturnShipping/page.mdx": "2025-04-11T09:04:47.540Z",
