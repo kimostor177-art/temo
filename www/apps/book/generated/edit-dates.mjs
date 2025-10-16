@@ -114,7 +114,7 @@ export const generatedEditDates = {
   "app/learn/configurations/medusa-config/page.mdx": "2025-09-30T06:04:15.705Z",
   "app/learn/configurations/ts-aliases/page.mdx": "2025-07-23T15:32:18.008Z",
   "app/learn/production/worker-mode/page.mdx": "2025-07-18T15:19:45.352Z",
-  "app/learn/fundamentals/module-links/read-only/page.mdx": "2025-08-15T11:52:13.403Z",
+  "app/learn/fundamentals/module-links/read-only/page.mdx": "2025-10-15T15:42:22.610Z",
   "app/learn/fundamentals/data-models/properties/page.mdx": "2025-10-15T05:36:40.576Z",
   "app/learn/fundamentals/framework/page.mdx": "2025-06-26T14:26:22.120Z",
   "app/learn/fundamentals/api-routes/retrieve-custom-links/page.mdx": "2025-07-14T10:24:32.582Z",

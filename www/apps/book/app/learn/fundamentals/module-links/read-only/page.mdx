@@ -372,6 +372,66 @@ In this case, the relation would always be one-to-many, even if only one post is
 ]
 ```
 
+### Relation Name for Inverse Read-Only Links
+
+Whether you're using a one-to-one or one-to-many relation for an inverse read-only module link, the relation name is always the alias of the second data model. It's not changed to its plural form for one-to-many relations.
+
+For example, looking again at the forced one-to-many relation example:
+
+```ts
+import BlogModule from "../modules/blog"
+import ProductModule from "@medusajs/medusa/product"
+import { defineLink } from "@medusajs/framework/utils"
+
+export default defineLink(
+  {
+    linkable: ProductModule.linkable.product,
+    field: "id",
+    isList: true,
+  },
+  {
+    ...BlogModule.linkable.post.id,
+    primaryKey: "product_id",
+  },
+  {
+    readOnly: true,
+  }
+)
+```
+
+When querying a product, the relation name is still `post`, not `posts`:
+
+export const relationNameHighlights = [
+  ["3", `"post.*"`, "The relation name is the alias of the second data model."],
+]
+
+```ts highlights={relationNameHighlights}
+const { result } = await query.graph({
+  entity: "product",
+  fields: ["id", "post.*"],
+  filters: {
+    id: "prod_123",
+  },
+})
+```
+
+Consequently, the result will include a `post` property, even though it's an array of posts:
+
+```json title="Example Data"
+[
+  {
+    "id": "prod_123",
+    "post": [
+      {
+        "id": "post_123",
+        "product_id": "prod_123"
+        // ...
+      }
+    ]
+  }
+]
+```
+
 ---
 
 ## Example: Read-Only Module Link for Virtual Data Models
