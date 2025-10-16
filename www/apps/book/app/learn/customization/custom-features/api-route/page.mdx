@@ -218,6 +218,12 @@ This returns the created brand in the response:
 }
 ```
 
+### Troubleshooting
+
+#### Returned Empty Array
+
+If you sent a request to the API route and received an empty array in the response, make sure you've correctly created the middleware at `src/api/middlewares.ts` (with correct spelling). This is a common mistake that can lead to the middleware not being applied, resulting in unexpected behavior.
+
 ---
 
 ## Summary
