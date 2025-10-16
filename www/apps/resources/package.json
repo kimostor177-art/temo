@@ -22,12 +22,14 @@
     "clsx": "^2.1.0",
     "docs-ui": "*",
     "next": "15.3.5",
+    "next-mdx-remote-client": "2",
     "posthog-js": "^1.269.1",
     "react": "rc",
     "react-dom": "rc",
     "rehype-mdx-code-props": "^2.0.0",
     "remark-directive": "^3.0.0",
-    "remark-frontmatter": "^5.0.0"
+    "remark-frontmatter": "^5.0.0",
+    "swr": "^2.3.6"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^15.3.5",

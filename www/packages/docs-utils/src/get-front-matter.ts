@@ -28,3 +28,20 @@ export function getFrontMatterSync(filePath: string): FrontMatter {
 
   return content.data.matter as FrontMatter
 }
+
+export async function getFrontMatterFromString(
+  fileContent: string
+): Promise<FrontMatter> {
+  return (
+    await unified()
+      .use(remarkParse)
+      .use(remarkStringify)
+      .use(remarkFrontmatter, ["yaml"])
+      .use(() => {
+        return (tree, file) => {
+          matter(file)
+        }
+      })
+      .process(fileContent)
+  ).data.matter as FrontMatter
+}

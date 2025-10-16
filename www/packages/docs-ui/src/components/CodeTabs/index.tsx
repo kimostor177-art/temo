@@ -66,17 +66,28 @@ export const CodeTabs = ({
       return codeBlock.props as CodeBlockProps
     }
 
-    if (
-      "children" in codeBlock.props &&
-      typeof codeBlock.props.children === "object" &&
-      codeBlock.props.children
-    ) {
-      return getCodeBlockProps(
-        codeBlock.props.children as React.ReactElement<
-          unknown,
-          string | React.JSXElementConstructor<any>
-        >
-      )
+    if ("children" in codeBlock.props) {
+      if (
+        typeof codeBlock.props.children === "object" &&
+        codeBlock.props.children
+      ) {
+        return getCodeBlockProps(
+          codeBlock.props.children as React.ReactElement<
+            unknown,
+            string | React.JSXElementConstructor<any>
+          >
+        )
+      } else if (typeof codeBlock.props.children === "string") {
+        const lang = "lang" in codeBlock.props ? codeBlock.props.lang : "ts"
+        return {
+          ...codeBlock.props,
+          source: codeBlock.props.children,
+          className:
+            "className" in codeBlock.props
+              ? codeBlock.props.className
+              : `language-${lang}`,
+        } as CodeBlockProps
+      }
     }
 
     return undefined
@@ -90,7 +101,6 @@ export const CodeTabs = ({
       }
       const typedChildProps = child.props as CodeTab
       if (
-        !React.isValidElement(child) ||
         !typedChildProps.label ||
         !typedChildProps.value ||
         !React.isValidElement(typedChildProps.children)
@@ -109,11 +119,14 @@ export const CodeTabs = ({
       let codeBlockProps = codeBlock.props as CodeBlockProps
       const showBadge = !codeBlockProps.title
       const originalBadgeLabel = codeBlockProps.badgeLabel
+      const parsedCodeBlockProps = getCodeBlockProps(codeBlock) || {
+        source: "",
+      }
 
       const commonProps = {
         badgeLabel: showBadge ? undefined : originalBadgeLabel,
         hasTabs: true,
-        className: clsx("!my-0", codeBlockProps.className),
+        className: clsx("!my-0", parsedCodeBlockProps.className),
       }
 
       if (
@@ -128,9 +141,7 @@ export const CodeTabs = ({
       }
 
       const modifiedProps: CodeBlockProps = {
-        ...(getCodeBlockProps(codeBlock) || {
-          source: "",
-        }),
+        ...parsedCodeBlockProps,
         ...commonProps,
       }
 

@@ -19,4 +19,5 @@ export declare type FrontMatter = {
   toc_max_depth?: number
   generate_toc?: boolean
   hide_content_menu?: boolean
+  keywords?: string[]
 }
