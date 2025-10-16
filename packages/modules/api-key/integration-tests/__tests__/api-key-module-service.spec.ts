@@ -115,43 +115,18 @@ moduleIntegrationTestRunner<IApiKeyModuleService>({
           )
         })
 
-        it("should only allow creating one active token", async function () {
-          await expect(
-            service.createApiKeys([
-              createSecretKeyFixture,
-              createSecretKeyFixture,
-            ])
-          ).rejects.toThrow(
-            "You can only create one secret key at a time. You tried to create 2 secret keys."
-          )
+        it("should allow creating multiple active token", async function () {
+          const apiKeys = await service.createApiKeys([
+            createSecretKeyFixture,
+            createSecretKeyFixture,
+          ])
 
-          await service.createApiKeys(createSecretKeyFixture)
-          const err = await service
-            .createApiKeys(createSecretKeyFixture)
-            .catch((e) => e)
-          expect(err.message).toEqual(
-            "You can only have one active secret key a time. Revoke or delete your existing key before creating a new one."
-          )
-        })
+          apiKeys.push(await service.createApiKeys(createSecretKeyFixture))
 
-        it("should allow for at most two tokens, where one is revoked", async function () {
-          const firstApiKey = await service.createApiKeys(
-            createSecretKeyFixture
-          )
-          await service.revoke(
-            { id: firstApiKey.id },
-            {
-              revoked_by: "test",
-            }
-          )
-
-          await service.createApiKeys(createSecretKeyFixture)
-          const err = await service
-            .createApiKeys(createSecretKeyFixture)
-            .catch((e) => e)
-          expect(err.message).toEqual(
-            "You can only have one active secret key a time. Revoke or delete your existing key before creating a new one."
-          )
+          expect(apiKeys).toHaveLength(3)
+          expect(apiKeys[0].revoked_at).toBeFalsy()
+          expect(apiKeys[1].revoked_at).toBeFalsy()
+          expect(apiKeys[2].revoked_at).toBeFalsy()
         })
       })
 

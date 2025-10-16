@@ -19,6 +19,12 @@ const ApiKey = model
       unique: true,
     },
     {
+      on: ["revoked_at"],
+    },
+    {
+      on: ["redacted"],
+    },
+    {
       on: ["type"],
     },
   ])

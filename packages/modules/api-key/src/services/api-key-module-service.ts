@@ -155,8 +155,6 @@ export class ApiKeyModuleService
     data: ApiKeyTypes.CreateApiKeyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[InferEntityType<typeof ApiKey>[], TokenDTO[]]> {
-    await this.validateCreateApiKeys_(data, sharedContext)
-
     const normalizedInput: CreateApiKeyDTO[] = []
     const generatedTokens: TokenDTO[] = []
     for (const key of data) {
@@ -461,18 +459,21 @@ export class ApiKeyModuleService
     token: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<InferEntityType<typeof ApiKey> | false> {
-    // Since we only allow up to 2 active tokens, getitng the list and checking each token isn't an issue.
-    // We can always filter on the redacted key if we add support for an arbitrary number of tokens.
     const secretKeys = await this.apiKeyService_.list(
       {
         type: ApiKeyType.SECRET,
+        // There could be many unrevoked keys at the same time, so we narrow the list down by the redacted key.
+        // Note that the redacted key doesn't guarantee uniqueness and is not an authentication check, but just an optimization.
+        redacted: redactKey(token),
         // If the revoke date is set in the future, it means the key is still valid.
         $or: [
           { revoked_at: { $eq: null } },
           { revoked_at: { $gt: new Date() } },
         ],
       },
-      {},
+      {
+        take: undefined,
+      },
       sharedContext
     )
 
@@ -494,49 +495,7 @@ export class ApiKeyModuleService
     if (!matchedKeys.length) {
       return false
     }
-    return matchedKeys[0]!
-  }
-
-  protected async validateCreateApiKeys_(
-    data: ApiKeyTypes.CreateApiKeyDTO[],
-    sharedContext: Context = {}
-  ): Promise<void> {
-    if (!data.length) {
-      return
-    }
-
-    // There can only be 2 secret keys at most, and one has to be with a revoked_at date set, so only 1 can be newly created.
-    const secretKeysToCreate = data.filter((k) => k.type === ApiKeyType.SECRET)
-    if (!secretKeysToCreate.length) {
-      return
-    }
-
-    if (secretKeysToCreate.length > 1) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `You can only create one secret key at a time. You tried to create ${secretKeysToCreate.length} secret keys.`
-      )
-    }
-
-    // There already is a key that is not set to expire/or it hasn't expired
-    const dbSecretKeys = await this.apiKeyService_.list(
-      {
-        type: ApiKeyType.SECRET,
-        $or: [
-          { revoked_at: { $eq: null } },
-          { revoked_at: { $gt: new Date() } },
-        ],
-      },
-      {},
-      sharedContext
-    )
-
-    if (dbSecretKeys.length) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `You can only have one active secret key a time. Revoke or delete your existing key before creating a new one.`
-      )
-    }
+    return matchedKeys[0]
   }
 
   protected async normalizeUpdateInput_<T>(
@@ -594,7 +553,7 @@ export class ApiKeyModuleService
       {
         id: data.map((k) => k.id),
         type: ApiKeyType.SECRET,
-        revoked_at: { $ne: null },
+        revoked_at: { $lt: new Date() },
       },
       {},
       sharedContext
