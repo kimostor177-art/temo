@@ -16,6 +16,7 @@ export type ButtonProps = {
   className?: string
   buttonType?: ButtonType
   buttonRef?: React.LegacyRef<HTMLButtonElement>
+  type?: "button" | "submit" | "reset"
 } & React.HTMLAttributes<HTMLButtonElement>
 
 export const Button = ({

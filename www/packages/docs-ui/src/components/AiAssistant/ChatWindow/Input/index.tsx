@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useRef } from "react"
 import clsx from "clsx"
-import { ArrowUpCircleSolid } from "@medusajs/icons"
+import { ArrowUpCircleSolid, LightBulb, LightBulbSolid } from "@medusajs/icons"
 import { useAiAssistant, useIsBrowser } from "../../../../providers"
-import { useChat } from "@kapaai/react-sdk"
+import { useChat, useDeepThinking } from "@kapaai/react-sdk"
 import { useAiAssistantChatNavigation } from "../../../../hooks"
+import { Tooltip } from "../../../Tooltip"
 
 type AiAssistantChatWindowInputProps = {
   chatWindowRef: React.RefObject<HTMLDivElement | null>
@@ -15,6 +16,7 @@ export const AiAssistantChatWindowInput = ({
   const { chatOpened, inputRef, loading, setChatOpened, isCaptchaLoaded } =
     useAiAssistant()
   const { submitQuery, conversation } = useChat()
+  const { active, toggle } = useDeepThinking()
   const { isBrowser } = useIsBrowser()
   const { searchQuery, searchQueryType } = useMemo(() => {
     if (!isBrowser) {
@@ -156,13 +158,43 @@ export const AiAssistantChatWindowInput = ({
           placeholder="Ask me a question about Medusa..."
           disabled={loading}
         />
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-between">
+          <Tooltip
+            tooltipChildren={
+              <span>
+                Get better answers for complex questions.
+                <br />
+                Results may take up to 1 minute.
+              </span>
+            }
+          >
+            <button
+              onClick={toggle}
+              disabled={loading}
+              className={clsx(
+                "txt-compact-xsmall-plus appearance-none transition-colors flex items-center gap-docs_0.25 px-docs_0.5 py-docs_0.25 rounded-docs_sm",
+                !active &&
+                  "bg-transparent hover:bg-medusa-button-transparent-hover text-medusa-fg-muted hover:text-medusa-fg-subtle",
+                active &&
+                  "bg-medusa-tag-orange-bg hover:bg-medusa-tag-orange-bg-hover text-medusa-tag-orange-text",
+                loading && "cursor-not-allowed opacity-50"
+              )}
+              type="button"
+            >
+              {!active && <LightBulb />}
+              {active && (
+                <LightBulbSolid className="text-medusa-tag-orange-icon" />
+              )}
+              Deep Thinking
+            </button>
+          </Tooltip>
           <button
             className={clsx(
               "appearance-none p-0 text-medusa-fg-base disabled:text-medusa-fg-disabled",
               "transition-colors"
             )}
             disabled={!question || loading || !isCaptchaLoaded}
+            type="submit"
           >
             <ArrowUpCircleSolid />
           </button>
