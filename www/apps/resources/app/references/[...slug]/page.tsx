@@ -16,13 +16,7 @@ export default async function ReferencesPage(props: PageProps) {
   const params = await props.params
   const { slug } = params
 
-  return (
-    <Suspense fallback={<Loading />}>
-      <div className="animate animate-fadeIn">
-        <ReferenceMDX slug={slug} />
-      </div>
-    </Suspense>
-  )
+  return <ReferenceMDX slug={slug} />
 }
 
 export async function generateMetadata({
