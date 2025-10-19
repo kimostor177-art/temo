@@ -322,12 +322,10 @@ const CustomerField = ({ control, setValue }: CustomerFieldProps) => {
 
       const customerEmail = label?.match(/\((.*@.*)\)$/)?.[1] || label
 
-      if (!email && customerEmail) {
-        setValue("email", customerEmail, {
-          shouldDirty: true,
-          shouldTouch: true,
-        })
-      }
+      setValue("email", customerEmail || "", {
+        shouldDirty: true,
+        shouldTouch: true,
+      })
     },
     [email, setValue, customers.options]
   )
