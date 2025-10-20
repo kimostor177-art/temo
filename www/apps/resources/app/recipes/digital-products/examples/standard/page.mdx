@@ -2922,7 +2922,7 @@ export const getCustomerDigitalProducts = async () => {
     
     headers,
     next,
-    cache: "force-cache",
+   cache: "no-cache",
   })
 
   return digital_products as DigitalProduct[]
@@ -3100,7 +3100,7 @@ export const getDigitalMediaDownloadLink = async (mediaId: string) => {
     method: "POST",
     headers,
     next,
-    cache: "force-cache",
+   cache: "no-cache",
   })
 
   return url
