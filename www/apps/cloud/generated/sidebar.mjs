@@ -106,7 +106,16 @@ export const generatedSidebars = [
             "type": "link",
             "title": "Deployments",
             "path": "/deployments",
-            "children": []
+            "children": [
+              {
+                "loaded": true,
+                "isPathHref": true,
+                "type": "link",
+                "title": "Troubleshooting",
+                "path": "/deployments/troubleshooting",
+                "children": []
+              }
+            ]
           }
         ]
       },

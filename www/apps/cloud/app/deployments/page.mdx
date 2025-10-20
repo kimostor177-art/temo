@@ -17,11 +17,57 @@ A deployment is created from the latest source code of an [environment](../envir
 
 The latest deployment of an environment is the live version of that environment, unless you [redeploy a previous deployment](#redeploy-a-deployment).
 
-### How are Deployments Created?
+---
+
+## How are Deployments Created?
 
 For long-lived environments, Medusa creates a new deployment every time you push a new commit to the environment's branch. For example, if your Production environment is connected to the `main` branch, Medusa will create a new Production deployment every time you push a new commit to the `main` branch.
 
 For short-lived preview environments, Medusa creates a new environment and deployment when you open a pull request. Medusa will redeploy the preview environment every time you push a new commit to the pull request branch.
+
+---
+
+## Build Process for Deployments
+
+Before deploying your application on Cloud, Medusa runs the `build` script defined in your project's `package.json` file, which must run the `medusa build` command, among other build steps you may have.
+
+For example, your `build` script may look like this:
+
+```json title="package.json"
+{
+  "scripts": {
+    "build": "medusa build && npm run other-build-steps"
+  }
+}
+```
+
+<Note>
+
+You can replace `npm run other-build-steps` with the appropriate command for your package manager, such as `yarn other-build-steps`.
+
+</Note>
+
+### What Gets Deployed?
+
+Medusa deploys the contents of the `.medusa/server` directory created by the [build process](!docs!/learn/build). It includes the compiled JavaScript files in your project, the production build of the admin dashboard, and other necessary files to run your Medusa application in production.
+
+<Note>
+
+Learn more about the `.medusa/server` directory in the [Build guide](!docs!/learn/build#output-directory-structure).
+
+</Note>
+
+So, if you have custom assets like JSON files that your application needs at runtime, make sure to copy them to the `.medusa/server` directory after the `medusa build` command in your `build` script.
+
+For example, if your application needs a `src/data/custom.json` file at runtime, you can add a script that copies it to `.medusa/server/src/data/custom.json` after the build process is complete.
+
+You can also customize the Medusa Admin build configurations using the [admin.vite](!docs!/learn/configurations/medusa-config#adminvite) option in your `medusa-config.ts` file.
+
+<Note type="warning">
+
+Do not expose sensitive files in your deployments, especially in the `.medusa/server/public` directory, as they will be publicly accessible. Sensitive files include those containing secret API keys, database credentials, or any other confidential information.
+
+</Note>
 
 ---
 

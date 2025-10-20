@@ -72,6 +72,13 @@ export const sidebar = [
             type: "link",
             title: "Deployments",
             path: "/deployments",
+            children: [
+              {
+                type: "link",
+                title: "Troubleshooting",
+                path: "/deployments/troubleshooting",
+              },
+            ],
           },
         ],
       },
