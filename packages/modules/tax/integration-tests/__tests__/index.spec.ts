@@ -1177,6 +1177,12 @@ moduleIntegrationTestRunner<ITaxModuleService>({
           }),
         ])
       })
+
+      it("should retrieve a tax module provider's service", async () => {
+        const providerService = service.getProvider("tp_system")
+        expect(providerService).toBeDefined()
+        expect(providerService.getIdentifier()).toEqual("system")
+      })
     })
   },
 })

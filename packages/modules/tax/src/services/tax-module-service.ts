@@ -508,6 +508,10 @@ export default class TaxModuleService
     return taxLines
   }
 
+  getProvider(providerId: string): ITaxProvider {
+    return this.taxProviderService_.retrieveProvider(providerId)
+  }
+
   private async getTaxLinesFromProvider(
     providerId: string,
     items: ItemWithRates[],
