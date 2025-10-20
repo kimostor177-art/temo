@@ -88,4 +88,10 @@ export type Context<TManager = unknown> = {
    * A boolean value indicating whether the current workflow execution is being cancelled.
    */
   isCancelling?: boolean
+
+  /**
+   * Weither or not a sub workflow cancellation is being triggered from a parent step.
+   * If true, the parent step will not be triggered by the sub workflow.
+   */
+  cancelingFromParentStep?: boolean
 }

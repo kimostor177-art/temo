@@ -30,6 +30,17 @@ const nestedWorkflow = createWorkflow(
   }
 )
 
+const nestedWorkflow2 = createWorkflow(
+  {
+    name: "nested_sub_flow_async_2",
+  },
+  function (input) {
+    const resp = step_1_background(input)
+
+    return resp
+  }
+)
+
 createWorkflow(
   {
     name: "workflow_async_background",
@@ -41,7 +52,7 @@ createWorkflow(
           input,
         })
         .config({ name: "step_sub_flow_1" }),
-      nestedWorkflow
+      nestedWorkflow2
         .runAsStep({
           input,
         })

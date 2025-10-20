@@ -30,20 +30,16 @@ async function deleteKeysByPattern(pattern) {
     count: 100,
   })
 
+  const pipeline = redis.pipeline()
   for await (const keys of stream) {
     if (keys.length) {
-      const pipeline = redis.pipeline()
       keys.forEach((key) => pipeline.unlink(key))
-      await pipeline.exec()
     }
   }
+  await pipeline.exec()
 }
 
 async function cleanRedis() {
-  try {
-    await deleteKeysByPattern("bull:*")
-    await deleteKeysByPattern("dtrx:*")
-  } catch (error) {
-    console.error("Error:", error)
-  }
+  await deleteKeysByPattern("bull:*")
+  await deleteKeysByPattern("dtrx:*")
 }

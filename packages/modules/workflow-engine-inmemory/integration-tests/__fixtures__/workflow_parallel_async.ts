@@ -14,9 +14,25 @@ const step_2 = createStep(
   async (_, { container }) => {
     const we = container.resolve(Modules.WORKFLOW_ENGINE)
 
+    const onFinishPromise = new Promise<void>((resolve, reject) => {
+      void we.subscribe({
+        workflowId: "workflow_sub_workflow",
+        subscriber: (event) => {
+          if (event.eventType === "onFinish") {
+            if (event.errors.length > 0) {
+              reject(event.errors[0])
+            } else {
+              resolve()
+            }
+          }
+        },
+      })
+    })
+
     await we.run("workflow_sub_workflow", {
       throwOnError: true,
     })
+    await onFinishPromise
   }
 )
 
@@ -34,7 +50,6 @@ const step_2_sub = createStep(
 const subFlow = createWorkflow(
   {
     name: "workflow_sub_workflow",
-    retentionTime: 1000,
   },
   function (input) {
     step_2_sub()
@@ -68,7 +83,7 @@ const step_3 = createStep(
 createWorkflow(
   {
     name: "workflow_parallel_async",
-    retentionTime: 1000,
+    retentionTime: 5,
   },
   function (input) {
     parallelize(step_1(), step_2(), step_3())

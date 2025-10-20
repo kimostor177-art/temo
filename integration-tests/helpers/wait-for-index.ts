@@ -21,6 +21,10 @@ export async function waitForIndexedEntities(
   const { timeout = 120000, pollInterval = 100 } = options
   const startTime = Date.now()
 
+  // Normalize the entity name to match partition table naming convention
+  const normalizedName = entityName.toLowerCase().replace(/[^a-z0-9_]/g, "_")
+  const partitionTableName = `cat_${normalizedName}`
+
   while (Date.now() - startTime < timeout) {
     try {
       // Query the index_data table to check if all entities are indexed
@@ -33,10 +37,28 @@ export async function waitForIndexedEntities(
         ? result.rows.map((row: any) => row.id)
         : result.map((row: any) => row.id)
 
-      // Check if all expected entities are indexed
+      // Check if all expected entities are indexed in index_data
       const allIndexed = entityIds.every((id) => indexedIds.includes(id))
 
-      if (allIndexed) {
+      if (!allIndexed) {
+        await new Promise((resolve) => setTimeout(resolve, pollInterval))
+        continue
+      }
+
+      // Also check if data is replicated to the partition table
+      const partitionResult = await dbConnection.raw(
+        `SELECT id FROM ${partitionTableName} WHERE id = ANY(?)`,
+        [entityIds]
+      )
+
+      const partitionIds = partitionResult.rows
+        ? partitionResult.rows.map((row: any) => row.id)
+        : partitionResult.map((row: any) => row.id)
+
+      // Check if all expected entities are in the partition table
+      const allInPartition = entityIds.every((id) => partitionIds.includes(id))
+
+      if (allInPartition) {
         return
       }
     } catch (error) {
@@ -49,6 +71,6 @@ export async function waitForIndexedEntities(
   throw new Error(
     `Entities [${entityIds.join(
       ", "
-    )}] of type '${entityName}' were not indexed within ${timeout}ms`
+    )}] of type '${entityName}' were not fully replicated to partition table within ${timeout}ms`
   )
 }

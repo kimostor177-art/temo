@@ -1,112 +1,34 @@
+import { IWorkflowEngineService } from "@medusajs/framework/types"
+import { Modules } from "@medusajs/framework/utils"
 import {
   createStep,
   createWorkflow,
   StepResponse,
-  WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { medusaIntegrationTestRunner } from "@medusajs/test-utils"
-import { Modules } from "@medusajs/utils"
-import {
-  adminHeaders,
-  createAdminUser,
-} from "../../../../helpers/create-admin-user"
-import { setTimeout } from "timers/promises"
-import { IWorkflowEngineService } from "@medusajs/framework/types"
+import { moduleIntegrationTestRunner } from "@medusajs/test-utils"
+import { setTimeout as setTimeoutSync } from "timers"
+import { setTimeout as setTimeoutPromise } from "timers/promises"
+import { ulid } from "ulid"
+import "../__fixtures__"
 
-jest.setTimeout(300000)
+jest.setTimeout(60000)
 
-medusaIntegrationTestRunner({
-  testSuite: ({ dbConnection, getContainer, api }) => {
-    let container
-    let workflowOrcModule: IWorkflowEngineService
-
-    beforeEach(async () => {
-      container = getContainer()
-      await createAdminUser(dbConnection, adminHeaders, container)
-      workflowOrcModule = container.resolve(Modules.WORKFLOW_ENGINE)
-    })
-
-    describe("GET /admin/workflow-executions", () => {
-      it("should filter using q", async () => {
-        const step1 = createStep(
-          {
-            name: "my-step",
-          },
-          async (_) => {
-            return new StepResponse({ result: "success" })
-          }
-        )
-
-        const workflowName = "workflow-admin/workflow-executions"
-        createWorkflow(
-          {
-            name: workflowName,
-            retentionTime: 50,
-          },
-          function (input: WorkflowData<{ initial: string }>) {
-            const stepRes = step1()
-
-            return new WorkflowResponse(stepRes)
-          }
-        )
-
-        const engine = container.resolve(Modules.WORKFLOW_ENGINE)
-
-        const transactionId = "test-transaction-id"
-        await engine.run(workflowName, {
-          transactionId,
-          input: {
-            initial: "test",
-          },
-        })
-
-        const transactionId2 = "unknown"
-        await engine.run(workflowName, {
-          transactionId: transactionId2,
-          input: {
-            initial: "test",
-          },
-        })
-
-        const q = "transaction-id"
-        const response = await api.get(
-          `/admin/workflows-executions?q=${q}`,
-          adminHeaders
-        )
-
-        expect(response.status).toEqual(200)
-        expect(response.data.workflow_executions.length).toEqual(1)
-        expect(response.data.workflow_executions[0].transaction_id).toEqual(
-          transactionId
-        )
-
-        const q2 = "known"
-        const response2 = await api.get(
-          `/admin/workflows-executions?q=${q2}`,
-          adminHeaders
-        )
-
-        expect(response2.status).toEqual(200)
-        expect(response2.data.workflow_executions.length).toEqual(1)
-        expect(response2.data.workflow_executions[0].transaction_id).toEqual(
-          transactionId2
-        )
-      })
-    })
-
+moduleIntegrationTestRunner<IWorkflowEngineService>({
+  moduleName: Modules.WORKFLOW_ENGINE,
+  resolve: __dirname + "/../..",
+  testSuite: ({ service: workflowOrcModule }) => {
     describe("Workflow Orchestrator module subscribe", function () {
       it("should subscribe to a workflow and receive the response when it finishes", async () => {
         const step1 = createStep({ name: "step1" }, async () => {
           return new StepResponse("step1")
         })
         const step2 = createStep({ name: "step2" }, async () => {
-          await setTimeout(1000)
+          await setTimeoutPromise(1000)
           return new StepResponse("step2")
         })
 
-        const workflowId =
-          "workflow" + Math.random().toString(36).substring(2, 15)
+        const workflowId = "workflow" + ulid()
         createWorkflow(workflowId, function (input) {
           step1()
           step2().config({
@@ -119,12 +41,11 @@ medusaIntegrationTestRunner({
           return new StepResponse("step1_1")
         })
         const step2_1 = createStep({ name: "step2_1" }, async () => {
-          await setTimeout(1000)
+          await setTimeoutPromise(1000)
           return new StepResponse("step2_1")
         })
 
-        const workflow2Id =
-          "workflow_2" + Math.random().toString(36).substring(2, 15)
+        const workflow2Id = "workflow_2" + ulid()
         createWorkflow(workflow2Id, function (input) {
           step1_1()
           step2_1().config({
@@ -133,10 +54,8 @@ medusaIntegrationTestRunner({
           return new WorkflowResponse("workflow_2")
         })
 
-        const transactionId =
-          "trx_123" + Math.random().toString(36).substring(2, 15)
-        const transactionId2 =
-          "trx_124" + Math.random().toString(36).substring(2, 15)
+        const transactionId = "trx_123" + ulid()
+        const transactionId2 = "trx_124" + ulid()
 
         const onWorkflowFinishSpy = jest.fn()
 
@@ -145,7 +64,6 @@ medusaIntegrationTestRunner({
             workflowId: workflowId,
             transactionId,
             subscriber: (event) => {
-              console.log("event", event)
               if (event.eventType === "onFinish") {
                 onWorkflowFinishSpy()
                 workflowOrcModule.run(workflow2Id, {
@@ -163,7 +81,6 @@ medusaIntegrationTestRunner({
           void workflowOrcModule.subscribe({
             workflowId: workflow2Id,
             subscriber: (event) => {
-              console.log("event", event)
               if (event.eventType === "onFinish") {
                 onWorkflow2FinishSpy()
                 resolve()
@@ -188,12 +105,11 @@ medusaIntegrationTestRunner({
           return new StepResponse("step1")
         })
         const step2 = createStep({ name: "step2" }, async () => {
-          await setTimeout(1000)
+          await setTimeoutPromise(1000)
           return new StepResponse("step2")
         })
 
-        const workflowId =
-          "workflow" + Math.random().toString(36).substring(2, 15)
+        const workflowId = "workflow" + ulid()
         createWorkflow(workflowId, function (input) {
           step1()
           step2().config({
@@ -206,12 +122,11 @@ medusaIntegrationTestRunner({
           return new StepResponse("step1_1")
         })
         const step2_1 = createStep({ name: "step2_1" }, async () => {
-          await setTimeout(1000)
+          await setTimeoutPromise(1000)
           return new StepResponse("step2_1")
         })
 
-        const workflow2Id =
-          "workflow_2" + Math.random().toString(36).substring(2, 15)
+        const workflow2Id = "workflow_2" + ulid()
         createWorkflow(workflow2Id, function (input) {
           step1_1()
           step2_1().config({
@@ -220,10 +135,8 @@ medusaIntegrationTestRunner({
           return new WorkflowResponse("workflow_2")
         })
 
-        const transactionId =
-          "trx_123" + Math.random().toString(36).substring(2, 15)
-        const transactionId2 =
-          "trx_124" + Math.random().toString(36).substring(2, 15)
+        const transactionId = "trx_123" + ulid()
+        const transactionId2 = "trx_124" + ulid()
 
         const onWorkflowFinishSpy = jest.fn()
 
@@ -232,7 +145,6 @@ medusaIntegrationTestRunner({
             workflowId: workflowId,
             transactionId,
             subscriber: (event) => {
-              console.log("event", event)
               if (event.eventType === "onFinish") {
                 onWorkflowFinishSpy()
                 workflowOrcModule.run(workflow2Id, {
@@ -250,7 +162,6 @@ medusaIntegrationTestRunner({
           void workflowOrcModule.subscribe({
             workflowId: workflow2Id,
             subscriber: (event) => {
-              console.log("event", event)
               if (event.eventType === "onFinish") {
                 onWorkflow2FinishSpy()
                 resolve()

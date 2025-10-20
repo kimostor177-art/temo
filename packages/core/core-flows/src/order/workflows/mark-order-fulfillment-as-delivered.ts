@@ -16,7 +16,6 @@ import {
 import {
   createStep,
   createWorkflow,
-  parallelize,
   transform,
   WorkflowData,
   WorkflowResponse,
@@ -259,12 +258,11 @@ export const markOrderFulfillmentAsDeliveredWorkflow = createWorkflow(
       prepareRegisterDeliveryData
     )
 
-    const [deliveredFulfillment] = parallelize(
-      markFulfillmentAsDeliveredWorkflow.runAsStep({
-        input: { id: fulfillment.id },
-      }),
-      registerOrderDeliveryStep(deliveryData)
-    )
+    const deliveredFulfillment = markFulfillmentAsDeliveredWorkflow.runAsStep({
+      input: { id: fulfillment.id },
+    })
+
+    registerOrderDeliveryStep(deliveryData)
 
     emitEventStep({
       eventName: FulfillmentWorkflowEvents.DELIVERY_CREATED,

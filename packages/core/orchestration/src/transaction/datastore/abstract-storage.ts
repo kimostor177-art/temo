@@ -26,7 +26,7 @@ export interface IDistributedTransactionStorage {
     data: TransactionCheckpoint,
     ttl?: number,
     options?: TransactionOptions
-  ): Promise<void>
+  ): Promise<TransactionCheckpoint>
   scheduleRetry(
     transaction: DistributedTransactionType,
     step: TransactionStep,
@@ -96,7 +96,7 @@ export abstract class DistributedTransactionStorage
     key: string,
     data: TransactionCheckpoint,
     ttl?: number
-  ): Promise<void> {
+  ): Promise<TransactionCheckpoint> {
     throw new Error("Method 'save' not implemented.")
   }
 

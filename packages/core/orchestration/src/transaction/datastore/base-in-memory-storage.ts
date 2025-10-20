@@ -28,7 +28,7 @@ export class BaseInMemoryDistributedTransactionStorage extends DistributedTransa
     data: TransactionCheckpoint,
     ttl?: number,
     options?: TransactionOptions
-  ): Promise<void> {
+  ): Promise<TransactionCheckpoint> {
     const hasFinished = [
       TransactionState.DONE,
       TransactionState.REVERTED,
@@ -40,6 +40,8 @@ export class BaseInMemoryDistributedTransactionStorage extends DistributedTransa
     } else {
       this.storage.set(key, data)
     }
+
+    return data
   }
 
   async clearExpiredExecutions(): Promise<void> {}

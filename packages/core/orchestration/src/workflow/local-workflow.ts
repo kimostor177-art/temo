@@ -417,7 +417,9 @@ export class LocalWorkflow {
 
     if (this.medusaContext) {
       this.medusaContext.eventGroupId =
-        transaction.getFlow().metadata?.eventGroupId
+        transaction.getFlow().metadata!.eventGroupId
+      transaction.getFlow().metadata!.cancelingFromParentStep ??=
+        this.medusaContext.cancelingFromParentStep
     }
 
     const { cleanUpEventListeners } = this.registerEventCallbacks({
@@ -626,6 +628,8 @@ export class LocalWorkflow {
       this.medusaContext.parentStepIdempotencyKey =
         metadata.parentStepIdempotencyKey
       this.medusaContext.preventReleaseEvents = metadata?.preventReleaseEvents
+      this.medusaContext.cancelingFromParentStep =
+        metadata?.cancelingFromParentStep
     }
   }
 }

@@ -111,8 +111,12 @@ function createContextualWorkflowRunner<
       flow.container = executionContainer
     }
 
-    const { eventGroupId, parentStepIdempotencyKey, preventReleaseEvents } =
-      context
+    const {
+      eventGroupId,
+      parentStepIdempotencyKey,
+      preventReleaseEvents,
+      cancelingFromParentStep,
+    } = context
 
     if (!preventReleaseEvents) {
       attachOnFinishReleaseEvents(events, flow, { logOnError })
@@ -123,6 +127,7 @@ function createContextualWorkflowRunner<
       parentStepIdempotencyKey,
       sourcePath: options?.sourcePath,
       preventReleaseEvents,
+      cancelingFromParentStep,
     }
 
     context.isCancelling = isCancel
@@ -609,13 +614,13 @@ function attachOnFinishReleaseEvents(
 
     if (logOnError) {
       const workflowName = transaction.getFlow().modelId
-      transaction
-        .getErrors()
-        .forEach((err) =>
-          logger.error(
-            `${workflowName}:${err?.action}:${err?.handlerType} - ${err?.error?.message}${EOL}${err?.error?.stack}`
-          )
+      transaction.getErrors().forEach((err) => {
+        const errMsg = err?.error?.message ? " - " + err?.error?.message : ""
+
+        logger.error(
+          `${workflowName}:${err?.action}:${err?.handlerType}${errMsg}${EOL}${err?.error?.stack}`
         )
+      })
     }
 
     const eventBusService = (
