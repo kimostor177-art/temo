@@ -100,3 +100,17 @@ By default, when Medusa creates a [preview environment](../environments/preview/
 Cloud also allows you to configure which environment's database to replicate the preview database from. For example, you can replicate the Staging environment's database instead of Production.
 
 Learn more in the [Preview Environments](../environments/preview/page.mdx#manage-shared-previews-settings) guide.
+
+---
+
+## Running Migrations on Cloud
+
+Medusa automatically runs database migrations for every deployment on Cloud. This ensures that your database schema is always up-to-date with the latest changes in your Medusa application.
+
+When you deploy changes to an environment on Cloud, Medusa:
+
+1. Runs any [pending database migrations](!docs!/learn/fundamentals/data-models/write-migration).
+2. [Syncs links](!docs!/learn/fundamentals/module-links).
+3. [Runs pending data migration scripts](!docs!/learn/fundamentals/data-models/write-migration#data-migration-scripts).
+
+So, if you define new database migrations in your module, define new links, or add data migration scripts, Medusa will apply those changes automatically when you deploy the changes to Cloud.
