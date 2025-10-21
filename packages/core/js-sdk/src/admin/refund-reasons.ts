@@ -101,7 +101,7 @@ export class RefundReason {
    *
    * ```ts
    * sdk.admin.refundReason.retrieve("refr_123", {
-   *   fields: "id,value"
+   *   fields: "id,code"
    * })
    * .then(({ refund_reason }) => {
    *   console.log(refund_reason)
@@ -138,7 +138,7 @@ export class RefundReason {
    *
    * @example
    * sdk.admin.refundReason.create({
-   *   value: "refund",
+   *   code: "refund",
    *   label: "Refund",
    * })
    * .then(({ refund_reason }) => {
@@ -176,7 +176,7 @@ export class RefundReason {
    *
    * @example
    * sdk.admin.refundReason.update("ret_123", {
-   *   value: "refund",
+   *   code: "refund",
    *   label: "Refund",
    * })
    * .then(({ refund_reason }) => {
