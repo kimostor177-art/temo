@@ -1,5 +1,6 @@
 import { FormattingOptionsType } from "types"
 import authProviderOptions from "./auth-provider.js"
+import cachingOptions from "./caching.js"
 import fileOptions from "./file.js"
 import fulfillmentProviderOptions from "./fulfillment-provider.js"
 import helperStepsOptions from "./helper-steps.js"
@@ -25,6 +26,7 @@ const mergerCustomOptions: FormattingOptionsType = {
   ...analyticsProviderOptions,
   ...authProviderOptions,
   ...cacheOptions,
+  ...cachingOptions,
   ...coreFlowsOptions,
   ...dmlOptions,
   ...eventOptions,

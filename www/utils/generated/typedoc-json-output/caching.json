@@ -1,0 +1,2942 @@
+{
+	"id": 0,
+	"name": "caching",
+	"variant": "project",
+	"kind": 1,
+	"flags": {},
+	"children": [
+		{
+			"id": 1,
+			"name": "ICachingModuleService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [],
+				"blockTags": [
+					{
+						"tag": "@since",
+						"content": [
+							{
+								"kind": "text",
+								"text": "v2.11.0"
+							}
+						]
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 2,
+					"name": "get",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "caching/index.ts",
+							"line": 74,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L74"
+						}
+					],
+					"signatures": [
+						{
+							"id": 3,
+							"name": "get",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves data from the cache. If neither "
+									},
+									{
+										"kind": "code",
+										"text": "`key`"
+									},
+									{
+										"kind": "text",
+										"text": " nor "
+									},
+									{
+										"kind": "code",
+										"text": "`tags`"
+									},
+									{
+										"kind": "text",
+										"text": " are provided, or the item is not found, "
+									},
+									{
+										"kind": "code",
+										"text": "`null`"
+									},
+									{
+										"kind": "text",
+										"text": " is returned."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The item(s) that was stored in the cache. If no item was found, or neither "
+											},
+											{
+												"kind": "code",
+												"text": "`key`"
+											},
+											{
+												"kind": "text",
+												"text": " nor "
+											},
+											{
+												"kind": "code",
+												"text": "`tags`"
+											},
+											{
+												"kind": "text",
+												"text": " were provided, "
+											},
+											{
+												"kind": "code",
+												"text": "`null`"
+											},
+											{
+												"kind": "text",
+												"text": " is returned."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To retrieve by key:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst data = await cacheModuleService.get({\n  key: \"products\", // this key would typically be a hash\n}) as { id: string; title: string; }\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo retrieve by tags:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst data = await cacheModuleService.get({\n  tags: [\"Product:list:*\"],\n}) as { id: string; title: string; }[]\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo retrieve by key from specific providers:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst data = await cacheModuleService.get({\n  key: \"products\", // this key would typically be a hash\n  providers: [\"caching-redis\", \"caching-memcached\"]\n}) as { id: string; title: string; }\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nThis example will try to get the data from the "
+											},
+											{
+												"kind": "code",
+												"text": "`caching-redis`"
+											},
+											{
+												"kind": "text",
+												"text": " provider first, and if not found, it will try to get it from the "
+											},
+											{
+												"kind": "code",
+												"text": "`caching-memcached`"
+											},
+											{
+												"kind": "text",
+												"text": " provider."
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "caching/index.ts",
+									"line": 74,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L74"
+								}
+							],
+							"typeParameters": [
+								{
+									"id": 4,
+									"name": "T",
+									"variant": "typeParam",
+									"kind": 131072,
+									"flags": {}
+								}
+							],
+							"parameters": [
+								{
+									"id": 5,
+									"name": "param0",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The options for retrieving the item."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 6,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 7,
+													"name": "key",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The key of the item to retrieve.\nIf both "
+															},
+															{
+																"kind": "code",
+																"text": "`key`"
+															},
+															{
+																"kind": "text",
+																"text": " and "
+															},
+															{
+																"kind": "code",
+																"text": "`tags`"
+															},
+															{
+																"kind": "text",
+																"text": " are provided, "
+															},
+															{
+																"kind": "code",
+																"text": "`key`"
+															},
+															{
+																"kind": "text",
+																"text": " takes precedence over "
+															},
+															{
+																"kind": "code",
+																"text": "`tags`"
+															},
+															{
+																"kind": "text",
+																"text": "."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 83,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L83"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 8,
+													"name": "tags",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The tags of the items to retrieve. Tags\nare useful to retrieve multiple related items at once."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 88,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L88"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												},
+												{
+													"id": 9,
+													"name": "providers",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The providers to retrieve the item(s) from. You can specify an array of provider IDs.\nThey're checked in the order they're provided in, so make sure to order them based on your priority.\nIf not provided, the [default provider](https://docs.medusajs.com/infrastructure-modules/caching/providers#default-caching-module-provider) is used."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 94,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L94"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														7,
+														8,
+														9
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "caching/index.ts",
+													"line": 78,
+													"character": 5,
+													"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L78"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "union",
+										"types": [
+											{
+												"type": "literal",
+												"value": null
+											},
+											{
+												"type": "reference",
+												"target": 4,
+												"name": "T",
+												"package": "@medusajs/types",
+												"refersToTypeParameter": true
+											}
+										]
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 10,
+					"name": "set",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "caching/index.ts",
+							"line": 166,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L166"
+						}
+					],
+					"signatures": [
+						{
+							"id": 11,
+							"name": "set",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method stores data in the cache using the \n[default Caching Module Provider](https://docs.medusajs.com/infrastructure-modules/caching/providers#default-caching-module-provider)."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "A promise that resolves when the item has been stored."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To store with key:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst data = { id: \"prod_123\", title: \"Product 123\" }\nconst key = await cacheModuleService.computeKey(data)\nawait cacheModuleService.set({\n  key,\n  data\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo store with tags:\n\n:::note\n\nTags should follow [conventions](https://docs.medusajs.com/infrastructure-modules/caching/concepts#caching-tags-convention) to ensure they're automatically invalidated.\n\n:::\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst data = [{ id: \"prod_123\", title: \"Product 123\" }]\nconst key = await cacheModuleService.computeKey(data)\nawait cacheModuleService.set({\n  key,\n  data,\n  tags: [`Product:${data[0].id}`, \"Product:list:*\"]\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nTo disable auto-invalidation for the item:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst data = [{ id: \"prod_123\", title: \"Product 123\" }]\nconst key = await cacheModuleService.computeKey(data)\nawait cacheModuleService.set({\n  key,\n  data,\n  options: { autoInvalidate: false }\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nThe item is now only invalidated when calling the "
+											},
+											{
+												"kind": "code",
+												"text": "`clear`"
+											},
+											{
+												"kind": "text",
+												"text": " method directly with the same key or tags.\n\nTo store with specific providers:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nconst data = { id: \"prod_123\", title: \"Product 123\" }\nconst key = await cacheModuleService.computeKey(data)\nawait cacheModuleService.set({\n  key,\n  data,\n  providers: [\n    \"caching-redis\",\n    { id: \"caching-memcached\", ttl: 120 } // custom TTL for this provider\n  ]\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nThis example will store the item in both the "
+											},
+											{
+												"kind": "code",
+												"text": "`caching-redis`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`caching-memcached`"
+											},
+											{
+												"kind": "text",
+												"text": " providers, with a custom TTL of "
+											},
+											{
+												"kind": "code",
+												"text": "`120`"
+											},
+											{
+												"kind": "text",
+												"text": " seconds for the "
+											},
+											{
+												"kind": "code",
+												"text": "`caching-memcached`"
+											},
+											{
+												"kind": "text",
+												"text": " provider."
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "caching/index.ts",
+									"line": 166,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L166"
+								}
+							],
+							"parameters": [
+								{
+									"id": 12,
+									"name": "param0",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The options for storing the item."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 13,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 14,
+													"name": "key",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The key of the item to store."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 177,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L177"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 15,
+													"name": "data",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The data to store in the cache."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 181,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L181"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "object"
+													}
+												},
+												{
+													"id": 16,
+													"name": "ttl",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The time-to-live (TTL in seconds) value in seconds.\nIf not provided, the default TTL value configured in the provider should be used."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 186,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L186"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "number"
+													}
+												},
+												{
+													"id": 17,
+													"name": "tags",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The tags of the items to store. Tags are useful to group related items \ntogether for retrieval or invalidation."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 191,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L191"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												},
+												{
+													"id": 18,
+													"name": "options",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Options for storing the item. The options are stored with the item, allowing you to later match against them when clearing the item.\nFor example, if you set "
+															},
+															{
+																"kind": "code",
+																"text": "`autoInvalidate: false`"
+															},
+															{
+																"kind": "text",
+																"text": ", the item will only be invalidated when calling the "
+															},
+															{
+																"kind": "code",
+																"text": "`clear`"
+															},
+															{
+																"kind": "text",
+																"text": " method directly with the same key or tags."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 196,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L196"
+														}
+													],
+													"type": {
+														"type": "reflection",
+														"declaration": {
+															"id": 19,
+															"name": "__type",
+															"variant": "declaration",
+															"kind": 65536,
+															"flags": {},
+															"children": [
+																{
+																	"id": 20,
+																	"name": "autoInvalidate",
+																	"variant": "declaration",
+																	"kind": 1024,
+																	"flags": {
+																		"isOptional": true
+																	},
+																	"comment": {
+																		"summary": [
+																			{
+																				"kind": "text",
+																				"text": "Whether to automatically invalidate the item when related data changes."
+																			}
+																		],
+																		"blockTags": [
+																			{
+																				"tag": "@defaultValue",
+																				"content": [
+																					{
+																						"kind": "code",
+																						"text": "```ts\ntrue\n```"
+																					}
+																				]
+																			}
+																		]
+																	},
+																	"sources": [
+																		{
+																			"fileName": "caching/index.ts",
+																			"line": 202,
+																			"character": 6,
+																			"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L202"
+																		}
+																	],
+																	"type": {
+																		"type": "intrinsic",
+																		"name": "boolean"
+																	}
+																}
+															],
+															"groups": [
+																{
+																	"title": "Properties",
+																	"children": [
+																		20
+																	]
+																}
+															],
+															"sources": [
+																{
+																	"fileName": "caching/index.ts",
+																	"line": 196,
+																	"character": 14,
+																	"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L196"
+																}
+															]
+														}
+													}
+												},
+												{
+													"id": 21,
+													"name": "providers",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The providers to store the item(s) in. You can specify an array of provider IDs or an array of objects with provider ID and TTL.\nIf not provided, the [default provider](https://docs.medusajs.com/infrastructure-modules/caching/providers#default-caching-module-provider) is used."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 208,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L208"
+														}
+													],
+													"type": {
+														"type": "reference",
+														"target": {
+															"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+															"qualifiedName": "Providers"
+														},
+														"name": "Providers",
+														"package": "@medusajs/types"
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														14,
+														15,
+														16,
+														17,
+														18,
+														21
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "caching/index.ts",
+													"line": 173,
+													"character": 5,
+													"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L173"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 22,
+					"name": "clear",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "caching/index.ts",
+							"line": 274,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L274"
+						}
+					],
+					"signatures": [
+						{
+							"id": 23,
+							"name": "clear",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method clears data from the cache. If neither "
+									},
+									{
+										"kind": "code",
+										"text": "`key`"
+									},
+									{
+										"kind": "text",
+										"text": " nor "
+									},
+									{
+										"kind": "code",
+										"text": "`tags`"
+									},
+									{
+										"kind": "text",
+										"text": " are provided, nothing is cleared.\n\nBy default, all items matching the key or tags are cleared regardless of their options. If you provide "
+									},
+									{
+										"kind": "code",
+										"text": "`options.autoInvalidate: true`"
+									},
+									{
+										"kind": "text",
+										"text": ",\nonly items that were set with "
+									},
+									{
+										"kind": "code",
+										"text": "`options.autoInvalidate: true`"
+									},
+									{
+										"kind": "text",
+										"text": " are cleared.\n\nFor example, if you set "
+									},
+									{
+										"kind": "code",
+										"text": "`options.autoInvalidate: true`"
+									},
+									{
+										"kind": "text",
+										"text": ", only items that were set with "
+									},
+									{
+										"kind": "code",
+										"text": "`options.autoInvalidate: true`"
+									},
+									{
+										"kind": "text",
+										"text": " are cleared.\nItems that were set with "
+									},
+									{
+										"kind": "code",
+										"text": "`options.autoInvalidate: false`"
+									},
+									{
+										"kind": "text",
+										"text": " are only cleared when you don't provide any options."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "A promise that resolves when the item(s) have been cleared."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "text",
+												"text": "To invalidate cache by key:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nawait cacheModuleService.clear({\n key: \"products\" // this key would typically be a hash\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nThis example will clear the item with the key "
+											},
+											{
+												"kind": "code",
+												"text": "`products`"
+											},
+											{
+												"kind": "text",
+												"text": " regardless of its "
+											},
+											{
+												"kind": "code",
+												"text": "`options.autoInvalidate`"
+											},
+											{
+												"kind": "text",
+												"text": " value.\n\nTo invalidate cache by tags:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nawait cacheModuleService.clear({\n tags: [\"Product:list:*\"]\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nThis example will clear all items with the tag "
+											},
+											{
+												"kind": "code",
+												"text": "`Product:list:*`"
+											},
+											{
+												"kind": "text",
+												"text": " regardless of their "
+											},
+											{
+												"kind": "code",
+												"text": "`options.autoInvalidate`"
+											},
+											{
+												"kind": "text",
+												"text": " value.\n\nTo invalidate only the cache data that were set to automatically invalidate:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nawait cacheModuleService.clear({\n tags: [\"Product:list:*\"],\n options: { autoInvalidate: true }\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nThis example will only clear items with the tag "
+											},
+											{
+												"kind": "code",
+												"text": "`Product:list:*`"
+											},
+											{
+												"kind": "text",
+												"text": " that were set with "
+											},
+											{
+												"kind": "code",
+												"text": "`options.autoInvalidate: true`"
+											},
+											{
+												"kind": "text",
+												"text": ".\nItems that were set with "
+											},
+											{
+												"kind": "code",
+												"text": "`options.autoInvalidate: false`"
+											},
+											{
+												"kind": "text",
+												"text": " will not be cleared.\n\n:::note\n\nSetting "
+											},
+											{
+												"kind": "code",
+												"text": "`options.autoInvalidate: false`"
+											},
+											{
+												"kind": "text",
+												"text": " when calling the "
+											},
+											{
+												"kind": "code",
+												"text": "`clear`"
+											},
+											{
+												"kind": "text",
+												"text": " method will not clear any items.\nTo clear items that were set with "
+											},
+											{
+												"kind": "code",
+												"text": "`options.autoInvalidate: false`"
+											},
+											{
+												"kind": "text",
+												"text": ", you must call the "
+											},
+											{
+												"kind": "code",
+												"text": "`clear`"
+											},
+											{
+												"kind": "text",
+												"text": " method without any options.\n\n:::\n\nTo invalidate cache from specific providers:\n\n"
+											},
+											{
+												"kind": "code",
+												"text": "```ts\nawait cacheModuleService.clear({\n key: \"products\",\n providers: [\"caching-redis\", \"caching-memcached\"]\n})\n```"
+											},
+											{
+												"kind": "text",
+												"text": "\n\nThis example will try to clear the data from both the "
+											},
+											{
+												"kind": "code",
+												"text": "`caching-redis`"
+											},
+											{
+												"kind": "text",
+												"text": " and "
+											},
+											{
+												"kind": "code",
+												"text": "`caching-memcached`"
+											},
+											{
+												"kind": "text",
+												"text": " providers."
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "caching/index.ts",
+									"line": 274,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L274"
+								}
+							],
+							"parameters": [
+								{
+									"id": 24,
+									"name": "param0",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The options for clearing the item(s)."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 25,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 26,
+													"name": "key",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The key of the item to clear."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 283,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L283"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 27,
+													"name": "tags",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The tags of the items to clear. Tags\nare useful to clear multiple related items at once."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 288,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L288"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												},
+												{
+													"id": 28,
+													"name": "options",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Options for clearing the item(s). The options are matched against the stored options when the item was set.\nFor example, if the item was set with "
+															},
+															{
+																"kind": "code",
+																"text": "`autoInvalidate: true`"
+															},
+															{
+																"kind": "text",
+																"text": ", it will only be cleared if the "
+															},
+															{
+																"kind": "code",
+																"text": "`autoInvalidate`"
+															},
+															{
+																"kind": "text",
+																"text": " option is also set to "
+															},
+															{
+																"kind": "code",
+																"text": "`true`"
+															},
+															{
+																"kind": "text",
+																"text": ".\nIf not provided, all items matching the key or tags are cleared regardless of their options."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 294,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L294"
+														}
+													],
+													"type": {
+														"type": "reflection",
+														"declaration": {
+															"id": 29,
+															"name": "__type",
+															"variant": "declaration",
+															"kind": 65536,
+															"flags": {},
+															"children": [
+																{
+																	"id": 30,
+																	"name": "autoInvalidate",
+																	"variant": "declaration",
+																	"kind": 1024,
+																	"flags": {
+																		"isOptional": true
+																	},
+																	"comment": {
+																		"summary": [
+																			{
+																				"kind": "text",
+																				"text": "Whether to clear item(s) that were set to automatically invalidate."
+																			}
+																		]
+																	},
+																	"sources": [
+																		{
+																			"fileName": "caching/index.ts",
+																			"line": 298,
+																			"character": 6,
+																			"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L298"
+																		}
+																	],
+																	"type": {
+																		"type": "intrinsic",
+																		"name": "boolean"
+																	}
+																}
+															],
+															"groups": [
+																{
+																	"title": "Properties",
+																	"children": [
+																		30
+																	]
+																}
+															],
+															"sources": [
+																{
+																	"fileName": "caching/index.ts",
+																	"line": 294,
+																	"character": 14,
+																	"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L294"
+																}
+															]
+														}
+													}
+												},
+												{
+													"id": 31,
+													"name": "providers",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The providers from which to clear the item(s). You can specify an array of provider IDs.\nIf not provided, the [default provider](https://docs.medusajs.com/infrastructure-modules/caching/providers#default-caching-module-provider) is used."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 304,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L304"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														26,
+														27,
+														28,
+														31
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "caching/index.ts",
+													"line": 279,
+													"character": 5,
+													"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L279"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 32,
+					"name": "computeKey",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "caching/index.ts",
+							"line": 320,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L320"
+						}
+					],
+					"signatures": [
+						{
+							"id": 33,
+							"name": "computeKey",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method computes a cache key based on the input object. It's useful to generate consistent and unique keys for caching."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The computed cache key."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst key = await cacheModuleService.computeKey({\n  id: \"prod_123\",\n  title: \"Product 123\"\n})\n// key will be a hash string like \"a1b2c3d4e5f6g7h8i9j0\"\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "caching/index.ts",
+									"line": 320,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L320"
+								}
+							],
+							"parameters": [
+								{
+									"id": 34,
+									"name": "input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The input object to compute the key from."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "object"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "string"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 35,
+					"name": "computeTags",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "caching/index.ts",
+							"line": 337,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L337"
+						}
+					],
+					"signatures": [
+						{
+							"id": 36,
+							"name": "computeTags",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method computes cache tags based on the input object. It's useful to generate consistent and relevant tags for caching."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "An array of computed cache tags."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nconst tags = await cacheModuleService.computeTags({\n  products: [{ id: \"prod_123\" }, { id: \"prod_456\" }],\n}, {\n  operation: \"updated\"\n})\n// tags might be [\"Product:prod_123\", \"Product:prod_456\", \"Product:list:*\"]\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "caching/index.ts",
+									"line": 337,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L337"
+								}
+							],
+							"parameters": [
+								{
+									"id": 37,
+									"name": "input",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The input object to compute the tags from."
+											}
+										]
+									},
+									"type": {
+										"type": "intrinsic",
+										"name": "object"
+									}
+								},
+								{
+									"id": 38,
+									"name": "options",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {
+										"isOptional": true
+									},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "Additional options to influence tag computation."
+											}
+										]
+									},
+									"type": {
+										"type": "reference",
+										"target": {
+											"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+											"qualifiedName": "Record"
+										},
+										"typeArguments": [
+											{
+												"type": "intrinsic",
+												"name": "string"
+											},
+											{
+												"type": "intrinsic",
+												"name": "any"
+											}
+										],
+										"name": "Record",
+										"package": "typescript"
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "array",
+										"elementType": {
+											"type": "intrinsic",
+											"name": "string"
+										}
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						2,
+						10,
+						22,
+						32,
+						35
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "caching/index.ts",
+					"line": 18,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L18"
+				}
+			],
+			"extendedTypes": [
+				{
+					"type": "reference",
+					"target": {
+						"sourceFileName": "../../../../packages/core/types/src/modules-sdk/index.ts",
+						"qualifiedName": "IModuleService"
+					},
+					"name": "IModuleService",
+					"package": "@medusajs/types"
+				}
+			]
+		},
+		{
+			"id": 52,
+			"name": "ICachingProviderService",
+			"variant": "declaration",
+			"kind": 256,
+			"flags": {},
+			"comment": {
+				"summary": [
+					{
+						"kind": "text",
+						"text": "### constructor\n\nThe constructor allows you to access resources from the module's container using the first parameter,\nand the module's options using the second parameter.\n\nIf you're creating a client or establishing a connection with a third-party service, do it in a [Loader](https://docs.medusajs.com/learn/fundamentals/modules/loaders)\nand store it in the Module's container. Then, you can access it in your service using the container.\n\n:::note[Loader Example]\n\n[Initialize MongoDB client in loader and access it in service](https://docs.medusajs.com/learn/fundamentals/modules/loaders#example-register-custom-mongodb-connection).\n\n:::\n\n#### Example\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nimport { ICachingProviderService } from \"@medusajs/framework/types\"\nimport { Logger } from \"@medusajs/framework/types\"\n\ntype InjectedDependencies = {\n  logger: Logger\n  // assuming you initialized a client\n  // in a Loader and stored it in the container\n  client: Client\n}\n\ntype Options = {\n  url: string\n}\n\nclass MyCachingModuleProvider implements ICachingProviderService {\n  static identifier = \"my-cache\"\n  protected logger_: Logger\n  protected options_: Options\n  protected client\n\n  constructor (\n    { logger, client }: InjectedDependencies,\n    options: Options\n  ) {\n    this.logger_ = logger\n    this.options_ = options\n    // set the service's client to\n    // the client from the container\n    this.client = client\n  }\n\n  // ...\n}\n\nexport default MyCachingModuleProvider\n```"
+					},
+					{
+						"kind": "text",
+						"text": "\n\n### Identifier\n\nEvery caching module provider must have an "
+					},
+					{
+						"kind": "code",
+						"text": "`identifier`"
+					},
+					{
+						"kind": "text",
+						"text": " static property. The provider's ID\nwill be stored as "
+					},
+					{
+						"kind": "code",
+						"text": "`lp_{identifier}_{id}`"
+					},
+					{
+						"kind": "text",
+						"text": ", where "
+					},
+					{
+						"kind": "code",
+						"text": "`id`"
+					},
+					{
+						"kind": "text",
+						"text": " is the ID you set in your "
+					},
+					{
+						"kind": "code",
+						"text": "`medusa-config.ts`"
+					},
+					{
+						"kind": "text",
+						"text": " file.\n\nFor example:\n\n"
+					},
+					{
+						"kind": "code",
+						"text": "```ts\nclass MyCachingModuleProvider implements ICachingProviderService {\n  static identifier = \"my-cache\"\n  // ...\n}\n```"
+					}
+				]
+			},
+			"children": [
+				{
+					"id": 53,
+					"name": "get",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "caching/index.ts",
+							"line": 432,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L432"
+						}
+					],
+					"signatures": [
+						{
+							"id": 54,
+							"name": "get",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method retrieves data from the cache either by "
+									},
+									{
+										"kind": "code",
+										"text": "`key`"
+									},
+									{
+										"kind": "text",
+										"text": " or "
+									},
+									{
+										"kind": "code",
+										"text": "`tags`"
+									},
+									{
+										"kind": "text",
+										"text": ". If neither "
+									},
+									{
+										"kind": "code",
+										"text": "`key`"
+									},
+									{
+										"kind": "text",
+										"text": " nor "
+									},
+									{
+										"kind": "code",
+										"text": "`tags`"
+									},
+									{
+										"kind": "text",
+										"text": " are provided, "
+									},
+									{
+										"kind": "code",
+										"text": "`null`"
+									},
+									{
+										"kind": "text",
+										"text": " should be returned.\nIf both "
+									},
+									{
+										"kind": "code",
+										"text": "`key`"
+									},
+									{
+										"kind": "text",
+										"text": " and "
+									},
+									{
+										"kind": "code",
+										"text": "`tags`"
+									},
+									{
+										"kind": "text",
+										"text": " are provided, "
+									},
+									{
+										"kind": "code",
+										"text": "`key`"
+									},
+									{
+										"kind": "text",
+										"text": " should take precedence over "
+									},
+									{
+										"kind": "code",
+										"text": "`tags`"
+									},
+									{
+										"kind": "text",
+										"text": "."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "The item(s) that was stored in the cache, or "
+											},
+											{
+												"kind": "code",
+												"text": "`null`"
+											},
+											{
+												"kind": "text",
+												"text": " if not found."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyCachingModuleProvider implements ICachingProviderService {\n  // ...\n  async get({ key, tags }: { key?: string; tags?: string[] }): Promise<any> {\n    // Assuming you're using a client to get data\n    if (key) {\n      return await this.client.get({ key })\n    }\n    if (tags) {\n      return await this.client.getByTags({ tags })\n    }\n    return null\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "caching/index.ts",
+									"line": 432,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L432"
+								}
+							],
+							"parameters": [
+								{
+									"id": 55,
+									"name": "param0",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The parameters for retrieving the item."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 56,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 57,
+													"name": "key",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The key of the item to retrieve. If both are provided, "
+															},
+															{
+																"kind": "code",
+																"text": "`key`"
+															},
+															{
+																"kind": "text",
+																"text": " should take precedence over "
+															},
+															{
+																"kind": "code",
+																"text": "`tags`"
+															},
+															{
+																"kind": "text",
+																"text": "."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 436,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L436"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 58,
+													"name": "tags",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The tags of the items to retrieve. All items with any of the provided tags should be retrieved."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 440,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L440"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														57,
+														58
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "caching/index.ts",
+													"line": 432,
+													"character": 21,
+													"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L432"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "any"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 59,
+					"name": "set",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "caching/index.ts",
+							"line": 465,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L465"
+						}
+					],
+					"signatures": [
+						{
+							"id": 60,
+							"name": "set",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method stores data in the cache. It should also store the options with the item, \nallowing you to later to check the "
+									},
+									{
+										"kind": "code",
+										"text": "`autoInvalidate`"
+									},
+									{
+										"kind": "text",
+										"text": " option when clearing the item."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "A promise that resolves when the item has been stored."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nclass MyCachingModuleProvider implements ICachingProviderService {\n  // ...\n  async set({ key, data, ttl, tags, options }: { \n    key: string; \n    data: any; \n    ttl?: number; \n    tags?: string[]; \n    options?: { autoInvalidate?: boolean } \n  }): Promise<void> {\n    // Assuming you're using a client to set data\n    await this.client.set({ key, data, ttl, tags })\n    await this.client.set({ key, data: options, pipeline: \"options\" })\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "caching/index.ts",
+									"line": 465,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L465"
+								}
+							],
+							"parameters": [
+								{
+									"id": 61,
+									"name": "param0",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The parameters for storing the item."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 62,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 63,
+													"name": "key",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The key of the item to store."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 475,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L475"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 64,
+													"name": "data",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The data to store in the cache."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 479,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L479"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "object"
+													}
+												},
+												{
+													"id": 65,
+													"name": "ttl",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The time-to-live (TTL in seconds) value in seconds.\nIf not provided, the default TTL value configured in the provider should be used."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 484,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L484"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "number"
+													}
+												},
+												{
+													"id": 66,
+													"name": "tags",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The tags of the items to store. Items should be grouped together using tags for retrieval or invalidation."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 488,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L488"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												},
+												{
+													"id": 67,
+													"name": "options",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Options for storing the item. The options should be stored with the item, allowing you to later match against them when clearing the item.\nFor example, if you set "
+															},
+															{
+																"kind": "code",
+																"text": "`autoInvalidate: false`"
+															},
+															{
+																"kind": "text",
+																"text": ", the item will only be invalidated when calling the "
+															},
+															{
+																"kind": "code",
+																"text": "`clear`"
+															},
+															{
+																"kind": "text",
+																"text": " method directly with the same key or tags."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 493,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L493"
+														}
+													],
+													"type": {
+														"type": "reflection",
+														"declaration": {
+															"id": 68,
+															"name": "__type",
+															"variant": "declaration",
+															"kind": 65536,
+															"flags": {},
+															"children": [
+																{
+																	"id": 69,
+																	"name": "autoInvalidate",
+																	"variant": "declaration",
+																	"kind": 1024,
+																	"flags": {
+																		"isOptional": true
+																	},
+																	"comment": {
+																		"summary": [
+																			{
+																				"kind": "text",
+																				"text": "Whether to automatically invalidate the item when related data changes."
+																			}
+																		]
+																	},
+																	"sources": [
+																		{
+																			"fileName": "caching/index.ts",
+																			"line": 497,
+																			"character": 6,
+																			"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L497"
+																		}
+																	],
+																	"type": {
+																		"type": "intrinsic",
+																		"name": "boolean"
+																	}
+																}
+															],
+															"groups": [
+																{
+																	"title": "Properties",
+																	"children": [
+																		69
+																	]
+																}
+															],
+															"sources": [
+																{
+																	"fileName": "caching/index.ts",
+																	"line": 493,
+																	"character": 14,
+																	"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L493"
+																}
+															]
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														63,
+														64,
+														65,
+														66,
+														67
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "caching/index.ts",
+													"line": 471,
+													"character": 5,
+													"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L471"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				},
+				{
+					"id": 70,
+					"name": "clear",
+					"variant": "declaration",
+					"kind": 2048,
+					"flags": {},
+					"sources": [
+						{
+							"fileName": "caching/index.ts",
+							"line": 533,
+							"character": 2,
+							"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L533"
+						}
+					],
+					"signatures": [
+						{
+							"id": 71,
+							"name": "clear",
+							"variant": "signature",
+							"kind": 4096,
+							"flags": {},
+							"comment": {
+								"summary": [
+									{
+										"kind": "text",
+										"text": "This method clears data from the cache. If no options are specified, all items matching the key or tags should be cleared.\nOtherwise, if "
+									},
+									{
+										"kind": "code",
+										"text": "`options.autoInvalidate`"
+									},
+									{
+										"kind": "text",
+										"text": " is "
+									},
+									{
+										"kind": "code",
+										"text": "`true`"
+									},
+									{
+										"kind": "text",
+										"text": ", only items that were set with "
+									},
+									{
+										"kind": "code",
+										"text": "`options.autoInvalidate: true`"
+									},
+									{
+										"kind": "text",
+										"text": " should be cleared.\n\nItems with "
+									},
+									{
+										"kind": "code",
+										"text": "`options.autoInvalidate: false`"
+									},
+									{
+										"kind": "text",
+										"text": " should only be cleared when no options are provided.\n\nIf neither "
+									},
+									{
+										"kind": "code",
+										"text": "`key`"
+									},
+									{
+										"kind": "text",
+										"text": " nor "
+									},
+									{
+										"kind": "code",
+										"text": "`tags`"
+									},
+									{
+										"kind": "text",
+										"text": " are provided, nothing should be cleared."
+									}
+								],
+								"blockTags": [
+									{
+										"tag": "@returns",
+										"content": [
+											{
+												"kind": "text",
+												"text": "A promise that resolves when the item(s) have been cleared."
+											}
+										]
+									},
+									{
+										"tag": "@example",
+										"content": [
+											{
+												"kind": "code",
+												"text": "```ts\nasync clear({ key, tags, options, }: { \n  key?: string; \n  tags?: string[]; \n  options?: { autoInvalidate?: boolean }\n}): Promise<void> {\n  if (!options) {\n    // clear all items\n    await this.client.invalidate({ key, tags })\n  } else if (options.autoInvalidate) {\n    // clear only items with autoInvalidate option set to true\n    const keysToDelete: string[] = []\n    const storedOptions = await this.client.get({ key, tags, pipeline: \"options\" })\n    storedOptions.forEach((item) => {\n      if (item.autoInvalidate) {\n        keysToDelete.push(item.key as string)\n      }\n    })\n    await this.client.invalidate({ keys: keysToDelete })\n  }\n}\n```"
+											}
+										]
+									}
+								]
+							},
+							"sources": [
+								{
+									"fileName": "caching/index.ts",
+									"line": 533,
+									"character": 2,
+									"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L533"
+								}
+							],
+							"parameters": [
+								{
+									"id": 72,
+									"name": "param0",
+									"variant": "param",
+									"kind": 32768,
+									"flags": {},
+									"comment": {
+										"summary": [
+											{
+												"kind": "text",
+												"text": "The parameters for clearing the item(s)."
+											}
+										]
+									},
+									"type": {
+										"type": "reflection",
+										"declaration": {
+											"id": 73,
+											"name": "__type",
+											"variant": "declaration",
+											"kind": 65536,
+											"flags": {},
+											"children": [
+												{
+													"id": 74,
+													"name": "key",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The key of the item to clear."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 541,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L541"
+														}
+													],
+													"type": {
+														"type": "intrinsic",
+														"name": "string"
+													}
+												},
+												{
+													"id": 75,
+													"name": "tags",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "The tags of the items to clear. All items with any of the provided tags should be cleared."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 545,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L545"
+														}
+													],
+													"type": {
+														"type": "array",
+														"elementType": {
+															"type": "intrinsic",
+															"name": "string"
+														}
+													}
+												},
+												{
+													"id": 76,
+													"name": "options",
+													"variant": "declaration",
+													"kind": 1024,
+													"flags": {
+														"isOptional": true
+													},
+													"comment": {
+														"summary": [
+															{
+																"kind": "text",
+																"text": "Options for clearing the item(s). The options should be matched against the stored options when the item was set.\nFor example, if the item was set with "
+															},
+															{
+																"kind": "code",
+																"text": "`autoInvalidate: true`"
+															},
+															{
+																"kind": "text",
+																"text": ", it will only be cleared if the "
+															},
+															{
+																"kind": "code",
+																"text": "`autoInvalidate`"
+															},
+															{
+																"kind": "text",
+																"text": " option is also set to "
+															},
+															{
+																"kind": "code",
+																"text": "`true`"
+															},
+															{
+																"kind": "text",
+																"text": ".\nIf not provided, all items matching the key or tags should be cleared regardless of their options."
+															}
+														]
+													},
+													"sources": [
+														{
+															"fileName": "caching/index.ts",
+															"line": 551,
+															"character": 4,
+															"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L551"
+														}
+													],
+													"type": {
+														"type": "reflection",
+														"declaration": {
+															"id": 77,
+															"name": "__type",
+															"variant": "declaration",
+															"kind": 65536,
+															"flags": {},
+															"children": [
+																{
+																	"id": 78,
+																	"name": "autoInvalidate",
+																	"variant": "declaration",
+																	"kind": 1024,
+																	"flags": {
+																		"isOptional": true
+																	},
+																	"comment": {
+																		"summary": [
+																			{
+																				"kind": "text",
+																				"text": "Whether to clear item(s) that were set to automatically invalidate."
+																			}
+																		]
+																	},
+																	"sources": [
+																		{
+																			"fileName": "caching/index.ts",
+																			"line": 555,
+																			"character": 6,
+																			"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L555"
+																		}
+																	],
+																	"type": {
+																		"type": "intrinsic",
+																		"name": "boolean"
+																	}
+																}
+															],
+															"groups": [
+																{
+																	"title": "Properties",
+																	"children": [
+																		78
+																	]
+																}
+															],
+															"sources": [
+																{
+																	"fileName": "caching/index.ts",
+																	"line": 551,
+																	"character": 14,
+																	"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L551"
+																}
+															]
+														}
+													}
+												}
+											],
+											"groups": [
+												{
+													"title": "Properties",
+													"children": [
+														74,
+														75,
+														76
+													]
+												}
+											],
+											"sources": [
+												{
+													"fileName": "caching/index.ts",
+													"line": 537,
+													"character": 5,
+													"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L537"
+												}
+											]
+										}
+									}
+								}
+							],
+							"type": {
+								"type": "reference",
+								"target": {
+									"sourceFileName": "../../node_modules/typescript/lib/lib.es5.d.ts",
+									"qualifiedName": "Promise"
+								},
+								"typeArguments": [
+									{
+										"type": "intrinsic",
+										"name": "void"
+									}
+								],
+								"name": "Promise",
+								"package": "typescript"
+							}
+						}
+					]
+				}
+			],
+			"groups": [
+				{
+					"title": "Methods",
+					"children": [
+						53,
+						59,
+						70
+					]
+				}
+			],
+			"sources": [
+				{
+					"fileName": "caching/index.ts",
+					"line": 409,
+					"character": 17,
+					"url": "https://github.com/medusajs/medusa/blob/e6c43174f056a39daef3cab4e170981a2e4ccbf9/packages/core/types/src/caching/index.ts#L409"
+				}
+			]
+		}
+	],
+	"groups": [
+		{
+			"title": "Interfaces",
+			"children": [
+				1,
+				52
+			]
+		}
+	],
+	"packageName": "@medusajs/types",
+	"symbolIdMap": {
+		"0": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": ""
+		},
+		"1": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService"
+		},
+		"2": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService.get"
+		},
+		"3": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService.get"
+		},
+		"4": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "T"
+		},
+		"5": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__0"
+		},
+		"6": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type"
+		},
+		"7": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.key"
+		},
+		"8": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.tags"
+		},
+		"9": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.providers"
+		},
+		"10": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService.set"
+		},
+		"11": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService.set"
+		},
+		"12": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__0"
+		},
+		"13": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type"
+		},
+		"14": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.key"
+		},
+		"15": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.data"
+		},
+		"16": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.ttl"
+		},
+		"17": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.tags"
+		},
+		"18": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.options"
+		},
+		"19": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type"
+		},
+		"20": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.autoInvalidate"
+		},
+		"21": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.providers"
+		},
+		"22": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService.clear"
+		},
+		"23": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService.clear"
+		},
+		"24": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__0"
+		},
+		"25": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type"
+		},
+		"26": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.key"
+		},
+		"27": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.tags"
+		},
+		"28": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.options"
+		},
+		"29": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type"
+		},
+		"30": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.autoInvalidate"
+		},
+		"31": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.providers"
+		},
+		"32": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService.computeKey"
+		},
+		"33": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService.computeKey"
+		},
+		"34": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "input"
+		},
+		"35": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService.computeTags"
+		},
+		"36": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingModuleService.computeTags"
+		},
+		"37": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "input"
+		},
+		"38": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "options"
+		},
+		"52": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingProviderService"
+		},
+		"53": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingProviderService.get"
+		},
+		"54": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingProviderService.get"
+		},
+		"55": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__0"
+		},
+		"56": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type"
+		},
+		"57": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.key"
+		},
+		"58": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.tags"
+		},
+		"59": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingProviderService.set"
+		},
+		"60": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingProviderService.set"
+		},
+		"61": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__0"
+		},
+		"62": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type"
+		},
+		"63": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.key"
+		},
+		"64": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.data"
+		},
+		"65": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.ttl"
+		},
+		"66": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.tags"
+		},
+		"67": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.options"
+		},
+		"68": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type"
+		},
+		"69": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.autoInvalidate"
+		},
+		"70": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingProviderService.clear"
+		},
+		"71": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "ICachingProviderService.clear"
+		},
+		"72": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__0"
+		},
+		"73": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type"
+		},
+		"74": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.key"
+		},
+		"75": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.tags"
+		},
+		"76": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.options"
+		},
+		"77": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type"
+		},
+		"78": {
+			"sourceFileName": "../../../../packages/core/types/src/caching/index.ts",
+			"qualifiedName": "__type.autoInvalidate"
+		}
+	},
+	"files": {
+		"entries": {
+			"1": "../../../../packages/core/types/src/caching/index.ts"
+		},
+		"reflections": {
+			"1": 0
+		}
+	}
+}

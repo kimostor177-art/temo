@@ -21,7 +21,7 @@ Each project environment has a dedicated Redis server. These Redis servers are e
 Medusa automatically configures your Medusa application hosted on Cloud to use Redis-based Infrastructure Modules, including:
 
 - [Redis Event Module](!resources!/infrastructure-modules/event/redis)
-- [Redis Cache Module](!resources!/infrastructure-modules/cache/redis)
+- [Redis Caching Module Provider](!resources!/infrastructure-modules/caching/providers/redis)
 - [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis)
 - [Redis Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine/redis)
 
@@ -30,6 +30,12 @@ So, you don't need to configure any of these modules and providers or set up Red
 <Note>
 
 If you're using a Medusa version before v2.7.0, contact support for assistance in configuring the Redis modules.
+
+</Note>
+
+<Note title="Tip">
+
+The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0) to replace the deprecated Cache Module.
 
 </Note>
 

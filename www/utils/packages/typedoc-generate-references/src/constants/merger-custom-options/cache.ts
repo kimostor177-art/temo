@@ -5,7 +5,14 @@ const cacheOptions: FormattingOptionsType = {
     reflectionGroups: {
       Constructors: false,
     },
-    reflectionDescription: `In this document, you’ll learn about the different methods in the Cache Module's service and how to use them.`,
+    reflectionDescription: `In this document, you’ll learn about the different methods in the Cache Module's service and how to use them.
+
+:::note[Deprecation Notice]
+
+The Cache Module is deprecated starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). [Use the Caching Module](#) instead.
+
+:::
+    `,
     frontmatterData: {
       slug: "/references/cache-service",
       tags: ["cache", "server", "how to"],

@@ -77,6 +77,8 @@ const sidebarMappings: {
       "/references/cache-service",
       "/references/file-service",
       "/references/analytics",
+      "/references/caching-service",
+      "/references/caching-module-provider",
     ],
   },
   {

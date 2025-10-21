@@ -1,4 +1,4 @@
-import { TypeList, Tabs, TabsList, TabsTriggerVertical, TabsContent, TabsContentWrapper } from "docs-ui"
+import { TypeList, Tabs, TabsList, TabsTriggerVertical, TabsContent, TabsContentWrapper, Prerequisites, CodeTabs, CodeTab } from "docs-ui"
 
 export const metadata = {
   title: `${pageNumber} Query`,
@@ -98,8 +98,6 @@ const myWorkflow = createWorkflow(
 
 You can learn more about this step in the [useQueryGraphStep](!resources!/references/helper-steps/useQueryGraphStep) reference.
 
-The rest of this chapter uses the `graph` method to explain the different usages of Query, but the same principles apply to `useQueryGraphStep`.
-
 ---
 
 ## Querying the Graph
@@ -116,6 +114,9 @@ Retrieve the records of a linked data model by passing in `fields` the data mode
 
 For example:
 
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
 ```ts highlights={[["6"]]}
 const { data: posts } = await query.graph({
   entity: "post",
@@ -127,9 +128,29 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["6"]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: [
+    "id", 
+    "title",
+    "product.*",
+  ],
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 `.*` means that all of the data model's properties should be retrieved. You can also retrieve specific properties by replacing the `*` with the property name for each property.
 
 For example:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts
 const { data: posts } = await query.graph({
@@ -143,6 +164,24 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: [
+    "id", 
+    "title",
+    "product.id",
+    "product.title",
+  ],
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 In the example above, you retrieve only the `id` and `title` properties of the `product` linked to a `post`.
 
 ### Retrieve List Link Records
@@ -150,6 +189,9 @@ In the example above, you retrieve only the `id` and `title` properties of the `
 If the linked data model has `isList` enabled in the link definition, pass in `fields` the data model's plural name suffixed with `.*`.
 
 For example:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts highlights={[["6"]]}
 const { data: posts } = await query.graph({
@@ -161,6 +203,23 @@ const { data: posts } = await query.graph({
   ],
 })
 ```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["6"]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: [
+    "id", 
+    "title",
+    "products.*",
+  ],
+})
+```
+
+  </CodeTab>
+</CodeTabs>
 
 In the example above, you retrieve all products linked to a post.
 
@@ -228,6 +287,9 @@ The returned `data` is similar to the following:
 
 ## Apply Filters
 
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
 ```ts highlights={[["4"], ["5"], ["6"]]}
 const { data: posts } = await query.graph({
   entity: "post",
@@ -238,11 +300,30 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["4"], ["5"], ["6"]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  filters: {
+    id: "post_123",
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 The `query.graph` function accepts a `filters` property. You can use this property to filter retrieved records.
 
 In the example above, you filter the `post` records by the ID `post_123`.
 
 You can also filter by multiple values of a property. For example:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"], ["9"]]}
 const { data: posts } = await query.graph({
@@ -256,6 +337,25 @@ const { data: posts } = await query.graph({
   },
 })
 ```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"], ["9"]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  filters: {
+    id: [
+      "post_123",
+      "post_321",
+    ],
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
 
 In the example above, you filter the `post` records by multiple IDs.
 
@@ -280,6 +380,9 @@ Refer to the [Service Factory Reference](!resources!/service-factory-reference/t
 
 #### Filter by Not Matching a Value
 
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
 ```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"]]}
 const { data: posts } = await query.graph({
   entity: "post",
@@ -292,9 +395,30 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  filters: {
+    title: {
+      $ne: null,
+    },
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 In the example above, only posts that have a title are retrieved.
 
 #### Filter by Not Matching Multiple Values
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"]]}
 const { data: posts } = await query.graph({
@@ -308,9 +432,30 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  filters: {
+    title: {
+      $nin: ["My Post", "Another Post"],
+    },
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 In the example above, only posts that don't have the title `My Post` or `Another Post` are retrieved.
 
 #### Filter by a Range
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts highlights={[["10"], ["11"], ["12"], ["13"], ["14"], ["15"]]}
 const startToday = new Date()
@@ -331,6 +476,31 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["10"], ["11"], ["12"], ["13"], ["14"], ["15"]]}
+const startToday = new Date()
+startToday.setHours(0, 0, 0, 0)
+
+const endToday = new Date()
+endToday.setHours(23, 59, 59, 59)
+
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  filters: {
+    published_at: {
+      $gt: startToday,
+      $lt: endToday,
+    },
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 In the example above, only posts that were published today are retrieved.
 
 #### Filter Text by Like Value
@@ -340,6 +510,9 @@ In the example above, only posts that were published today are retrieved.
 This filter only applies to text-like properties, including `text`, `id`, and `enum` properties.
 
 </Note>
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"]]}
 const { data: posts } = await query.graph({
@@ -353,9 +526,30 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  filters: {
+    title: {
+      $like: "%My%",
+    },
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 In the example above, only posts that have the word `My` in their title are retrieved.
 
 #### Filter a Relation's Property
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"]]}
 const { data: posts } = await query.graph({
@@ -369,11 +563,32 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  filters: {
+    author: {
+      name: "John",
+    },
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 While it's not possible to filter by a linked data model's property, you can filter by a relation's property (that is, the property of a related data model that is defined in the same module).
 
 In the example above, only posts that have an author with the name `John` are retrieved.
 
 #### Filter by Relation Property Not Matching Value
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"], ["9"], ["10"], ["11"], ["12"], ["13"], ["14"], ["15"], ["16"], ["17"], ["18"]]}
 const { data: posts } = await query.graph({
@@ -398,7 +613,36 @@ const { data: posts } = await query.graph({
 })
 ```
 
-When you need to filter by a relationship property whose value doesn't match a specific condition, you must use an `$or` operator that applies the following conditions:
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["4"], ["5"], ["6"], ["7"], ["8"], ["9"], ["10"], ["11"], ["12"], ["13"], ["14"], ["15"], ["16"], ["17"], ["18"]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  filters: {
+    author: {
+      $or: [
+        {
+          name: {
+            $eq: null,
+          },
+        },
+        {
+          name: {
+            $ne: "John",
+          },
+        },
+      ],
+    },
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+To filter by a relationship property whose value doesn't match a specific condition, use an `$or` operator that applies the following conditions:
 
 1. The relationship's property is not set. This is necessary to exclude posts that don't have an author.
 2. The relationship's property is not equal to the specific value.
@@ -408,6 +652,9 @@ So, in the example above, the query retrieves posts that either don't have an au
 ---
 
 ## Apply Pagination
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts highlights={[["8", "skip", "The number of records to skip before fetching the results."], ["9", "take", "The number of records to fetch."]]}
 const { 
@@ -422,6 +669,26 @@ const {
   },
 })
 ```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["8", "skip", "The number of records to skip before fetching the results."], ["9", "take", "The number of records to fetch."]]}
+const { 
+  data: posts,
+  metadata
+} = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  pagination: {
+    skip: 0,
+    take: 10,
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
 
 The `graph` method's object parameter accepts a `pagination` property to configure the pagination of retrieved records.
 
@@ -452,6 +719,9 @@ When you provide the pagination fields, the `query.graph` method's returned obje
 
 ### Sort Records
 
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
 ```ts highlights={[["5"], ["6"], ["7"]]}
 const { data: posts } = await query.graph({
   entity: "post",
@@ -463,6 +733,24 @@ const { data: posts } = await query.graph({
   },
 })
 ```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["5"], ["6"], ["7"]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  pagination: {
+    order: {
+      name: "DESC",
+    },
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
 
 <Note>
 
@@ -491,6 +779,9 @@ The `withDeleted` property is available from [Medusa v2.8.5](https://github.com/
 
 For example:
 
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
 ```ts highlights={[["4", "withDeleted", "Include deleted posts in the results."]]}
 const { data: posts } = await query.graph({
   entity: "post",
@@ -498,6 +789,20 @@ const { data: posts } = await query.graph({
   withDeleted: true,
 })
 ```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["4", "withDeleted", "Include deleted posts in the results."]]}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  withDeleted: true,
+})
+```
+
+  </CodeTab>
+</CodeTabs>
 
 In the example above, you retrieve all posts, including deleted ones.
 
@@ -509,6 +814,9 @@ export const withDeletedHighlights = [
   ["5", "deleted_at", "Filter to retrieve posts whose `deleted_at` property is not `null`."],
   ["9", "withDeleted", "Include deleted posts in the results."],
 ]
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts highlights={withDeletedHighlights}
 const { data: posts } = await query.graph({
@@ -523,17 +831,39 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={withDeletedHighlights}
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  filters: {
+    deleted_at: {
+      $ne: null,
+    },
+  },
+  withDeleted: true,
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 In the example above, you retrieve only deleted posts by enabling the `withDeleted` property and adding a filter to only retrieve records where the `deleted_at` property is not `null`.
 
 ---
 
-## Configure Query to Throw Errors
+## Configure Query to Throw Error
 
-By default, if Query doesn't find records matching your query, it returns an empty array. You can add an option to configure Query to throw an error when no records are found.
+By default, if Query doesn't find records matching your query, it returns an empty array. You can configure Query to throw an error when no records are found.
 
 The `query.graph` method accepts as a second parameter an object that can have a `throwIfKeyNotFound` property. Its value is a boolean indicating whether to throw an error if no record is found when filtering by IDs. By default, it's `false`.
 
 For example:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts
 const { data: posts } = await query.graph({
@@ -547,13 +877,35 @@ const { data: posts } = await query.graph({
 })
 ```
 
-In the example above, if no post is found with the ID `post_123`, Query will throw an error. This is useful to stop execution when a record is expected to exist.
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title"],
+  filters: {
+    id: "post_123",
+  },
+  options: {
+    throwIfKeyNotFound: true,
+  },
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, if no post is found with the ID `post_123`, Query throws an error. This is useful to stop execution when a record is expected to exist.
 
 ### Throw Error on Related Data Model
 
 The `throwIfKeyNotFound` option can also be used to throw an error if the ID of a related data model's record (in the same module) is passed in the filters, and the related record doesn't exist.
 
 For example:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts
 const { data: posts } = await query.graph({
@@ -568,11 +920,34 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts
+const { data: posts } = useQueryGraphStep({
+  entity: "post",
+  fields: ["id", "title", "author.*"],
+  filters: {
+    id: "post_123",
+    author_id: "author_123",
+  },
+  options: {
+    throwIfKeyNotFound: true,
+  }
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 In the example above, Query throws an error either if no post is found with the ID `post_123` or if it's found but its author ID isn't `author_123`.
 
 In the above example, it's assumed that a post belongs to an author, so it has an `author_id` property. However, this also works in the opposite case, where an author has many posts.
 
 For example:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
 
 ```ts
 const { data: posts } = await query.graph({
@@ -589,7 +964,526 @@ const { data: posts } = await query.graph({
 })
 ```
 
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts
+const { data: posts } = useQueryGraphStep({
+  entity: "author",
+  fields: ["id", "name", "posts.*"],
+  filters: {
+    id: "author_123",
+    posts: {
+      id: "post_123",
+    },
+  },
+  options: {
+    throwIfKeyNotFound: true,
+  }
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
 In the example above, Query throws an error if no author is found with the ID `author_123` or if the author is found but doesn't have a post with the ID `post_123`.
+
+---
+
+## Cache Query Results
+
+<Prerequisites
+  items={[
+    {
+      text: "Caching Module installed with a provider.",
+      link: "!resources!/infrastructure-modules/caching#install-the-caching-module"
+    }
+  ]}
+/>
+
+<Note>
+
+Caching options are available from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0).
+
+</Note>
+
+You can cache Query results to improve performance and reduce database load. To do that, you can pass a `cache` property in the second parameter of the `query.graph` method.
+
+For example, to enable caching for a query:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts highlights={[["6", "enable", "Enable caching for this query."]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true
+  }
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["6", "enable", "Enable caching for this query."]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title"],
+  options: {
+    cache: {
+      enable: true
+    }
+  }
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+In this example, you enable caching of the query's results. The next time the same query is executed, the results are returned from the cache instead of querying the database.
+
+<Note title="Tip">
+
+Refer to the [Caching Module documentation](!resources!/infrastructure-modules/caching/concepts#caching-best-practices) for best practices on caching.
+
+</Note>
+
+### Cache Properties
+
+`cache` is an object that accepts the following properties:
+
+<TypeList
+  types={[
+    {
+      type: "`boolean` \| `((args: any[]) => boolean \| undefined)`",
+      name: "enable",
+      description: "Whether to enable caching of query results. If a function is passed, it receives as a parameter the `query.graph` parameters, and returns a boolean indicating whether caching is enabled.",
+      defaultValue: "false"
+    },
+    {
+      type: "`string` \| `((args: any[], cachingModule: ICachingModuleService) => string \| Promise<string>)`",
+      name: "key",
+      description: "The key to cache the query results with. If no key is provided, the Caching Module will generate the key from the `query.graph` parameters.\n\nIf a function is passed, it receives the following properties:\n\n1. The parameters passed to `query.graph`.\n\n2. The [Caching Module's service](!resources!/references/caching-service), which you can use to perform caching operations.\n\nThe function must return a string indicating the cache key.",
+    },
+    {
+      type: "`string[]` \| `((args: any[]) => string[] \| undefined)`",
+      name: "tags",
+      description: "The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags for the entity and its retrieved relations.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns an array of strings indicating the cache tags."
+    },
+    {
+      type: "`number` \| `((args: any[]) => number \| undefined)`",
+      name: "ttl",
+      description: "The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the [configured TTL of the Caching Module](!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.\n\nIf a function is passed, it receives as a parameter the `query.graph` parameters, and returns a number indicating the TTL.",
+    },
+    {
+      type: "`boolean` \| `((args: any[]) => boolean \| undefined)`",
+      name: "autoInvalidate",
+      description: "Whether to automatically invalidate the cached data when it expires.\n\nIf a function is passed, it receives as a parameter the `query.graph` parameters, and returns a boolean indicating whether to automatically invalidate the cache.",
+      defaultValue: "`true`"
+    },
+    {
+      type: "`string[]` \| `((args: any[]) => string[] \| undefined)`",
+      name: "providers",
+      description: "The IDs of the providers to use for caching. If not provided, the [default Caching Module Provider](!resources!/infrastructure-modules/caching/providers#default-caching-module-provider) is used. If multiple providers are passed, the cache is stored and retrieved in those providers in order.\n\nIf a function is passed, it receives as a parameter the `query.graph` parameters, and return an array of strings indicating the providers to use."
+    }
+  ]}
+  sectionTitle="Cache Properties"
+/>
+
+### Set Cache Key
+
+By default, the Caching Module generates a cache key for a query based on the arguments passed to `query.graph`. The cache key is a unique key that the cached result is stored with.
+
+Alternatively, you can set a custom cache key for a query. This is useful if you want to manage invalidating the cache manually.
+
+To set the cache key of a query, pass the `cache.key` option:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts highlights={[["7"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    key: "products-123456",
+    // to disable auto invalidation:
+    // autoInvalidate: false,
+  }
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["7"]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title"],
+  options: {
+    cache: {
+      enable: true,
+      key: "products-123456",
+      // to disable auto invalidation:
+      // autoInvalidate: false,
+    }
+  }
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, you cache the query results with the `products-123456` key.
+
+<Note>
+
+You should generate cache keys with the Caching Module service's [computeKey method](!resources!/references/caching-service#computeKey) to ensure that the key is unique and follows best practices.
+
+</Note>
+
+You can also pass a function as the value of `cache.key`:
+
+<Note>
+
+Passing a function to `cache.key` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
+
+</Note>
+
+```ts highlights={[["7"], ["8"], ["9"], ["10"], ["11"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    key: async (args, cachingModuleService) => {
+      return await cachingModuleService.computeKey({
+        ...args,
+        prefix: "products"
+      })
+    }
+  }
+})
+```
+
+In the example above, you pass a function to `key`. It accepts two parameters:
+
+1. The arguments of `query.graph` passed as an array.
+2. The [Caching Module's service](!resources!/references/caching-service).
+
+You generate the key using the [computeKey method of the Caching Module's service](!resources!/references/caching-service#computeKey). The query results will be cached with that key.
+
+### Set Cache Tags
+
+By default, the Caching Module generates relevant tags for a query based on the entity and its retrieved relations. Cache tags are useful to group related items together, allowing you to [retrieve](!resources!/references/caching-service#get) or [invalidate](!resources!/references/caching-service#clear) items by common tags.
+
+Alternatively, you can set the cache tags of a query manually. This is useful if you want to manage invalidating the cache manually, or you want to group related cached items with custom tags.
+
+To set the cache tags of a query, pass the `cache.tags` option:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts highlights={[["7"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    tags: ["Product:list:*"],
+  }
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["7"]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title"],
+  options: {
+    cache: {
+      enable: true,
+      tags: ["Product:list:*"],
+      // to disable auto invalidation:
+      // autoInvalidate: false,
+    }
+  }
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, you cache the query results with the `Product:list:*` tag.
+
+<Note>
+
+The cache tag must follow the [Caching Tags Convention](!resources!/infrastructure-modules/caching/concepts#caching-tags-convention) to be automatically invalidated.
+
+</Note>
+
+You can also pass a function as the value of `cache.tags`:
+
+<Note>
+
+Passing a function to `cache.tags` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
+
+</Note>
+
+```ts highlights={[["7"], ["8"], ["9"], ["10"], ["11"], ["12"], ["13"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    tags: (args) => {
+      const collectionId = args[0].filter?.collection_id
+      return [
+        ...args,
+        collectionId ? `ProductCollection:${collectionId}` : undefined,
+      ]
+    },
+  }
+})
+```
+
+In the example above, you use a function to determine the cache tags. The function accepts the arguments passed to `query.graph` as an array.
+
+Then, you add the `ProductCollection:id` tag if `collection_id` is passed in the query filters.
+
+### Set TTL
+
+By default, the Caching Module will pass the [configured time-to-live (TTL)](!resources!/infrastructure-modules/caching#caching-module-options) to the Caching Module Provider when caching data. The Caching Module Provider may also have its own default TTL.  The cache isn't invalidated until the configured TTL passes.
+
+Alternatively, you can set a custom TTL for a query. This is useful if you want the cached data to be invalidated sooner or later than the default TTL.
+
+To set the TTL of the cached query results to a custom value, use the `cache.ttl` option:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts highlights={[["7"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    ttl: 100, // 100 seconds
+  }
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["7"]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title"],
+  options: {
+    cache: {
+      enable: true,
+      ttl: 100, // 100 seconds
+    }
+  }
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, you set the TTL of the cached query result to `100` seconds. It will be invalidated after that time.
+
+You can also pass a function as the value of `cache.ttl`:
+
+<Note>
+
+Passing a function to `cache.ttl` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
+
+</Note>
+
+```ts highlights={[["10"], ["11"], ["12"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    id: "prod_123"
+  }
+}, {
+  cache: {
+    enable: true,
+    ttl: (args) => {
+      return args[0].filters.id === "test" ? 10 : 100
+    }
+  }
+})
+```
+
+In the example above, you use a function to determine the TTL. The function accepts the arguments passed to `query.graph` as an array.
+
+Then, you set the TTL based on the ID of the product passed in the filters.
+
+### Set Auto Invalidation
+
+By default, the Caching Module automatically invalidates cached query results when the data changes.
+
+Alternatively, you can disable auto invalidation of cached query results. This is useful if you want to manage invalidating the cache manually.
+
+To configure invalidation behavior, use the `cache.autoInvalidate` option:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts highlights={[["7"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    autoInvalidate: false,
+  }
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["7"]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title"],
+  options: {
+    cache: {
+      enable: true,
+      autoInvalidate: false,
+    }
+  }
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+In this example, you disable auto invalidation of the query result. You must [invalidate](!resources!/references/caching-service#clear) the cached data manually.
+
+You can also pass a function as the value of `cache.autoInvalidate`:
+
+<Note>
+
+Passing a function to `cache.autoInvalidate` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
+
+</Note>
+
+```ts highlights={[["7"], ["8"], ["9"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    autoInvalidate: (args) => {
+      return !args[0].fields.includes("custom_field")
+    }
+  }
+})
+```
+
+In the example above, you use a function to determine whether to invalidate the cached query result automatically. The function accepts the arguments passed to `query.graph` as an array.
+
+Then, you enable auto-invalidation only if the `fields` passed to `query.graph` don't include `custom_fields`. If this disables auto-invalidation, you must [invalidate](!resources!/references/caching-service#clear) the cached data manually.
+
+<Note title="Tip">
+
+Learn more about automatic invalidation in the [Caching Module documentation](!resources!/infrastructure-modules/caching/concepts#automatic-cache-invalidation).
+
+</Note>
+
+### Set Caching Provider
+
+By default, the Caching Module uses the [default Caching Module Provider](!resources!/infrastructure-modules/caching/providers#default-caching-module-provider) to cache a query.
+
+Alternatively, you can set the caching provider to use for a query. This is useful if you have multiple caching providers configured, and you want to use a specific one for a query, or you want to specify a fallback provider.
+
+To configure the caching providers, use the `cache.providers` option:
+
+<CodeTabs group="query">
+  <CodeTab label="query.graph" value="query.graph">
+
+```ts highlights={[["7"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    providers: ["caching-redis", "caching-memcached"]
+  }
+})
+```
+
+  </CodeTab>
+  <CodeTab label="useQueryGraphStep" value="useQueryGraphStep">
+
+```ts highlights={[["7"]]}
+const { data: products } = useQueryGraphStep({
+  entity: "product",
+  fields: ["id", "title"],
+  options: {
+    cache: {
+      enable: true,
+      providers: ["caching-redis", "caching-memcached"]
+    }
+  }
+})
+```
+
+  </CodeTab>
+</CodeTabs>
+
+In the example above, you specify the providers with ID `caching-redis` and `caching-memcached` to cache the query results. These IDs must match the IDs of the providers in `medusa-config.ts`.
+
+When you pass multiple providers, the cache is stored and retrieved in those providers in order.
+
+You can also pass a function as the value of `cache.providers`:
+
+<Note>
+
+Passing a function to `cache.providers` is only supported in `query.graph`, not in `useQueryGraphStep`. This is due to variable-related restrictions in workflows, as explained in the [Data Manipulation in Workflows guide](../../workflows/variable-manipulation/page.mdx). You can alternatively create a step that uses Query directly, and use it in the workflow.
+
+</Note>
+
+```ts highlights={[["10"], ["11"], ["12"]]}
+const { data: products } = await query.graph({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    id: "prod_123"
+  }
+}, {
+  cache: {
+    enable: true,
+    providers: (args) => {
+      return args[0].filters.id === "test" ? ["caching-redis"] : ["caching-memcached"]
+    }
+  }
+})
+```
+
+In the example above, you use a function to determine the caching providers. The function accepts the arguments passed to `query.graph` as an array.
+
+Then, you set the providers based on the ID of the product passed in the filters.
 
 ---
 

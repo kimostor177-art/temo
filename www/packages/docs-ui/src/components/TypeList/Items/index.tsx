@@ -9,6 +9,7 @@ import {
   FeatureFlagNotice,
   InlineCode,
   MarkdownContent,
+  MDXComponents,
 } from "@/components"
 import clsx from "clsx"
 import { Type, CommonProps as ParentCommonProps } from ".."
@@ -136,9 +137,36 @@ const TypeListItem = ({
             <>
               {item.description && (
                 <MarkdownContent
-                  allowedElements={["a", "strong", "code", "ul", "ol", "li"]}
+                  allowedElements={[
+                    "a",
+                    "strong",
+                    "code",
+                    "ul",
+                    "ol",
+                    "li",
+                    "br",
+                  ]}
                   unwrapDisallowed={true}
-                  className="text-medium"
+                  components={{
+                    ...MDXComponents,
+                    ol: (props: React.HTMLAttributes<HTMLElement>) => (
+                      // @ts-expect-error Not recognized as a JSX element
+                      <MDXComponents.ol
+                        {...props}
+                        className={clsx(props.className, "mt-docs_1.5")}
+                      />
+                    ),
+                    li: (props: React.HTMLAttributes<HTMLElement>) => (
+                      // @ts-expect-error Not recognized as a JSX element
+                      <MDXComponents.li
+                        {...props}
+                        className={clsx(
+                          props.className,
+                          "!text-medusa-fg-subtle"
+                        )}
+                      />
+                    ),
+                  }}
                 >
                   {item.description}
                 </MarkdownContent>

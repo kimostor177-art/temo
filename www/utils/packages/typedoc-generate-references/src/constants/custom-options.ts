@@ -22,6 +22,11 @@ const customOptions: Record<string, Partial<TypeDocOptions>> = {
     tsConfigName: "types.json",
     name: "cache",
   }),
+  caching: getOptions({
+    entryPointPath: "packages/core/types/src/caching/index.ts",
+    tsConfigName: "types.json",
+    name: "caching",
+  }),
   "core-flows": getOptions({
     entryPointPath: "packages/core/core-flows/src/index.ts",
     tsConfigName: "core-flows.json",

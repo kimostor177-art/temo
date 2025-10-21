@@ -701,7 +701,7 @@ The value of this configuration is prepended to `sess:`. For example, if you set
 
 <Note>
 
-This configuration is not used for modules that also connect to Redis, such as the [Redis Cache Module](!resources!/infrastructure-modules/cache/redis).
+This configuration is not used for modules that also connect to Redis, such as the [Redis Caching Module Provider](!resources!/infrastructure-modules/caching/providers/redis).
 
 </Note>
 
@@ -719,9 +719,9 @@ module.exports = defineConfig({
 
 ### redisUrl
 
-The `projectConfig.redisUrl` configuration specifies the connection URL to Redis to store the Medusa server session. When specified, the Medusa server uses Redis to store the session data. Otherwie, the session data is stored in-memory.
+The `projectConfig.redisUrl` configuration specifies the connection URL to Redis to store the Medusa server session. When specified, the Medusa server uses Redis to store the session data. Otherwise, the session data is stored in-memory.
 
-This configuration is not used for modules that also connect to Redis, such as the [Redis Cache Module](!resources!/infrastructure-modules/cache/redis). You'll have to configure the Redis connection for those modules separately.
+This configuration is not used for modules that also connect to Redis, such as the [Redis Caching Module Provider](!resources!/infrastructure-modules/caching/providers/redis). You'll have to configure the Redis connection for those modules separately.
 
 <Note>
 
@@ -764,7 +764,7 @@ The `projectConfig.sessionOptions` configuration defines additional options to p
 
 <Note>
 
-This configuration is not used for modules that also connect to Redis, such as the [Redis Cache Module](!resources!/infrastructure-modules/cache/redis).
+This configuration is not used for modules that also connect to Redis, such as the [Redis Caching Module Provider](!resources!/infrastructure-modules/caching/providers/redis).
 
 </Note>
 

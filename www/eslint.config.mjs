@@ -121,9 +121,7 @@ export default [
             allow: ["error", "warn"],
         }],
 
-        "react/prop-types": [2, {
-            ignore: ["className"],
-        }],
+        "react/prop-types": "off",
     },
 }, ...compat.extends("plugin:@typescript-eslint/recommended", "plugin:react/recommended").map(config => ({
     ...config,
@@ -162,6 +160,8 @@ export default [
         "@/space-infix-ops": "error",
         "@typescript-eslint/no-explicit-any": "warn",
         "@typescript-eslint/no-unused-vars": "warn",
+
+        "react/prop-types": "off",
     },
     settings: {
         next: {

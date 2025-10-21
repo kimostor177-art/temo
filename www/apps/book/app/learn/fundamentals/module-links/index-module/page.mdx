@@ -1,3 +1,5 @@
+import { Prerequisites, TypeList } from "docs-ui"
+
 export const metadata = {
   title: `${pageNumber} Index Module`,
 }
@@ -338,6 +340,338 @@ For example, this is the response returned by the above API route:
   "estimate_count": 100
 }
 ```
+
+---
+
+## Cache Index Module Results
+
+<Prerequisites
+  items={[
+    {
+      text: "Caching Module installed with a provider.",
+      link: "!resources!/infrastructure-modules/caching#install-the-caching-module"
+    }
+  ]}
+/>
+
+<Note>
+
+Caching options are available from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0).
+
+</Note>
+
+You can cache Index Module results to improve performance and reduce database load. To do that, you can pass a `cache` property in the second parameter of the `query.index` method.
+
+For example, to enable caching for a query:
+
+```ts highlights={[["6", "enable", "Enable caching for this query."]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true
+  }
+})
+```
+
+In this example, you enable caching of the query's results. The next time the same query is executed, the results are returned from the cache instead of querying the database.
+
+<Note title="Tip">
+
+Refer to the [Caching Module documentation](!resources!/infrastructure-modules/caching/concepts#caching-best-practices) for best practices on caching.
+
+</Note>
+
+### Cache Properties
+
+`cache` is an object that accepts the following properties:
+
+<TypeList
+  types={[
+    {
+      type: "`boolean` \| `((args: any[]) => boolean \| undefined)`",
+      name: "enable",
+      description: "Whether to enable caching of query results. If a function is passed, it receives as a parameter the `query.index` parameters, and returns a boolean indicating whether caching is enabled.",
+      defaultValue: "false"
+    },
+    {
+      type: "`string` \| `((args: any[], cachingModule: ICachingModuleService) => string \| Promise<string>)`",
+      name: "key",
+      description: "The key to cache the query results with.  If no key is provided, the Caching Module will generate the key from the `query.index` parameters.\n\nIf a function is passed, it receives the following properties:\n\n1. The parameters passed to `query.index`.\n\n2. The [Caching Module's service](!resources!/references/caching-service), which you can use to perform caching operations.\n\nThe function must return a string indicating the cache key.",
+    },
+    {
+      type: "`string[]` \| `((args: any[]) => string[] \| undefined)`",
+      name: "tags",
+      description: "The tags to associate with the cached results. Tags are useful to group related items. If no tag is provided, the Caching Module will generate relevant tags based on the entity and its retrieved relations.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns an array of strings indicating the cache tags."
+    },
+    {
+      type: "`number` \| `((args: any[]) => number \| undefined)`",
+      name: "ttl",
+      description: "The time-to-live (TTL) for the cached results, in seconds. If no TTL is provided, the Caching Module Provider will receive the [configured TTL of the Caching Module](!resources!/infrastructure-modules/caching#caching-module-options), or it will use its own default value.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns a number indicating the TTL.",
+    },
+    {
+      type: "`boolean` \| `((args: any[]) => boolean \| undefined)`",
+      name: "autoInvalidate",
+      description: "Whether to automatically invalidate the cached data when it expires.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and returns a boolean indicating whether to automatically invalidate the cache.",
+      defaultValue: "`true`"
+    },
+    {
+      type: "`string[]` \| `((args: any[]) => string[] \| undefined)`",
+      name: "providers",
+      description: "The IDs of the providers to use for caching. If not provided, the [default Caching Module Provider](!resources!/infrastructure-modules/caching/providers#default-caching-module-provider) is used. If multiple providers are passed, the cache is stored and retrieved in those providers in order.\n\nIf a function is passed, it receives as a parameter the `query.index` parameters, and return an array of strings indicating the providers to use."
+    }
+  ]}
+  sectionTitle="Cache Properties"
+/>
+
+### Set Cache Key
+
+By default, the Caching Module generates a cache key for a query based on the arguments passed to `query.index`. The cache key is a unique key that the cached result is stored with.
+
+Alternatively, you can set a custom cache key for a query. This is useful if you want to manage invalidating the cache manually.
+
+To set the cache key of a query, pass the `cache.key` option:
+
+```ts highlights={[["7"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    key: "products-123456",
+    // to disable auto invalidation:
+    // autoInvalidate: false,
+  }
+})
+```
+
+In the example above, you cache the query results with the `products-123456` key.
+
+<Note>
+
+You should generate cache keys with the Caching Module service's [computeKey method](!resources!/references/caching-service#computeKey) to ensure that the key is unique and follows best practices.
+
+</Note>
+
+You can also pass a function as the value of `cache.key`:
+
+```ts highlights={[["7"], ["8"], ["9"], ["10"], ["11"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    key: async (args, cachingModuleService) => {
+      return await cachingModuleService.computeKey({
+        ...args,
+        prefix: "products"
+      })
+    }
+  }
+})
+```
+
+In the example above, you pass a function to `key`. It accepts two parameters:
+
+1. The arguments of `query.index` passed as an array.
+2. The [Caching Module's service](!resources!/references/caching-service).
+
+You generate the key using the [computeKey method of the Caching Module's service](!resources!/references/caching-service#computeKey). The query results will be cached with that key.
+
+### Set Cache Tags
+
+By default, the Caching Module generates relevant tags for a query based on the entity and its retrieved relations. Cache tags are useful to group related items together, allowing you to [retrieve](!resources!/references/caching-service#get) or [invalidate](!resources!/references/caching-service#clear) items by common tags.
+
+Alternatively, you can set the cache tags of a query manually. This is useful if you want to manage invalidating the cache manually, or you want to group related cached items with custom tags.
+
+To set the cache tags of a query, pass the `cache.tags` option:
+
+```ts highlights={[["7"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    tags: ["Product:list:*"],
+  }
+})
+```
+
+In the example above, you cache the query results with the `Product:list:*` tag.
+
+<Note>
+
+The cache tag must follow the [Caching Tags Convention](!resources!/infrastructure-modules/caching/concepts#caching-tags-convention) to be automatically invalidated.
+
+</Note>
+
+You can also pass a function as the value of `cache.tags`:
+
+```ts highlights={[["7"], ["8"], ["9"], ["10"], ["11"], ["12"], ["13"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    tags: (args) => {
+      const collectionId = args[0].filter?.collection_id
+      return [
+        ...args,
+        collectionId ? `ProductCollection:${collectionId}` : undefined,
+      ]
+    },
+  }
+})
+```
+
+In the example above, you use a function to determine the cache tags. The function accepts the arguments passed to `query.index` as an array.
+
+Then, you add the `ProductCollection:id` tag if `collection_id` is passed in the query filters.
+
+### Set TTL
+
+By default, the Caching Module will pass the [configured time-to-live (TTL)](!resources!/infrastructure-modules/caching#caching-module-options) to the Caching Module Provider when caching data. The Caching Module Provider may also have its own default TTL.  The cache isn't invalidated until the configured TTL passes.
+
+Alternatively, you can set a custom TTL for a query. This is useful if you want the cached data to be invalidated sooner or later than the default TTL.
+
+To set the TTL of the cached query results to a custom value, use the `cache.ttl` option:
+
+```ts highlights={[["7"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    ttl: 100, // 100 seconds
+  }
+})
+```
+
+In the example above, you set the TTL of the cached query result to `100` seconds. It will be invalidated after that time.
+
+You can also pass a function as the value of `cache.ttl`:
+
+```ts highlights={[["10"], ["11"], ["12"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    id: "prod_123"
+  }
+}, {
+  cache: {
+    enable: true,
+    ttl: (args) => {
+      return args[0].filters.id === "test" ? 10 : 100
+    }
+  }
+})
+```
+
+In the example above, you use a function to determine the TTL. The function accepts the arguments passed to `query.index` as an array.
+
+Then, you set the TTL based on the ID of the product passed in the filters.
+
+### Set Auto Invalidation
+
+By default, the Caching Module automatically invalidates cached query results when the data changes.
+
+Alternatively, you can disable auto invalidation of cached query results. This is useful if you want to manage invalidating the cache manually.
+
+To configure invalidation behavior, use the `cache.autoInvalidate` option:
+
+```ts highlights={[["7"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    autoInvalidate: false,
+  }
+})
+```
+
+In this example, you disable auto invalidation of the query result. You must [invalidate](!resources!/references/caching-service#clear) the cached data manually.
+
+You can also pass a function as the value of `cache.autoInvalidate`:
+
+```ts highlights={[["7"], ["8"], ["9"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    autoInvalidate: (args) => {
+      return !args[0].fields.includes("custom_field")
+    }
+  }
+})
+```
+
+In the example above, you use a function to determine whether to invalidate the cached query result automatically. The function accepts the arguments passed to `query.index` as an array.
+
+Then, you enable auto-invalidation only if the `fields` passed to `query.index` don't include `custom_fields`. If this disables auto-invalidation, you must [invalidate](!resources!/references/caching-service#clear) the cached data manually.
+
+<Note title="Tip">
+
+Learn more about automatic invalidation in the [Caching Module documentation](!resources!/infrastructure-modules/caching/concepts#automatic-cache-invalidation).
+
+</Note>
+
+### Set Caching Provider
+
+By default, the Caching Module uses the [default Caching Module Provider](!resources!/infrastructure-modules/caching/providers#default-caching-module-provider) to cache a query.
+
+Alternatively, you can set the caching provider to use for a query. This is useful if you have multiple caching providers configured, and you want to use a specific one for a query, or you want to specify a fallback provider.
+
+To configure the caching providers, use the `cache.providers` option:
+
+```ts highlights={[["7"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+}, {
+  cache: {
+    enable: true,
+    providers: ["caching-redis", "caching-memcached"]
+  }
+})
+```
+
+In the example above, you specify the providers with ID `caching-redis` and `caching-memcached` to cache the query results. These IDs must match the IDs of the providers in `medusa-config.ts`.
+
+When you pass multiple providers, the cache is stored and retrieved in those providers in order.
+
+You can also pass a function as the value of `cache.providers`:
+
+```ts highlights={[["10"], ["11"], ["12"]]}
+const { data: products } = await query.index({
+  entity: "product",
+  fields: ["id", "title"],
+  filters: {
+    id: "prod_123"
+  }
+}, {
+  cache: {
+    enable: true,
+    providers: (args) => {
+      return args[0].filters.id === "test" ? ["caching-redis"] : ["caching-memcached"]
+    }
+  }
+})
+```
+
+In the example above, you use a function to determine the caching providers. The function accepts the arguments passed to `query.index` as an array.
+
+Then, you set the providers based on the ID of the product passed in the filters.
 
 ---
 

@@ -59,8 +59,67 @@ export const infrastructureModulesSidebar = [
   },
   {
     type: "category",
-    title: "Cache Module",
+    title: "Caching Module",
     initialOpen: true,
+    children: [
+      {
+        type: "link",
+        path: "/infrastructure-modules/caching",
+        title: "Overview",
+      },
+      {
+        type: "link",
+        path: "/infrastructure-modules/caching/concepts",
+        title: "Concepts",
+      },
+      {
+        type: "link",
+        path: "/infrastructure-modules/caching/migrate-cache",
+        title: "Migrate from Cache Module",
+      },
+      {
+        type: "link",
+        title: "Providers",
+        path: "/infrastructure-modules/caching/providers",
+        children: [
+          {
+            type: "link",
+            path: "/infrastructure-modules/caching/providers/redis",
+            title: "Redis",
+          },
+          {
+            type: "link",
+            path: "/infrastructure-modules/caching/guides/memcached",
+            title: "Memcached",
+          },
+        ],
+      },
+      {
+        type: "sub-category",
+        title: "Guides",
+        children: [
+          {
+            type: "link",
+            path: "/references/caching-module-provider",
+            title: "Create Caching Module Provider",
+          },
+          {
+            type: "link",
+            path: "/references/caching-service",
+            title: "Use Caching Module",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    type: "category",
+    title: "Cache Module",
+    initialOpen: false,
+    badge: {
+      variant: "neutral",
+      text: "Deprecated",
+    },
     children: [
       {
         type: "link",

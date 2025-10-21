@@ -172,6 +172,14 @@ export const server = [
     "path": "https://docs.medusajs.com/resources/references/cache-service"
   },
   {
+    "title": "Use Caching Module",
+    "path": "https://docs.medusajs.com/resources/references/caching-service"
+  },
+  {
+    "title": "Create Caching Provider",
+    "path": "https://docs.medusajs.com/resources/references/caching-module-provider"
+  },
+  {
     "title": "Use Event Module",
     "path": "https://docs.medusajs.com/resources/references/event-service"
   },

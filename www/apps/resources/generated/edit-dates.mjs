@@ -6622,5 +6622,6 @@ export const generatedEditDates = {
   "app/data-model-repository-reference/methods/upsertWithReplace/page.mdx": "2025-10-09T11:44:53.535Z",
   "app/how-to-tutorials/tutorials/agentic-commerce/page.mdx": "2025-10-09T11:25:48.831Z",
   "app/storefront-development/production-optimizations/page.mdx": "2025-10-03T13:28:37.909Z",
+  "app/infrastructure-modules/caching/page.mdx": "2025-10-13T11:46:36.452Z",
   "app/troubleshooting/subscribers/not-working/page.mdx": "2025-10-16T09:25:57.376Z"
 }

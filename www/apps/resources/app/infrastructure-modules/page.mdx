@@ -47,28 +47,35 @@ The Analytics Module exposes functionalities to track and analyze user interacti
 
 
 
-## Cache Module
+## Caching Module
 
-A Cache Module is used to cache the results of computations such as price selection or various tax calculations. Learn more in [this documentation](./cache/page.mdx).
+The Caching Module provides functionality to cache data in your Medusa application, improving performance and reducing latency for frequently accessed data.
 
-The following Cache modules are provided by Medusa. You can also create your own cache module as explained in [this guide](./cache/create/page.mdx).
+The following Caching modules are provided by Medusa. You can also create a custom Caching Module Provider as explained in the [Create Caching Module Provider guide](#).
+
+<Note>
+
+The Caching Module is available starting [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). It replaces the deprecated [Cache Module](./cache/page.mdx).
+
+</Note>
 
 <CardList
   items={[
     {
-      title: "In-Memory",
-      href: "/infrastructure-modules/cache/in-memory",
-      badge: {
-        variant: "neutral",
-        children: "For Development"
-      }
-    },
-    {
       title: "Redis",
-      href: "/infrastructure-modules/cache/redis",
+      href: "/infrastructure-modules/caching/providers/redis",
       badge: {
         variant: "green",
         children: "For Production"
+      }
+    },
+    {
+      title: "Memcached",
+      // TODO add link
+      href: "#",
+      badge: {
+        variant: "blue",
+        children: "Tutorial"
       }
     }
   ]}

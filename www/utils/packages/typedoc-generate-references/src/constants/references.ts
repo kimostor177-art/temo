@@ -38,6 +38,7 @@ const allReferences = [
   "workflows",
   "locking",
   "cache",
+  "caching",
   "event",
   "file-service",
   "notification-service",

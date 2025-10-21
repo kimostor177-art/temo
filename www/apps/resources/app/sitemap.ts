@@ -38,6 +38,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${config.baseUrl}${basePathUrl("/references/cache-service")}`,
     },
     {
+      url: `${config.baseUrl}${basePathUrl("/references/caching-module-provider")}`,
+    },
+    {
+      url: `${config.baseUrl}${basePathUrl("/references/caching-service")}`,
+    },
+    {
       url: `${config.baseUrl}${basePathUrl("/references/file-service")}`,
     },
     {

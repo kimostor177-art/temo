@@ -832,6 +832,30 @@ export const filesMap = [
     "pathname": "/infrastructure-modules/cache/redis"
   },
   {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/caching/concepts/page.mdx",
+    "pathname": "/infrastructure-modules/caching/concepts"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/caching/guides/memcached/page.mdx",
+    "pathname": "/infrastructure-modules/caching/guides/memcached"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/caching/migrate-cache/page.mdx",
+    "pathname": "/infrastructure-modules/caching/migrate-cache"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/caching/page.mdx",
+    "pathname": "/infrastructure-modules/caching"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/caching/providers/page.mdx",
+    "pathname": "/infrastructure-modules/caching/providers"
+  },
+  {
+    "filePath": "/www/apps/resources/app/infrastructure-modules/caching/providers/redis/page.mdx",
+    "pathname": "/infrastructure-modules/caching/providers/redis"
+  },
+  {
     "filePath": "/www/apps/resources/app/infrastructure-modules/event/create/page.mdx",
     "pathname": "/infrastructure-modules/event/create"
   },
@@ -1930,6 +1954,14 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/cache/interfaces/cache.ICacheService/page.mdx",
     "pathname": "/references/cache/interfaces/cache.ICacheService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/caching/interfaces/caching.ICachingModuleService/page.mdx",
+    "pathname": "/references/caching/interfaces/caching.ICachingModuleService"
+  },
+  {
+    "filePath": "/www/apps/resources/references/caching/interfaces/caching.ICachingProviderService/page.mdx",
+    "pathname": "/references/caching/interfaces/caching.ICachingProviderService"
   },
   {
     "filePath": "/www/apps/resources/references/cart/IBigNumber/methods/cart.IBigNumber.toJSON/page.mdx",
@@ -14186,6 +14218,10 @@ export const filesMap = [
   {
     "filePath": "/www/apps/resources/references/modules/cache/page.mdx",
     "pathname": "/references/modules/cache"
+  },
+  {
+    "filePath": "/www/apps/resources/references/modules/caching/page.mdx",
+    "pathname": "/references/modules/caching"
   },
   {
     "filePath": "/www/apps/resources/references/modules/cart/page.mdx",

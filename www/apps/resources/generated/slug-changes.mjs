@@ -165,6 +165,16 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/cache/interfaces/cache.ICacheService/page.mdx"
   },
   {
+    "origSlug": "/references/caching/interfaces/caching.ICachingModuleService",
+    "newSlug": "/references/caching-service",
+    "filePath": "/www/apps/resources/references/caching/interfaces/caching.ICachingModuleService/page.mdx"
+  },
+  {
+    "origSlug": "/references/caching/interfaces/caching.ICachingProviderService",
+    "newSlug": "/references/caching-module-provider",
+    "filePath": "/www/apps/resources/references/caching/interfaces/caching.ICachingProviderService/page.mdx"
+  },
+  {
     "origSlug": "/references/cart/ICartModuleService/methods/cart.ICartModuleService.addLineItemAdjustments",
     "newSlug": "/references/cart/addLineItemAdjustments",
     "filePath": "/www/apps/resources/references/cart/ICartModuleService/methods/cart.ICartModuleService.addLineItemAdjustments/page.mdx"

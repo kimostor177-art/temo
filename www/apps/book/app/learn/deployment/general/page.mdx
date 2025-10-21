@@ -120,17 +120,23 @@ So, add the following script in `package.json`:
 
 ## 3. Install Production Modules and Providers
 
-By default, your Medusa application uses modules and providers useful for development, such as the In-Memory Cache Module or the Local File Module Provider.
+By default, your Medusa application uses modules and providers useful for development, such as the Local File Module Provider.
 
 It’s highly recommended to instead use modules and providers suitable for production, including:
 
-- [Redis Cache Module](!resources!/infrastructure-modules/cache/redis)
+- [Redis Caching Module](!resources!/infrastructure-modules/caching/providers/redis)
 - [Redis Event Bus Module](!resources!/infrastructure-modules/event/redis)
 - [Workflow Engine Redis Module](!resources!/infrastructure-modules/workflow-engine/redis)
 - [Redis Locking Module Provider](!resources!/infrastructure-modules/locking/redis)
 - [PostHog Analytics Module Provider](!resources!/infrastructure-modules/analytics/posthog) (If you're using analytics in your application. You can also use other analytics module providers that are production-ready).
 - [S3 File Module Provider](!resources!/infrastructure-modules/file/s3) (or other file module providers that are production-ready).
 - [SendGrid Notification Module Provider](!resources!/infrastructure-modules/notification/sendgrid) (or other notification module providers that are production-ready).
+
+<Note>
+
+The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0) to replace the deprecated Cache Module.
+
+</Note>
 
 Then, add these modules in `medusa-config.ts`:
 
@@ -141,9 +147,18 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/medusa/cache-redis",
+      resolve: "@medusajs/medusa/caching",
       options: {
-        redisUrl: process.env.REDIS_URL,
+        providers: [
+          {
+            resolve: "@medusajs/cache-redis",
+            id: "caching-redis",
+            is_default: true,
+            options: {
+              redisUrl: process.env.CACHE_REDIS_URL,
+            },
+          },
+        ],
       },
     },
     {

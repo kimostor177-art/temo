@@ -18,15 +18,21 @@ Since modules are interchangeable, you have more control over Medusa’s archite
 
 There are different Infrastructure Module types including:
 
-![Diagram illustrating how the modules connect to third-party services](https://res.cloudinary.com/dza7lstvk/image/upload/v1727095814/Medusa%20Book/architectural-modules_bj9bb9.jpg)
+![Diagram illustrating how the modules connect to third-party services](https://res.cloudinary.com/dza7lstvk/image/upload/v1759762284/Medusa%20Book/service-infra_k3fcy0.jpg)
 
-- Analytics Module: Integrates a third-party service to track and analyze user interactions and system events.
-- Cache Module: Defines the caching mechanism or logic to cache computational results.
-- Event Module: Integrates a pub/sub service to handle subscribing to and emitting events.
-- Workflow Engine Module: Integrates a service to store and track workflow executions and steps.
-- File Module: Integrates a storage service to handle uploading and managing files.
-- Notification Module: Integrates a third-party service or defines custom logic to send notifications to users and customers.
-- Locking Module: Integrates a service that manages access to shared resources by multiple processes or threads.
+- [Analytics Module](!resources!/infrastructure-modules/analytics): Integrates a third-party service to track and analyze user interactions and system events.
+- [Caching Module](!resources!/infrastructure-modules/caching): Defines the caching mechanism or logic to cache computational results.
+- [Event Module](!resources!/infrastructure-modules/event): Integrates a pub/sub service to handle subscribing to and emitting events.
+- [Workflow Engine Module](!resources!/infrastructure-modules/workflow-engine): Integrates a service to store and track workflow executions and steps.
+- [File Module](!resources!/infrastructure-modules/file): Integrates a storage service to handle uploading and managing files.
+- [Notification Module](!resources!/infrastructure-modules/notification): Integrates a third-party service or defines custom logic to send notifications to users and customers.
+- [Locking Module](!resources!/infrastructure-modules/locking): Integrates a service that manages access to shared resources by multiple processes or threads.
+
+<Note>
+
+The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0) to replace the deprecated Cache Module.
+
+</Note>
 
 ---
 

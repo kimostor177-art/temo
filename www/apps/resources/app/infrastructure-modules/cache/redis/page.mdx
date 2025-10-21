@@ -8,9 +8,9 @@ export const metadata = {
 
 The Redis Cache Module uses Redis to cache data in your store. In production, it's recommended to use this module.
 
-<Note title="Using Cloud?">
+<Note title="Deprecation Notice">
 
-Our Cloud offering automatically provisions a Redis instance and configures the Redis Cache Module for you. Learn more in the [Redis](!cloud!/redis) Cloud documentation.
+The Redis Cache Module is deprecated starting from [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). Use the [Redis Caching Module Provider](../../caching/providers/redis/page.mdx) instead.
 
 </Note>
 
@@ -32,10 +32,6 @@ export const highlights = [
 ]
 
 ```ts title="medusa-config.ts" highlights={highlights}
-import { Modules } from "@medusajs/framework/utils"
-
-// ...
-
 module.exports = defineConfig({
   // ...
   modules: [

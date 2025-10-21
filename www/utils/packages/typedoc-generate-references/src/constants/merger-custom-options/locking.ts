@@ -6,7 +6,7 @@ const lockingOptions: FormattingOptionsType = {
     reflectionGroups: {
       Constructors: false,
     },
-    reflectionDescription: `In this document, you’ll learn how to create a Locking Module Provider and the methods you must implement in its main service.`,
+    reflectionDescription: `In this guide, you’ll learn how to create a Locking Module Provider and the methods you must implement in its main service.`,
     frontmatterData: {
       slug: "/references/locking-module-provider",
       tags: ["locking", "server", "how to"],
@@ -86,7 +86,7 @@ module.exports = defineConfig({
   // ...
   modules: [
     {
-      resolve: "@medusajs/medusa/payment",
+      resolve: "@medusajs/medusa/locking",
       options: {
         providers: [
           {
@@ -130,7 +130,7 @@ The Locking Module will now use your provider to handle all locking operations.
     reflectionGroups: {
       Constructors: false,
     },
-    reflectionDescription: `In this document, you’ll learn about the different methods in the Locking Module's service and how to use them.`,
+    reflectionDescription: `In this guide, you’ll learn about the different methods in the Locking Module's service and how to use them.`,
     frontmatterData: {
       slug: "/references/locking-service",
       tags: ["locking", "server", "how to"],

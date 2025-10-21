@@ -29,7 +29,7 @@ These layers of stack can be implemented within [plugins](../../fundamentals/plu
 
 </Note>
 
-![Medusa application architecture diagram illustrating the HTTP layer flow: External clients (storefront and admin) send requests to API routes, which execute workflows containing business logic, which then interact with modules to perform data operations on PostgreSQL databases](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175296/Medusa%20Book/http-layer_sroafr.jpg)
+![Medusa application architecture diagram illustrating the HTTP layer flow: External clients (storefront and admin) send requests to API routes, which execute workflows containing business logic, which then interact with modules to perform data operations on PostgreSQL databases](https://res.cloudinary.com/dza7lstvk/image/upload/v1759761784/Medusa%20Book/http-layer-new_hu0r3h.jpg)
 
 ---
 
@@ -43,7 +43,7 @@ Modules can be implemented within [plugins](../../fundamentals/plugins/page.mdx)
 
 </Note>
 
-![Database layer architecture diagram showing how Medusa modules establish connections to PostgreSQL databases through injected database connections, enabling data persistence and retrieval operations](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175379/Medusa%20Book/db-layer_pi7tix.jpg)
+![Database layer architecture diagram showing how Medusa modules establish connections to PostgreSQL databases through injected database connections, enabling data persistence and retrieval operations](https://res.cloudinary.com/dza7lstvk/image/upload/v1759761866/Medusa%20Book/db-layer-new_faeksx.jpg)
 
 ---
 
@@ -72,7 +72,7 @@ You can replace any of the third-party services mentioned above to build your pr
 [Infrastructure Modules](!resources!/infrastructure-modules) integrate third-party services and systems that customize Medusa's infrastructure. Medusa has the following Infrastructure Modules:
 
 - [Analytics Module](!resources!/infrastructure-modules/analytics): Tracks and analyzes user interactions and system events with third-party analytic providers. You can integrate [PostHog](!resources!/infrastructure-modules/analytics/posthog) as the analytics provider.
-- [Cache Module](!resources!/infrastructure-modules/cache): Caches data that require heavy computation. You can integrate a custom module to handle the caching with services like Memcached, or use the existing [Redis Cache Module](!resources!/infrastructure-modules/cache/redis).
+- [Caching Module](!resources!/infrastructure-modules/caching): Caches data that require heavy computation. You can integrate a custom module to handle the caching with services like Memcached, or use the existing [Redis Caching Module Provider](!resources!/infrastructure-modules/caching/providers/redis).
 - [Event Module](!resources!/infrastructure-modules/event): A pub/sub system that allows you to subscribe to events and trigger them. You can integrate [Redis](!resources!/infrastructure-modules/event/redis) as the pub/sub system.
 - [File Module](!resources!/infrastructure-modules/file): Manages file uploads and storage, such as upload of product images. You can integrate [AWS S3](!resources!/infrastructure-modules/file/s3) for file storage.
 - [Locking Module](!resources!/infrastructure-modules/locking): Manages access to shared resources by multiple processes or threads, preventing conflict between processes and ensuring data consistency. You can integrate [Redis](!resources!/infrastructure-modules/locking/redis) for locking.
@@ -81,7 +81,13 @@ You can replace any of the third-party services mentioned above to build your pr
 
 All of the third-party services mentioned above can be replaced to help you build your preferred architecture and ecosystem.
 
-![Diagram illustrating the Infrastructure Modules integration to third-party services and systems](https://res.cloudinary.com/dza7lstvk/image/upload/v1727175342/Medusa%20Book/service-arch_ozvryw.jpg)
+<Note>
+
+The Caching Module was introduced in [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0) to replace the deprecated Cache Module.
+
+</Note>
+
+![Diagram illustrating the Infrastructure Modules integration to third-party services and systems](https://res.cloudinary.com/dza7lstvk/image/upload/v1759762284/Medusa%20Book/service-infra_k3fcy0.jpg)
 
 ---
 
@@ -89,4 +95,4 @@ All of the third-party services mentioned above can be replaced to help you buil
 
 The following diagram illustrates Medusa's architecture including all its layers.
 
-![Complete Medusa architecture overview showing the full technology stack: client applications (storefront and admin) connecting through HTTP layer to workflows, which coordinate with commerce and Infrastructure Modules to manage data operations, third-party integrations, and database persistence](https://res.cloudinary.com/dza7lstvk/image/upload/v1727174897/Medusa%20Book/architectural-diagram-full.jpg)
+![Complete Medusa architecture overview showing the full technology stack: client applications (storefront and admin) connecting through HTTP layer to workflows, which coordinate with commerce and Infrastructure Modules to manage data operations, third-party integrations, and database persistence](https://res.cloudinary.com/dza7lstvk/image/upload/v1759762329/Medusa%20Book/diagram-full-new_znssjy.jpg)
