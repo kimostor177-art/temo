@@ -27,7 +27,7 @@ To specify the fields and relations to retrieve:
 
 ```ts
 sdk.admin.refundReason.retrieve("refr_123", {
-  fields: "id,value"
+  fields: "id,code"
 })
 .then(({ refund_reason }) => {
   console.log(refund_reason)

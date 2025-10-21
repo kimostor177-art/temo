@@ -29213,44 +29213,6 @@ paths:
             type: boolean
             title: include_descendants_tree
             description: Whether to retrieve a list of child categories. If you enable this, add to the `fields` query parameter `category_children` to set the children of a category in this field. You can either pass `*category_children` to retreieve the fields of all child categories, or select specific fields to make the response size smaller. For example, `fields=category_children.id,category_children.name`.
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-            externalDocs:
-              url: '#pagination'
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-            externalDocs:
-              url: '#pagination'
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-            externalDocs:
-              url: '#pagination'
-        - name: with_deleted
-          in: query
-          description: Whether to include deleted records in the result.
-          required: false
-          schema:
-            type: boolean
-            title: with_deleted
-            description: Whether to include deleted records in the result.
       security:
         - api_token: []
         - cookie_auth: []
@@ -29321,44 +29283,6 @@ paths:
             description: Comma-separated fields that should be included in the returned data. if a field is prefixed with `+` it will be added to the default fields, using `-` will remove it from the default fields. without prefix it will replace the entire default fields. This API route restricts the fields that can be selected. Learn how to override the retrievable fields in the [Retrieve Custom Links](https://docs.medusajs.com/learn/fundamentals/api-routes/retrieve-custom-links) documentation.
             externalDocs:
               url: '#select-fields-and-relations'
-        - name: offset
-          in: query
-          description: The number of items to skip when retrieving a list.
-          required: false
-          schema:
-            type: number
-            title: offset
-            description: The number of items to skip when retrieving a list.
-            externalDocs:
-              url: '#pagination'
-        - name: limit
-          in: query
-          description: Limit the number of items returned in the list.
-          required: false
-          schema:
-            type: number
-            title: limit
-            description: Limit the number of items returned in the list.
-            externalDocs:
-              url: '#pagination'
-        - name: order
-          in: query
-          description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-          required: false
-          schema:
-            type: string
-            title: order
-            description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
-            externalDocs:
-              url: '#pagination'
-        - name: with_deleted
-          in: query
-          description: Whether to include deleted records in the result.
-          required: false
-          schema:
-            type: boolean
-            title: with_deleted
-            description: Whether to include deleted records in the result.
       security:
         - api_token: []
         - cookie_auth: []
@@ -38236,7 +38160,7 @@ paths:
             })
 
             sdk.admin.refundReason.create({
-              value: "refund",
+              code: "refund",
               label: "Refund",
             })
             .then(({ refund_reason }) => {
@@ -38250,6 +38174,7 @@ paths:
             -H 'Content-Type: application/json' \
             --data-raw '{
               "label": "{value}",
+              "code": "{value}",
               "description": "{value}"
             }'
       tags:
@@ -38392,7 +38317,7 @@ paths:
             })
 
             sdk.admin.refundReason.update("ret_123", {
-              value: "refund",
+              code: "refund",
               label: "Refund",
             })
             .then(({ refund_reason }) => {

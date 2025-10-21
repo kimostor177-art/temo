@@ -95,7 +95,7 @@ To specify the fields and relations to retrieve:
 
 ```ts
 sdk.admin.refundReason.retrieve("refr_123", {
-  fields: "id,value"
+  fields: "id,code"
 })
 .then(({ refund_reason }) => {
   console.log(refund_reason)
@@ -130,7 +130,7 @@ This is available starting from [Medusa v2.11.0](https://github.com/medusajs/med
 
 ```ts
 sdk.admin.refundReason.create({
-  value: "refund",
+  code: "refund",
   label: "Refund",
 })
 .then(({ refund_reason }) => {
@@ -164,7 +164,7 @@ This is available starting from [Medusa v2.11.0](https://github.com/medusajs/med
 
 ```ts
 sdk.admin.refundReason.update("ret_123", {
-  value: "refund",
+  code: "refund",
   label: "Refund",
 })
 .then(({ refund_reason }) => {

@@ -41,7 +41,7 @@
  *       })
  * 
  *       sdk.admin.refundReason.create({
- *         value: "refund",
+ *         code: "refund",
  *         label: "Refund",
  *       })
  *       .then(({ refund_reason }) => {
@@ -55,6 +55,7 @@
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "label": "{value}",
+ *         "code": "{value}",
  *         "description": "{value}"
  *       }'
  * tags:

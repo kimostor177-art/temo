@@ -47,7 +47,7 @@
  *       })
  * 
  *       sdk.admin.refundReason.update("ret_123", {
- *         value: "refund",
+ *         code: "refund",
  *         label: "Refund",
  *       })
  *       .then(({ refund_reason }) => {

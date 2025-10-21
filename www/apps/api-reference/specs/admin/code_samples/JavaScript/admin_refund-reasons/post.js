@@ -9,7 +9,7 @@ export const sdk = new Medusa({
 })
 
 sdk.admin.refundReason.create({
-  value: "refund",
+  code: "refund",
   label: "Refund",
 })
 .then(({ refund_reason }) => {

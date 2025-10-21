@@ -666,10 +666,10 @@
     "js-sdk": "sdk.admin.refundReason.retrieve(\"refr_123\")\n.then(({ refund_reason }) => {\n  console.log(refund_reason)\n})"
   },
   "POST /admin/refund-reasons": {
-    "js-sdk": "sdk.admin.refundReason.create({\n  value: \"refund\",\n  label: \"Refund\",\n})\n.then(({ refund_reason }) => {\n  console.log(refund_reason)\n})"
+    "js-sdk": "sdk.admin.refundReason.create({\n  code: \"refund\",\n  label: \"Refund\",\n})\n.then(({ refund_reason }) => {\n  console.log(refund_reason)\n})"
   },
   "POST /admin/refund-reasons/{id}": {
-    "js-sdk": "sdk.admin.refundReason.update(\"ret_123\", {\n  value: \"refund\",\n  label: \"Refund\",\n})\n.then(({ refund_reason }) => {\n  console.log(refund_reason)\n})"
+    "js-sdk": "sdk.admin.refundReason.update(\"ret_123\", {\n  code: \"refund\",\n  label: \"Refund\",\n})\n.then(({ refund_reason }) => {\n  console.log(refund_reason)\n})"
   },
   "DELETE /admin/refund-reasons/{id}": {
     "js-sdk": "sdk.admin.refundReason.delete(\"ret_123\")\n.then(({ deleted }) => {\n  console.log(deleted)\n})"

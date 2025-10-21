@@ -3,5 +3,6 @@ curl -X POST '{backend_url}/admin/refund-reasons' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "label": "{value}",
+  "code": "{value}",
   "description": "{value}"
 }'
