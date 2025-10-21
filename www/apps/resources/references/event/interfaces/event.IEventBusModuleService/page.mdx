@@ -157,3 +157,62 @@ await eventModuleService.clearGroupedEvents("group_123")
 ### Returns
 
 <TypeList types={[{"name":"Promise","type":"Promise&#60;void&#62;","optional":false,"defaultValue":"","description":"This method removes all events in the specified group. Grouped events are useful when you have distributed transactions\nwhere you need to explicitly group, release and clear events upon lifecycle events of a transaction.","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="clearGroupedEvents"/>
+
+___
+
+## addInterceptor
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+This method adds an interceptor to the event bus. This means that the interceptor will be
+called before the event is emitted.
+
+### Example
+
+```ts
+eventModuleService.addInterceptor((message, context) => {
+  console.log("Interceptor", message, context)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"interceptor","type":"[InterceptorSubscriber](../../../types/EventBusTypes/types/types.EventBusTypes.InterceptorSubscriber/page.mdx)","description":"The interceptor to add.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="addInterceptor"/>
+
+### Returns
+
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"The instance of the Event Module","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="addInterceptor"/>
+
+___
+
+## removeInterceptor
+
+<BadgesList badges={[
+  {
+    "variant": "neutral",
+    "children": "optional"
+  }
+]} className="mb-1" />
+
+This method removes an interceptor from the event bus.
+
+### Example
+
+```ts
+eventModuleService.removeInterceptor((message, context) => {
+  console.log("Interceptor", message, context)
+})
+```
+
+### Parameters
+
+<TypeList types={[{"name":"interceptor","type":"[InterceptorSubscriber](../../../types/EventBusTypes/types/types.EventBusTypes.InterceptorSubscriber/page.mdx)","description":"The interceptor to remove.","optional":false,"defaultValue":"","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="removeInterceptor"/>
+
+### Returns
+
+<TypeList types={[{"name":"this","type":"`this`","optional":false,"defaultValue":"","description":"The instance of the Event Module","expandable":false,"children":[]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="removeInterceptor"/>

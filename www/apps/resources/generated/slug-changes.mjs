@@ -7090,6 +7090,11 @@ export const slugChanges = [
     "filePath": "/www/apps/resources/references/promotion_models/variables/promotion_models.CampaignBudget/page.mdx"
   },
   {
+    "origSlug": "/references/promotion_models/variables/promotion_models.CampaignBudgetUsage",
+    "newSlug": "/references/promotion/models/CampaignBudgetUsage",
+    "filePath": "/www/apps/resources/references/promotion_models/variables/promotion_models.CampaignBudgetUsage/page.mdx"
+  },
+  {
     "origSlug": "/references/promotion_models/variables/promotion_models.Promotion",
     "newSlug": "/references/promotion/models/Promotion",
     "filePath": "/www/apps/resources/references/promotion_models/variables/promotion_models.Promotion/page.mdx"
@@ -7398,6 +7403,11 @@ export const slugChanges = [
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRegions",
     "newSlug": "/references/tax/deleteTaxRegions",
     "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.deleteTaxRegions/page.mdx"
+  },
+  {
+    "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.getProvider",
+    "newSlug": "/references/tax/getProvider",
+    "filePath": "/www/apps/resources/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.getProvider/page.mdx"
   },
   {
     "origSlug": "/references/tax/ITaxModuleService/methods/tax.ITaxModuleService.getTaxLines",

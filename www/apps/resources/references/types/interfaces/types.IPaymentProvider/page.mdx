@@ -105,7 +105,7 @@ Medusa creates an account holder when a payment session initialized for a regist
 
 :::note
 
-This is available starting from Medusa `v2.5.0`.
+This is available starting from [Medusa v2.5.0](https://github.com/medusajs/medusa/releases/tag/v2.5.0).
 
 :::
 
@@ -150,7 +150,7 @@ class MyPaymentProviderService extends AbstractPaymentProvider<
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[CreateAccountHolderOutput](../types.CreateAccountHolderOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of creating the account holder. If an error occurs, throw it.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the account holder in the payment provider.\nThis is stored in Medusa's account holder in the `external_id` property.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The unstructured data returned from the payment provider. The content will vary between providers.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createAccountHolder"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[CreateAccountHolderOutput](../types.CreateAccountHolderOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of creating the account holder. If an error occurs, throw it.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the account holder in the payment provider.\nThis is stored in Medusa's account holder in the `external_id` property.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The unstructured data returned from the payment provider. The content will vary between providers.","optional":true,"defaultValue":"","expandable":false,"children":[]}],"since":"2.5.0"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="createAccountHolder"/>
 
 ### updateAccountHolder
 
@@ -169,7 +169,7 @@ the returned `id` property will be stored in the account holder's `external_id` 
 
 :::note
 
-This is available starting from Medusa `v2.5.1`.
+This is available starting from [Medusa v2.5.1](https://github.com/medusajs/medusa/releases/tag/v2.5.1).
 
 :::
 
@@ -210,7 +210,7 @@ class MyPaymentProviderService extends AbstractPaymentProvider<
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[UpdateAccountHolderOutput](../types.UpdateAccountHolderOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of updating the account holder. If an error occurs, throw it.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The unstructured data returned from the payment provider. The content will vary between providers.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateAccountHolder"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[UpdateAccountHolderOutput](../types.UpdateAccountHolderOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of updating the account holder. If an error occurs, throw it.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The unstructured data returned from the payment provider. The content will vary between providers.","optional":true,"defaultValue":"","expandable":false,"children":[]}],"since":"2.5.1"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="updateAccountHolder"/>
 
 ### deleteAccountHolder
 
@@ -226,7 +226,7 @@ to also delete the equivalent account holder in the third-party payment provider
 
 :::note
 
-This is available starting from Medusa `v2.5.0`.
+This is available starting from [Medusa v2.5.0](https://github.com/medusajs/medusa/releases/tag/v2.5.0).
 
 :::
 
@@ -264,7 +264,7 @@ class MyPaymentProviderService extends AbstractPaymentProvider<
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[DeleteAccountHolderOutput](../types.DeleteAccountHolderOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of deleting the account holder. If an error occurs, throw it.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The unstructured data returned from the payment provider. The content will vary between providers.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteAccountHolder"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[DeleteAccountHolderOutput](../types.DeleteAccountHolderOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of deleting the account holder. If an error occurs, throw it.","expandable":false,"children":[{"name":"data","type":"`Record<string, unknown>`","description":"The unstructured data returned from the payment provider. The content will vary between providers.","optional":true,"defaultValue":"","expandable":false,"children":[]}],"since":"2.5.0"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="deleteAccountHolder"/>
 
 ### listPaymentMethods
 
@@ -281,7 +281,7 @@ must implement this method.
 
 :::note
 
-This is available starting from Medusa `v2.5.0`.
+This is available starting from [Medusa v2.5.0](https://github.com/medusajs/medusa/releases/tag/v2.5.0).
 
 :::
 
@@ -323,7 +323,7 @@ class MyPaymentProviderService extends AbstractPaymentProvider<
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[ListPaymentMethodsOutput](../types.ListPaymentMethodsOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The list of payment methods saved for the account holder. If an error occurs, throw it.","expandable":false,"children":[{"name":"ListPaymentMethodsOutput","type":"`object`","description":"The result of listing payment methods for an account holder in the third-party payment provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="listPaymentMethods"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[ListPaymentMethodsOutput](../types.ListPaymentMethodsOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The list of payment methods saved for the account holder. If an error occurs, throw it.","expandable":false,"children":[{"name":"ListPaymentMethodsOutput","type":"`object`","description":"The result of listing payment methods for an account holder in the third-party payment provider.","optional":false,"defaultValue":"","expandable":false,"children":[]}],"since":"2.5.0"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="listPaymentMethods"/>
 
 ### savePaymentMethod
 
@@ -340,7 +340,7 @@ must implement this method.
 
 :::note
 
-This is available starting from Medusa `v2.5.0`.
+This is available starting from [Medusa v2.5.0](https://github.com/medusajs/medusa/releases/tag/v2.5.0).
 
 :::
 
@@ -384,7 +384,7 @@ class MyPaymentProviderService extends AbstractPaymentProvider<
 
 #### Returns
 
-<TypeList types={[{"name":"Promise","type":"Promise&#60;[SavePaymentMethodOutput](../types.SavePaymentMethodOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of saving the payment method. If an error occurs, throw it.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the payment method in the payment provider.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The unstructured data returned from the payment provider. The content will vary between providers.","optional":true,"defaultValue":"","expandable":false,"children":[]}]}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="savePaymentMethod"/>
+<TypeList types={[{"name":"Promise","type":"Promise&#60;[SavePaymentMethodOutput](../types.SavePaymentMethodOutput/page.mdx)&#62;","optional":false,"defaultValue":"","description":"The result of saving the payment method. If an error occurs, throw it.","expandable":false,"children":[{"name":"id","type":"`string`","description":"The ID of the payment method in the payment provider.","optional":false,"defaultValue":"","expandable":false,"children":[]},{"name":"data","type":"`Record<string, unknown>`","description":"The unstructured data returned from the payment provider. The content will vary between providers.","optional":true,"defaultValue":"","expandable":false,"children":[]}],"since":"2.5.0"}]} expandUrl="https://docs.medusajs.com/learn/fundamentals/data-models/manage-relationships#retrieve-records-of-relation" sectionTitle="savePaymentMethod"/>
 
 ### getPaymentStatus
 

@@ -39,7 +39,7 @@ export async function POST(
   const { result } = await createOrderChangeActionsWorkflow(req.scope)
     .run({
       input: [{
-        "action": "CANCEL_RETURN_ITEM"
+        "action": "PROMOTION_REMOVE"
       }]
     })
 
@@ -64,7 +64,7 @@ export default async function handleOrderPlaced({
   const { result } = await createOrderChangeActionsWorkflow(container)
     .run({
       input: [{
-        "action": "CANCEL_RETURN_ITEM"
+        "action": "PROMOTION_REMOVE"
       }]
     })
 
@@ -89,7 +89,7 @@ export default async function myCustomJob(
   const { result } = await createOrderChangeActionsWorkflow(container)
     .run({
       input: [{
-        "action": "CANCEL_RETURN_ITEM"
+        "action": "PROMOTION_REMOVE"
       }]
     })
 
@@ -115,7 +115,7 @@ const myWorkflow = createWorkflow(
     const result = createOrderChangeActionsWorkflow
       .runAsStep({
         input: [{
-          "action": "CANCEL_RETURN_ITEM"
+          "action": "PROMOTION_REMOVE"
         }]
       })
   }

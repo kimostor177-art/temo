@@ -16,6 +16,7 @@ erDiagram
 	ApplicationMethod }|--|{ PromotionRule : target_rules
 	Campaign ||--|| CampaignBudget : budget
 	Campaign ||--|| Promotion : promotions
+	CampaignBudget ||--|| CampaignBudgetUsage : usages
 	Promotion ||--|| ApplicationMethod : application_method
 	Promotion }|--|{ PromotionRule : rules
 	PromotionRule ||--|| PromotionRuleValue : values
@@ -27,6 +28,7 @@ erDiagram
 - [ApplicationMethod](../../promotion_models/variables/promotion_models.ApplicationMethod/page.mdx)
 - [Campaign](../../promotion_models/variables/promotion_models.Campaign/page.mdx)
 - [CampaignBudget](../../promotion_models/variables/promotion_models.CampaignBudget/page.mdx)
+- [CampaignBudgetUsage](../../promotion_models/variables/promotion_models.CampaignBudgetUsage/page.mdx)
 - [Promotion](../../promotion_models/variables/promotion_models.Promotion/page.mdx)
 - [PromotionRule](../../promotion_models/variables/promotion_models.PromotionRule/page.mdx)
 - [PromotionRuleValue](../../promotion_models/variables/promotion_models.PromotionRuleValue/page.mdx)

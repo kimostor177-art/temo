@@ -34,7 +34,7 @@ export async function POST(
   const { result } = await createOrderCreditLinesWorkflow(req.scope)
     .run({
       input: {
-        "id": "id_rLt7rLHz2sr",
+        "id": "id_wCesgKvgIPhptn0",
         "credit_lines": [
           "{value}"
         ]
@@ -62,7 +62,7 @@ export default async function handleOrderPlaced({
   const { result } = await createOrderCreditLinesWorkflow(container)
     .run({
       input: {
-        "id": "id_rLt7rLHz2sr",
+        "id": "id_wCesgKvgIPhptn0",
         "credit_lines": [
           "{value}"
         ]
@@ -90,7 +90,7 @@ export default async function myCustomJob(
   const { result } = await createOrderCreditLinesWorkflow(container)
     .run({
       input: {
-        "id": "id_rLt7rLHz2sr",
+        "id": "id_wCesgKvgIPhptn0",
         "credit_lines": [
           "{value}"
         ]
@@ -119,7 +119,7 @@ const myWorkflow = createWorkflow(
     const result = createOrderCreditLinesWorkflow
       .runAsStep({
         input: {
-          "id": "id_rLt7rLHz2sr",
+          "id": "id_wCesgKvgIPhptn0",
           "credit_lines": [
             "{value}"
           ]
