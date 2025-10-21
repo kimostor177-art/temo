@@ -896,15 +896,6 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_line_item_deleted_at\" ON \"cart_line_item\" (deleted_at) WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "IDX_line_item_cart_id",
-          "columnNames": [],
-          "composite": false,
-          "constraint": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_cart_id\" ON \"cart_line_item\" (cart_id) WHERE deleted_at IS NULL"
-        },
-        {
           "keyName": "IDX_line_item_variant_id",
           "columnNames": [],
           "composite": false,
@@ -1117,15 +1108,6 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_adjustment_promotion_id\" ON \"cart_line_item_adjustment\" (promotion_id) WHERE deleted_at IS NULL AND promotion_id IS NOT NULL"
         },
         {
-          "keyName": "IDX_adjustment_item_id",
-          "columnNames": [],
-          "composite": false,
-          "constraint": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_adjustment_item_id\" ON \"cart_line_item_adjustment\" (item_id) WHERE deleted_at IS NULL"
-        },
-        {
           "keyName": "cart_line_item_adjustment_pkey",
           "columnNames": [
             "id"
@@ -1296,15 +1278,6 @@
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_line_item_tax_line_tax_rate_id\" ON \"cart_line_item_tax_line\" (tax_rate_id) WHERE deleted_at IS NULL AND tax_rate_id IS NOT NULL"
-        },
-        {
-          "keyName": "IDX_tax_line_item_id",
-          "columnNames": [],
-          "composite": false,
-          "constraint": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_tax_line_item_id\" ON \"cart_line_item_tax_line\" (item_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "cart_line_item_tax_line_pkey",
@@ -1481,15 +1454,6 @@
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_deleted_at\" ON \"cart_shipping_method\" (deleted_at) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_shipping_method_cart_id",
-          "columnNames": [],
-          "composite": false,
-          "constraint": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_method_cart_id\" ON \"cart_shipping_method\" (cart_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_method_option_id",
@@ -1682,15 +1646,6 @@
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_shipping_method_adjustment_promotion_id\" ON \"cart_shipping_method_adjustment\" (promotion_id) WHERE deleted_at IS NULL AND promotion_id IS NOT NULL"
         },
         {
-          "keyName": "IDX_adjustment_shipping_method_id",
-          "columnNames": [],
-          "composite": false,
-          "constraint": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_adjustment_shipping_method_id\" ON \"cart_shipping_method_adjustment\" (shipping_method_id) WHERE deleted_at IS NULL"
-        },
-        {
           "keyName": "cart_shipping_method_adjustment_pkey",
           "columnNames": [
             "id"
@@ -1845,15 +1800,6 @@
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_cart_shipping_method_tax_line_deleted_at\" ON \"cart_shipping_method_tax_line\" (deleted_at) WHERE deleted_at IS NULL"
-        },
-        {
-          "keyName": "IDX_tax_line_shipping_method_id",
-          "columnNames": [],
-          "composite": false,
-          "constraint": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_tax_line_shipping_method_id\" ON \"cart_shipping_method_tax_line\" (shipping_method_id) WHERE deleted_at IS NULL"
         },
         {
           "keyName": "IDX_shipping_method_tax_line_tax_rate_id",

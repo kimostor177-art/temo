@@ -34,8 +34,8 @@ const _OrderItem = model
       where: "deleted_at IS NULL",
     },
     {
-      name: "IDX_order_item_version",
-      on: ["version"],
+      name: "IDX_order_item_order_id_version",
+      on: ["order_id", "version"],
       unique: false,
       where: "deleted_at IS NULL",
     },

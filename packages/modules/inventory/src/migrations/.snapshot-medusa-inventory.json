@@ -182,22 +182,16 @@
           "keyName": "IDX_inventory_item_deleted_at",
           "columnNames": [],
           "composite": false,
+          "constraint": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_inventory_item_deleted_at\" ON \"inventory_item\" (deleted_at) WHERE deleted_at IS NULL"
         },
         {
-          "keyName": "IDX_inventory_item_deleted_at",
-          "columnNames": [],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX IF NOT EXISTS \"IDX_inventory_item_deleted_at\" ON \"inventory_item\" (deleted_at) WHERE deleted_at IS NOT NULL"
-        },
-        {
           "keyName": "IDX_inventory_item_sku",
           "columnNames": [],
           "composite": false,
+          "constraint": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_inventory_item_sku\" ON \"inventory_item\" (sku) WHERE deleted_at IS NULL"
@@ -208,12 +202,14 @@
             "id"
           ],
           "composite": false,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {},
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -350,6 +346,7 @@
           "keyName": "IDX_inventory_level_inventory_item_id",
           "columnNames": [],
           "composite": false,
+          "constraint": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_inventory_level_inventory_item_id\" ON \"inventory_level\" (inventory_item_id) WHERE deleted_at IS NULL"
@@ -358,6 +355,7 @@
           "keyName": "IDX_inventory_level_deleted_at",
           "columnNames": [],
           "composite": false,
+          "constraint": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_inventory_level_deleted_at\" ON \"inventory_level\" (deleted_at) WHERE deleted_at IS NULL"
@@ -366,6 +364,7 @@
           "keyName": "IDX_inventory_level_location_id",
           "columnNames": [],
           "composite": false,
+          "constraint": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_inventory_level_location_id\" ON \"inventory_level\" (location_id) WHERE deleted_at IS NULL"
@@ -374,6 +373,7 @@
           "keyName": "IDX_inventory_level_location_id_inventory_item_id",
           "columnNames": [],
           "composite": false,
+          "constraint": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE UNIQUE INDEX IF NOT EXISTS \"IDX_inventory_level_location_id_inventory_item_id\" ON \"inventory_level\" (inventory_item_id, location_id) WHERE deleted_at IS NULL"
@@ -384,6 +384,7 @@
             "id"
           ],
           "composite": false,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
@@ -403,7 +404,8 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
-      }
+      },
+      "nativeEnums": {}
     },
     {
       "columns": {
@@ -547,6 +549,7 @@
           "keyName": "IDX_reservation_item_inventory_item_id",
           "columnNames": [],
           "composite": false,
+          "constraint": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_reservation_item_inventory_item_id\" ON \"reservation_item\" (inventory_item_id) WHERE deleted_at IS NULL"
@@ -555,6 +558,7 @@
           "keyName": "IDX_reservation_item_deleted_at",
           "columnNames": [],
           "composite": false,
+          "constraint": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_reservation_item_deleted_at\" ON \"reservation_item\" (deleted_at) WHERE deleted_at IS NULL"
@@ -563,6 +567,7 @@
           "keyName": "IDX_reservation_item_line_item_id",
           "columnNames": [],
           "composite": false,
+          "constraint": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_reservation_item_line_item_id\" ON \"reservation_item\" (line_item_id) WHERE deleted_at IS NULL"
@@ -571,6 +576,7 @@
           "keyName": "IDX_reservation_item_location_id",
           "columnNames": [],
           "composite": false,
+          "constraint": false,
           "primary": false,
           "unique": false,
           "expression": "CREATE INDEX IF NOT EXISTS \"IDX_reservation_item_location_id\" ON \"reservation_item\" (location_id) WHERE deleted_at IS NULL"
@@ -581,6 +587,7 @@
             "id"
           ],
           "composite": false,
+          "constraint": true,
           "primary": true,
           "unique": true
         }
@@ -600,7 +607,9 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
-      }
+      },
+      "nativeEnums": {}
     }
-  ]
+  ],
+  "nativeEnums": {}
 }

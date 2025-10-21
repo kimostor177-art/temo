@@ -31,7 +31,7 @@ const ShippingMethod = model
   )
   .indexes([
     {
-      name: "IDX_shipping_method_cart_id",
+      name: "IDX_cart_shipping_method_cart_id",
       on: ["cart_id"],
       where: "deleted_at IS NULL",
     },
