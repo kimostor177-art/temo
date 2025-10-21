@@ -19,6 +19,44 @@
  *         Links](https://docs.medusajs.com/learn/fundamentals/api-routes/retrieve-custom-links) documentation.
  *       externalDocs:
  *         url: "#select-fields-and-relations"
+ *   - name: offset
+ *     in: query
+ *     description: The number of items to skip when retrieving a list.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: offset
+ *       description: The number of items to skip when retrieving a list.
+ *       externalDocs:
+ *         url: "#pagination"
+ *   - name: limit
+ *     in: query
+ *     description: Limit the number of items returned in the list.
+ *     required: false
+ *     schema:
+ *       type: number
+ *       title: limit
+ *       description: Limit the number of items returned in the list.
+ *       externalDocs:
+ *         url: "#pagination"
+ *   - name: order
+ *     in: query
+ *     description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *     required: false
+ *     schema:
+ *       type: string
+ *       title: order
+ *       description: The field to sort the data by. By default, the sort order is ascending. To change the order to descending, prefix the field name with `-`.
+ *       externalDocs:
+ *         url: "#pagination"
+ *   - name: with_deleted
+ *     in: query
+ *     description: Whether to include deleted records in the result.
+ *     required: false
+ *     schema:
+ *       type: boolean
+ *       title: with_deleted
+ *       description: Whether to include deleted records in the result.
  * security:
  *   - api_token: []
  *   - cookie_auth: []

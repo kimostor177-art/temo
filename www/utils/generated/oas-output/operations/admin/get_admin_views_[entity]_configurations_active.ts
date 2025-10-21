@@ -52,7 +52,8 @@
  *                   description: Whether the active view configuration is the system default.
  *                 default_type:
  *                   type: string
- *                   description: The type of the default view configuration if the active view is the system default. It will be `system` if the active view is the system default, `code` if no active view is set, or `undefined` if the active view isn't the system default.
+ *                   description: The type of the default view configuration if the active view is the system default. It will be `system` if the active view is the system default, `code` if no active view is set, or
+ *                     `undefined` if the active view isn't the system default.
  *                   enum:
  *                     - code
  *                     - system

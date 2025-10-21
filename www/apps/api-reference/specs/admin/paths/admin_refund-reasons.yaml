@@ -214,6 +214,10 @@ post:
         schema:
           $ref: ../components/schemas/AdminCreateRefundReason.yaml
   x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_refund-reasons/post.js
     - lang: Shell
       label: cURL
       source:

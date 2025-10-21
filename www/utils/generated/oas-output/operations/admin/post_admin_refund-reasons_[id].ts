@@ -33,6 +33,26 @@
  *       schema:
  *         $ref: "#/components/schemas/AdminUpdatePaymentRefundReason"
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS SDK
+ *     source: |-
+ *       import Medusa from "@medusajs/js-sdk"
+ * 
+ *       export const sdk = new Medusa({
+ *         baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+ *         debug: import.meta.env.DEV,
+ *         auth: {
+ *           type: "session",
+ *         },
+ *       })
+ * 
+ *       sdk.admin.refundReason.update("ret_123", {
+ *         value: "refund",
+ *         label: "Refund",
+ *       })
+ *       .then(({ refund_reason }) => {
+ *         console.log(refund_reason)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |-

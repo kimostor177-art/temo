@@ -53,6 +53,7 @@
  *       - currency_code
  *       - limit
  *       - used
+ *       - attribute
  *     properties:
  *       id:
  *         type: string
@@ -80,6 +81,12 @@
  *         description: >
  *           How much of the budget has been used. If the limit is `spend`, this property holds the total amount discounted so far. If the limit is `usage`, it holds the number of times the campaign's
  *           promotions have been used so far.
+ *       attribute:
+ *         type: string
+ *         title: attribute
+ *         description: The cart attribute to limit the budget by.
+ *         externalDocs:
+ *           url: https://docs.medusajs.com/resources/commerce-modules/promotion/campaign#attribute-based-budgets
  *   created_at:
  *     type: string
  *     format: date-time

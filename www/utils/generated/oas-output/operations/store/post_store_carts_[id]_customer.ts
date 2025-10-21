@@ -37,6 +37,19 @@
  *         fields. Without prefix it will replace the entire default fields.
  *       externalDocs:
  *         url: "#select-fields-and-relations"
+ * security:
+ *   - cookie_auth: []
+ *   - jwt_token: []
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         type: object
+ *         description: Optional additional data to pass to the underlying workflow.
+ *         properties:
+ *           additional_data:
+ *             type: object
+ *             description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK
@@ -100,19 +113,6 @@
  *     description: Emitted when the customer in the cart is transferred.
  *     deprecated: false
  *     since: 2.8.0
- * security:
- *   - cookie_auth: []
- *   - jwt_token: []
- * requestBody:
- *   content:
- *     application/json:
- *       schema:
- *         type: object
- *         description: Optional additional data to pass to the underlying workflow.
- *         properties:
- *           additional_data:
- *             type: object
- *             description: Pass additional custom data to the API route. This data is passed to the underlying workflow under the `additional_data` parameter.
- *
+ * 
 */
 

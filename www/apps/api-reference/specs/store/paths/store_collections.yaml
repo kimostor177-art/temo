@@ -679,6 +679,20 @@ get:
         type: boolean
         title: with_deleted
         description: Whether to include deleted records in the result.
+    - name: id
+      in: query
+      required: false
+      schema:
+        oneOf:
+          - type: string
+            title: id
+            description: Filter by a collection's ID.
+          - type: array
+            description: Filter by collection IDs.
+            items:
+              type: string
+              title: id
+              description: The collection's ID.
   x-codeSamples:
     - lang: JavaScript
       label: JS SDK

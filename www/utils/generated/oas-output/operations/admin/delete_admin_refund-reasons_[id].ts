@@ -16,6 +16,23 @@
  *   - cookie_auth: []
  *   - jwt_token: []
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS SDK
+ *     source: |-
+ *       import Medusa from "@medusajs/js-sdk"
+ * 
+ *       export const sdk = new Medusa({
+ *         baseUrl: import.meta.env.VITE_BACKEND_URL || "/",
+ *         debug: import.meta.env.DEV,
+ *         auth: {
+ *           type: "session",
+ *         },
+ *       })
+ * 
+ *       sdk.admin.refundReason.delete("ret_123")
+ *       .then(({ deleted }) => {
+ *         console.log(deleted)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |-
@@ -29,26 +46,7 @@
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           description: The deletion's details.
- *           required:
- *             - id
- *             - object
- *             - deleted
- *           properties:
- *             id:
- *               type: string
- *               title: id
- *               description: The refund reason's ID.
- *             object:
- *               type: string
- *               title: object
- *               description: The name of the deleted object.
- *               default: refund_reason
- *             deleted:
- *               type: boolean
- *               title: deleted
- *               description: Whether the refund reason was deleted.
+ *           $ref: "#/components/schemas/AdminRefundReasonDeleteResponse"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

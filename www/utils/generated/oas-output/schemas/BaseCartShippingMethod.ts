@@ -11,14 +11,6 @@
  *   - is_tax_inclusive
  *   - created_at
  *   - updated_at
- *   - original_total
- *   - original_subtotal
- *   - original_tax_total
- *   - total
- *   - subtotal
- *   - tax_total
- *   - discount_total
- *   - discount_tax_total
  * properties:
  *   id:
  *     type: string

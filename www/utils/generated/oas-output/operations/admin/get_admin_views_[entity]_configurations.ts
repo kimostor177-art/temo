@@ -2,7 +2,8 @@
  * @oas [get] /admin/views/{entity}/configurations
  * operationId: GetViewsEntityConfigurations
  * summary: List View Configurations
- * description: Retrieve a list of view configurations of an entity. The configurations can be filtered by fields like `id`. The configurations can also be paginated. An admin user can only retrieve their own configurations.
+ * description: Retrieve a list of view configurations of an entity. The configurations can be filtered by fields like `id`. The configurations can also be paginated. An admin user can only retrieve
+ *   their own configurations.
  * x-authenticated: true
  * parameters:
  *   - name: entity

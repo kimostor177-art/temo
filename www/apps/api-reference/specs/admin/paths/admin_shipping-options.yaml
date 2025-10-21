@@ -707,7 +707,10 @@ post:
     content:
       application/json:
         schema:
-          $ref: ../components/schemas/AdminCreateShippingOption.yaml
+          oneOf:
+            - $ref: ../components/schemas/AdminCreateFlatRateShippingOption.yaml
+            - $ref: ../components/schemas/AdminCreateCalculatedShippingOption.yaml
+          description: The shipping option's details.
   x-codeSamples:
     - lang: JavaScript
       label: JS SDK

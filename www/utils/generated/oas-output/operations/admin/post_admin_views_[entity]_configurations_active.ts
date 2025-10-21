@@ -2,7 +2,9 @@
  * @oas [post] /admin/views/{entity}/configurations/active
  * operationId: PostViewsEntityConfigurationsActive
  * summary: Make View Configuration Active
- * description: Make a view configuration active. This will set the given view configuration as the active one for the specified entity for the admin user. An admin user can only set their own configurations as active. If the view configuration ID is `null`, the active view configuration will be cleared, and the `code` or system default view configuration type will be used as the active view.
+ * description: Make a view configuration active. This will set the given view configuration as the active one for the specified entity for the admin user. An admin user can only set their own
+ *   configurations as active. If the view configuration ID is `null`, the active view configuration will be cleared, and the `code` or system default view configuration type will be used as the active
+ *   view.
  * x-authenticated: true
  * parameters:
  *   - name: entity

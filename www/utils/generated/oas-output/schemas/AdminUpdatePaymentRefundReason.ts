@@ -11,6 +11,10 @@
  *     type: string
  *     title: description
  *     description: The refund reason's description.
+ *   code:
+ *     type: string
+ *     title: code
+ *     description: The refund reason's code.
  * x-schemaName: AdminUpdatePaymentRefundReason
  * 
 */

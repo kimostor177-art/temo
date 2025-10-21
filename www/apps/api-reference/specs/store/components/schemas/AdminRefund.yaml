@@ -35,4 +35,4 @@ properties:
   payment:
     $ref: ./BasePayment.yaml
   refund_reason:
-    $ref: ./RefundReason.yaml
+    $ref: ./BaseRefundReason.yaml

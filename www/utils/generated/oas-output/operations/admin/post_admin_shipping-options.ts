@@ -25,7 +25,10 @@
  *   content:
  *     application/json:
  *       schema:
- *         $ref: "#/components/schemas/AdminCreateShippingOption"
+ *         oneOf:
+ *           - $ref: "#/components/schemas/AdminCreateFlatRateShippingOption"
+ *           - $ref: "#/components/schemas/AdminCreateCalculatedShippingOption"
+ *         description: The shipping option's details.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS SDK

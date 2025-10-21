@@ -2,7 +2,8 @@
  * @oas [post] /admin/views/{entity}/configurations
  * operationId: PostViewsEntityConfigurations
  * summary: Create View Configuration
- * description: Create a new view configuration for an entity. If `is_system_default` is set to true, the created configuration will be set as the system default for the specified entity. Otherwise, it will be a custom configuration for the admin user.
+ * description: Create a new view configuration for an entity. If `is_system_default` is set to true, the created configuration will be set as the system default for the specified entity. Otherwise, it
+ *   will be a custom configuration for the admin user.
  * x-authenticated: true
  * parameters:
  *   - name: entity

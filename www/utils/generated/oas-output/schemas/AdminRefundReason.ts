@@ -6,7 +6,7 @@
  * required:
  *   - id
  *   - label
- *   - metadata
+ *   - code
  *   - created_at
  *   - updated_at
  * properties:
@@ -38,6 +38,10 @@
  *     format: date-time
  *     title: updated_at
  *     description: The date the refund reason was updated.
+ *   code:
+ *     type: string
+ *     title: code
+ *     description: The refund reason's code.
  * 
 */
 

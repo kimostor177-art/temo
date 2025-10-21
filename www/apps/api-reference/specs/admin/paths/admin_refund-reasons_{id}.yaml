@@ -35,6 +35,10 @@ get:
     - cookie_auth: []
     - jwt_token: []
   x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_refund-reasons_{id}/get.js
     - lang: Shell
       label: cURL
       source:
@@ -100,6 +104,10 @@ post:
         schema:
           $ref: ../components/schemas/AdminUpdatePaymentRefundReason.yaml
   x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_refund-reasons_{id}/post.js
     - lang: Shell
       label: cURL
       source:
@@ -144,6 +152,10 @@ delete:
     - cookie_auth: []
     - jwt_token: []
   x-codeSamples:
+    - lang: JavaScript
+      label: JS SDK
+      source:
+        $ref: ../code_samples/JavaScript/admin_refund-reasons_{id}/delete.js
     - lang: Shell
       label: cURL
       source:
@@ -156,26 +168,7 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            description: The deletion's details.
-            required:
-              - id
-              - object
-              - deleted
-            properties:
-              id:
-                type: string
-                title: id
-                description: The refund reason's ID.
-              object:
-                type: string
-                title: object
-                description: The name of the deleted object.
-                default: refund_reason
-              deleted:
-                type: boolean
-                title: deleted
-                description: Whether the refund reason was deleted.
+            $ref: ../components/schemas/AdminRefundReasonDeleteResponse.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

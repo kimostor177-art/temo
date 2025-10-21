@@ -37,7 +37,7 @@
  *   payment:
  *     $ref: "#/components/schemas/BasePayment"
  *   refund_reason:
- *     $ref: "#/components/schemas/RefundReason"
+ *     $ref: "#/components/schemas/BaseRefundReason"
  * 
 */
 
