@@ -15,6 +15,9 @@
 			"postal_code": "The postal code of the address",
 			"phone": "The phone of the address",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"LineItemTaxLine": {
@@ -28,6 +31,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"tax_rate_id": "The ID of the applied tax rate.",
 			"item": "The associated line item.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"LineItemAdjustment": {
@@ -42,6 +48,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"item": "The associated line item.\n\n@expandable",
 			"is_tax_inclusive": "Whether the line item adjustment is tax inclusive."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"LineItem": {
@@ -76,6 +85,9 @@
 			"cart": "The associated cart.\n\n@expandable",
 			"is_custom_price": "Whether the line item's price is custom.",
 			"is_giftcard": "Whether the line item is a giftcard."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ShippingMethodAdjustment": {
@@ -89,6 +101,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"promotion_id": "The ID of the promotion applied",
 			"shipping_method": "The associated shipping_method.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ShippingMethodTaxLine": {
@@ -102,6 +117,9 @@
 			"tax_rate_id": "The ID of the applied tax rate.",
 			"metadata": "Holds custom data in key-value pairs.",
 			"shipping_method": "The associated shipping_method.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ShippingMethod": {
@@ -118,6 +136,9 @@
 			"cart": "The associated cart.\n\n@expandable",
 			"tax_lines": "The associated tax_lines.\n\n@expandable",
 			"adjustments": "The associated adjustments.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Cart": {
@@ -136,6 +157,9 @@
 			"items": "The associated items.\n\n@expandable",
 			"shipping_methods": "The associated shipping_methods.\n\n@expandable",
 			"credit_lines": "The associated credit_lines.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"CreditLine": {
@@ -148,6 +172,9 @@
 			"amount": "The amount of the credit line",
 			"raw_amount": "The raw amount of the credit line",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

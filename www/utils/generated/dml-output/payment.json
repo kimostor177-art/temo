@@ -5,6 +5,9 @@
 			"id": "The ID of the payment provider.",
 			"is_enabled": "Whether the payment provider is enabled.",
 			"payment_collections": "The associated payment collections.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"PaymentSession": {
@@ -21,6 +24,9 @@
 			"payment_collection": "The associated payment collection.\n\n@expandable",
 			"payment": "The associated payment.\n\n@expandable",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"PaymentCollection": {
@@ -38,6 +44,9 @@
 			"payment_providers": "The associated payment providers.\n\n@expandable",
 			"payment_sessions": "The associated payment sessions.\n\n@expandable",
 			"payments": "The associated payments.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"RefundReason": {
@@ -47,7 +56,11 @@
 			"label": "The label of the refund reason",
 			"description": "The description of the refund reason",
 			"metadata": "Holds custom data in key-value pairs.",
-			"refunds": "The associated refunds.\n\n@expandable"
+			"refunds": "The associated refunds.\n\n@expandable",
+			"code": "The code of the refund reason"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Refund": {
@@ -60,6 +73,9 @@
 			"note": "A note with more explanation about the refund",
 			"created_by": "The ID of the user that created the refund.",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Payment": {
@@ -77,6 +93,9 @@
 			"payment_session": "The associated payment session.\n\n@expandable",
 			"refunds": "The associated refunds.\n\n@expandable",
 			"captures": "The associated captures.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Capture": {
@@ -87,6 +106,9 @@
 			"payment": "The associated payment.\n\n@expandable",
 			"metadata": "Holds custom data in key-value pairs.",
 			"created_by": "The created by of the capture"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"AccountHolder": {
@@ -98,6 +120,9 @@
 			"email": "The email of the account holder",
 			"data": "The data returned by the payment provider when the account holder is created.",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

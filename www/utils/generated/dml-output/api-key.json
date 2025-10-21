@@ -12,6 +12,9 @@
 			"created_by": "The ID of the user that created the API key",
 			"revoked_by": "The ID of the user that revoked the API key",
 			"revoked_at": "The date the API key was revoked."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

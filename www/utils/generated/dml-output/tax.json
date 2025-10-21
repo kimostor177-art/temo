@@ -8,6 +8,9 @@
 			"tax_rate": "The associated tax rate.\n\n@expandable",
 			"reference": "The name of the table this rule references.\n\n@example product_type",
 			"reference_id": "The id of a record in the table that this rule references.\n\n@example ptyp_1"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"TaxProvider": {
@@ -16,6 +19,9 @@
 			"id": "The ID of the tax provider.",
 			"is_enabled": "Whether the tax provider is enabled.",
 			"regions": "The regions that use this provider to calculate taxes.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"TaxRegion": {
@@ -30,6 +36,9 @@
 			"parent": "The tax region's parent.\n\n@expandable",
 			"children": "The tax region's children..\n\n@expandable",
 			"tax_rates": "The associated tax rates.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"TaxRate": {
@@ -45,6 +54,9 @@
 			"rules": "The associated rules.\n\n@expandable",
 			"metadata": "Holds custom data in key-value pairs.",
 			"created_by": "The ID of the user that created the tax rate"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

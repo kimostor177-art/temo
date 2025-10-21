@@ -6,6 +6,9 @@
 			"value": "The value of the product tag",
 			"metadata": "Holds custom data in key-value pairs.",
 			"products": "The associated products.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ProductType": {
@@ -15,6 +18,9 @@
 			"value": "The value of the product type",
 			"metadata": "Holds custom data in key-value pairs.",
 			"products": "The associated products.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ProductImage": {
@@ -25,6 +31,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"rank": "The rank of the product image among its sibling images.",
 			"product": "The associated product.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ProductOptionValue": {
@@ -35,6 +44,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"option": "The associated option.\n\n@expandable",
 			"variants": "The associated variants.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ProductOption": {
@@ -45,6 +57,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"product": "The associated product.\n\n@expandable",
 			"values": "The associated values.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ProductVariant": {
@@ -70,6 +85,9 @@
 			"variant_rank": "The variant's rank among its siblings.",
 			"product": "The associated product.\n\n@expandable",
 			"options": "The associated options.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ProductCategory": {
@@ -87,6 +105,9 @@
 			"parent_category": "The associated parent_category.\n\n@expandable",
 			"category_children": "The associated category_children.\n\n@expandable",
 			"products": "The associated products.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ProductCollection": {
@@ -97,6 +118,9 @@
 			"handle": "The unique handle of the product collection",
 			"metadata": "Holds custom data in key-value pairs.",
 			"products": "The associated products.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Product": {
@@ -128,6 +152,9 @@
 			"images": "The associated images.\n\n@expandable",
 			"collection": "The associated collection.\n\n@expandable",
 			"categories": "The associated categories.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

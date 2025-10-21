@@ -8,6 +8,9 @@
 			"automatic_taxes": "Whether taxes are calculated automatically during checkout in the region.",
 			"countries": "The countries that belong to the region.\n\n@expandable",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Country": {
@@ -20,6 +23,9 @@
 			"display_name": "The display name of the country",
 			"region": "The region it belongs to.\n\n@expandable",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

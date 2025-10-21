@@ -14,6 +14,9 @@
 			"postal_code": "The postal code of the fulfillment address",
 			"phone": "The phone of the fulfillment address",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"FulfillmentItem": {
@@ -27,6 +30,9 @@
 			"line_item_id": "The ID the line item being fulfilled.",
 			"inventory_item_id": "The ID of the inventory item being fulfilled.",
 			"fulfillment": "The associated fulfillment.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"FulfillmentLabel": {
@@ -37,6 +43,9 @@
 			"tracking_url": "The tracking URL of the fulfillment label",
 			"label_url": "The label URL of the fulfillment label",
 			"fulfillment": "The associated fulfillment.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"FulfillmentProvider": {
@@ -44,6 +53,9 @@
 		"properties": {
 			"id": "The ID of the fulfillment provider.",
 			"is_enabled": "Whether the fulfillment provider is enabled."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"FulfillmentSet": {
@@ -54,6 +66,9 @@
 			"type": "The type of the fulfillment set",
 			"service_zones": "The associated service zones.\n\n@expandable",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"GeoZone": {
@@ -67,6 +82,9 @@
 			"postal_expression": "The postal expression of the geo zone",
 			"service_zone": "The associated service zone.\n\n@expandable",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ServiceZone": {
@@ -78,6 +96,9 @@
 			"geo_zones": "The associated geo_zones.\n\n@expandable",
 			"shipping_options": "The associated shipping options.\n\n@expandable",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ShippingOptionRule": {
@@ -88,6 +109,9 @@
 			"operator": "The operator used in the condition.\n\n@example eq",
 			"value": "The value of the shipping option rule",
 			"shipping_option": "The associated shipping option.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ShippingOptionType": {
@@ -98,6 +122,9 @@
 			"description": "The description of the shipping option type",
 			"code": "The code of the shipping option type",
 			"shipping_option": "The associated shipping option.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ShippingProfile": {
@@ -108,6 +135,9 @@
 			"type": "The type of the shipping profile",
 			"shipping_options": "The associated shipping options.\n\n@expandable",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ShippingOption": {
@@ -124,6 +154,9 @@
 			"type": "The associated type.\n\n@expandable",
 			"rules": "The associated rules.\n\n@expandable",
 			"fulfillments": "The associated fulfillments.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Fulfillment": {
@@ -145,6 +178,9 @@
 			"shipping_option": "The associated shipping option.\n\n@expandable",
 			"delivery_address": "The associated delivery address.\n\n@expandable",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

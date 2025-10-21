@@ -10,6 +10,9 @@
 			"state": "The state of the workflow execution",
 			"retention_time": "The number of seconds to store the workflow execution.",
 			"run_id": "The ID of the workflow execution run."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

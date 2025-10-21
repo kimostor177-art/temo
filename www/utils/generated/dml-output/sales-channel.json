@@ -7,6 +7,9 @@
 			"description": "The description of the sales channel",
 			"is_disabled": "Whether the sales channel is disabled.",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

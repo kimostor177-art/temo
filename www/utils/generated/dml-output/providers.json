@@ -5,6 +5,9 @@
 			"id": "The ID of the locking.",
 			"owner_id": "The ID of the locking's owner.",
 			"expiration": "The expiration date of the locking"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

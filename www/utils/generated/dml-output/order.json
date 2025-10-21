@@ -15,6 +15,9 @@
 			"postal_code": "The postal code of the order address",
 			"phone": "The phone of the order address",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderClaimItemImage": {
@@ -24,6 +27,9 @@
 			"claim_item": "The associated claim item.\n\n@expandable",
 			"url": "The URL of the order claim item image",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderLineItemAdjustment": {
@@ -37,6 +43,9 @@
 			"provider_id": "The ID of the provider used to apply the adjustment.",
 			"item": "The associated item that the adjustment is applied on.\n\n@expandable",
 			"is_tax_inclusive": "Whether the order line item adjustment is tax inclusive."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderLineItemTaxLine": {
@@ -49,6 +58,9 @@
 			"rate": "The rate of the order line item tax line",
 			"provider_id": "The ID of the tax provider used to calculate the tax line.",
 			"item": "The associated item that the tax line is for.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderLineItem": {
@@ -81,6 +93,9 @@
 			"tax_lines": "The associated tax lines.\n\n@expandable",
 			"adjustments": "The associated adjustments.\n\n@expandable",
 			"is_giftcard": "Whether the order line item is a giftcard."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderClaimItem": {
@@ -95,6 +110,9 @@
 			"claim": "The associated claim.\n\n@expandable",
 			"item": "The associated order item.\n\n@expandable",
 			"images": "The associated images.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderCreditLine": {
@@ -107,6 +125,9 @@
 			"amount": "The amount of the order credit line",
 			"raw_amount": "The raw amount of the order credit line",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderItem": {
@@ -127,6 +148,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"order": "The associated order.\n\n@expandable",
 			"item": "The associated line item.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderExchangeItem": {
@@ -138,6 +162,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"exchange": "The associated exchange.\n\n@expandable",
 			"item": "The associated item.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ReturnReason": {
@@ -150,6 +177,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"parent_return_reason": "The associated parent_return_reason.\n\n@expandable",
 			"return_reason_children": "The associated return_reason_children.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ReturnItem": {
@@ -164,6 +194,9 @@
 			"reason": "The reason of the return item",
 			"return": "The associated return.\n\n@expandable",
 			"item": "The associated item.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderTransaction": {
@@ -179,6 +212,9 @@
 			"return": "The associated return.\n\n@expandable",
 			"exchange": "The associated exchange.\n\n@expandable",
 			"claim": "The associated claim.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Return": {
@@ -202,6 +238,9 @@
 			"items": "The associated order items.\n\n@expandable",
 			"shipping_methods": "The associated shipping methods used to return the items.\n\n@expandable",
 			"transactions": "The associated transactions, which can include refunds made to the customer.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderExchange": {
@@ -221,6 +260,9 @@
 			"additional_items": "The associated additional (outbound) items that are send to the customer.\n\n@expandable",
 			"shipping_methods": "The associated shipping_methods.\n\n@expandable",
 			"transactions": "The associated transactions, which can hold payments made due to the `difference_due`.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderShippingMethodAdjustment": {
@@ -233,6 +275,9 @@
 			"amount": "The amount of the adjustment",
 			"provider_id": "The ID of the provider used to apply the adjustment.",
 			"shipping_method": "The associated shipping method that the adjustment is applied on.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderShippingMethodTaxLine": {
@@ -245,6 +290,9 @@
 			"rate": "The applied tax rate",
 			"provider_id": "The ID of the tax provider used to calculate the tax line.",
 			"shipping_method": "The associated shipping_method that the tax line is for.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderShippingMethod": {
@@ -261,6 +309,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"tax_lines": "The associated tax lines.\n\n@expandable",
 			"adjustments": "The applied adjustments.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderShipping": {
@@ -273,6 +324,9 @@
 			"exchange": "The associated exchange, if the shipping is used to send an item in an exchange.\n\n@expandable",
 			"claim": "The associated claim, if the shipping is used to send an item in a claim.\n\n@expandable",
 			"shipping_method": "The associated shipping method.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderSummary": {
@@ -282,6 +336,9 @@
 			"version": "The version that the summary belongs to.",
 			"totals": "The totals of the order summary",
 			"order": "The associated order.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Order": {
@@ -308,6 +365,9 @@
 			"transactions": "The associated transactions, which include amounts captured and refunded.\n\n@expandable",
 			"credit_lines": "The associated credit lines, which include additional payment amounts for an order.\n\n@expandable",
 			"returns": "The associated returns.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderClaim": {
@@ -328,6 +388,9 @@
 			"claim_items": "The associated claim (outbound) items.\n\n@expandable",
 			"shipping_methods": "The associated shipping methods used to send the new items.\n\n@expandable",
 			"transactions": "The associated transactions, which can hold the payments refunded.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderChangeAction": {
@@ -348,6 +411,9 @@
 			"internal_note": "The internal note of the order change action",
 			"applied": "Whether the order change action is applied.",
 			"order_change": "The order change that the action belongs to.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"OrderChange": {
@@ -375,6 +441,9 @@
 			"canceled_at": "The date that the change was canceled",
 			"order": "The associated order that the change applies to.\n\n@expandable",
 			"actions": "The associated actions.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

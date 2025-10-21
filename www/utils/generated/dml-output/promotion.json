@@ -7,7 +7,12 @@
 			"currency_code": "The currency code of the campaign budget.\n\n@example usd",
 			"limit": "The limit of the campaign budget",
 			"used": "How much of the budget has been used. if the `limit` is `spend`, this property holds the total amount discounted so far. if the `limit` is `usage`, it holds the number of times the campaign's promotions have been used so far.",
-			"campaign": "The associated campaign.\n\n@expandable"
+			"campaign": "The associated campaign.\n\n@expandable",
+			"attribute": "The attribute of the campaign budget\n\n@since 2.11.0",
+			"usages": "The associated usages.\n\n@expandable\n\n@since 2.11.0"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Campaign": {
@@ -21,6 +26,9 @@
 			"ends_at": "The date that the campaign ends.",
 			"budget": "The associated budget.\n\n@expandable",
 			"promotions": "The associated promotions.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"PromotionRuleValue": {
@@ -29,6 +37,9 @@
 			"id": "The ID of the promotion rule value.",
 			"value": "The value of the promotion rule.",
 			"promotion_rule": "The associated promotion rule.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"PromotionRule": {
@@ -42,6 +53,9 @@
 			"promotions": "The associated promotions.\n\n@expandable",
 			"method_target_rules": "The associated method target rules.\n\n@expandable",
 			"method_buy_rules": "The associated method buy rules.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Promotion": {
@@ -56,6 +70,9 @@
 			"rules": "The associated rules.\n\n@expandable",
 			"status": "The status of the promotion",
 			"is_tax_inclusive": "Whether the promotion is tax inclusive."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ApplicationMethod": {
@@ -73,6 +90,22 @@
 			"promotion": "The associated promotion.\n\n@expandable",
 			"target_rules": "The associated target rules.\n\n@expandable",
 			"buy_rules": "The associated buy rules.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
+		}
+	},
+	"CampaignBudgetUsage": {
+		"filePath": "packages/modules/promotion/src/models/campaign-budget-usage.ts",
+		"properties": {
+			"id": "The ID of the campaign budget usage.",
+			"attribute_value": "The attribute value of the campaign budget usage",
+			"used": "The used of the campaign budget usage",
+			"budget": "The associated budget.\n\n@expandable"
+		},
+		"since": "2.11.0",
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

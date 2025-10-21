@@ -8,6 +8,9 @@
 			"name": "The name of the currency",
 			"decimal_digits": "How many digits are after the decimal separator for prices in this currency.",
 			"rounding": "The rounding percision of prices in this currency."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

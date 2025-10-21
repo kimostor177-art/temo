@@ -8,6 +8,9 @@
 			"email": "The email of the user.",
 			"avatar_url": "The image URL of the user's avatar.",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Invite": {
@@ -19,6 +22,9 @@
 			"token": "The token of the invite.",
 			"expires_at": "When the invite expires.",
 			"metadata": "Holds custom data in key-value pairs."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

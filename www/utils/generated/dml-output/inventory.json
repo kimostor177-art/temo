@@ -10,6 +10,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"inventory_item": "The associated inventory item.\n\n@expandable",
 			"available_quantity": "The available quantity of the inventory level"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"ReservationItem": {
@@ -26,6 +29,9 @@
 			"created_by": "The ID of the user that created the reservation item.",
 			"metadata": "Holds custom data in key-value pairs.",
 			"inventory_item": "The associated inventory item.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"InventoryItem": {
@@ -50,6 +56,9 @@
 			"reservation_items": "The associated reservation items.\n\n@expandable",
 			"reserved_quantity": "The reserved quantity of the inventory item",
 			"stocked_quantity": "The stocked quantity of the inventory item"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

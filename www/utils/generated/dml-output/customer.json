@@ -7,6 +7,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"created_by": "The ID of the user that created the customer group.",
 			"customers": "The associated customers.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"CustomerGroupCustomer": {
@@ -17,6 +20,9 @@
 			"metadata": "Holds custom data in key-value pairs.",
 			"customer": "The associated customer.\n\n@expandable",
 			"customer_group": "The associated customer group.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Customer": {
@@ -33,6 +39,9 @@
 			"created_by": "The ID of the user that created the customer.",
 			"groups": "The associated groups.\n\n@expandable",
 			"addresses": "The associated addresses.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"CustomerAddress": {
@@ -54,6 +63,9 @@
 			"phone": "The phone of the customer address",
 			"metadata": "Holds custom data in key-value pairs.",
 			"customer": "The associated customer.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

@@ -6,6 +6,9 @@
 			"attribute": "The attribute of the price list rule. For example, `region_id`.",
 			"value": "The value of the price list rule. For example, `reg_123`.",
 			"price_list": "The associated `PriceList`.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"PriceList": {
@@ -21,6 +24,9 @@
 			"rules_count": "The total number of rules of the price list.",
 			"prices": "The associated `Price` records.\n\n@expandable",
 			"price_list_rules": "The associated `PriceListRule` records.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"PriceRule": {
@@ -32,6 +38,9 @@
 			"operator": "The operator of the price rule. For example, `eq`.",
 			"priority": "The priority of the price rule.",
 			"price": "The associated `Price`.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"PriceSet": {
@@ -39,6 +48,9 @@
 		"properties": {
 			"id": "The ID of the price set.",
 			"prices": "The associated `Price` records.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Price": {
@@ -54,6 +66,9 @@
 			"price_set": "The associated `PriceSet`.\n\n@expandable",
 			"price_rules": "The associated `PriceRule` records.\n\n@expandable",
 			"price_list": "The associated `PriceList`.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"PricePreference": {
@@ -63,6 +78,9 @@
 			"attribute": "The attribute of the price preference. For example, `region_id`.",
 			"value": "The value of the price preference. For example, `reg_123`.",
 			"is_tax_inclusive": "Whether prices matching this preference include taxes."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }

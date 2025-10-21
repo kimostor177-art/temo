@@ -6,6 +6,9 @@
 			"currency_code": "The ISO 3 currency code. For example, `usd`.",
 			"is_default": "Whether the currency is the default in the store.",
 			"store": "The store this currency belongs to."
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	},
 	"Store": {
@@ -18,6 +21,9 @@
 			"default_location_id": "The ID of the store's default stock location.",
 			"metadata": "Holds custom data in key-value pairs.",
 			"supported_currencies": "The associated supported_currencies.\n\n@expandable"
+		},
+		"deprecated": {
+			"is_deprecated": false
 		}
 	}
 }
