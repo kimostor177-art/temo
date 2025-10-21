@@ -1,5 +1,17 @@
 # @medusajs/js-sdk
 
+## 2.11.0
+
+### Patch Changes
+
+- [#13451](https://github.com/medusajs/medusa/pull/13451) [`7dc3b0c5ffdf8eb7070ee5cfd8155c6c4de5c0b1`](https://github.com/medusajs/medusa/commit/7dc3b0c5ffdf8eb7070ee5cfd8155c6c4de5c0b1) Thanks [@fPolic](https://github.com/fPolic)! - feat: support limiting promotion usage by attribute
+
+- [#13581](https://github.com/medusajs/medusa/pull/13581) [`6a91f79f443ff72cba8ee7612a1e1c681af125ec`](https://github.com/medusajs/medusa/commit/6a91f79f443ff72cba8ee7612a1e1c681af125ec) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(js-sdk): allow passing a query parameter to deleteLineItem
+
+- [#13690](https://github.com/medusajs/medusa/pull/13690) [`76bf364440959b00926719db1c8a0e4a0e418879`](https://github.com/medusajs/medusa/commit/76bf364440959b00926719db1c8a0e4a0e418879) Thanks [@NicolasGorga](https://github.com/NicolasGorga)! - fix(js-sdk): pass headers to auth.refresh()
+
+- [#13575](https://github.com/medusajs/medusa/pull/13575) [`5e827ec95d0f721e62c0d4e8c603bda7ddc0929c`](https://github.com/medusajs/medusa/commit/5e827ec95d0f721e62c0d4e8c603bda7ddc0929c) Thanks [@willbouch](https://github.com/willbouch)! - feat(admin-shared,dashboard,js-sdk,types,payment): refund reasons in dashboard
+
 ## 2.10.3
 
 ### Patch Changes

@@ -1,5 +1,35 @@
 # @medusajs/types
 
+## 2.11.0
+
+### Patch Changes
+
+- [#13702](https://github.com/medusajs/medusa/pull/13702) [`0cbd9f0bc315b3eda1770ac301061f1576856387`](https://github.com/medusajs/medusa/commit/0cbd9f0bc315b3eda1770ac301061f1576856387) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): Improve caching rollout
+
+- [#13439](https://github.com/medusajs/medusa/pull/13439) [`12a96a7c7015f011f5e29a1d387f835e514ba536`](https://github.com/medusajs/medusa/commit/12a96a7c7015f011f5e29a1d387f835e514ba536) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): Move peer deps into a single package and re export from framework
+
+- [#13703](https://github.com/medusajs/medusa/pull/13703) [`c61f3150c138de016c6886e79d79984bc267273c`](https://github.com/medusajs/medusa/commit/c61f3150c138de016c6886e79d79984bc267273c) Thanks [@willbouch](https://github.com/willbouch)! - fix(medusa,utils,types): inventory management nullable
+
+- [#13451](https://github.com/medusajs/medusa/pull/13451) [`7dc3b0c5ffdf8eb7070ee5cfd8155c6c4de5c0b1`](https://github.com/medusajs/medusa/commit/7dc3b0c5ffdf8eb7070ee5cfd8155c6c4de5c0b1) Thanks [@fPolic](https://github.com/fPolic)! - feat: support limiting promotion usage by attribute
+
+- [#13626](https://github.com/medusajs/medusa/pull/13626) [`9c7c1d48c7779023172d5e7003674b2d7107b733`](https://github.com/medusajs/medusa/commit/9c7c1d48c7779023172d5e7003674b2d7107b733) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(): Pricing preference context loss
+
+- [#13555](https://github.com/medusajs/medusa/pull/13555) [`513b352da3f580d87e556fd5cd54e7005313ce2f`](https://github.com/medusajs/medusa/commit/513b352da3f580d87e556fd5cd54e7005313ce2f) Thanks [@bqst](https://github.com/bqst)! - fix(types): resolve circular type reference in StoreCollectionListParams interface
+
+- [#13559](https://github.com/medusajs/medusa/pull/13559) [`8a4c10d7f8b74fc68296e9825c777e3e2fc57d0a`](https://github.com/medusajs/medusa/commit/8a4c10d7f8b74fc68296e9825c777e3e2fc57d0a) Thanks [@willbouch](https://github.com/willbouch)! - fix(types): missing service zone in shipping option
+
+- [#13784](https://github.com/medusajs/medusa/pull/13784) [`150aa50397825ae800f3acf4bbc68fe28e397582`](https://github.com/medusajs/medusa/commit/150aa50397825ae800f3acf4bbc68fe28e397582) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(tax,types): Add method to retrieve a Tax Module Provider's service
+
+- [#13435](https://github.com/medusajs/medusa/pull/13435) [`b9d6f73320c36c53235b12fb8397b30a448917f0`](https://github.com/medusajs/medusa/commit/b9d6f73320c36c53235b12fb8397b30a448917f0) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat(): distributed caching
+
+- [#13669](https://github.com/medusajs/medusa/pull/13669) [`28d57b7bf8bceee62449564228b9e08d4f706cd7`](https://github.com/medusajs/medusa/commit/28d57b7bf8bceee62449564228b9e08d4f706cd7) Thanks [@willbouch](https://github.com/willbouch)! - fix(types): missing rules in prices types
+
+- [#13575](https://github.com/medusajs/medusa/pull/13575) [`5e827ec95d0f721e62c0d4e8c603bda7ddc0929c`](https://github.com/medusajs/medusa/commit/5e827ec95d0f721e62c0d4e8c603bda7ddc0929c) Thanks [@willbouch](https://github.com/willbouch)! - feat(admin-shared,dashboard,js-sdk,types,payment): refund reasons in dashboard
+
+- [#13450](https://github.com/medusajs/medusa/pull/13450) [`8ece06d8ed6a197ebb370918c49a3ec5c21dd186`](https://github.com/medusajs/medusa/commit/8ece06d8ed6a197ebb370918c49a3ec5c21dd186) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(): Upgrade mikro orm 6.5.4
+
+- [#13527](https://github.com/medusajs/medusa/pull/13527) [`458dd04bbf70159ec42254e91675c7a1f1d344d8`](https://github.com/medusajs/medusa/commit/458dd04bbf70159ec42254e91675c7a1f1d344d8) Thanks [@leobenzol](https://github.com/leobenzol)! - fix(core-flows,types,medusa): pass /store/shipping-options fields to workflow
+
 ## 2.10.3
 
 ### Patch Changes
