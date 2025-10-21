@@ -138,9 +138,9 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5, // 5 minutes
     },
   },
-});
+})
 
-export default queryClient;
+export default queryClient
 
 // product.ts
 // Used in components that are children of QueryClientProvider
@@ -149,10 +149,10 @@ import { sdk } from "../lib/sdk"
 
 export const useProduct = (id: string) => {
   return useQuery(["product", id], async () => {
-    const response = await sdk.store.products.retrieve(id);
-    return response.data;
-  });
-};
+    const response = await sdk.store.products.retrieve(id)
+    return response.data
+  })
+}
 
 export const useProductPrice = (id: string) => {
   return useQuery(
@@ -160,14 +160,14 @@ export const useProductPrice = (id: string) => {
     async () => {
       const response = await sdk.store.products.retrieve(id, {
         fields: "*variants.calculated_price",
-      });
-      return response.data.variants[0].price;
+      })
+      return response.data.variants[0].price
     },
     {
       staleTime: 0, // Always fetch fresh data
     }
-  );
-};
+  )
+}
 ```
 
 ### Invalidate Queries
@@ -181,19 +181,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { sdk } from "../lib/sdk"
 
 export const useAddToCart = () => {
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
 
   return useMutation(
     async (item) => {
-      await sdk.store.cart.createLineItem("cart_id", item);
+      await sdk.store.cart.createLineItem("cart_id", item)
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["cart"]);
+        queryClient.invalidateQueries(["cart"])
       },
     }
-  );
-};
+  )
+}
 ```
 
 ---
@@ -209,7 +209,7 @@ For example, if you only need the product's `id`, `title`, and `variants.calcula
 ```ts
 const response = await sdk.store.products.retrieve("product_id", {
   fields: "*variants.calculated_price, id, title",
-});
+})
 ```
 
 This query will return only the specified fields, reducing the response size and improving performance.
@@ -221,11 +221,11 @@ const useProduct = (id: string, fields?: string) => {
   return useQuery({
     queryKey: ["product", id, fields],
     queryFn: async () => {
-      const response = await sdk.store.products.retrieve(id, { fields });
-      return response.data;
+      const response = await sdk.store.products.retrieve(id, { fields })
+      return response.data
     },
-  });
-};
+  })
+}
 ```
 
 Learn more about the `fields` parameter in the [Store API reference](!api!/store#select-fields-and-relations).
@@ -366,7 +366,7 @@ export const addItemOptimistically = (
 
   // Check if item already exists in cart
   const existingItemIndex = currentCart.items?.findIndex(
-    item => item.variant_id === newItem.variant_id
+    (item) => item.variant_id === newItem.variant_id
   )
 
   let updatedItems: HttpTypes.StoreCartLineItem[]
@@ -459,7 +459,7 @@ export const updateLineItemOptimistically = (
     return null
   }
 
-  const updatedItems = (currentCart.items || []).map(item => {
+  const updatedItems = (currentCart.items || []).map((item) => {
     if (item.id === lineId) {
       return {
         ...item,
@@ -513,7 +513,7 @@ export const removeLineItemOptimistically = (
     return null
   }
 
-  const updatedItems = (currentCart.items || []).filter(item => item.id !== lineId)
+  const updatedItems = (currentCart.items || []).filter((item) => item.id !== lineId)
 
   const optimisticCart: OptimisticCart = {
     ...currentCart,
@@ -633,7 +633,7 @@ export const createOptimisticCart = (region: HttpTypes.StoreRegion): OptimisticC
 export const getCurrentCart = (queryClient: QueryClient, fields?: string): HttpTypes.StoreCart | null => {
   return queryClient.getQueryData<HttpTypes.StoreCart | null>(queryKeys.cart.current(fields)) || 
     queryClient.getQueriesData<HttpTypes.StoreCart | null>({
-      predicate: queryKeys.cart.predicate
+      predicate: queryKeys.cart.predicate,
     })[0]?.[1] || null
 }
 ```
@@ -702,7 +702,7 @@ export const useCart = ({ fields }: { fields?: string } = {}) => {
   return useQuery({
     queryKey: queryKeys.cart.current(fields),
     queryFn: () => retrieveCart({ fields }),
-    staleTime: 0
+    staleTime: 0,
   })
 }
 
@@ -751,7 +751,7 @@ export const useUpdateCart = () => {
     mutationFn: updateCart,
     onSuccess: () => {
       queryClient.invalidateQueries({ predicate: queryKeys.cart.predicate })
-    }
+    },
   })
 }
 
@@ -906,7 +906,7 @@ export const useAddToCart = ({ fields }: { fields?: string } = {}) => {
     onSettled: (data) => {
       // Always refetch after error or success to ensure we have the latest data
       queryClient.invalidateQueries({ predicate: 
-        (query) => queryKeys.cart.predicate(query, fields && data ? [fields] : undefined)
+        (query) => queryKeys.cart.predicate(query, fields && data ? [fields] : undefined),
       })
       if (data) {
         queryClient.setQueryData(queryKeys.cart.current(fields), data)
@@ -970,7 +970,7 @@ export const useUpdateLineItem = ({ fields }: { fields?: string } = {}) => {
     onMutate: async (variables) => {
       // Cancel any outgoing refetches
       await queryClient.cancelQueries({ 
-        predicate: (query) => queryKeys.cart.predicate(query, fields ? [fields] : undefined)
+        predicate: (query) => queryKeys.cart.predicate(query, fields ? [fields] : undefined),
       })
 
       // Snapshot the previous value
@@ -993,7 +993,7 @@ export const useUpdateLineItem = ({ fields }: { fields?: string } = {}) => {
     onSettled: (data) => {
       // Always refetch after error or success to ensure we have the latest data
       queryClient.invalidateQueries({ predicate: 
-        (query) => queryKeys.cart.predicate(query, fields && data ? [fields] : undefined)
+        (query) => queryKeys.cart.predicate(query, fields && data ? [fields] : undefined),
       })
       if (data) {
         queryClient.setQueryData(queryKeys.cart.current(fields), data)
@@ -1057,7 +1057,7 @@ export const useDeleteLineItem = ({ fields }: { fields?: string } = {}) => {
     onMutate: async (variables) => {
       // Cancel any outgoing refetches
       await queryClient.cancelQueries({ predicate: 
-        (query) => queryKeys.cart.predicate(query, fields ? [fields] : undefined)
+        (query) => queryKeys.cart.predicate(query, fields ? [fields] : undefined),
       })
 
       // Snapshot the previous value
@@ -1080,7 +1080,7 @@ export const useDeleteLineItem = ({ fields }: { fields?: string } = {}) => {
     onSettled: (data) => {
       // Always refetch after error or success to ensure we have the latest data
       queryClient.invalidateQueries({ predicate: 
-        (query) => queryKeys.cart.predicate(query, fields && data ? [fields] : undefined)
+        (query) => queryKeys.cart.predicate(query, fields && data ? [fields] : undefined),
       })
       if (data) {
         queryClient.setQueryData(queryKeys.cart.current(fields), data)

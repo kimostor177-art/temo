@@ -112,7 +112,7 @@ const { data: [order] } = await query.graph({
   fields: ["*", "transactions.*"],
   filters: {
     id: "order_123",
-  }
+  },
 })
 
 const refundTransactions = order.transactions?.filter(

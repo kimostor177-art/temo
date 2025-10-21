@@ -22,7 +22,7 @@ const key = await cachingModuleService.computeKey(data)
 await cachingModuleService.set({
   key,
   tags: ["Product:prod_123", "Product:list:*"],
-  data
+  data,
 })
 ```
 
@@ -79,7 +79,7 @@ const key = await cachingModuleService.computeKey(data)
 await cachingModuleService.set({
   key,
   tags: ["Product:list:*", "Product:prod_123"],
-  data
+  data,
 })
 ```
 
@@ -170,7 +170,7 @@ const key = await cachingModuleService.computeKey(data)
 await cachingModuleService.set({
   key,
   tags: ["Product:prod_123", "Product:list:*"],
-  data
+  data,
 })
 ```
 

@@ -197,7 +197,7 @@ export default class AgenticCommerceService {
   // ...
   async verifySignature({
     signature,
-    payload
+    payload,
   }: {
     // base64 encoded signature
     signature: string
@@ -205,18 +205,18 @@ export default class AgenticCommerceService {
   }) {
     try {
       // Decode the base64 signature
-      const receivedSignature = Buffer.from(signature, 'base64')
+      const receivedSignature = Buffer.from(signature, "base64")
       
       // Create HMAC-SHA256 signature using your signing key
       const expectedSignature = crypto
-        .createHmac('sha256', this.options.signatureKey)
-        .update(JSON.stringify(payload), 'utf8')
+        .createHmac("sha256", this.options.signatureKey)
+        .update(JSON.stringify(payload), "utf8")
         .digest()
       
       // Compare signatures using constant-time comparison to prevent timing attacks
       return crypto.timingSafeEqual(receivedSignature, expectedSignature)
     } catch (error) {
-      console.error('Signature verification failed:', error)
+      console.error("Signature verification failed:", error)
       return false
     }
   }
@@ -237,8 +237,8 @@ Add the following method to the `AgenticCommerceService` class:
 export default class AgenticCommerceService {
   // ...
   async getSignature(data: any) {
-    return Buffer.from(crypto.createHmac('sha256', this.options.signatureKey)
-      .update(JSON.stringify(data), 'utf8').digest()).toString('base64')
+    return Buffer.from(crypto.createHmac("sha256", this.options.signatureKey)
+      .update(JSON.stringify(data), "utf8").digest()).toString("base64")
   }
 }
 ```
@@ -276,7 +276,7 @@ export default class AgenticCommerceService {
   // ...
   async sendWebhookEvent({
     type,
-    data
+    data,
   }: AgenticCommerceWebhookEvent) {
     // Create signature
     const signature = this.getSignature(data)
@@ -328,7 +328,7 @@ module.exports = defineConfig({
       resolve: "./src/modules/agentic-commerce",
       options: {
         signatureKey: process.env.AGENTIC_COMMERCE_SIGNATURE_KEY || "supersecret",
-      }
+      },
     },
   ],
 })
@@ -487,7 +487,7 @@ export const getProductFeedItemsStep = createStep(
   do {
     const {
       data: products,
-      metadata
+      metadata,
     } = await query.graph({
       entity: "product",
       fields: [
@@ -503,7 +503,7 @@ export const getProductFeedItemsStep = createStep(
         "sales_channels.*",
         "sales_channels.stock_locations.*",
         "sales_channels.stock_locations.address.*",
-        "categories.*"
+        "categories.*",
       ],
       filters: {
         status: "published",
@@ -513,19 +513,19 @@ export const getProductFeedItemsStep = createStep(
           calculated_price: QueryContext({
             currency_code: currencyCode,
           }),
-        }
+        },
       },
       pagination: {
         take: limit,
         skip: offset,
-      }
+      },
     })
     
     count = metadata?.count ?? 0
     offset += limit
 
     for (const product of products) {
-      if (!product.variants.length) continue
+      if (!product.variants.length) {continue}
       const salesChannel = product.sales_channels?.find((channel) => {
         return channel?.stock_locations?.some((location) => {
           return location?.address?.country_code.toLowerCase() === countryCode
@@ -752,11 +752,11 @@ export const sendProductFeedWorkflow = createWorkflow(
     const { items: feedItems } = getProductFeedItemsStep(input)
 
     const xml = buildProductFeedXmlStep({ 
-      items: feedItems
+      items: feedItems,
     })
 
     sendProductFeedStep({
-      productFeed: xml
+      productFeed: xml,
     })
 
     return new WorkflowResponse({ xml })
@@ -786,9 +786,9 @@ Create the file `src/jobs/sync-product-feed.ts` with the following content:
 
 ```ts title="src/jobs/sync-product-feed.ts"
 import {
-  MedusaContainer
-} from "@medusajs/framework/types";
-import sendProductFeedWorkflow from "../workflows/send-product-feed";
+  MedusaContainer,
+} from "@medusajs/framework/types"
+import sendProductFeedWorkflow from "../workflows/send-product-feed"
 
 export default async function syncProductFeed(container: MedusaContainer) {
   const logger = container.resolve("logger")
@@ -816,7 +816,7 @@ export default async function syncProductFeed(container: MedusaContainer) {
 export const config = {
   name: "sync-product-feed",
   schedule: "*/15 * * * *", // Every 15 minutes
-};
+}
 ```
 
 In a scheduled job file, you must export:
@@ -890,11 +890,11 @@ To create the workflow, create the file `src/workflows/prepare-checkout-session-
 import { 
   createWorkflow, 
   transform, 
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { 
   listShippingOptionsForCartWithPricingWorkflow, 
-  useQueryGraphStep
+  useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
 
 export type PrepareCheckoutSessionDataWorkflowInput = {
@@ -960,21 +960,21 @@ const { data: carts } = useQueryGraphStep({
     "original_item_total",
     "shipping_total",
     "metadata",
-    "order.id"
+    "order.id",
   ],
   filters: {
     id: input.cart_id,
   },
   options: {
-    throwIfKeyNotFound: true
-  }
+    throwIfKeyNotFound: true,
+  },
 })
 
 // Retrieve shipping options
 const shippingOptions = listShippingOptionsForCartWithPricingWorkflow.runAsStep({
   input: {
     cart_id: carts[0].id,
-  }
+  },
 })
 
 // TODO prepare response
@@ -1022,7 +1022,7 @@ const responseData = transform({
       item: {
         id: item?.variant_id,
         quantity: item?.quantity,
-      }
+      },
     })),
     fulfillment_address: data.input.fulfillment_address,
     fulfillment_options: data.shippingOptions?.map((option) => ({
@@ -1080,7 +1080,7 @@ const responseData = transform({
         display_name: "Total",
         // @ts-ignore
         amount: data.carts[0].total,
-      }
+      },
     ],
     messages: data.input.messages || [],
     links: [
@@ -1095,8 +1095,8 @@ const responseData = transform({
       {
         type: "seller_shop_policy",
         value: "https://www.medusa-commerce.com/seller-shop-policy", // TODO: replace with actual seller shop policy
-      }
-    ]
+      },
+    ],
   }
 })
 
@@ -1215,7 +1215,7 @@ import {
   createWorkflow, 
   transform, 
   when, 
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { 
   addShippingMethodToCartWorkflow, 
@@ -1223,10 +1223,10 @@ import {
   CreateCartWorkflowInput, 
   createCustomersWorkflow, 
   listShippingOptionsForCartWithPricingWorkflow, 
-  useQueryGraphStep
+  useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
 import { 
-  prepareCheckoutSessionDataWorkflow
+  prepareCheckoutSessionDataWorkflow,
 } from "./prepare-checkout-session-data"
 
 type WorkflowInput = {
@@ -1270,7 +1270,7 @@ Replace the `TODO` in the workflow with the following:
 ```ts title="src/workflows/create-checkout-session.ts"
 // validate item IDs
 const variantIds = transform({
-  input
+  input,
 }, (data) => {
   return data.input.items.map((item) => item.id)
 })
@@ -1280,11 +1280,11 @@ useQueryGraphStep({
   entity: "variant",
   fields: ["id"],
   filters: {
-    id: variantIds
+    id: variantIds,
   },
   options: {
-    throwIfKeyNotFound: true
-  }
+    throwIfKeyNotFound: true,
+  },
 })
 
 // TODO retrieve region and sales channel
@@ -1305,9 +1305,9 @@ const { data: regions } = useQueryGraphStep({
   fields: ["id"],
   filters: {
     countries: {
-      iso_2: "us"
-    }
-  }
+      iso_2: "us",
+    },
+  },
 }).config({ name: "find-region" })
 
 // get sales channel
@@ -1338,7 +1338,7 @@ const { data: customers } = useQueryGraphStep({
   fields: ["id"],
   filters: {
     email: input.buyer?.email,
-  }
+  },
 }).config({ name: "find-customer" })
 
 // create customer if it does not exist
@@ -1354,9 +1354,9 @@ const createdCustomers = when ({ customers }, ({ customers }) =>
           first_name: input.buyer?.first_name,
           phone: input.buyer?.phone_number,
           has_account: false,
-        }
-      ]
-    }
+        },
+      ],
+    },
   })
 })
 
@@ -1397,7 +1397,7 @@ const cartInput = transform({
   return {
     items: data.input.items.map((item) => ({
       variant_id: item.id,
-      quantity: item.quantity
+      quantity: item.quantity,
     })),
     region_id: data.regions[0]?.id,
     email: data.input.buyer?.email,
@@ -1416,12 +1416,12 @@ const cartInput = transform({
     sales_channel_id: data.salesChannels[0]?.id,
     metadata: {
       is_checkout_session: true,
-    }
+    },
   } as CreateCartWorkflowInput
 })
 
 const createdCart = createCartWorkflow.runAsStep({
-  input: cartInput
+  input: cartInput,
 })
 
 // TODO retrieve shipping options
@@ -1445,7 +1445,7 @@ when(input, (input) => !!input.fulfillment_address)
   const shippingOptions = listShippingOptionsForCartWithPricingWorkflow.runAsStep({
     input: {
       cart_id: createdCart.id,
-    }
+    },
   })
 
   const shippingMethodData = transform({
@@ -1460,11 +1460,11 @@ when(input, (input) => !!input.fulfillment_address)
       cart_id: data.createdCart.id,
       options: [{
         id: cheapestShippingOption.id,
-      }]
+      }],
     }
   })
   addShippingMethodToCartWorkflow.runAsStep({
-    input: shippingMethodData
+    input: shippingMethodData,
   })
 })
 
@@ -1488,7 +1488,7 @@ const responseData = prepareCheckoutSessionDataWorkflow.runAsStep({
     buyer: input.buyer,
     fulfillment_address: input.fulfillment_address,
     cart_id: createdCart.id,
-  }
+  },
 })
 
 return new WorkflowResponse(responseData)
@@ -1555,7 +1555,7 @@ export const POST = async (
         input: req.validatedBody,
         context: {
           idempotencyKey: req.headers["idempotency-key"] as string,
-        }
+        },
       })
 
     res.set(responseHeaders).json(result)
@@ -1569,8 +1569,8 @@ export const POST = async (
           code: "invalid",
           content_type: "plain",
           content: medusaError.message,
-        }
-      ]
+        },
+      ],
     })
   }
 }
@@ -1593,8 +1593,8 @@ Next, you'll create a [middleware](!docs!/learn/fundamentals/api-routes/middlewa
 Create the file `src/api/middlewares/validate-agentic-request.ts` with the following content:
 
 ```ts title="src/api/middlewares/validate-agentic-request.ts"
-import { MedusaNextFunction, MedusaRequest, MedusaResponse } from "@medusajs/framework";
-import { AGENTIC_COMMERCE_MODULE } from "../../modules/agentic-commerce";
+import { MedusaNextFunction, MedusaRequest, MedusaResponse } from "@medusajs/framework"
+import { AGENTIC_COMMERCE_MODULE } from "../../modules/agentic-commerce"
 
 export async function validateAgenticRequest(
   req: MedusaRequest, 
@@ -1609,12 +1609,12 @@ export async function validateAgenticRequest(
   const isTokenValid = await apiKeyModuleService.authenticate(apiKey || "")
   const isSignatureValid = !!req.body || await agenticCommerceModuleService.verifySignature({
     signature,
-    payload: req.body
+    payload: req.body,
   })
 
   if (!isTokenValid || !isSignatureValid) {
     return res.status(401).json({
-      message: "Unauthorized"
+      message: "Unauthorized",
     })
   }
 
@@ -1642,24 +1642,24 @@ You apply middlewares in the `src/api/middlewares.ts` file. Create this file wit
 import { 
   defineMiddlewares, 
   validateAndTransformBody,
-} from "@medusajs/framework/http";
-import { validateAgenticRequest } from "./middlewares/validate-agentic-request";
-import { PostCreateSessionSchema } from "./checkout_sessions/route";
+} from "@medusajs/framework/http"
+import { validateAgenticRequest } from "./middlewares/validate-agentic-request"
+import { PostCreateSessionSchema } from "./checkout_sessions/route"
 
 export default defineMiddlewares({
   routes: [
     {
       matcher: "/checkout_sessions*",
       middlewares: [
-        validateAgenticRequest
-      ]
+        validateAgenticRequest,
+      ],
     },
     {
       matcher: "/checkout_sessions",
       method: ["POST"],
-      middlewares: [validateAndTransformBody(PostCreateSessionSchema)]
+      middlewares: [validateAndTransformBody(PostCreateSessionSchema)],
     },
-  ]
+  ],
 })
 ```
 
@@ -1678,7 +1678,7 @@ In `src/api/middlewares.ts`, add the following import at the top of the file:
 ```ts title="src/api/middlewares.ts"
 import { 
   errorHandler,
-} from "@medusajs/framework/http";
+} from "@medusajs/framework/http"
 
 const originalErrorHandler = errorHandler()
 ```
@@ -1702,8 +1702,8 @@ export default defineMiddlewares({
           code: "invalid",
           content_type: "plain",
           content: error.message,
-        }
-      ]
+        },
+      ],
     })
   },
 })
@@ -1935,16 +1935,16 @@ import {
   createWorkflow, 
   transform, 
   when, 
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { 
   addShippingMethodToCartWorkflow, 
   createCustomersWorkflow, 
   updateCartWorkflow, 
-  useQueryGraphStep
+  useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
 import { 
-  prepareCheckoutSessionDataWorkflow
+  prepareCheckoutSessionDataWorkflow,
 } from "./prepare-checkout-session-data"
 
 type WorkflowInput = {
@@ -1980,7 +1980,7 @@ export const updateCheckoutSessionWorkflow = createWorkflow(
       fields: ["id", "customer.*", "email"],
       filters: {
         id: input.cart_id,
-      }
+      },
     })
 
     // TODO retrieve or create customer
@@ -2003,7 +2003,7 @@ const { data: customers } = useQueryGraphStep({
   fields: ["id"],
   filters: {
     email: input.buyer?.email,
-  }
+  },
 }).config({ name: "find-customer" })
 
 const createdCustomers = when({ customers }, ({ customers }) => 
@@ -2017,9 +2017,9 @@ const createdCustomers = when({ customers }, ({ customers }) =>
           email: input.buyer?.email,
           first_name: input.buyer?.first_name,
           phone: input.buyer?.phone_number,
-        }
+        },
       ],
-    }
+    },
   })
 })
 
@@ -2057,7 +2057,7 @@ when(input, (input) => !!input.items)
     },
     options: {
       throwIfKeyNotFound: true,
-    }
+    },
   }).config({ name: "find-variant" })
 })
 
@@ -2133,7 +2133,7 @@ const responseData = prepareCheckoutSessionDataWorkflow.runAsStep({
     cart_id: updateData.id,
     buyer: input.buyer,
     fulfillment_address: input.fulfillment_address,
-  }
+  },
 })
 
 return new WorkflowResponse(responseData)
@@ -2199,7 +2199,7 @@ export const POST = async (
         },
         context: {
           idempotencyKey: req.headers["idempotency-key"] as string,
-        }
+        },
       })
 
     res.set(responseHeaders).json(result)
@@ -2209,7 +2209,7 @@ export const POST = async (
     await refreshPaymentCollectionForCartWorkflow(req.scope).run({
       input: {
         cart_id: req.params.id,
-      }
+      },
     })
     
     const { result } = await prepareCheckoutSessionDataWorkflow(req.scope)
@@ -2224,8 +2224,8 @@ export const POST = async (
                 "payment_declined" : "invalid",
               content_type: "plain",
               content: medusaError.message,
-            }
-          ]
+            },
+          ],
         },
       })
 
@@ -2249,7 +2249,7 @@ Finally, you'll apply the validation middleware to the `POST /checkout_sessions/
 In `src/api/middlewares.ts`, add the following import at the top of the file:
 
 ```ts title="src/api/middlewares.ts"
-import { PostUpdateSessionSchema } from "./checkout_sessions/[id]/route";
+import { PostUpdateSessionSchema } from "./checkout_sessions/[id]/route"
 ```
 
 Then, add a new route configuration in `defineMiddlewares`:
@@ -2261,7 +2261,7 @@ export default defineMiddlewares({
     {
       matcher: "/checkout_sessions/:id",
       method: ["POST"],
-      middlewares: [validateAndTransformBody(PostUpdateSessionSchema)]
+      middlewares: [validateAndTransformBody(PostUpdateSessionSchema)],
     },
   ],
   // ...
@@ -2346,7 +2346,7 @@ export const GET = async (
         },
         context: {
           idempotencyKey: req.headers["idempotency-key"] as string,
-        }
+        },
       })
 
     res.set(responseHeaders).status(201).json(result)
@@ -2499,7 +2499,7 @@ import {
   createWorkflow, 
   transform, 
   when, 
-  WorkflowResponse
+  WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { 
   completeCartWorkflow, 
@@ -2507,11 +2507,11 @@ import {
   createPaymentSessionsWorkflow, 
   refreshPaymentCollectionForCartWorkflow, 
   updateCartWorkflow, 
-  useQueryGraphStep
+  useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
 import { 
   prepareCheckoutSessionDataWorkflow, 
-  PrepareCheckoutSessionDataWorkflowInput
+  PrepareCheckoutSessionDataWorkflowInput,
 } from "./prepare-checkout-session-data"
 
 type WorkflowInput = {
@@ -2547,7 +2547,7 @@ export const completeCheckoutSessionWorkflow = createWorkflow(
         "id", 
         "region.*", 
         "region.payment_providers.*", 
-        "shipping_address.*"
+        "shipping_address.*",
       ],
       filters: {
         id: input.cart_id,
@@ -2589,7 +2589,7 @@ when(input, (input) => !!input.payment_data.billing_address)
         postal_code: data.input.payment_data.billing_address!.postal_code,
         country_code: data.input.payment_data.billing_address!.country,
         phone: data.input.payment_data.billing_address!.phone_number,
-      }
+      },
     }
   })
   return updateCartWorkflow.runAsStep({
@@ -2628,7 +2628,7 @@ const preparationInput = transform({
 })
 
 const paymentProviderId = transform({
-  input
+  input,
 }, (data) => {
   switch (data.input.payment_data.provider) {
     case "stripe":
@@ -2640,7 +2640,7 @@ const paymentProviderId = transform({
 
 const completeCartResponse = when({
   carts,
-  paymentProviderId      
+  paymentProviderId,      
 }, (data) => {
   // @ts-ignore
   return !!data.carts[0].region?.payment_providers?.find((provider) => provider?.id === data.paymentProviderId)
@@ -2649,7 +2649,7 @@ const completeCartResponse = when({
   const paymentCollection = createPaymentCollectionForCartWorkflow.runAsStep({
     input: {
       cart_id: carts[0].id,
-    }
+    },
   })
 
   createPaymentSessionsWorkflow.runAsStep({
@@ -2658,14 +2658,14 @@ const completeCartResponse = when({
       provider_id: paymentProviderId,
       data: {
         shared_payment_token: input.payment_data.token,
-      }
-    }
+      },
+    },
   })
 
   completeCartWorkflow.runAsStep({
     input: {
       id: carts[0].id,
-    }
+    },
   })
 
   return prepareCheckoutSessionDataWorkflow.runAsStep({
@@ -2695,7 +2695,7 @@ Replace the `TODO` in the workflow with the following:
 ```ts title="src/workflows/complete-checkout-session.ts"
 const invalidPaymentResponse = when({
   carts,
-  paymentProviderId
+  paymentProviderId,
 }, (data) => {
   return !data.carts[0].region?.payment_providers?.find((provider) => provider?.id === data.paymentProviderId)
 })
@@ -2703,7 +2703,7 @@ const invalidPaymentResponse = when({
   refreshPaymentCollectionForCartWorkflow.runAsStep({
     input: {
       cart_id: carts[0].id,
-    }
+    },
   })
   const prepareDataWithMessages = transform({
     prepareData: preparationInput,
@@ -2716,12 +2716,12 @@ const invalidPaymentResponse = when({
           code: "invalid",
           content_type: "plain",
           content: "Invalid payment provider",
-        }
-      ]
+        },
+      ],
     } as PrepareCheckoutSessionDataWorkflowInput
   })
   return prepareCheckoutSessionDataWorkflow.runAsStep({
-    input: prepareDataWithMessages
+    input: prepareDataWithMessages,
   }).config({ name: "prepare-checkout-session-data-with-messages" })
 })
 
@@ -2739,7 +2739,7 @@ Finally, you'll return the appropriate response based on whether the cart was co
 ```ts title="src/workflows/complete-checkout-session.ts"
 const responseData = transform({
   completeCartResponse,
-  invalidPaymentResponse
+  invalidPaymentResponse,
 }, (data) => {
   return data.completeCartResponse || data.invalidPaymentResponse
 })
@@ -2804,7 +2804,7 @@ export const POST = async (
         },
         context: {
           idempotencyKey: req.headers["idempotency-key"] as string,
-        }
+        },
       })
 
     res.set(responseHeaders).json(result)
@@ -2814,7 +2814,7 @@ export const POST = async (
     await refreshPaymentCollectionForCartWorkflow(req.scope).run({
       input: {
         cart_id: req.params.id,
-      }
+      },
     })    
     const { result } = await prepareCheckoutSessionDataWorkflow(req.scope)
       .run({
@@ -2828,8 +2828,8 @@ export const POST = async (
                 "payment_declined" : "invalid",
               content_type: "plain",
               content: medusaError.message,
-            }
-          ]
+            },
+          ],
         },
       })
 
@@ -2853,7 +2853,7 @@ Finally, you'll apply the validation middleware to the `POST /checkout_sessions/
 In `src/api/middlewares.ts`, add the following import at the top of the file:
 
 ```ts title="src/api/middlewares.ts"
-import { PostCompleteSessionSchema } from "./checkout_sessions/[id]/complete/route";
+import { PostCompleteSessionSchema } from "./checkout_sessions/[id]/complete/route"
 ```
 
 Then, add a new route configuration in `defineMiddlewares`:
@@ -2865,7 +2865,7 @@ export default defineMiddlewares({
     {
       matcher: "/checkout_sessions/:id/complete",
       method: ["POST"],
-      middlewares: [validateAndTransformBody(PostCompleteSessionSchema)]
+      middlewares: [validateAndTransformBody(PostCompleteSessionSchema)],
     },
   ],
   // ...
@@ -3190,14 +3190,14 @@ export const cancelCheckoutSessionWorkflow = createWorkflow(
         "id", 
         "payment_collection.*", 
         "payment_collection.payment_sessions.*",
-        "order.id"
+        "order.id",
       ],
       filters: {
         id: input.cart_id,
       },
       options: {
         throwIfKeyNotFound: true,
-      }
+      },
     })
 
     validateCartCancelationStep({
@@ -3217,11 +3217,11 @@ Next, you'll cancel the payment sessions if there are any. Replace the `TODO` in
 
 ```ts title="src/workflows/cancel-checkout-session.ts"
 when({
-  carts
+  carts,
 }, (data) => !!data.carts[0].payment_collection?.payment_sessions?.length)
 .then(() => {
   const paymentSessionIds = transform({
-    carts
+    carts,
   }, (data) => {
     return data.carts[0].payment_collection?.payment_sessions?.map((session) => session!.id)
   })
@@ -3235,8 +3235,8 @@ updateCartWorkflow.runAsStep({
     id: carts[0].id,
     metadata: {
       checkout_session_canceled: true,
-    }
-  }
+    },
+  },
 })
 
 // TODO prepare and return response
@@ -3252,7 +3252,7 @@ Finally, you'll prepare and return the checkout session response. Replace the `T
 const responseData = prepareCheckoutSessionDataWorkflow.runAsStep({
   input: {
     cart_id: carts[0].id,
-  }
+  },
 })
 
 return new WorkflowResponse(responseData)
@@ -3287,7 +3287,7 @@ export const POST = async (
         },
         context: {
           idempotencyKey: req.headers["idempotency-key"] as string,
-        }
+        },
       })
     
     res.set(responseHeaders).json(result)
@@ -3300,8 +3300,8 @@ export const POST = async (
           code: "invalid",
           content_type: "plain",
           content: medusaError.message,
-        }
-      ]
+        },
+      ],
     })
   }
 }
@@ -3382,7 +3382,7 @@ export default async function orderWebhookHandler({
     ],
     filters: {
       id: orderId,
-    }
+    },
   })
 
   // only send webhook if order is associated with a checkout session
@@ -3404,7 +3404,7 @@ export default async function orderWebhookHandler({
         type: "original_payment",
         amount: transaction!.amount * -1,
       })) || [],
-    }
+    },
   }
 
   // set status based on order, fulfillments and transactions

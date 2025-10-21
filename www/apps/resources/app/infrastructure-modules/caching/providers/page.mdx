@@ -102,11 +102,11 @@ module.exports = defineConfig({
             options: {
               // Memcached options...
             },
-          }
-        ]
-      }
-    }
-  ]
+          },
+        ],
+      },
+    },
+  ],
 })
 ```
 
@@ -130,7 +130,7 @@ const { data: products } = useQueryGraphStep({
   options: {
     cache: {
       enable: true,
-      providers: ["caching-memcached"] // Specify Memcached provider
+      providers: ["caching-memcached"], // Specify Memcached provider
     },
   },
 })
@@ -145,7 +145,7 @@ const cachingModuleService = container.resolve(Modules.CACHING)
 await cachingModuleService.set({
   key: "product-list",
   data: products,
-  providers: ["caching-memcached"] // Specify Memcached provider
+  providers: ["caching-memcached"], // Specify Memcached provider
 })
 ```
 

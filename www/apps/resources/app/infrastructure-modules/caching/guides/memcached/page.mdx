@@ -108,14 +108,14 @@ export default async function connection({
     serverUrls = ["127.0.0.1:11211"], 
     username, 
     password, 
-    options: clientOptions
+    options: clientOptions,
   } = options || {}
 
   try {
     logger.info("Connecting to Memcached...")
 
     // Create Memcached client
-    const client = memjs.Client.create(serverUrls.join(','), {
+    const client = memjs.Client.create(serverUrls.join(","), {
       username,
       password,
       ...clientOptions,
@@ -271,9 +271,9 @@ class MemcachedCachingProviderService implements ICachingProviderService {
       return { data, compressed: false }
     }
 
-    const buffer = Buffer.from(data, 'utf8')
+    const buffer = Buffer.from(data, "utf8")
     const compressed = await deflateAsync(buffer)
-    const compressedData = compressed.toString('base64')
+    const compressedData = compressed.toString("base64")
     
     // Only use compression if it actually reduces size
     if (compressedData.length < data.length) {
@@ -291,9 +291,9 @@ class MemcachedCachingProviderService implements ICachingProviderService {
       return data
     }
 
-    const buffer = Buffer.from(data, 'base64')
+    const buffer = Buffer.from(data, "base64")
     const decompressed = await inflateAsync(buffer)
-    return decompressed.toString('utf8')
+    return decompressed.toString("utf8")
   }
 }
 ```
@@ -411,12 +411,12 @@ class MemcachedCachingProviderService implements ICachingProviderService {
     // Compress data if enabled
     const { 
       data: finalData, 
-      compressed
+      compressed,
     } = await this.compressData(serializedData)
 
     // Batch operations for better performance
     const operations: Promise<any>[] = [
-      this.client.set(prefixedKey, finalData, setOptions)
+      this.client.set(prefixedKey, finalData, setOptions),
     ]
 
     // Always store options (including compression flag) to allow checking them later
@@ -484,9 +484,9 @@ class MemcachedCachingProviderService implements ICachingProviderService {
     const storedTags = JSON.parse(keyTagsResult.value.toString())
     
     // Batch all namespace checks for better performance
-    const tagKeys = Object.keys(storedTags).map(tag => this.TAG_PREFIX + tag)
+    const tagKeys = Object.keys(storedTags).map((tag) => this.TAG_PREFIX + tag)
     const tagResults = await Promise.all(
-      tagKeys.map(tagKey => this.client.get(tagKey))
+      tagKeys.map((tagKey) => this.client.get(tagKey))
     )
 
     // Check if any tag namespace is missing or changed
@@ -536,7 +536,7 @@ class MemcachedCachingProviderService implements ICachingProviderService {
     }
 
     // Get all keys associated with each tag
-    const tagKeysOperations = tags.map(tag => {
+    const tagKeysOperations = tags.map((tag) => {
       const tagKeysKey = `${this.TAG_KEYS_PREFIX}${tag}`
       return this.client.get(tagKeysKey)
     })
@@ -548,7 +548,7 @@ class MemcachedCachingProviderService implements ICachingProviderService {
     for (const result of tagKeysResults) {
       if (result.value) {
         const keys = JSON.parse(result.value.toString()) as string[]
-        keys.forEach(key => allKeys.add(key))
+        keys.forEach((key) => allKeys.add(key))
       }
     }
 
@@ -557,7 +557,7 @@ class MemcachedCachingProviderService implements ICachingProviderService {
     }
 
      // Get all cached data for the collected keys
-     const dataOperations = Array.from(allKeys).map(async key => {
+     const dataOperations = Array.from(allKeys).map(async (key) => {
        const prefixedKey = this.CACHE_PREFIX + key
        const result = await this.client.get(prefixedKey)
        
@@ -717,7 +717,7 @@ class MemcachedCachingProviderService implements ICachingProviderService {
     let keys: string[] = JSON.parse(tagKeysResult.value.toString()) as string[]
     
     // Remove the specified keys
-    keys = keys.filter(key => !keysToRemove.includes(key))
+    keys = keys.filter((key) => !keysToRemove.includes(key))
     
     if (keys.length === 0) {
       // If no keys left, delete the tag keys entry
@@ -755,7 +755,7 @@ class MemcachedCachingProviderService implements ICachingProviderService {
     const operations: Promise<any>[] = [
       this.client.delete(this.CACHE_PREFIX + key),
       this.client.delete(this.OPTIONS_PREFIX + key),
-      this.client.delete(keyTagsKey)
+      this.client.delete(keyTagsKey),
     ]
 
     // If the key has tags, remove it from tag key lists
@@ -764,7 +764,7 @@ class MemcachedCachingProviderService implements ICachingProviderService {
       const tagNames = Object.keys(storedTags)
       
       // Batch tag cleanup operations
-      const tagCleanupOperations = tagNames.map(async tag => {
+      const tagCleanupOperations = tagNames.map(async (tag) => {
         await this.removeKeysFromTag(tag, [key])
       })
       operations.push(...tagCleanupOperations)
@@ -794,7 +794,7 @@ Add the following method to the `MemcachedCachingProviderService` class:
 class MemcachedCachingProviderService implements ICachingProviderService {
   // ...
   private async clearByTags(tags: string[]): Promise<void> {
-    const operations = tags.map(async tag => {
+    const operations = tags.map(async (tag) => {
       const tagKey = this.TAG_PREFIX + tag
       const result = await this.client.increment(tagKey, 1)
       if (result === null) {
@@ -972,7 +972,7 @@ module.exports = defineConfig({
       resolve: "@medusajs/medusa/caching",
       options: {
         in_memory: {
-          enable: true
+          enable: true,
         },
         providers: [
           {
@@ -981,16 +981,16 @@ module.exports = defineConfig({
             // Optional, makes this the default caching provider
             is_default: true,
             options: {
-              serverUrls: process.env.MEMCACHED_SERVERS?.split(',') || 
+              serverUrls: process.env.MEMCACHED_SERVERS?.split(",") || 
                 ["127.0.0.1:11211"],
               // add other optional options here...
             },
           },
           // other caching providers...
         ],
-      }
-    }
-  ]
+      },
+    },
+  ],
 })
 ```
 
@@ -1051,7 +1051,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
       key: "test-cache-products",
       // If you didn't set is_default to true, uncomment the following line
       // providers: ["caching-memcached"],
-    }
+    },
   })
 
   res.status(200).json({

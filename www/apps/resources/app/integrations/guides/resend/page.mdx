@@ -1200,13 +1200,14 @@ Create the file `src/workflows/send-order-confirmation.ts` with the following co
 
 export const workflowHighlights = [
   ["13", "sendOrderConfirmationWorkflow", "Create the workflow that sends an order confirmation email."],
-  ["15", "useQueryGraphStep", "Retrieve the order's details."],
-  ["43", "sendNotificationStep", "Send the order confirmation email."]
+  ["16", "useQueryGraphStep", "Retrieve the order's details."],
+  ["48", "sendNotificationStep", "Send the order confirmation email."]
 ]
 
 ```ts title="src/workflows/send-order-confirmation.ts" highlights={workflowHighlights}
 import { 
   createWorkflow, 
+  when,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
 import { useQueryGraphStep } from "@medusajs/medusa/core-flows"
@@ -1244,18 +1245,26 @@ export const sendOrderConfirmationWorkflow = createWorkflow(
       filters: {
         id,
       },
+      options: {
+        throwIfKeyNotFound: true,
+      },
     })
     
-    const notification = sendNotificationStep([{
-      to: orders[0].email,
-      channel: "email",
-      template: "order-placed",
-      data: {
-        order: orders[0],
-      },
-    }])
+    const notification = when({ orders }, (data) => !!data.orders[0].email)
+    .then(() => {
+      return sendNotificationStep([{
+        to: orders[0].email!,
+        channel: "email",
+        template: "order-placed",
+        data: {
+          order: orders[0],
+        },
+      }])
+    })
 
-    return new WorkflowResponse(notification)
+    return new WorkflowResponse({
+      notification,
+    })
   }
 )
 ```
@@ -1265,7 +1274,7 @@ You create a workflow using `createWorkflow` from the Workflows SDK. It accepts 
 It accepts as a second parameter a constructor function, which is the workflow's implementation. The workflow has the following steps:
 
 1. `useQueryGraphStep`, which is a step implemented by Medusa that uses [Query](!docs!/learn/fundamentals/module-links/query), a tool that allows you to retrieve data across modules. You use it to retrieve the order's details.
-2. `sendNotificationStep` which is the step you implemented. You pass it an array with one object, which is the notification's details having following properties:
+2. Ensure that the order has an email address by using `when-then`. If so, you send the notification using the `sendNotificationStep` you implemented earlier. You pass it an object with the following properties:
     - `to`: The address to send the email to. You pass the customer's email that is stored in the order.
     - `channel`: The channel to send the notification through, which is `email`. Since you specified `email` in the Resend Module Provider's `channel` option, the Notification Module will delegate the sending to the Resend Module Provider's service.
     - `template`: The email's template type. You retrieve the template content in the `ResendNotificationProviderService`'s `send` method based on the template specified here.
@@ -1273,7 +1282,7 @@ It accepts as a second parameter a constructor function, which is the workflow's
 
 <Note title="Tip">
 
-A workflow's constructor function has some constraints in implementation. Learn more about them in [this documentation](!docs!/learn/fundamentals/workflows/constructor-constraints).
+`when` allows you to perform steps based on a condition during execution. Learn more in the [Conditions in Workflows](!docs!/learn/fundamentals/workflows/conditions) documentation.
 
 </Note>
 

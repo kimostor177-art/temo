@@ -975,6 +975,7 @@ import {
 } from "@medusajs/framework/workflows-sdk"
 import { 
   createProductsWorkflow, 
+  CreateProductsWorkflowInput, 
   createRemoteLinkStep, 
   useQueryGraphStep,
 } from "@medusajs/medusa/core-flows"
@@ -1014,7 +1015,7 @@ const createVendorProductWorkflow = createWorkflow(
     })
 
     const createdProducts = createProductsWorkflow.runAsStep({
-      input: productData,
+      input: productData as CreateProductsWorkflowInput,
     })
     
     // TODO link vendor and products
@@ -1333,26 +1334,28 @@ import {
   createStep,
   StepResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { CartDTO, CartLineItemDTO } from "@medusajs/framework/types"
+import { CartLineItemDTO } from "@medusajs/framework/types"
 import { ContainerRegistrationKeys, promiseAll } from "@medusajs/framework/utils"
 
-type StepInput = {
-  cart: CartDTO
+export type GroupVendorItemsStepInput = {
+  cart: {
+    items?: CartLineItemDTO[]
+  }
 }
 
 const groupVendorItemsStep = createStep(
   "group-vendor-items",
-  async ({ cart }: StepInput, { container }) => {
+  async ({ cart }: GroupVendorItemsStepInput, { container }) => {
     const query = container.resolve(ContainerRegistrationKeys.QUERY)
 
     const vendorsItems: Record<string, CartLineItemDTO[]> = {}
 
-    await promiseAll(cart.items?.map(async (item) => {
+    await promiseAll((cart.items || []).map(async (item) => {
       const { data: [product] } = await query.graph({
         entity: "product",
         fields: ["vendor.*"],
         filters: {
-          id: [item.product_id],
+          id: item.product_id || "",
         },
       })
 
@@ -1451,7 +1454,7 @@ const createVendorOrdersStep = createStep(
       created_orders: createdOrders,
     })
   },
-  async ({ created_orders }, { container, context }) => {  
+  async (data, { container, context }) => {  
     // TODO add compensation function
   }
 )
@@ -1586,19 +1589,19 @@ function prepareOrderData(
     // item/vendor. This requires changes in the storefront to commodate that
     // and passing the item/vendor ID in the `data` property, for example.
     // For simplicity here we just use the same shipping method.
-    shipping_methods: parentOrder.shipping_methods.map((shippingMethod) => ({
+    shipping_methods: parentOrder.shipping_methods?.map((shippingMethod) => ({
       name: shippingMethod.name,
       amount: shippingMethod.amount,
       shipping_option_id: shippingMethod.shipping_option_id,
       data: shippingMethod.data,
-      tax_lines: shippingMethod.tax_lines.map((taxLine) => ({
+      tax_lines: shippingMethod.tax_lines?.map((taxLine) => ({
         code: taxLine.code,
         rate: taxLine.rate,
         provider_id: taxLine.provider_id,
         tax_rate_id: taxLine.tax_rate_id,
         description: taxLine.description,
       })),
-      adjustments: shippingMethod.adjustments.map((adjustment) => ({
+      adjustments: shippingMethod.adjustments?.map((adjustment) => ({
         code: adjustment.code,
         amount: adjustment.amount,
         description: adjustment.description,
@@ -1621,7 +1624,10 @@ When creating the child orders, the shipping method of the parent is used as-is 
 Finally, replace the `TODO` in the compensation function with the following:
 
 ```ts title="src/workflows/marketplace/create-vendor-orders/steps/create-vendor-orders.ts"
-await Promise.all(created_orders.map((createdOrder) => {
+if (!data) {
+  return
+}
+await promiseAll(data.created_orders.map((createdOrder) => {
   return cancelOrderWorkflow(container).run({
     input: {
       order_id: createdOrder.id,
@@ -1687,7 +1693,7 @@ const createVendorOrdersWorkflow = createWorkflow(
 
     const { vendorsItems } = groupVendorItemsStep({
       cart: carts[0],
-    })
+    } as unknown as GroupVendorItemsStepInput)
     
     const order = getOrderDetailWorkflow.runAsStep({
       input: {
@@ -1869,7 +1875,7 @@ export const GET = async (
         ],
         variables: {
           filters: {
-            id: vendorAdmin.vendor.orders.map((order) => order.id),
+            id: vendorAdmin.vendor.orders?.map((order) => order?.id),
           },
         },
       },
