@@ -149,6 +149,14 @@ export const generatedSidebars = [
             "title": "S3",
             "path": "/s3",
             "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
+            "title": "Cache",
+            "path": "/cache",
+            "children": []
           }
         ]
       },
