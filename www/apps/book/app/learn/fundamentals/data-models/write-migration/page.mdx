@@ -37,8 +37,14 @@ You can also write migrations manually. To do that, create a file in the `migrat
 
 For example:
 
+<Note>
+
+As of [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0), MikroORM dependencies are included in the `@medusajs/framework` package. If you're using an older version of Medusa, change the import statement to `@mikro-orm/migrations`.
+
+</Note>
+
 ```ts title="src/modules/blog/migrations/Migration202507021059_create_author.ts"
-import { Migration } from "@mikro-orm/migrations"
+import { Migration } from "@medusajs/framework/@mikro-orm/migrations"
 
 export class Migration202507021059 extends Migration {
 
@@ -53,7 +59,7 @@ export class Migration202507021059 extends Migration {
 }
 ```
 
-The migration class in the file extends the `Migration` class imported from `@mikro-orm/migrations`. In the `up` and `down` method of the migration class, you use the `addSql` method provided by MikroORM's `Migration` class to run PostgreSQL syntax.
+The migration class in the file extends the `Migration` class imported from `@medusajs/framework/@mikro-orm/migrations`. In the `up` and `down` method of the migration class, you use the `addSql` method provided by MikroORM's `Migration` class to run PostgreSQL syntax.
 
 In the example above, the `up` method creates the table `author`, and the `down` method drops the table if the migration is reverted.
 

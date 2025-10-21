@@ -1646,7 +1646,7 @@ import {
   MedusaContext,
 } from "@medusajs/framework/utils"
 import { Context } from "@medusajs/framework/types"
-import { EntityManager } from "@mikro-orm/knex"
+import { EntityManager } from "@medusajs/framework/@mikro-orm/knex"
 
 class BlogModuleService {
   // ...
@@ -2971,7 +2971,7 @@ To register a resource in the Module's container using a loader, use the `contai
 import {
   LoaderOptions,
 } from "@medusajs/framework/types"
-import { asValue } from "awilix"
+import { asValue } from "@medusajs/framework/awilix"
 
 export default async function helloWorldLoader({
   container,

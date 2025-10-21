@@ -61,7 +61,9 @@ In this example, you retrieve the product variants' inventory quantity by passin
 A variant is in stock if:
 
 1. Its `manage_inventory`'s value is `false`, meaning that Medusa doesn't keep track of its inventory.
-2. If its `inventory_quantity`'s value is greater than `0`. This property is only available on variants whose `manage_inventory` is `false`.
+2. If its `inventory_quantity`'s value is greater than `0`.
+    - This property is only available on variants whose `manage_inventory` is `false`.
+    - If the variant doesn't have inventory levels in the stock location associated with the API's scope, its `inventory_quantity` will be `null`.
 
 ---
 

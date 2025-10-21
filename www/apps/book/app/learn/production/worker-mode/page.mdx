@@ -10,7 +10,14 @@ In this chapter, you'll learn about the different modes of running a Medusa inst
 
 ## What is Worker Mode?
 
-By default, the Medusa application runs both the server, which handles all incoming requests, and the worker, which processes background tasks, in a single process. While this setup is suitable for development, it is not optimal for production environments where background tasks can be long-running or resource-intensive.
+By default, the Medusa application runs in `shared` mode, which runs:
+
+- `server`: the application server that handles incoming requests to the application's API routes.
+- `worker`: the worker that processes background tasks. This includes scheduled jobs and subscribers.
+
+While this setup is suitable for development, it is not optimal for production environments where background tasks can be long-running or resource-intensive.
+
+### Worker Mode in Production
 
 In a production environment, you should deploy two separate instances of your Medusa application:
 
@@ -104,3 +111,27 @@ ADMIN_DISABLED=true
 
   </CodeTab>
 </CodeTabs>
+
+---
+
+## Dividing Resources in Cluster Mode
+
+<Note>
+
+The `--servers` and `--workers` options were introduced in [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0).
+
+</Note>
+
+When running Medusa in [cluster mode](!resources!/medusa-cli/commands/start#starting-medusa-in-cluster-mode), you can specify the number or percentage of instances that are servers or workers by passing the `--servers` and `--workers` options:
+
+```bash
+npx medusa start --cluster 4 --servers 25% --workers 75% # Use 4 CPU cores, with 25% as servers and 75% as workers
+npx medusa start --cluster 4 --servers 1 --workers 3       # Use 4 CPU cores, with 1 as server and 3 as workers
+npx medusa start --cluster 4 --servers 1 --workers 1      # Use 4 CPU cores, with 1 as server and 1 as worker (the remaining 2 will run in shared mode)
+```
+
+In the above snippet you can see the following examples:
+
+- In the first example, 25% of the instances (1 out of 4) will run as servers, and 75% (3 out of 4) will run as workers.
+- In the second example, 1 instance will run as a server, and 3 instances will run as workers.
+- In the third example, 1 instance will run as a server, and 1 instance will run as a worker. The remaining 2 instances will run in shared mode

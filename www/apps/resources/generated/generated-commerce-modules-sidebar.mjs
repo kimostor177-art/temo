@@ -6423,6 +6423,14 @@ const generatedgeneratedCommerceModulesSidebarSidebar = {
               "loaded": true,
               "isPathHref": true,
               "type": "ref",
+              "title": "Manage Refund Reasons",
+              "path": "https://docs.medusajs.com/user-guide/settings/refund-reasons",
+              "children": []
+            },
+            {
+              "loaded": true,
+              "isPathHref": true,
+              "type": "ref",
               "title": "Manage Return Reasons",
               "path": "https://docs.medusajs.com/user-guide/settings/return-reasons",
               "children": []

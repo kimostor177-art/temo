@@ -98,9 +98,48 @@ For example, the `VITE_MY_API_KEY` environment variable in the example above wil
 
 ## Environment Variables in Plugins
 
-As explained in the [previous section](#environment-variables-in-production), environment variables are inlined into the build. This presents a limitation for plugins, where you can't use environment variables.
+<Note>
 
-Instead, only the following global variable is available in plugins:
+Environment variable support in plugins is available starting [Medusa v2.11.0](https://github.com/medusajs/medusa/releases/tag/v2.11.0). Refer to the [Medusa versions prior to v2.11.0](#for-medusa-versions-prior-to-v2110) section for more details if you're using an earlier version.
+
+</Note>
+
+For plugins, you can use environment variables without a prefix. Then, Medusa applications that use the plugin can set the environment variable with the `PLUGIN_` prefix.
+
+For example, you can create a widget in your plugin that uses the `MY_API_KEY` environment variable:
+
+```tsx highlights={[["8"]]}
+import { defineWidgetConfig } from "@medusajs/admin-sdk"
+import { Container, Heading } from "@medusajs/ui"
+
+const ProductWidget = () => {
+  return (
+    <Container className="divide-y p-0">
+      <div className="flex items-center justify-between px-6 py-4">
+        <Heading level="h2">API Key: {import.meta.env.MY_API_KEY}</Heading>
+      </div>
+    </Container>
+  )
+}
+
+export const config = defineWidgetConfig({
+  zone: "product.details.before",
+})
+
+export default ProductWidget
+```
+
+Then, in the Medusa application that uses the plugin, set the environment variable with the `PLUGIN_` prefix:
+
+```bash
+PLUGIN_MY_API_KEY=sk_123
+```
+
+The `MY_API_KEY` environment variable in the plugin will be replaced with the value of `PLUGIN_MY_API_KEY` during the build process of the Medusa application.
+
+### Global Variables in Plugins
+
+Plugins also have the following global variables available:
 
 - `__BACKEND_URL__`: The URL of the Medusa backend, as set in the [Medusa configurations](../../../configurations/medusa-config/page.mdx#backendurl).
 - `__BASE__`: The base path of the Medusa Admin. (For example, `/app`).
@@ -138,3 +177,13 @@ declare const __BACKEND_URL__: string
 declare const __BASE__: string
 declare const __STOREFRONT_URL__: string
 ```
+
+### For Medusa versions prior to v2.11.0
+
+<Details summaryContent="Instructions for Medusa versions prior to v2.11.0">
+
+As explained in the [Environment Variables in Production section](#environment-variables-in-production), environment variables are inlined into the build. This presents a limitation for plugins, where you can't use environment variables.
+
+Instead, you can use the [Plugin Global Variables](#global-variables-in-plugins) described above to access the backend URL, base path, and storefront URL.
+
+</Details>

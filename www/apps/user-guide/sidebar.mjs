@@ -275,6 +275,11 @@ export const sidebar = [
           },
           {
             type: "link",
+            title: "Refund Reasons",
+            path: "/settings/refund-reasons",
+          },
+          {
+            type: "link",
             title: "Sales Channels",
             path: "/settings/sales-channels",
           },

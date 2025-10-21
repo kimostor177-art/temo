@@ -44,6 +44,10 @@ export const order = [
     "path": "https://docs.medusajs.com/user-guide/orders/returns"
   },
   {
+    "title": "Manage Refund Reasons",
+    "path": "https://docs.medusajs.com/user-guide/settings/refund-reasons"
+  },
+  {
     "title": "Manage Return Reasons",
     "path": "https://docs.medusajs.com/user-guide/settings/return-reasons"
   },

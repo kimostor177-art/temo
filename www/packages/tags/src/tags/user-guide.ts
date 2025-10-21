@@ -180,6 +180,10 @@ export const userGuide = [
     "path": "https://docs.medusajs.com/user-guide/settings/profile"
   },
   {
+    "title": "Manage Refund Reasons",
+    "path": "https://docs.medusajs.com/user-guide/settings/refund-reasons"
+  },
+  {
     "title": "Manage Regions",
     "path": "https://docs.medusajs.com/user-guide/settings/regions"
   },

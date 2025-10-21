@@ -447,6 +447,14 @@ export const generatedSidebars = [
             "loaded": true,
             "isPathHref": true,
             "type": "link",
+            "title": "Refund Reasons",
+            "path": "/settings/refund-reasons",
+            "children": []
+          },
+          {
+            "loaded": true,
+            "isPathHref": true,
+            "type": "link",
             "title": "Sales Channels",
             "path": "/settings/sales-channels",
             "children": []

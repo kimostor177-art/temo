@@ -1133,7 +1133,7 @@ Before adding the step that does this, you'll add a method in the `RestockModule
 // other imports...
 import { InjectManager, MedusaContext } from "@medusajs/framework/utils"
 import { Context } from "@medusajs/framework/types"
-import { EntityManager } from "@mikro-orm/knex"
+import { EntityManager } from "@medusajs/framework/@mikro-orm/knex"
 
 class RestockModuleService extends MedusaService({
   RestockSubscription,

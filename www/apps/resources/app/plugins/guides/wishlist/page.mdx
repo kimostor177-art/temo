@@ -1958,7 +1958,7 @@ In `src/modules/wishlist/service.ts`, add the following imports and method:
 // other imports...
 import { InjectManager } from "@medusajs/framework/utils"
 import { Context } from "@medusajs/framework/types"
-import { EntityManager } from "@mikro-orm/knex"
+import { EntityManager } from "@medusajs/framework/@mikro-orm/knex"
 
 export default class WishlistModuleService extends MedusaService({
   Wishlist,

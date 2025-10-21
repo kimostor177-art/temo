@@ -44,7 +44,13 @@ Here, you can see a list of all the secret API keys for the logged-in user. You 
 
 ## Create Secret API Key
 
-When you create a secret API key, you create it for the currently logged-in user. A user can have one active secret key at a time. So, if you already have one, you must [revoke it](#revoke-secret-api-key) before creating a new one.
+When you create a secret API key, you create it for the currently logged-in user.
+
+<Note>
+
+Prior to [Medusa v2.11.0], users could only have one active secret API key at a time. To create a new secret API key, you had to [revoke](#revoke-secret-api-key) the existing key first. If you can't create multiple secret API keys, request your technical team to [upgrade your Medusa application](!docs!/learn/update).
+
+</Note>
 
 To create a new secret API key for the currently logged-in user:
 

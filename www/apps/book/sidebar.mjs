@@ -679,7 +679,7 @@ export const sidebars = [
           {
             type: "link",
             path: "/learn/production/worker-mode",
-            title: "Worker Mode",
+            title: "Worker Modes",
           },
           {
             type: "link",
@@ -708,6 +708,18 @@ export const sidebars = [
             type: "external",
             path: "https://github.com/medusajs/medusa/releases",
             title: "Release Notes",
+          },
+          {
+            type: "link",
+            path: "/learn/codemods",
+            title: "Codemods",
+            children: [
+              {
+                type: "link",
+                title: "Replace Imports (v2.11.0+)",
+                path: "/learn/codemods/replace-imports",
+              },
+            ],
           },
         ],
       },
