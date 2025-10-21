@@ -307,4 +307,120 @@ describe("waitSubscribersExecution", () => {
       clearTimeoutSpy.mockRestore()
     })
   })
+
+  describe("nested wrapper handling", () => {
+    it("should handle multiple consecutive waitSubscribersExecution calls on the same event", async () => {
+      const originalListener = jest.fn().mockResolvedValue("result")
+      eventBus.eventEmitter_.on(TEST_EVENT, originalListener)
+
+      // First wait
+      const wait1 = waitSubscribersExecution(TEST_EVENT, eventBus as any)
+      eventBus.emit(TEST_EVENT, "data1")
+      await wait1
+
+      expect(originalListener).toHaveBeenCalledWith("data1")
+      expect(originalListener).toHaveBeenCalledTimes(1)
+
+      // Second wait on the same event - should still restore properly
+      const wait2 = waitSubscribersExecution(TEST_EVENT, eventBus as any)
+      eventBus.emit(TEST_EVENT, "data2")
+      await wait2
+
+      expect(originalListener).toHaveBeenCalledWith("data2")
+      expect(originalListener).toHaveBeenCalledTimes(2)
+
+      // Original listener should still be intact and work normally
+      eventBus.emit(TEST_EVENT, "data3")
+      expect(originalListener).toHaveBeenCalledWith("data3")
+      expect(originalListener).toHaveBeenCalledTimes(3)
+
+      // Verify we still have the correct number of listeners
+      const listeners = eventBus.eventEmitter_.listeners(TEST_EVENT)
+      expect(listeners).toHaveLength(1)
+      expect(listeners[0]).toBe(originalListener)
+    })
+
+    it("should handle three consecutive waitSubscribersExecution calls", async () => {
+      const originalListener = jest.fn().mockResolvedValue("result")
+      eventBus.eventEmitter_.on(TEST_EVENT, originalListener)
+
+      // First wait
+      const wait1 = waitSubscribersExecution(TEST_EVENT, eventBus as any)
+      eventBus.emit(TEST_EVENT, "data1")
+      await wait1
+
+      // Second wait
+      const wait2 = waitSubscribersExecution(TEST_EVENT, eventBus as any)
+      eventBus.emit(TEST_EVENT, "data2")
+      await wait2
+
+      // Third wait
+      const wait3 = waitSubscribersExecution(TEST_EVENT, eventBus as any)
+      eventBus.emit(TEST_EVENT, "data3")
+      await wait3
+
+      // Verify the original listener is still properly attached
+      const listeners = eventBus.eventEmitter_.listeners(TEST_EVENT)
+      expect(listeners).toHaveLength(1)
+      expect(listeners[0]).toBe(originalListener)
+
+      // Verify it still works
+      eventBus.emit(TEST_EVENT, "data4")
+      expect(originalListener).toHaveBeenCalledWith("data4")
+      expect(originalListener).toHaveBeenCalledTimes(4)
+    })
+
+    it("should handle multiple listeners with consecutive waits", async () => {
+      const listener1 = jest.fn().mockResolvedValue("result1")
+      const listener2 = jest.fn().mockResolvedValue("result2")
+
+      eventBus.eventEmitter_.on(TEST_EVENT, listener1)
+      eventBus.eventEmitter_.on(TEST_EVENT, listener2)
+
+      // First wait
+      const wait1 = waitSubscribersExecution(TEST_EVENT, eventBus as any)
+      eventBus.emit(TEST_EVENT, "data1")
+      await wait1
+
+      expect(listener1).toHaveBeenCalledWith("data1")
+      expect(listener2).toHaveBeenCalledWith("data1")
+
+      // Second wait
+      const wait2 = waitSubscribersExecution(TEST_EVENT, eventBus as any)
+      eventBus.emit(TEST_EVENT, "data2")
+      await wait2
+
+      expect(listener1).toHaveBeenCalledWith("data2")
+      expect(listener2).toHaveBeenCalledWith("data2")
+
+      // Verify both original listeners are still properly attached
+      const listeners = eventBus.eventEmitter_.listeners(TEST_EVENT)
+      expect(listeners).toHaveLength(2)
+      expect(listeners[0]).toBe(listener1)
+      expect(listeners[1]).toBe(listener2)
+
+      // Verify they still work normally
+      eventBus.emit(TEST_EVENT, "data3")
+      expect(listener1).toHaveBeenCalledWith("data3")
+      expect(listener2).toHaveBeenCalledWith("data3")
+    })
+
+    it("should not add undefined listener when originalListener chain ends", async () => {
+      // This tests the edge case where listener.originalListener might be undefined
+      const originalListener = jest.fn().mockResolvedValue("result")
+      eventBus.eventEmitter_.on(TEST_EVENT, originalListener)
+
+      const wait1 = waitSubscribersExecution(TEST_EVENT, eventBus as any)
+      eventBus.emit(TEST_EVENT, "data1")
+      await wait1
+
+      // Verify we have exactly one listener (the original)
+      const listeners = eventBus.eventEmitter_.listeners(TEST_EVENT)
+      expect(listeners).toHaveLength(1)
+
+      // Verify it's not undefined
+      expect(listeners[0]).toBeDefined()
+      expect(listeners[0]).toBe(originalListener)
+    })
+  })
 })

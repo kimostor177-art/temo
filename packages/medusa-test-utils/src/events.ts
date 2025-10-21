@@ -99,6 +99,7 @@ const doWaitSubscribersExecution = (
       })
       subscriberPromises.push(promise)
       let res: any[] = []
+      let cleanupDone = false
 
       const newListener = async (...args2: any[]) => {
         try {
@@ -121,14 +122,20 @@ const doWaitSubscribersExecution = (
           nok(error)
         }
 
-        if (currentCount >= triggerCount) {
+        if (currentCount >= triggerCount && !cleanupDone) {
           // As soon as the subscriber is executed the required number of times, we restore the original listener
+          cleanupDone = true
           eventEmitter.removeListener(eventName, newListener)
+
+          // Unwrap to find the true original listener
           let listenerToAdd = listener
-          while (listenerToAdd.originalListener) {
+          while (listenerToAdd?.originalListener) {
             listenerToAdd = listenerToAdd.originalListener
           }
-          eventEmitter.on(eventName, listenerToAdd)
+
+          if (listenerToAdd) {
+            eventEmitter.on(eventName, listenerToAdd)
+          }
         }
       }
 
